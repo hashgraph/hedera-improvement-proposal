@@ -28,3 +28,16 @@ Evaluate your idea: Before you begin, ask the Hashgraph community first if your 
 Following is the process that a successful EIP will move along:
 
 [ WIP ] -> [ DRAFT ] -> [ LAST CALL ] -> [ ACCEPTED ] -> [ FINAL ]
+
+The status change of each HIP is requested by the HIP author and it is to be reviewed by the HIP editors. To update the status, use a pull request. For convince, include a link for people to continue discussing your HIP. HIP editors should follow the following guidelines when reviewing requests:
+- Active
+- Work in Progress (WIP)
+- Draft
+- Last Call
+- Accepted 
+- Final
+
+Exceptional statuses:
+- Deferred: A core HIPs that have been put off for a future hard fork. 
+- Rejected: An HIP that is fundamentally broken or a core HIP that was rejected by the Core Devs.
+- Superseded: An HIP which was previously final but is no longer considered state-of-the-art.
