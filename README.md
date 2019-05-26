@@ -1,5 +1,5 @@
 ## What is a HIP?
-HIP stands for Hashgraph Improvement Proposal. The purpose is to provide information about Hashgraph to the Hashgraph community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions.
+HIP stands for Hash Improvement Proposal. The purpose is to provide information about Hashgraph to the Hashgraph community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions.
 
 ## HIP Purpose
 The goal of HIPs is to have a place to propose new features, a way to collect community thoughts and input on a particular issue and also to document all these Hashgraph subject matters in one place. It's a great way to document this discussion here on GitHub because any revisions made on these text files will be recorded. 
