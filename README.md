@@ -41,3 +41,5 @@ Exceptional statuses:
 - Deferred: A core HIPs that have been put off for a future hard fork. 
 - Rejected: An HIP that is fundamentally broken or a core HIP that was rejected by the Core Devs.
 - Superseded: An HIP which was previously final but is no longer considered state-of-the-art.
+
+![](https://raw.githubusercontent.com/hashingsystems/HIPs/master/hs_logo_sm.png)
