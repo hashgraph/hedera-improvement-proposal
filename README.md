@@ -1,4 +1,4 @@
-![](https://www.hedera.com/logo-capital-hbar-stacked.jpg)
+![](https://www.hedera.com/logo-capital-hbar-wordmark.jpg)
 
 ## What is a HIP? 
 
