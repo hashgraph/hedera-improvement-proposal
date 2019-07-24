@@ -4,7 +4,7 @@ HIP stands for "Hedera Improvement Proposal". These improvement proposals can ra
 
 ## What is Hedera Hashgraph? 
 
-[Hedera Hashgraph](https://hedera.com) is the only public network built on top of [Dr. Leemon Baird](http://www.leemon.com/)’s [Hashgraph consensus algorithm](http://www.leemon.com/papers/2016b.pdf). Hedera goes beyond blockchain to provide the fast, fair, and secure environment needed to enable enterprise adoption of distributed ledger technologies. You can learn more about Hedera by [reading our whitepaper](https://hedera.com/whitepaper), and for a more detailed understanding of the Hashgraph Consensus Algorithm you can check out [it’s whitepaper](http://www.leemon.com/papers/2016b.pdf). 
+[Hedera Hashgraph](https://hedera.com) is the only public network built on top of [Dr. Leemon Baird](http://www.leemon.com/)’s [Hashgraph consensus algorithm](http://www.leemon.com/papers/2016b.pdf). Hedera goes beyond blockchain to provide the fast, fair, and secure environment needed to enable enterprise adoption of distributed ledger technologies. You can learn more about Hedera by [reading the Hedera whitepaper](https://hedera.com/whitepaper), and for a more detailed understanding of the Hashgraph Consensus Algorithm you can check out the [hashgraph algorithm whitepaper](http://www.leemon.com/papers/2016b.pdf). 
 
 ## Purpose
 
