@@ -1,45 +1,82 @@
-## What is a HIP?
-HIP stands for Hash Improvement Proposal. The purpose is to provide information about Hashgraph to the Hashgraph community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions.
+## What is a HIP? 
 
-## HIP Purpose
-The goal of HIPs is to have a place to propose new features, a way to collect community thoughts and input on a particular issue and also to document all these Hashgraph subject matters in one place. It's a great way to document this discussion here on GitHub because any revisions made on these text files will be recorded. 
+HIP stands for "Hedera Improvement Proposal". These improvement proposals can range from core protocol changes, to the applications, frameworks, and protocols built on top of the Hedera public network and used by the community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions, as well as tracking their HIP through the process outlined below. 
 
-HIP is a convenient way for Hashgraph implementers to keep track of their process. While implementing, they will be able to list the HIPs that they are working on or which one they have already implemented. Therefore, this will be an easy way for end users to know the current status of any proposals.
+## What is Hedera Hashgraph? 
 
-## HIP Types
-There are three types of HIP:
-- **A Standard HIP** - describes any changes that affect most or all Hashgraph implementations, this can be a change to the network protocol, a transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hashgraph. Standards HIPs consist of three parts, a design document, implementation, and an update to the formal specification (if warranted). Furthermore, Standard HIPs can be broken down into the following categories:
-   - **Core:** This includes improvements requiring a consensus fork or as well as changes that are not necessarily consensus critical but may be relevant to core development discussions.
-   - **Networking:** This includes improvements around proposed improvements to network protocol specifications.
-   - **Interface:** This includes improvements around client API/RPC specifications and standards, and also certain language-level standards.
-   - **HRC:**  Hedera Request For Comment. This includes application-level standards and conventions, including contract standards such as token standards, name registries, etc.
+[Hedera Hashgraph](https://hedera.com) is the only public network built on top of [Dr. Leemon Baird](http://www.leemon.com/)’s [Hashgraph consensus algorithm](http://www.leemon.com/papers/2016b.pdf). Hedera goes beyond blockchain to provide the fast, fair, and secure environment needed to enable enterprise adoption of distributed ledger technologies. You can learn more about Hedera by [reading the Hedera whitepaper](https://hedera.com/whitepaper), and for a more detailed understanding of the Hashgraph Consensus Algorithm you can check out the [hashgraph algorithm whitepaper](http://www.leemon.com/papers/2016b.pdf). 
 
-- **An Informational HIP** - describes an Hashgraph design issue, or provides general guidelines or information to the Hashgraph community, but does not propose a new feature. Informational HIPs do not necessarily represent Hashgraph community consensus or recommendation, so users and implementers are free to ignore Informational HIPs.
+## Purpose
 
-Each HIPs should only be one single key proposal and/or idea. The idea should be focused and only issue to one subject matter to be successful. If an issue only affects one client, it does not need a HIP. While changes that affect multiple clients, or defines a standard for multiple apps to use, it does require a HIP.
+The goal of HIPs is to have a place to propose new features, to collect community thoughts and input on a particular issue, and further to document all these subject matters in one place. It’s a great way to document these discussions and proposals [here on GitHub](https://github.com/hashgraph/HIPs), because any [revisions made on these text files will be recorded](https://github.com/hashgraph/HIPs/commits/master). 
 
-A HIP must meet certain minimum criteria. It must be clear and have a complete description of the proposed enhancement. The enhancement must represent a net improvement. The proposed implementation, if applicable, must be solid and must not complicate the protocol unduly.
+## Types
 
-## HIP Work Flow
-Parties involved in this process are you, the HIP author, the HIP editors, and the Hashgraph Developers.
+There are two types of Hedera Improvement Proposals: 
 
-Evaluate your idea: Before you begin, ask the Hashgraph community first if your idea is original to save time. Make sure the idea is applicable to the entire community and not to one particular author. While it may be a good idea for an author it may not be the case for all areas of the Hashgraph community. An excellent place to discuss your proposal is here in the Issues section of this repository. You can start creating a more formalized language around your HIP.
+- A Standard HIP - describes any changes that affect most or all clients using or running Hedera Hashgraph, this can be a change to the network protocol, transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hedera Hashgraph. Standard HIPs can be broken down into the following categories: 
 
-Following is the process that a successful EIP will move along:
+   - Core: This type of proposal includes improvements to the core Hedera Hashgraph protocol and services ([cryptocurrency](https://hedera.com/cryptocurrency), [smart contracts](https://hedera.com/smart-contracts), [file service](https://hedera.com/file-service), and [consensus service](https://hedera.com/consensus-service)). 
 
-[ WIP ] -> [ DRAFT ] -> [ LAST CALL ] -> [ ACCEPTED ] -> [ FINAL ]
+   - Interface: This type of proposal includes improvements around client API/RPC specifications and standards, and also certain language-level standards. 
 
-The status change of each HIP is requested by the HIP author and it is to be reviewed by the HIP editors. To update the status, use a pull request. For convince, include a link for people to continue discussing your HIP. HIP editors should follow the following guidelines when reviewing requests:
-- Active
-- Work in Progress (WIP)
-- Draft
-- Last Call
-- Accepted 
-- Final
+   - Economics: This type of proposal includes improvements to the Hedera fee structure, token distribution, proof-of-stake, and other areas relating to the economics of Hedera. 
 
-Exceptional statuses:
-- Deferred: A core HIPs that have been put off for a future hard fork. 
-- Rejected: An HIP that is fundamentally broken or a core HIP that was rejected by the Core Devs.
-- Superseded: An HIP which was previously final but is no longer considered state-of-the-art.
+   - HRC: This type of proposal is a Hedera “request for comment” - HIPs under this distinction require elaboration or commentary from the core Hedera team before recategorizing or moving forward with the proposal.
 
-![](https://raw.githubusercontent.com/hashingsystems/HIPs/master/hs_logo_sm.png)
+- An Informational HIP - This type of proposal provides general guidelines or information to the Hedera Hashgraph community, but does not propose a new feature. Informational HIPs do not necessarily represent Hedera Hashgraph community consensus or recommendation, and so users are free to ignore Informational HIPs.
+
+## Qualifications
+
+Each HIP should only be one single key proposal and/or idea. The idea should be focused and only issue to one subject matter to be successful. A HIP must meet certain minimum criteria: it must be clear and have a complete description of the proposed enhancement, the enhancement must represent a net improvement, the proposed implementation, if applicable, must be solid and must not complicate the protocol unduly.
+
+## Before Submitting
+
+1. Evaluate your idea: consider why you’d like to request changes or improvements, and how it benefits the Hedera Hashgraph community.  
+
+2. Thoroughly look through those proposals already submitted to ensure there are no duplicates. 
+
+3. Ask the Hedera Hashgraph community first if your idea is original, or has already been through the HIP process. 
+ 
+4. Reevaluate your proposal to ensure sure the idea is applicable to the entire community and not just to one particular author, application, project, or protocol. 
+
+##### Note 
+An excellent place to discuss your proposal and get feedback is in the [issues section of this repository](https://github.com/hashgraph/HIPs/issues), or on [hashgraph.org](https://hashgraph.org), a community forum dedicated to discussing hashgraph; there you can start formalizing the language around your HIP and ensuring it has broad community support. 
+
+If you're still here and think you can suggest an improvement, please go ahead and [file an issue](https://github.com/hashgraph/HIPs/issues); we love contributions!
+
+## Workflow
+
+Parties involved in this process are often, but not always, you (the HIP author), the Hedera Hashgraph Community, the HIP editors, the [Hedera Governing Council](https://hedera.com/council) (HGC), and/or Hedera Hashgraph LLC.
+
+#### The following is the process that a successful HIP will move along: 
+
+   1. Work in Progress (WIP) 
+
+   2. Draft 
+
+   3. Last Call 
+
+   4. Accepted by the community 
+
+   5. Proposed to the HGC
+
+   6. Accepted by the HGC
+
+   7. Final 
+
+Alternative statuses include: 
+
+   - Deferred: HIPs with this status has been put off to be discussed again at a later date. 
+
+   - Rejected: HIPs with this status are either: fundamentally broken, not accepted by the community, or not accepted by the HGC. 
+
+   - Superseded: HIPs with this status were previously at some stage of acceptance, but is no longer considered state-of-the-art. 
+
+The status change of each HIP is requested by the HIP author and it is to be reviewed by the HIP editors. To update the status, use a pull request. For convenience, always include a link for people to continue discussing your HIP or see the conversations that have already taken place. 
+
+## Disclaimer(s): 
+
+These improvement proposals are intended to be the community voice for changes, but the implementation of Hedera Hashgraph is left to the engineers working at Hedera, and decisions regarding the platform and codebase strategy or future roadmap are ultimately made by the Hedera Governing Council. At some point, Hedera may have their own improvement made separately from this community managed repository, and may make changes not outlined in an HIP. 
+
+These proposals and discussions have no effect regarding private (permissioned) implementations of the Hashgraph consensus algorithm; additionally, this repository and it’s contents are ran by the Hedera Hashgraph community, which means they do not necessarily reflect the views and opinions of Hedera Hashgraph LLC. 
