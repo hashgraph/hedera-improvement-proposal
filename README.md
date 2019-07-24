@@ -18,8 +18,6 @@ There are two types of Hedera Improvement Proposals:
 
    - Core: This type of proposal includes improvements to the core Hedera Hashgraph protocol and services ([cryptocurrency](https://hedera.com/cryptocurrency), [smart contracts](https://hedera.com/smart-contracts), [file service](https://hedera.com/file-service), and [consensus service](https://hedera.com/consensus-service)). 
 
-   - Networking: This type of proposal includes improvements around proposed improvements to network protocol specifications. 
-
    - Interface: This type of proposal includes improvements around client API/RPC specifications and standards, and also certain language-level standards. 
 
    - Economics: This type of proposal includes improvements to the Hedera fee structure, token distribution, proof-of-stake, and other areas relating to the economics of Hedera. 
