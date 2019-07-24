@@ -4,7 +4,7 @@ HIP stands for "Hedera Improvement Proposal". These improvement proposals can ra
 
 ## What is Hedera Hashgraph? 
 
-[Hedera Hashgraph](https://hedera.com) is the only public network built on top of [Dr. Leemon Baird](http://www.leemon.com/)’s [Hashgraph consensus algorithm](http://www.leemon.com/papers/2016b.pdf). Hedera goes beyond blockchain to provide the fast, fair, and secure environment needed to enable enterprise adoption of distributed ledger technologies. You can learn more about Hedera by [reading our whitepaper](https://hedera.com/whitepaper), and for a more detailed understanding of the Hashgraph Consensus Algorithm you can check out [it’s whitepaper](http://www.leemon.com/papers/2016b.pdf). 
+[Hedera Hashgraph](https://hedera.com) is the only public network built on top of [Dr. Leemon Baird](http://www.leemon.com/)’s [Hashgraph consensus algorithm](http://www.leemon.com/papers/2016b.pdf). Hedera goes beyond blockchain to provide the fast, fair, and secure environment needed to enable enterprise adoption of distributed ledger technologies. You can learn more about Hedera by [reading the Hedera whitepaper](https://hedera.com/whitepaper), and for a more detailed understanding of the Hashgraph Consensus Algorithm you can check out the [hashgraph algorithm whitepaper](http://www.leemon.com/papers/2016b.pdf). 
 
 ## Purpose
 
@@ -14,7 +14,7 @@ The goal of HIPs is to have a place to propose new features, to collect communit
 
 There are two types of Hedera Improvement Proposals: 
 
-- A Standard HIP - describes any changes that affect most or all clients using or running Hedera Hashgraph, this can be a change to the network protocol, a transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hedera Hashgraph. Standard HIPs can be broken down into the following categories: 
+- A Standard HIP - describes any changes that affect most or all clients using or running Hedera Hashgraph, this can be a change to the network protocol, transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hedera Hashgraph. Standard HIPs can be broken down into the following categories: 
 
    - Core: This type of proposal includes improvements to the core Hedera Hashgraph protocol and services ([cryptocurrency](https://hedera.com/cryptocurrency), [smart contracts](https://hedera.com/smart-contracts), [file service](https://hedera.com/file-service), and [consensus service](https://hedera.com/consensus-service)). 
 
