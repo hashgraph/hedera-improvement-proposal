@@ -14,7 +14,7 @@ The goal of HIPs is to have a place to propose new features, to collect communit
 
 There are two types of Hedera Improvement Proposals: 
 
-- A Standard HIP - describes any changes that affect most or all clients using or running Hedera Hashgraph, this can be a change to the network protocol, a transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hedera Hashgraph. Standard HIPs can be broken down into the following categories: 
+- A Standard HIP - describes any changes that affect most or all clients using or running Hedera Hashgraph, this can be a change to the network protocol, transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hedera Hashgraph. Standard HIPs can be broken down into the following categories: 
 
    - Core: This type of proposal includes improvements to the core Hedera Hashgraph protocol and services ([cryptocurrency](https://hedera.com/cryptocurrency), [smart contracts](https://hedera.com/smart-contracts), [file service](https://hedera.com/file-service), and [consensus service](https://hedera.com/consensus-service)). 
 
