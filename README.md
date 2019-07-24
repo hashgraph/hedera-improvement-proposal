@@ -8,7 +8,7 @@ HIP stands for "Hedera Improvement Proposal". These improvement proposals can ra
 
 ## Purpose
 
-The goal of HIPs is to have a place to propose new features, to collect community thoughts and input on a particular issue, and further to document all these subject matters in one place. It’s a great way to document these discussions and proposals [here on GitHub](https://github.com/hashgraph/HIPs), because any [revisions made on these text files will be recorded](https://github.com/hashgraph/HIPs/commits/master). 
+The goal of HIPs is to have a place to propose new features, to collect community thoughts and input on a particular issue, and further to document all these subject matters in one place. It’s a great way to document these discussions and proposals [here on GitHub](https://github.com/hashgraph/hip), because any [revisions made on these text files will be recorded](https://github.com/hashgraph/hip/commits/master). 
 
 ## Types
 
@@ -41,9 +41,9 @@ Each HIP should only be one single key proposal and/or idea. The idea should be 
 4. Reevaluate your proposal to ensure sure the idea is applicable to the entire community and not just to one particular author, application, project, or protocol. 
 
 ##### Note 
-An excellent place to discuss your proposal and get feedback is in the [issues section of this repository](https://github.com/hashgraph/HIPs/issues), or on [hashgraph.org](https://hashgraph.org), a community forum dedicated to discussing hashgraph; there you can start formalizing the language around your HIP and ensuring it has broad community support. 
+An excellent place to discuss your proposal and get feedback is in the [issues section of this repository](https://github.com/hashgraph/hip/issues), or on [hashgraph.org](https://hashgraph.org), a community forum dedicated to discussing hashgraph; there you can start formalizing the language around your HIP and ensuring it has broad community support. 
 
-If you're still here and think you can suggest an improvement, please go ahead and [file an issue](https://github.com/hashgraph/HIPs/issues); we love contributions!
+If you're still here and think you can suggest an improvement, please go ahead and [file an issue](https://github.com/hashgraph/hip/issues); we love contributions!
 
 ## Workflow
 
