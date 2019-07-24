@@ -1,3 +1,5 @@
+![](https://www.hedera.com/logo-capital-hbar-stacked.jpg)
+
 ## What is a HIP? 
 
 HIP stands for "Hedera Improvement Proposal". These improvement proposals can range from core protocol changes, to the applications, frameworks, and protocols built on top of the Hedera public network and used by the community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions, as well as tracking their HIP through the process outlined below. 
