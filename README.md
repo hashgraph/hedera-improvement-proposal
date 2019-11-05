@@ -82,3 +82,8 @@ The status change of each HIP is requested by the HIP author and it is to be rev
 These improvement proposals are intended to be the community voice for changes, but the implementation of Hedera Hashgraph is left to the engineers working at Hedera, and decisions regarding the platform and codebase strategy or future roadmap are ultimately made by the Hedera Governing Council. At some point, Hedera may have their own improvement made separately from this community managed repository, and may make changes not outlined in an HIP. 
 
 These proposals and discussions have no effect regarding private (permissioned) implementations of the Hashgraph consensus algorithm; additionally, this repository and it’s contents are ran by the Hedera Hashgraph community, which means they do not necessarily reflect the views and opinions of Hedera Hashgraph LLC. 
+
+## License
+
+[Apache License 2.0](LICENSE)
+
