@@ -14,7 +14,7 @@ The goal of HIPs is to have a place to propose new features, to collect communit
 
 ## Types
 
-There are two types of Hedera Improvement Proposals: 
+There are three types of Hedera Improvement Proposals: 
 
 - A Standard HIP - describes any changes that affect most or all clients using or running Hedera Hashgraph, this can be a change to the network protocol, transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hedera Hashgraph. Standard HIPs can be broken down into the following categories: 
 
@@ -27,6 +27,8 @@ There are two types of Hedera Improvement Proposals:
    - HRC: This type of proposal is a Hedera “request for comment” - HIPs under this distinction require elaboration or commentary from the core Hedera team before recategorizing or moving forward with the proposal.
 
 - An Informational HIP - This type of proposal provides general guidelines or information to the Hedera Hashgraph community, but does not propose a new feature. Informational HIPs do not necessarily represent Hedera Hashgraph community consensus or recommendation, and so users are free to ignore Informational HIPs.
+
+- A Process HIP - This type of proposal includes any changes that affect the Hedera development process. Process HIPs are similar to Standard HIPs but modify tools and software beyond just the core Hedera Hashgraph protocol. Proposals of this category are typically more than simple recommendations, often requiring users to pay attention and make subsequent changes to additional software. Because of the impact in the Hedera development process, these proposals often require a community-based consensus. Examples include but are not limited to: developer guidelines, changes to an existing decision-making process, and changes to the tools or environment used in Hedera development.
 
 ## Qualifications
 
@@ -60,6 +62,8 @@ Parties involved in this process are often, but not always, you (the HIP author)
    3. Last Call 
 
    4. Accepted by the community 
+
+   > Note: steps 5 & 6 only apply to Standard HIPs requiring core protocol changes, and therefore Governing Council approval.
 
    5. Proposed to the HGC
 
