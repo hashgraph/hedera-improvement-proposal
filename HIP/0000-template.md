@@ -2,8 +2,8 @@
 Title: <HIP title>
 Authors: <John Doe (john.doe@company.com), @githubuser29>
 Status: <Work in Progress, Draft, Last Call, Accepted by the community, Proposed to the HGC, Accepted by the HGC, Final, Deferred, Rejected, Superseded>
-Type: <Standard Track | Informational | Process>
-Category (*only required for Standard Track): <Core | Interface | Economics | HRC>
+Type: <Standard Track | HRC | Informational | Process>
+Category (*only required for Standard Track): <Core | Interface | Economics>
 Created: <date created on, in (yyyy-mm-dd) format>
 Updated: <any dates this has been altered, in (yyyy-mm-dd) format>
 Requires (*optional): <HIP number(s) or title(s)>

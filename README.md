@@ -14,7 +14,7 @@ The goal of HIPs is to have a place to propose new features, to collect communit
 
 ## Types
 
-There are three types of Hedera Improvement Proposals: 
+There are four types of Hedera Improvement Proposals: 
 
 - A Standard HIP - describes any changes that affect most or all clients using or running Hedera Hashgraph, this can be a change to the network protocol, transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hedera Hashgraph. Standard HIPs can be broken down into the following categories: 
 
@@ -24,7 +24,7 @@ There are three types of Hedera Improvement Proposals:
 
    - Economics: This type of proposal includes improvements to the Hedera fee structure, token distribution, proof-of-stake, and other areas relating to the economics of Hedera. 
 
-   - HRC: This type of proposal is a Hedera “request for comment” - HIPs under this distinction require elaboration or commentary from the core Hedera team before recategorizing or moving forward with the proposal.
+- An HRC - This type of proposal is a Hedera “request for comment” - HIPs under this distinction require elaboration or commentary from the core Hedera team beforse recategorizing or moving forward with the proposal.
 
 - An Informational HIP - This type of proposal provides general guidelines or information to the Hedera Hashgraph community, but does not propose a new feature. Informational HIPs do not necessarily represent Hedera Hashgraph community consensus or recommendation, and so users are free to ignore Informational HIPs.
 
