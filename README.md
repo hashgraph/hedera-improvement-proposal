@@ -14,7 +14,7 @@ The goal of HIPs is to have a place to propose new features, to collect communit
 
 ## Types
 
-There are two types of Hedera Improvement Proposals: 
+There are four types of Hedera Improvement Proposals: 
 
 - A Standard HIP - describes any changes that affect most or all clients using or running Hedera Hashgraph, this can be a change to the network protocol, transaction validity rules, proposed application standards/conventions, or any changes or addition that affects the interoperability of applications using Hedera Hashgraph. Standard HIPs can be broken down into the following categories: 
 
@@ -24,9 +24,11 @@ There are two types of Hedera Improvement Proposals:
 
    - Economics: This type of proposal includes improvements to the Hedera fee structure, token distribution, proof-of-stake, and other areas relating to the economics of Hedera. 
 
-   - HRC: This type of proposal is a Hedera “request for comment” - HIPs under this distinction require elaboration or commentary from the core Hedera team before recategorizing or moving forward with the proposal.
+- An HRC - This type of proposal is a Hedera “request for comment” - HIPs under this distinction require elaboration or commentary from the core Hedera team before recategorizing or moving forward with the proposal.
 
 - An Informational HIP - This type of proposal provides general guidelines or information to the Hedera Hashgraph community, but does not propose a new feature. Informational HIPs do not necessarily represent Hedera Hashgraph community consensus or recommendation, and so users are free to ignore Informational HIPs.
+
+- A Process HIP - This type of proposal includes any changes that affect the Hedera development process. Process HIPs are similar to Standard HIPs but modify tools and software beyond just the core Hedera Hashgraph protocol. Proposals of this category are typically more than simple recommendations, often requiring users to pay attention and make subsequent changes to additional software. Because of the impact in the Hedera development process, these proposals often require a community-based consensus. Examples include but are not limited to: developer guidelines, changes to an existing decision-making process, and changes to the tools or environment used in Hedera development.
 
 ## Qualifications
 
@@ -61,6 +63,8 @@ Parties involved in this process are often, but not always, you (the HIP author)
 
    4. Accepted by the community 
 
+   > Note: steps 5 & 6 only apply to Standard HIPs requiring core protocol changes, and therefore Governing Council approval.
+
    5. Proposed to the HGC
 
    6. Accepted by the HGC
@@ -81,4 +85,4 @@ The status change of each HIP is requested by the HIP author and it is to be rev
 
 These improvement proposals are intended to be the community voice for changes, but the implementation of Hedera Hashgraph is left to the engineers working at Hedera, and decisions regarding the platform and codebase strategy or future roadmap are ultimately made by the Hedera Governing Council. At some point, Hedera may have their own improvement made separately from this community managed repository, and may make changes not outlined in an HIP. 
 
-These proposals and discussions have no effect regarding private (permissioned) implementations of the Hashgraph consensus algorithm; additionally, this repository and it’s contents are ran by the Hedera Hashgraph community, which means they do not necessarily reflect the views and opinions of Hedera Hashgraph LLC. 
+These proposals and discussions have no effect regarding private (permissioned) implementations of the Hashgraph consensus algorithm; additionally, this repository and it’s contents are run by the Hedera Hashgraph community, which means they do not necessarily reflect the views and opinions of Hedera Hashgraph LLC. 
