@@ -45,7 +45,7 @@ Each HIP should only be one single key proposal and/or idea. The idea should be 
 4. Reevaluate your proposal to ensure sure the idea is applicable to the entire community and not just to one particular author, application, project, or protocol. 
 
 ##### Note 
-An excellent place to discuss your proposal and get feedback is in the [issues section of this repository](https://github.com/hashgraph/hip/issues), or on [hashgraph.org](https://hashgraph.org), a community forum dedicated to discussing hashgraph; there you can start formalizing the language around your HIP and ensuring it has broad community support. 
+An excellent place to discuss your proposal and get feedback is in the [issues section of this repository](https://github.com/hashgraph/hip/issues).
 
 If you're still here and think you can suggest an improvement, please go ahead and [file an issue](https://github.com/hashgraph/hip/issues); we love contributions!
 
