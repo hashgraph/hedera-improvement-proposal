@@ -1,5 +1,5 @@
 ---
-hip: tbd
+hip: 1
 title: Hedera Improvement Proposal Process
 author: Ken Anderson (@kenthejr)
 type: Process
