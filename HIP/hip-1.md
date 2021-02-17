@@ -117,7 +117,7 @@ HIPs can also be superseded by a different HIP, rendering the original obsolete.
 
 The possible paths of the status of HIPs are as follows:
 
-![HIP States](../assets/hip-0000-hip-process/hip-states.jpg)
+![HIP States](../assets/hip-1/hip-states.jpg)
 
 Some Informational or Process HIPs may also have a status of “Active” if they are never meant to be completed. An active HIP may be made "Inactive" or "Replaced" by another HIP.
 
