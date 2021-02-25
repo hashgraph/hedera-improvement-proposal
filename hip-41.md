@@ -1,5 +1,5 @@
 ---
-hip: 0000
+hip: 41
 title: NFT Metadata JSON Schema
 author: Sam Wood sam.wood@luthersystems.com, Susan Chan susan.chan@luthersystems.com, Stephanie Yi stephanie.yi@luthersystems.com, Khoa Luong khoa.luong@luthersystems.com
 type: Standards Track
@@ -114,4 +114,4 @@ This proposal uses the HTS "name" field to specify the URI for token metadata. A
 
 ## Copyright/license
 
-Apache License, Version 2.0
+Each new HIP must be placed under the Apache License, Version 2.0 -- see [LICENSE](LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
