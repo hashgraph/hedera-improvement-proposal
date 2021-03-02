@@ -1,5 +1,5 @@
 ---
-hip: 41
+hip: 10
 title: NFT Metadata JSON Schema
 author: Sam Wood sam.wood@luthersystems.com, Susan Chan susan.chan@luthersystems.com, Stephanie Yi stephanie.yi@luthersystems.com, Khoa Luong khoa.luong@luthersystems.com
 type: Standards Track
