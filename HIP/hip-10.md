@@ -7,7 +7,7 @@ category: Application
 status: Draft
 created: 2020-2-18
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/40
-updated:
+updated: 2020-3-04
 requires:
 replaces:
 superseded-by:
@@ -33,16 +33,16 @@ The specific "NFT Metadata JSON Schema" is chosen to make the implementation eas
 The specifiation is based on [0] which has served the Ethereum community well.
 A familiar standard adpated for HTS could accelerate the implementation and adoption of HTS NFTs.
 
-The choice for using the token "name" field to represent the URI that serves the metadata is primarily because the metadata standard includes a "name" field. See the "Open Issues" section for alternative choices.
+The choice for using the token "memo" field to represent the URI that serves the metadata is primarily because the intention of the memo is exactly for token metadata.
 
 ## Specification
 
 The exact method for implementing an NFT on HTS is outside the scope of this specificaiton. See [3] for an example.
 
-NFTs optionally specify a URI in the token "name" attribute.
+NFTs optionally specify a URI in the token "memo" attribute.
 This URI MAY link to data on the Hedera File Service, IPFS, a DID, AWS, or any other URI the issuer specifies.
 This URI references token metadata that MUST conform to the "NFT Metadat JSON Schema".
-This allows your NFTs to be interrogated for its name and for details about the assets which your NFTs represent.
+This allows your NFTs to be interrogated for its details about the assets which your NFTs represent.
 
 This is the "NFT Metadata JSON Schema" referenced above.
 
@@ -83,7 +83,8 @@ Wallet and token explorer implementations interrogate HTS tokens using this stan
 
 ## Reference Implementation
 
-See token 0.0.365571 [4] which is a NFT deployed on the testnet that conforms to this specification.
+See token 0.0.399542 [4] which is a NFT deployed on the testnet that conforms to this specification.
+
 
 Where the endpoint `https://dev.luthersystemsapp.com/nft-test.json` serves:
 
@@ -98,11 +99,11 @@ $ curl -s https://dev.luthersystemsapp.com/nft-test.json | jq ''
 
 ## Rejected Ideas
 
-N/A
+This proposal uses the HTS "memo" field to specify the URI for token metadata. Alternatives included the token "name" or "symbol" field or transaction "memo" field. Note that symbol is used to represent HTS metadata in [3].
 
 ## Open Issues
 
-This proposal uses the HTS "name" field to specify the URI for token metadata. Alternatives include the token "symbol" field or transaction "memo" field. Note that symbol is used to represent HTS metadata in [3].
+N/A
 
 ## References
 
@@ -110,7 +111,7 @@ This proposal uses the HTS "name" field to specify the URI for token metadata. A
 [1] https://opensea.io/
 [2] https://dcentwallet.com/
 [3] https://github.com/hashgraph/hedera-hts-demo/pull/4
-[4] https://explorer.kabuto.sh/testnet/id/0.0.365571
+[4] https://explorer.kabuto.sh/testnet/id/0.0.399542
 
 ## Copyright/license
 
