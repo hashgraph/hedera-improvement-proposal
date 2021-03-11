@@ -1,5 +1,5 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 11
 title: A Layer-2 Smart Contract Network using Hedera
 author: Bryce Doganer (@BryceDoganer), Lucas Henning (@lucashenning)
 type: Standard Track
@@ -127,5 +127,5 @@ N/A
 N/A
 
 ## Copyright/license
-Apache License, Version 2.0 - see https://www.apache.org/licenses/LICENSE-2.0
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
  
