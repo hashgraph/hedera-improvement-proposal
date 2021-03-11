@@ -146,7 +146,8 @@ Where the endpoint `https://dev.luthersystemsapp.com/nft-test-en.json` serves:
 ```
 
 Endpoint `https://dev.luthersystemsapp.com/nft-test-es.json` serves:
-``
+
+```
 {
   "name": "Obra De Arte De Chloe",
   "description": "Chloe busca un token de prueba de obra de arte ligera"
@@ -154,6 +155,7 @@ Endpoint `https://dev.luthersystemsapp.com/nft-test-es.json` serves:
 ```
 
 Endpoint `https://dev.luthersystemsapp.com/nft-test-fr.json` serves:
+
 ```
 {
   "name": "Oeuvre de Chloé",
@@ -183,4 +185,4 @@ N/A
 
 ## Copyright/license
 
-Each new HIP must be placed under the Apache License, Version 2.0 -- see [LICENSE](LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
+Apache License, Version 2.0 -- see [LICENSE](LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
