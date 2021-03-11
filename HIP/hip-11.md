@@ -6,10 +6,7 @@ type: Standard Track
 category: Application
 status: Draft
 created: 2021-02-23
-updated: N/A
-requires: None
-replaces: None
-superseded-by: N/A
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/49
 ---
 
 ## Abstract
