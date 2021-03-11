@@ -1,16 +1,12 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 12
 title: Zero Knowledge Proofs
 author: Rahul Kothari - rahul.kothari.201@gmail.com
 type: Standards Track
 category: API
 status: Draft
 created: 2021-03-06
-discussions-to: <a URL pointing to the official discussion thread>
-updated: 
-requires: 
-replaces: 
-superseded-by: 
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/52
 ---
 
 ## Abstract
@@ -95,4 +91,4 @@ N/A
 * https://github.com/arkworks-rs
 
 ## Copyright/license
-Apache License, Version 2.0 -- see [LICENSE](LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
