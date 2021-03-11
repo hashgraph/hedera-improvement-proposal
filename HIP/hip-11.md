@@ -1,6 +1,6 @@
 ---
 hip: 11
-title: A Layer-2 Smart Contract Network using Hedera
+title: Layer-2 Smart Contract Network
 author: Bryce Doganer (@BryceDoganer), Lucas Henning (@lucashenning)
 type: Standard Track
 category: Application
