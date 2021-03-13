@@ -17,7 +17,7 @@ superseded-by:
 
 The Public Key Infrastructure(PKI) of today is highly centralised with a handful of certificate authorities(CAs) being responsible to validate digital identities(such as domains) by vouching for public keys associated with said identities. This system if highly vulnerable as if any one of the existing list of trusted CAs is compromised so is the entire security of the internet. One solution to this is DNS-based Authentication of Named Entities(DANE) which enables domain owners to store a TSLA record in the Domain Name System(DNS) that defines a contract for how clients can trust a public key is in fact owned by said domain before proceeding to establish a TLS connection. However DANE relies on DNSSEC which relies on a chain of trust akin to that in existing CA PKI as previously mentioned hence is susceptible to similar attacks.
 
-By moving DNS(/w DANE enabled) onto a secure decentralised network such as Hedera security issues resulting from the chain of trust in existing systems are mitigated and if widely adopted would render all existing CAs, DNS stakeholders(ICANN, domain registrars) obsolete.
+By moving DNS(w/ DANE enabled) onto a secure decentralised network such as Hedera security issues resulting from the chain of trust in existing systems are mitigated and if widely adopted would render all existing CAs, DNS stakeholders(ICANN, domain registrars) obsolete.
 
 ## Motivation
 
@@ -80,6 +80,7 @@ N/A
 
 DANE: https://tools.ietf.org/html/rfc7671
 Handshake: https://handshake.org/files/handshake.txt
+Namebase: https://www.namebase.io/
 DPKI: https://danubetech.com/download/dpki.pdf
 Namecoin Whitepapers: https://www.namecoin.org/resources/whitepaper/
 ENS: https://docs.ens.domains/
