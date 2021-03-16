@@ -1,5 +1,5 @@
 ---
-hip: 14
+hip: 13
 title: Hedera Name Service
 author: H. Bart - hbart.lit@gmail.com
 type: Standards Track
