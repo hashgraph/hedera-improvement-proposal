@@ -1,12 +1,12 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 14
 title: Hedera Name Service
 author: H. Bart - hbart.lit@gmail.com
 type: Standards Track
 category: Service
 status: Draft
 created: 2021-03-13
-discussions-to: <a URL pointing to the official discussion thread>
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/56
 updated:
 requires:
 replaces:
@@ -89,4 +89,4 @@ Polkadot Parachain Slots Candle Auctions: https://wiki.polkadot.network/docs/en/
 
 ## Copyright/license
 
-Each new HIP must be placed under the Apache License, Version 2.0 -- see [LICENSE](LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
