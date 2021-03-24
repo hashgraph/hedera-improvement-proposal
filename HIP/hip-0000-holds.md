@@ -45,9 +45,9 @@ The rationale behind this HIP is to address the mentioned use cases, and to prom
 
 It's key for the hold, that there is no intermediate accounts, or counterparty risk. Funds will be always stay at sender part or will be transfered to receiver. The hold concept is distinguishing between totalBalance, and available balance.
 
-totalbalance = available + held balance
-available = fully unrestricted usage
-held = linked to a pending execution, use case trigger
+* totalbalance = available + held balance
+* available = fully unrestricted usage
+* held = linked to a pending execution, use case trigger
 
 ## Specification
 
