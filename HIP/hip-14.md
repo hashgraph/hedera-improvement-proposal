@@ -1,41 +1,39 @@
 ---
-hip:
-title: Holds
+hip: 14
+title: Hold
 author: Fernando Paris - fer@io.builders (@ferparishuertas)
 type: Standard Track
-category: Core
+category: Service
 status: Draft
 created: 2021-03-24
-discussions-to: TBA
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/59
 ---
 
 ## Abstract
 
-This HIP defines and discusses a way to create a mechanism, that allows tokens to be put on hold. This guarantees a future transfer and makes the held tokens unavailable for transfer in the mean time. Holds are similar to escrows in that are firm and lead to final settlement.
+This HIP defines a mechanism to put tokens on hold. This guarantees a future transfer and makes the held tokens unavailable for transfer in the meantime. Holds are similar to escrows in that they are firm and lead to final settlement.
 
 ## Motivation
 
-A hold has to be used in different scenarios where a immediate transfer between accounts is not possible or has to be guaranteed beforehand:
+A hold has to be used in different scenarios where an immediate transfer between accounts is not possible or has to be guaranteed beforehand:
 
-* A regulated token may not allow to do a token transfer between accounts without verifying first, that it follows all the regulations. In this case a clearable transfer has to be used. During the clearing process a hold is created to ensure, that the transfer is successful after all checks have passed. If the transfer violates any of the regulations, it is cleared and not further processed.
+* A regulated token may not allow a token transfer between accounts without verifying that it follows relevant regulations first. In this case a clearable transfer has to be used. During the clearing process a hold is created to ensure that the transfer is successful after all checks have passed. If the transfer violates any of the regulations, it is cleared and not further processed.
 
-* In certain business situations a payment has to be guaranteed before its services can be used. For example: When checking in a hotel, the hotel will put a hold on the guest’s account to ensure that enough balance is available to pay for the room before handing over the keys.
+* In certain business situations a payment has to be guaranteed before its services can be used. For example, when checking into a hotel, the hotel will put a hold on the guest’s account to ensure that enough balance is available to pay for the room before handing over the keys.
 
-* In other occasions a payment has to be guaranteed without knowing the exact amount beforehand. To stay with the hotel example: The hotel can put a hold on the guest’s account as a guarantee for any possible extras, like room service. When the guest checks out the hold is partially executed and the remaining amount is available again on the guest’s account.
+* On other occasions a payment has to be guaranteed without knowing the exact amount beforehand. To stay with the hotel example, the hotel can put a hold on the guest’s account as a guarantee for any possible extras like room service. When the guest checks out, the hold is partially executed and the remaining amount is released to the guest’s account.
 
-There are many use-cases that can benefit from the possibility of holding tokens, like.
+There are many use-cases that can benefit from the possibility of holding tokens, like:
 
-* Allow sent or received amounts over the sendRecordThreshold, receiveRecordThreshold ( Deprecated) to be to able to allowed by receiver or sender, on a given point of time, having enough funds when triggered.
+* Allow sent or received amounts over the sendRecordThreshold or receiveRecordThreshold ( Deprecated) to be allowed by receiver or sender, at a given point of time, having enough funds when triggered.
 
-* Auctions, crowdfunding and group investments (NFT co-investing), being able to ensure that once target amount, auction time  has been reached, the amount is available at buyer/investor side.
+* Auctions, crowdfunding, and group investments (NFT co-investing) to ensure that, once a target amount and auction time has been reached, the amount is available at buyer/investor side.
 
-* Decentralized escrows, payment workflows, contractual linked settlements, without having an intermediary or holding entity, enabling at protocol level, with basic  building blocks, a wide range of payment workflows, with infinite possibilities at Appnet level.
-
-
+* Decentralized escrows, payment workflows, contractual linked settlements without having an intermediary or holding entity. This enables, with basic  building blocks at protocol level, a wide range of payment workflows.
 
 ## Rationale
 
-The rationale behind this HIP is to address the mentioned use cases, and to promote the extension of the core HBAR and HTS functionality, enabling the holds functionality. The goal of the holds HIP are:  
+The rationale behind this HIP is to address the mentioned use cases, and to promote the extension of the core HBAR and HTS functionality, enabling the _Hold_ functionality. The goals of the _Hold_ HIP are:  
 
 1. Launch a proposal for a new functionality that is real need, can be solved at protocol level, enabling Appnets to create a variety of new business cases.
 
@@ -45,13 +43,13 @@ The rationale behind this HIP is to address the mentioned use cases, and to prom
 
 4. Define an alignment path between holds and scheduled transaction.
 
-Simple signatures or multisig scenarios, and expiration times , brings a very close connection to scheduled transactions. A basic abstraction could be that a hold is a held balance, with a linked scheduled transaction.
+Simple signatures or multi-sig and expiration times bring a very close connection to scheduled transactions. A basic abstraction could be that a hold is a held balance with a linked scheduled transaction.
 
-It's key for the hold, that there is no intermediate accounts, or counterparty risk. Funds will be always stay at sender part or will be transfered to receiver. The hold concept is distinguishing between totalBalance, and available balance.
+It's key for the _hold_ that there are no intermediate accounts or counterparty risk. Funds will always stay with the sender or transfered to receiver. For _holds_, we must distinguish between totalBalance and available balance.
 
 * totalbalance = available + held balance
 * available = fully unrestricted usage
-* held = linked to a pending execution, use case trigger
+* held = linked to a pending execution (use case trigger)
 
 ## Specification
 
@@ -63,22 +61,19 @@ A draft specification could be:
 An account which has been approved by an account to create holds on its behalf.
 
 #### Hold issuer
-The account(s)(multiple source payments), which creates a hold. This can be the account owner itself, or any account, which has been approved as an operator for the account.
+The account(s) (multiple source payments), that creates a hold. This can be the account owner itself, or any account, which has been approved as an operator for the account.
 
 #### Trigger signature
-The account, multi or threshold key which decides if a hold should be executed, or released. It could be a consequence of signing a document, oracle, etc... whatever could be envisiones as de execution triggger.
+The account, key list, or threshold key which decides if a hold should be executed or released.
 
 #### Hold receiver
-The account(s) (multiple destination payments), which receives a held amount.
-
-
-
+The account(s) (multiple destination payments), that receives a held amount.
 
 ### Functions
 
 #### hold
 
-Creates a hold on behalf of the account(s) in favor of the payee. It specifies a trigger signature who is responsible to either execute or release the hold. The function must revert if the operation ID has been used before. If holdOperatos is another accountm, it need to be allowed to issue holds on its behalf by calling `approveToHold`.
+Creates a hold on behalf of the account(s) in favor of the payee. It specifies a trigger signature that is responsible to either execute or release the hold. The function must revert if the operation ID has been used before. If `holdOperator` is another account, it needs to be allowed to issue holds on its behalf by calling `approveToHold`.
 
 | Parameter | Description |
 | ---------|-------------|
@@ -107,12 +102,12 @@ Executes a hold. Execute means that the specified value is transferred from the 
 
 #### renewHold
 
-Renews a hold. The new expiration time must be the block timestamp plus the given `timeToExpiration`, independently if the hold was perpetual or not before that. Furthermore a hold must be made perpetual if `timeToExpiration` is '0'. The implementation must verify that only the payer or operator are able to successfully call the function. Furthermore the only a hold, which has not yet expired can be successfully renewed.
+Renews a hold. The new expiration time must be the consensus timestamp plus the given `timeToExpiration`. A hold may be made perpetual by setting the `timeToExpiration` to '0'. The implementation must verify that only the payer or operator are able to successfully call the function. Only a hold that has not yet expired can be successfully renewed.
 
 | Parameter | Description |
 | ---------|-------------|
 | operationId | The unique ID to identify the hold |
-| timeToExpiration | The new duration until the hold is expired. |
+| timeToExpiration | The new duration until the hold is expired |
 
 #### retrieveHoldData
 
@@ -177,9 +172,7 @@ The standard implementation has to be changed in order to deduct the held balanc
 
 #### transfer
 
-The standard implementation  has to be changed in order to deduct the held balance from the global balance. Any amount that is held must not be transferred.
-
-
+The standard implementation has to be changed in order to deduct the held balance from the global balance. Any amount that is held must not be transferred.
 
 ### Events
 
@@ -249,9 +242,6 @@ Emitted when an operator has been revoked from creating holds on behalf of anoth
 | ---------|-------------|
 | operator | The address to be a operator of holds |
 | account | Address on which behalf holds could potentially be created |
-
-
-
 
 ## Backwards Compatibility
 N/A
