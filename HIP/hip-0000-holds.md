@@ -43,6 +43,10 @@ The rationale behind this HIP is to address the mentioned use cases, and to prom
 
 3. Envision an interaction with core functionalities and HTS service.
 
+4. Define an alignment path between holds and scheduled transaction.
+
+Simple signatures or multisig scenarios, and expiration times , brings a very close connection to scheduled transactions. A basic abstraction could be that a hold is a held balance, with a linked scheduled transaction.
+
 It's key for the hold, that there is no intermediate accounts, or counterparty risk. Funds will be always stay at sender part or will be transfered to receiver. The hold concept is distinguishing between totalBalance, and available balance.
 
 * totalbalance = available + held balance
@@ -66,6 +70,7 @@ The account, multi or threshold key which decides if a hold should be executed, 
 
 #### Hold receiver
 The account(s) (multiple destination payments), which receives a held amount.
+
 
 
 
