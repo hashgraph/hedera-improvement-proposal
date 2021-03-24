@@ -5,6 +5,7 @@ author: Ken Anderson (@kenthejr)
 type: Process
 status: Draft
 created: 2021-02-11
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
 ---
 
 ## What is a HIP?
