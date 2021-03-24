@@ -29,7 +29,7 @@ There are many use-cases that can benefit from the possibility of holding tokens
 
 * Auctions, crowdfunding and group investments (NFT co-investing), being able to ensure that once target amount, auction time  has been reached, the amount is available at buyer/investor side.
 
-* Decentralized escrows, payment workflows, contractual linked settelments, without having an intermediary or holding entity, enabling at protocol level, with basic  building blocks, a wide range of payment workflows, with infinite possibilities at Appnet level.
+* Decentralized escrows, payment workflows, contractual linked settlements, without having an intermediary or holding entity, enabling at protocol level, with basic  building blocks, a wide range of payment workflows, with infinite possibilities at Appnet level.
 
 
 
