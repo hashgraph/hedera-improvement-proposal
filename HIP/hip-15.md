@@ -1,5 +1,5 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 15
 title: Address Checksum
 author: Leemon Baird (@lbaird)
 type: Standards Track
