@@ -4,7 +4,7 @@ title: Hedera <-> Ethereum Bridge
 author: Daniel Ivanov (@Daniel-K-Ivanov)
 type: Application
 status: Draft
-created: 2020-03-30
+created: 2021-03-30
 discussions-to: TODO
 ---
 
