@@ -31,10 +31,12 @@ HCS topics are used for publishing authorisation signatures by the validators. T
 
 ## Specification
 
-### Actors
+### Terminology
 - **Users** - end-users that want to transfer HBARs or HTS tokens from Hedera to Ethereum or Wrapped HBARs and Wrapped Tokens from Ethereum to Hedera
 - **Token Developers** - the developers of HTS tokens
 - **Validators** - parties/entities that are running the Validator node. They are providing authorisation for the minting and burning of wrapped tokens on Ethereum as-well as transferring wrapped tokens back to Hedera.
+- **WHBAR** - ERC20 token issued and operated by Bridge validators. The token represents "wrapped" hbars on Ethereum. In other words we can say that Hbar is the `native` asset and `WHBAR` is the `non-native` asset.
+- **WHTS** - ERC20 token issued and operated by Bridge validators. The token represents "wrapped" HTS token on Ethereum. In this case, `HTS` token is a `native` one and `WHTS` token is `non-native`.
 
 ### Governance
 There are 2 setups for both of the Networks. On one side, there are 2 Hedera Bridge Accounts which are `n/m` threshold acccounts. Each validator has a Hedera compatible private key - 1 out of `m` that has `1/m` controll over those threshold accounts.
@@ -118,6 +120,7 @@ There are 2 types of costs for validators:
 Validators are required to run one container image for the validating node and a `postgres` database. Both of them can run on a VM with `2vCPUs` and `4GB RAM`
 
 #### Transaction Costs
+Validators are required to hold `Hbars` in order to pay for their Hedera transactions.
 
 Hedera to Ethereum transfers require the following transactions per validator:
  - 1x`ScheduleCreate` -> transfer of fees (`n-1` will fail, one will be successful)
