@@ -61,7 +61,9 @@ For example transferring 100 HBARs from Hedera to Ethereum (WHBARs) is going to 
 ### Transferring HBAR/HTS from Hedera to Ethereum
 
 The transfer of assets from Hedera to Ethereum is described in the following sequence diagram.
-// TODO sequence diagram here
+<p align="center">
+  <img src="../assets/hip-0000-bridge/hedera-to-ethereum.png">
+</p>
 
 #### Steps
 1. **Initiating the transfer**
@@ -91,7 +93,9 @@ The smart contract verifies that no reply attack is being executed (by checking 
 
 The transfer of assets from Ethereum to Hedera is described in the following sequence diagram.
 
-// TODO sequence diagram here
+<p align="center">
+  <img src="../assets/hip-0000-bridge/ethereum-to-hedera.png">
+</p>
 
 #### Steps
 1. **Initiating the Transfer**
