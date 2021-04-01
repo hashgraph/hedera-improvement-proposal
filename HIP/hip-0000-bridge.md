@@ -1,7 +1,7 @@
 ---
 hip: 0000
 title: Hedera <-> Ethereum Bridge
-author: Daniel Ivanov (@Daniel-K-Ivanov)
+authors: Daniel Ivanov (@Daniel-K-Ivanov)
 type: Application
 status: Draft
 created: 2021-03-30
@@ -42,7 +42,7 @@ HCS topics are used for publishing authorisation signatures by the validators. T
 There are 2 setups for both of the Networks. On one side, there are 2 Hedera Bridge Accounts which are `n/m` threshold acccounts. Each validator has a Hedera compatible private key - 1 out of `m` that has `1/m` control over those threshold accounts.
 From now on, we will refer to them as `Bridge` and `Fee` accounts.
 
-The setup on Ethereum would be the same - [Gnosis MultiSig](https://github.com/gnosis/MultiSigWallet) is to be used with the same `n/m` threshold configuration. Each validator has an Ethereum compatible private key - 1 out of `m` that as `1/m` control over the threshold account.
+The setup on Ethereum would be the same - [Gnosis MultiSig](https://github.com/gnosis/safe-contracts) is to be used with the same `n/m` threshold configuration. Each validator has an Ethereum compatible private key - 1 out of `m` that as `1/m` control over the threshold account.
 The Gnosis Multisig is configured as owner of:
 - Wrapped tokens deployed on Ethereum (f.e WHBAR / WHTS tokens)
 - The Router  smart contract
