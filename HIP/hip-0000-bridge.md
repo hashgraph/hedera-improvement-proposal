@@ -17,7 +17,7 @@ The HIP defines an application network run by set of parties in order to facilia
 
 With the recent release of HTS and the growing growth in the Ethereum ecosystem, it seems that a Bridge Network between Hedera and Ethereum will be highly beneficial to the community. The current value stored on Hedera (HBAR/HTS) would become available on Ethereum.
 
-On the other hand, tokens on Ethereum can be transferred to Hedera to utilise the high-troughput and low-fees that the network provides. The effect will be net positive for both Hedera and Ethereum native assets and their communities.
+On the other hand, tokens on Ethereum can be transferred to Hedera to utilise the high-throughput and low-fees that the network provides. The effect will be net positive for both Hedera and Ethereum native assets and their communities.
 
 Bridges are inherently untrusted, since there are no efficient and completely trustless setups. In one way or another, users must have trust assumptions on the entities/parties operating the Bridge. 
 
@@ -27,7 +27,7 @@ The best way to successfully integrate a bridge network would be through the com
 
 The level of decentralisation in a bridge network is highly important. In the specification described below we have tailored our trade-offs so that we are achieving maximum decentralisation possible. Bridge operators (validators) have a setup on both Ethereum and Hedera networks. On Hedera, a threshold account with `n / m` signatures is to be used and on Ethereum, the set of validators are defined in a `Router` smart contract that requires supermajority for a given `mint` operation, that is more than 50% of the validators to authorise the operation.
 
-HCS topics are used for publishing authorisation signatures by the validators. This way anyone is able to trustlessly audit the authorisation messages used to mint wrapped tokens on Ethereum. This mechanism provides full transperancy and auditability on the bridge operations.
+HCS topics are used for publishing authorisation signatures by the validators. This way anyone is able to trustlessly audit the authorisation messages used to mint wrapped tokens on Ethereum. This mechanism provides full transparency and auditability on the bridge operations.
 
 ## Specification
 
@@ -42,7 +42,7 @@ HCS topics are used for publishing authorisation signatures by the validators. T
 There are 2 setups for both of the Networks. On one side, there are 2 Hedera Bridge Accounts which are `n/m` threshold acccounts. Each validator has a Hedera compatible private key - 1 out of `m` that has `1/m` control over those threshold accounts.
 From now on, we will refer to them as `Bridge` and `Fee` accounts.
 
-The setup on Ethereum would be the same - Gnosis MultiSig is to be used with the same `n/m` threshold configuration. Each validator has an Ethereum compatible private key - 1 out of `m` that as `1/m` control over the threshold account.
+The setup on Ethereum would be the same - [Gnosis MultiSig](https://github.com/gnosis/MultiSigWallet) is to be used with the same `n/m` threshold configuration. Each validator has an Ethereum compatible private key - 1 out of `m` that as `1/m` control over the threshold account.
 The Gnosis Multisig is configured as owner of:
 - Wrapped tokens deployed on Ethereum (f.e WHBAR / WHTS tokens)
 - The Router  smart contract
@@ -149,10 +149,10 @@ Calculating the fees per validator per Ethereum to Hedera transfer:
 ## Security Implications
 
 
-## Hot to Teach This
+## How to Teach This
 
 
-## Refernce Implementation
+## Reference Implementation
 
 
 ## Rejected Ideas
