@@ -55,9 +55,9 @@ An expired entity will still have a grace period before it is removed. During th
 
 If an entity was marked as deleted, then it cannot have its expiration time extended. Neither an update transaction nor an autorenew will be able to extend it.
 
-Hedera Services will generate an [autorenewal-record](https://github.com/hashgraph/hedera-services/blob/autorenew-document/docs/autorenew-feature.md#autorenewal-record)
+Hedera Services will generate an [autorenewal-record](https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#autorenewal-record)
 for the action on each entity that is automatically renewed. Hedera Services will generate an
-[entity-removal-record](https://github.com/hashgraph/hedera-services/blob/autorenew-document/docs/autorenew-feature.md#entity-removal-record)
+[entity-removal-record](https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#entity-removal-record)
 for the action on each entity that is automatically removed.
 
 Crypto accounts will be prioritized for implementation of the autorenewal feature, followed by consensus topics, tokens and smart contracts. Schedule entities
@@ -101,9 +101,9 @@ The proposed pricing is as follows (assumes maxDuration as of April 6, 2020 and 
 - "ContractAutoRenew": $0.064
 - "FileAutoRenew": $0.0014
 
-https://github.com/hashgraph/hedera-services/blob/autorenew-document/docs/autorenew-feature.md#autorenewal-record
+https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#autorenewal-record
 
-https://github.com/hashgraph/hedera-services/blob/autorenew-document/docs/autorenew-feature.md#entity-removal-record
+https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#entity-removal-record
 
 ## Rejected Ideas
 
