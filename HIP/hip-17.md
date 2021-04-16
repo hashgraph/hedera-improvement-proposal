@@ -31,7 +31,7 @@ Obviously this feature needs the highest level of functionality on wallets that 
 
 ## Backwards Compatibility
 
-There should be a failsafe for when an DSA holder needs to transfer the wallet to a different wallet that the holder owns for whatever reason.  This can be done by negating any fee when the DSA is sent back to the original issuer (or perhaps just validator node operator).  This can be done by the DSA holder getting in touch with the [chosen] responsible party, explaining the situation and kindly ask them to forward the DSA to the desired address once the responsible party receives it.  A side benefit of this is: should the issuer want to reclaim the asset, they would not have to pay the specified fee that would just rebound to their wallet.
+There should be a failsafe for when a DSA holder needs to transfer the wallet to a different wallet that the holder owns for whatever reason.  This can be done by negating any fee when the DSA is sent back to the original issuer (or perhaps just validator node operator).  This can be done by the DSA holder getting in touch with the [chosen] responsible party, explaining the situation and kindly ask them to forward the DSA to the desired address once the responsible party receives it.  A side benefit of this is: should the issuer want to reclaim the asset, they would not have to pay the specified fee that would just rebound to their wallet.
 
 ## Security Implications
 
@@ -55,4 +55,4 @@ The code and implementation
 
 ## Copyright/license
 
-No copyright/license, you Hedera can just have this idea.  Happy to take part in an open source endeavor. 🤙
+No copyright/license, the Hedera community can just have this idea.  Happy to take part in an open source endeavor. 🤙
