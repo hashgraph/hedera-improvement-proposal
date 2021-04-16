@@ -15,7 +15,7 @@ A way to enable royalties on HBAR.
 
 ## Motivation
 
-The benefits of cryptographically secured at a core (or close to core level) royalty pipeline for DSAs should be self-evident.
+The benefits of cryptographically secured at a core (or close to core level) royalty pipeline for DSAs(Digitally Scarce Asset) should be self-evident.
 
 ## Rationale
 
