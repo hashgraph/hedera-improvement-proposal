@@ -23,7 +23,7 @@ Increase diversity of chain functionality
 
 ## Specification
 
-The ability to modify an asset so that a second gas fee may be tied to each time a non issuing asset is transferred.
+The ability to modify an asset so that a second gas fee may be tied to it each time a non issuing asset is transferred.
 Gas fee is a number set by the issuer, with the option for the gas price to increase by x% with a compound, no compound switch.
 This ability should have a lock or leave unlocked option like when changing the ipfs of main assets and subassets, with all data points able to be seen on chain.
 Obviously this feature needs the highest level of functionality on wallets that have the ability to issue DSAs.
