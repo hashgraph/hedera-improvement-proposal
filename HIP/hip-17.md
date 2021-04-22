@@ -14,13 +14,13 @@ The HIP defines the changes that must be applied in order for Hedera Services to
 
 ## Motivation
 
-The growing demand and use-cases for tokenisation point out that the current HTS design does not support all of the needs of the community. In this HIP we would like to describe a set of changes that would enable non-fungible types of tokens to be issues natively on Hedera Hashgraph. Having support for such tokens enable additional applications to be built on top of HTS.
+The growing demand and use-cases for tokenisation point out that the current HTS design does not support all of the needs of the community. In this HIP we would like to describe a set of changes that would enable non-fungible types of tokens to be issued natively on Hedera Hashgraph. Having support for such tokens will allow an extended range of applications to be built on top of HTS.
 
 ## Rationale
 
 Since developers desire the tokenization APIs to look similar for both fungible and non-fungible tokens, it is worth considering creating a single set of APIs that work for both.
 
-Though fungible and non-fungible tokens are different, there are a lot of commonalities - eg admin keys, KYC, supply, mint and burn behaviours. 
+Though fungible and non-fungible tokens are different, there are a lot of commonalities - admin keys, KYC, supply, mint and burn behaviours. 
 
 ## Specification
 
@@ -55,20 +55,20 @@ The NFT type is not interchangeable with other tokens of the same type as they t
 Each instance of a token in the class can share some property values with other tokens in the class and have distincly unique values between them. They cannot be divided into smaller fractions, represented as decimals.
 
 #### Fractional
-Similar to `Whole` in terms that each instance of a token in the class can share some property values with other tokens in the class and have distincly unique values between them, but compared to `Whole`, they CAN be divided into smaller fractions.
+Similar to `Whole`, in terms that each instance of a token in the class can share some property values with other tokens in the class and have distincly unique values between them, but compared to `Whole`, they CAN be divided into smaller fractions.
 
 #### Singleton
 There can only be one instance in the deployed token class and that instance is indivisible. Useful when there is an asset or object to be tokenized that shares no properties or values with any other object.
 
 ## HAPI Changes
 
-Described below are the set of changes that must be applied to the HTS API in order to support the described types above as-well as the additional operations and message types that should be added.
+Below are described the set of changes that must be applied to the current HTS API in order to support the described types above. New operations and message types are added as well.
 
 ### Legend
 
 ```diff
 + Green represents new property/message added
-! Orange represents modified property/message, that already existed
+! Orange represents modified property/message that already exists
 ```
 
 ### TokenCreateTransactionBody
@@ -231,7 +231,7 @@ message CryptoTransferTransactionBody {
 message TokenTransferList {
     TokenID token = 1; // The ID of the token
     repeated AccountAmount transfers = 2; // Multiple list of AccountAmounts, each of which has an account and amount
-+   uint54 serialNumber = 3; // The serial number of the NFT instance being transferred
++   uint64 serialNumber = 3; // The serial number of the NFT instance being transferred
 }
 ```
 
@@ -324,4 +324,3 @@ TODO
 
 ## Copyright
 This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
-
