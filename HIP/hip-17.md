@@ -1,5 +1,5 @@
 ---
-hip: 0000
+hip: 17
 title: HTS Non Fungible support
 author: Daniel Ivanov (@Daniel-K-Ivanov)
 type: Service
