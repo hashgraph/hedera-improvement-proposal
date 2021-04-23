@@ -71,6 +71,46 @@ Below are described the set of changes that must be applied to the current HTS A
 ! Orange represents modified property/message that already exists
 ```
 
+### TokenService
+The current proposal requires the addition of 2 new RPC endpoints to the existing `HTS` service - `getNftInfoQuery` and `getAccountNftInfoQuery`
+
+Other than adding new `rpc` calls, the following, already existing, operations must be modified: `createToken`, `mintToken`, `burnToken`, `wipeTokenAccount`, `getTokenInfo`
+
+```diff
+service TokenService {
+   // Creates a new Token by submitting the transaction
+   rpc createToken (Transaction) returns (TransactionResponse);
+   // Updates the account by submitting the transaction
+   rpc updateToken (Transaction) returns (TransactionResponse);
+   // Mints an amount of the token to the defined treasury account
+   rpc mintToken (Transaction) returns (TransactionResponse);
+   // Burns an amount of the token from the defined treasury account
+   rpc burnToken (Transaction) returns (TransactionResponse);
+   // Deletes a Token
+   rpc deleteToken (Transaction) returns (TransactionResponse);
+   // Wipes the provided amount of tokens from the specified Account ID
+   rpc wipeTokenAccount (Transaction) returns (TransactionResponse);
+   // Freezes the transfer of tokens to or from the specified Account ID
+   rpc freezeTokenAccount (Transaction) returns (TransactionResponse);
+   // Unfreezes the transfer of tokens to or from the specified Account ID
+   rpc unfreezeTokenAccount (Transaction) returns (TransactionResponse);
+   // Flags the provided Account ID as having gone through KYC
+   rpc grantKycToTokenAccount (Transaction) returns (TransactionResponse);
+   // Removes the KYC flag of the provided Account ID
+   rpc revokeKycFromTokenAccount (Transaction) returns (TransactionResponse);
+   // Associates tokens to an account
+   rpc associateTokens (Transaction) returns (TransactionResponse);
+   // Dissociates tokens from an account
+   rpc dissociateTokens (Transaction) returns (TransactionResponse);
+   // Retrieves the metadata of a token
+   rpc getTokenInfo (Query) returns (Response);
++  // Gets info on NFTs N through M on the list of NFTs associated with a given NftType
++  rpc getNftInfoQuery (Query) returns (Response);
++  // Gets info on NFTs N through M on the list of NFTs associated with a given account
++  rpc getAccountNftInfoQuery (Query) returns (Response);
+}
+```
+
 ### TokenCreateTransactionBody
 
 ```diff
@@ -109,55 +149,34 @@ message TokenAssociateTransactionBody {
 !   repeated TokenID tokens = 2; // The tokens to be associated with the provided account. In the case of NON_FUNGIBLE Type, once an account is associated, it can hold any number of NFTs (serial numbers) of that token type.
 }
 ```
-
 ### TokenMintTransactionBody
 
-Once created, an NFT cannot be updated, only transferred/wiped or burned.
+The property `amount` is to be deprecated and instead a new message `AmountOrMeta` to be used. 
+**Pros**
+- Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of minting operations
+
+**Cons**
+ - It is a breaking change
+
+Once created, an NFT instance cannot be updated, only transferred/wiped or burned.
 ```diff
-message TokenMintTransactionBody {
-    TokenID token = 1; // The token for which to mint tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
-!   uint64 amount = 2; // The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63. It is used to determine the supply of the NFT being minted for tokens with `NftType`. Depending on the value it can represent different types of NFTs Hybrid/Fractional/Whole or Singleton. If 1 is specified, the NFT instance created will be 1 out of 1, thus representing `singleton` If amount is 0, response code INVALID_AMOUNT should be returned. If amount is greater than 1, the NFT can be considred "Hybrid" based on the IWA specification
-+   bytes meta = 3; // The metadata for the given NFT instance that is being created. Ignored and not applicable for tokens of type `FUNGIBLE`
-}
-
-```
-### TokenBurnTransactionBody
-
-```diff
-+// List of serial numbers to be burned and the corresponding amounts
-+message SerialNumberAmount {
-+     uint serialNumber
-+     sint64 amount+
-+}
-
-+message AmountOrSerialNumbersList {
++message AmountOrMeta {
 +	oneof {
-+		amount = 3; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn
-+		Repeated SerialNumberAmount: 4; //Applicable to tokens of type NON_FUNGIBLE.
++		amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
++   	bytes meta = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
 +	}
 +}
 
-
-message TokenBurnTransactionBody {
-	TokenID token = 1; // The token for which to burn tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
-!	uint64 amount = 2; [deprecated=true] // The amount to burn from the Treasury Account. Amount must be a positive non-zero number, not bigger than the token balance of the treasury account (0; balance], represented in the lowest denomination.
-+	AmountOrSerialNumbersList= 3; // Defines the amount of serialnumbers to be burned
-}
-```
-
-### TokenWipeAccountTransactionBody
-
-```diff
-message TokenWipeAccountTransactionBody {
-	TokenID token = 1; // The token for which the account will be wiped. If token does not exist, transaction results in INVALID_TOKEN_ID
-	AccountID account = 2; // The account to be wiped
-!	uint64 amount = 3; [deprecated=true] // The amount of tokens to wipe from the specified account. Amount must be a positive non-zero number in the lowest denomination possible, not bigger than the token balance of the account (0; balance]
-+	AmountOrSerialNumbersList= 3; // Defines the amount of serialnumbers to be wiped
+message TokenMintTransactionBody {
+    TokenID token = 1; // The token for which to mint tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
+!   uint64 amount = 2; [deprecated=true] // The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63.
++	AmountOrMeta amountOrMeta = 3;
 }
 
 ```
 
 ### TransactionReceipt
+The transaction receipt is to be updated with a new field `serialNumber` used to represent the newly created NFT instance.
 
 ```diff
 message TransactionReceipt {
@@ -191,7 +210,51 @@ message TransactionReceipt {
 }
 ```
 
+### TokenBurnTransactionBody
+The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used. 
+**Pros**
+- Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of burn operations
+
+**Cons**
+ - It is a breaking change
+
+All serial numbers specified must be owned by the Treasury account in order for them to be burned successfully.
+```diff
++message AmountOrSerialNumbers {
++	oneof {
++		amount = 1; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn
++		repeated uint64 serialNumbers=2; //Applicable to tokens of type NON_FUNGIBLE. The list of serial numbers to be burned/wiped.
++	}
++}
+
+message TokenBurnTransactionBody {
+	TokenID token = 1; // The token for which to burn tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
+!	uint64 amount = 2; [deprecated=true] // The amount to burn from the Treasury Account. Amount must be a positive non-zero number, not bigger than the token balance of the treasury account (0; balance], represented in the lowest denomination.
++	AmountOrSerialNumbers amountOrSerialNumbers= 3; // Defines the amount or list of serial numbers to be burned
+}
+```
+
+### TokenWipeAccountTransactionBody
+The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used. 
+**Pros**
+- Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of wipe operations
+
+**Cons**
+ - It is a breaking change
+
+All serial numbers specified must NOT be owned by the Treasury account in order for them to be wiped successfully.
+```diff
+message TokenWipeAccountTransactionBody {
+	TokenID token = 1; // The token for which the account will be wiped. If token does not exist, transaction results in INVALID_TOKEN_ID
+	AccountID account = 2; // The account to be wiped
+!	uint64 amount = 3; [deprecated=true] // The amount of tokens to wipe from the specified account. Amount must be a positive non-zero number in the lowest denomination possible, not bigger than the token balance of the account (0; balance]
++	AmountOrSerialNumbers amountOrSerialNumbers= 3; // Defines the amount or list of serial numbers to be wiped
+}
+
+```
+
 ### TokenInfo
+New `tokenType` and `maxSupply` fields to be added in the `TokenInfo` query. 
 
 ```diff
 message TokenInfo {
@@ -199,9 +262,9 @@ message TokenInfo {
    TokenID tokenId = 1; // ID of the token instance
    string name = 2; // The name of the token. It is a string of ASCII only characters
    string symbol = 3; // The symbol of the token. It is a UTF-8 capitalized alphabetical string
-!  uint32 decimals = 3; // The number of decimal places a token is divisible by. This field can never be changed! For NON_FUNGIBLE type decimals must be 0. 
-+  uint64 maxSupply = xx; // IWA Compatibility. Cannot be updated using admin key. Maximum number of fungible tokens that can be in circulation or in the case for NFT Type - the maximum number of NFTs (serial numbers) that can be minted.
-!  uint64 totalSupply = 5; // The total supply of tokens that are currently in circulation. Number of NFTs created of this token instance (applicable to tokens of type NON_FUNGIBLE)
+!  uint32 decimals = 3; // The number of decimal places a token is divisible by. Always 0 for tokens of type NON_FUNGIBLE. This field can never be changed! 
++  uint64 maxSupply = xx; // For tokens of type FUNGIBLE - The Maximum number of fungible tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be in circulation. This field can never be changed! 
+!  uint64 totalSupply = 5; // For tokens of type FUNGIBLE - the total supply of tokens that are currently in circulation. For tokens of type NON_FUNGIBLE - the number of NFTs created of this token instance
    AccountID treasury = 6; // The ID of the account which is set as Treasury
    Key adminKey = 7; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
    Key kycKey = 8; // The key which can grant or revoke KYC of an account for the token's transactions. If empty, KYC is not required, and KYC grant or revoke operations are not possible.
@@ -219,22 +282,6 @@ message TokenInfo {
 
 ```
 
-### TokenTransferList
-
-```diff
-message CryptoTransferTransactionBody {
-   TransferList transfers = 1;
-   repeated TokenTransferList tokenTransfers = 2;
-}
-
-/* A list of token IDs and amounts representing the transferred out (negative) or into (positive) amounts, represented in the lowest denomination of the token */
-message TokenTransferList {
-    TokenID token = 1; // The ID of the token
-    repeated AccountAmount transfers = 2; // Multiple list of AccountAmounts, each of which has an account and amount
-+   uint64 serialNumber = 3; // The serial number of the NFT instance being transferred
-}
-```
-
 ### TokenRelationship
 
 ```diff
@@ -242,50 +289,75 @@ message TokenTransferList {
 message TokenRelationship {
     TokenID tokenId = 1; // The ID of the token
     string symbol = 2; // The Symbol of the token
-!   uint64 balance = 3; // For token of type FUNGIBLE: the balance that the Account holds in the smallest denomination. For token of type NON_FUNGIBLE: the number of NFTs held by this account (if only 1 serial number is held, balance is 1)
+!   uint64 balance = 3; // For token of type FUNGIBLE - the balance that the Account holds in the smallest denomination. For token of type NON_FUNGIBLE - the number of NFTs held by the account
     TokenKycStatus kycStatus = 4; // The KYC status of the account (KycNotApplicable, Granted or Revoked). If the token does not have KYC key, KycNotApplicable is returned
     TokenFreezeStatus freezeStatus = 5; // The Freeze status of the account (FreezeNotApplicable, Frozen or Unfrozen). If the token does not have Freeze key, FreezeNotApplicable is returned
-!   uint32 decimals = 6; // Tokens divide into <tt>10<sup>decimals</sup></tt> pieces. Always `0` for tokens of type NON_FUNGIBLE
+!   uint32 decimals = 6; // The number of decimal places a token is divisible by. Always 0 for tokens of type NON_FUNGIBLE
 }
 ```
 
-### TokenService
+### TokenTransferList
+
+**Rationale**
+With the current proposal, HTS API is being extended to support `NON_FUNGIBLE` types of tokens. All of the changes to the HAPI are being contained under the HTS service. Transfers in the HAPI are unified, meaning that there is only 1 `CryptoTransferTransactionBody` that is used to represent both `hbar` and HTS token transferrs. The proposed solution keeps the consistency of containing the changes under the HTS specific API by extending the `TokenTransferList` with two types of transfers:
+- Fungible token transfers
+- Non fungible token transfers
+
+The change is backwards compatible due to the usage of `oneof`.
+
+The major difference between `FUNGIBLE` and `NON_FUNGIBLE` transfers is the representation type.  As per the [IWA specifciation](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md#representation-type), we can distinguish 2 types of representations - `common` and `unique`. `AccountAmount` message type uses the `common` represntation type and `NftTransfer` uses the `unique` representation type.
 
 ```diff
-service TokenService {
-   // Creates a new Token by submitting the transaction
-   rpc createToken (Transaction) returns (TransactionResponse);
-   // Updates the account by submitting the transaction
-   rpc updateToken (Transaction) returns (TransactionResponse);
-   // Mints an amount of the token to the defined treasury account
-   rpc mintToken (Transaction) returns (TransactionResponse);
-   // Burns an amount of the token from the defined treasury account
-   rpc burnToken (Transaction) returns (TransactionResponse);
-   // Deletes a Token
-   rpc deleteToken (Transaction) returns (TransactionResponse);
-   // Wipes the provided amount of tokens from the specified Account ID
-   rpc wipeTokenAccount (Transaction) returns (TransactionResponse);
-   // Freezes the transfer of tokens to or from the specified Account ID
-   rpc freezeTokenAccount (Transaction) returns (TransactionResponse);
-   // Unfreezes the transfer of tokens to or from the specified Account ID
-   rpc unfreezeTokenAccount (Transaction) returns (TransactionResponse);
-   // Flags the provided Account ID as having gone through KYC
-   rpc grantKycToTokenAccount (Transaction) returns (TransactionResponse);
-   // Removes the KYC flag of the provided Account ID
-   rpc revokeKycFromTokenAccount (Transaction) returns (TransactionResponse);
-   // Associates tokens to an account
-   rpc associateTokens (Transaction) returns (TransactionResponse);
-   // Dissociates tokens from an account
-   rpc dissociateTokens (Transaction) returns (TransactionResponse);
-   // Retrieves the metadata of a token
-   rpc getTokenInfo (Query) returns (Response);
-   // Gets info on NFTs N through M on the list of NFTs associated with a given NftType
-+  rpc NftGetInfoQuery (Query) returns (Response);
+message CryptoTransferTransactionBody {
+   TransferList transfers = 1;
+   repeated TokenTransferList tokenTransfers = 2;
 }
 
++message NftTransfer {  
++   AccountID fromAccount = 1;  // Sending account
++   AccountID toAccount = 2;  // Receiving account
++   uint64 serialNo = 3;  // Serial number that is being transferred
++}
 
-
+/* A list of token IDs and amounts representing the transferred out (negative) or into (positive) amounts, represented in the lowest denomination of the token */
+message TokenTransferList {
+    TokenID token = 1; // The ID of the token
++   oneof {
+!		repeated AccountAmount transfers = 2; // Applicable to tokens of type FUNGIBLE. Multiple list of AccountAmounts, each of which has an account and amount
++	    repeated NftTransfer nftTransfers = 3; // Applicable to tokens of type NON_FUNGIBLE
++	}
+}
 ```
+
+### GetNftInfo
+The following messagges must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
+
+Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange` which can be calculated as `end-start`
+
+```diff
++/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NftType */
++message GetNftInfoQuery {
++	 QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
++    TokenID tokenId=1; // The ID of the token for which information is requested
++    uint64 start=2; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
++    uint64 end=3; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
++}
+
++message NftInfo {
++	uint serialNumber = 1; // the serial number of the NFT
++	AccountID owner = 2; // The current owner of the NFT
++	bytes meta = 2; // NFT metadata
++}
+
++message NftGetInfoResponse {
++	ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
++	TokenID tokenId = 2; // The Token with NftType that this record is for
++	repeated NftInfo nfts = 3; // List nft info associated to the specified token
++}
+```
+
+### GetAccountNftInfo
+
 
 ## Backwards Compatibility
 
