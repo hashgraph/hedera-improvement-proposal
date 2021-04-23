@@ -95,7 +95,7 @@ The following matrix provides information on the mapping between token types and
 
 ## HAPI Changes
 
-Below are described the set of changes that must be applied to the current HTS API in order to support the described types above. New operations and message types are added as well.
+The set of changes that must be applied to the current HTS API in order to support the described types above is presented here. 
 
 ### Legend
 
@@ -137,7 +137,7 @@ service TokenService {
    rpc dissociateTokens (Transaction) returns (TransactionResponse);
    // Retrieves the metadata of a token
    rpc getTokenInfo (Query) returns (Response);
-+  // Gets info on NFTs N through M on the list of NFTs associated with a given NftType
++  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
 +  rpc getNftInfoQuery (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given account
 +  rpc getAccountNftInfoQuery (Query) returns (Response);
@@ -184,7 +184,8 @@ message TokenAssociateTransactionBody {
 ```
 ### TokenMintTransactionBody
 
-The property `amount` is to be deprecated and instead a new message `AmountOrMeta` to be used. 
+The property `amount` is to be deprecated and instead a new message `AmountOrMeta` to be used.
+
 **Pros**
 - Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of minting operations
 
@@ -196,14 +197,14 @@ Once created, an NFT instance cannot be updated, only transferred/wiped or burne
 +message AmountOrMeta {
 +	oneof {
 +		amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
-+   	bytes meta = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
++   		bytes meta = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
 +	}
 +}
 
 message TokenMintTransactionBody {
     TokenID token = 1; // The token for which to mint tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
 !   uint64 amount = 2; [deprecated=true] // The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63.
-+	AmountOrMeta amountOrMeta = 3;
++   AmountOrMeta amountOrMeta = 3;
 }
 
 ```
@@ -270,6 +271,7 @@ message TokenBurnTransactionBody {
 
 ### TokenWipeAccountTransactionBody
 The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used. 
+
 **Pros**
 - Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of wipe operations
 
@@ -333,9 +335,7 @@ message TokenRelationship {
 ### TokenTransferList
 
 **Rationale**
-With the current proposal, HTS API is being extended to support `NON_FUNGIBLE` types of tokens. All of the changes to the HAPI are being contained under the HTS service. Transfers in the HAPI are unified, meaning that there is only 1 `CryptoTransferTransactionBody` that is used to represent both `hbar` and HTS token transferrs. The proposed solution keeps the consistency of containing the changes under the HTS specific API by extending the `TokenTransferList` with two types of transfers:
-- Fungible token transfers
-- Non fungible token transfers
+With the current proposal, HTS API is being extended to support `NON_FUNGIBLE` types of tokens. All of the changes to the HAPI are being contained under the HTS service. Transfers in the HAPI are unified, meaning that there is only 1 `CryptoTransferTransactionBody` that is used to represent both `hbar` and HTS token transfers. The proposed solution keeps the consistency of containing the changes under the HTS specific API by extending the `TokenTransferList` with new type of transfer - Non fungible token transfer
 
 The change is backwards compatible due to the usage of `oneof`.
 
@@ -366,12 +366,12 @@ message TokenTransferList {
 ### GetNftInfo
 The following messagges must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
 
-Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange` which can be calculated as `end-start`
+Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
 
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NftType */
 +message GetNftInfoQuery {
-+	 QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
++    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    TokenID tokenId = 2; // The ID of the token for which information is requested
 +    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
@@ -398,8 +398,8 @@ Global dynamic variable must be added in the node configuring the maximum value 
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NftType */
 +message GetAccountNftInfoQuery {
-+	 QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+	 AccountID accountId = 2; // The Account for which information is requested
++    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
++    AccountID accountId = 2; // The Account for which information is requested
 +    uint64 start = 4; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
 +}
@@ -445,7 +445,7 @@ TODO
 
 ## References
 
-TODO 
+- [IWA Specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md)
 
 ## Copyright
 This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
