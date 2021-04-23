@@ -339,15 +339,15 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NftType */
 +message GetNftInfoQuery {
 +	 QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+    TokenID tokenId=1; // The ID of the token for which information is requested
-+    uint64 start=2; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
-+    uint64 end=3; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
++    TokenID tokenId = 2; // The ID of the token for which information is requested
++    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
++    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
 +}
 
 +message NftInfo {
 +	uint serialNumber = 1; // the serial number of the NFT
 +	AccountID owner = 2; // The current owner of the NFT
-+	bytes meta = 2; // NFT metadata
++	bytes meta = 3; // NFT metadata
 +}
 
 +message NftGetInfoResponse {
@@ -358,6 +358,25 @@ Global dynamic variable must be added in the node configuring the maximum value 
 ```
 
 ### GetAccountNftInfo
+The following messagges must be added in order to support the new `GetAccountNftInfo` rpc call added to `HTS`.
+
+Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange` which can be calculated as `end-start`
+
+```diff
++/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NftType */
++message GetAccountNftInfoQuery {
++	 QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
++	 AccountID accountId = 2; // The Account for which information is requested
++    uint64 start = 4; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
++    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
++}
+
++message NftGetInfoResponse {
++	ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
++	AccountID accountId = 2; // The Account that this record is for
++	repeated NftInfo nfts = 3; // List nft info associated to the specified token
++}
+```
 
 
 ## Backwards Compatibility
@@ -397,3 +416,4 @@ TODO
 
 ## Copyright
 This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
+
