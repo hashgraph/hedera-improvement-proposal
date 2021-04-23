@@ -1,3 +1,4 @@
+
 ---
 hip: 17
 title: HTS Non Fungible support
@@ -18,9 +19,9 @@ The growing demand and use-cases for tokenisation point out that the current HTS
 
 ## Rationale
 
-Since developers desire the tokenization APIs to look similar for both fungible and non-fungible tokens, it is worth considering creating a single set of APIs that work for both.
-
-Though fungible and non-fungible tokens are different, there are a lot of commonalities - admin keys, KYC, supply, mint and burn behaviours. 
+The following proposal is building on top of the current HTS API instead of creating a brand new NFT service. There are 2 major reasons for that:
+- Developers desire the tokenization APIs to look similar for both fungible and non-fungible tokens
+- Though fungible and non-fungible tokens are different, there are a lot of commonalities - admin keys, KYC, supply, mint and burn behaviours
 
 ## Specification
 
@@ -30,17 +31,17 @@ Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxon
  HTS
 │
 └─── Fungible
-│   └─── Fractional
-│   └─── Whole         
+│   └─── Fractional --- Currently supported by HTS
+│   └─── Whole --- Currently supported by HTS   
 └─── Non-Fungible
-    └─── Whole              
-    └─── Fractional
-    └─── Singleton    
+    └─── Whole --- Supported with the current proposal             
+    └─── Fractional --- Not supported by the proposal, though can be supported by HIP standards
+    └─── Singleton --- Not supported by the proposal, though can be supported by HIP standards  
 ```
 
 ### Fungible
 
-Tokens that have interchangeable value with one another, where any quantity of them has the same value as another equal quantity if they are in the same class or series 
+Tokens that have interchangeable value with one another, where any quantity of them has the same value as another equal quantity if they are in the same class or series.
 
 #### Fractional
 Describes a token that can be divided into smaller fractions, represented as decimals. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals != 0`. 
@@ -59,6 +60,23 @@ Similar to `Whole`, in terms that each instance of a token in the class can shar
 
 #### Singleton
 There can only be one instance in the deployed token class and that instance is indivisible. Useful when there is an asset or object to be tokenized that shares no properties or values with any other object.
+
+### Explicit vs Implicit definition
+There are 2 approaches available when it comes to the HTS API and the configuration of the Token. 
+1. **Explicit**
+	The [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework)  uses an explicit approach when it comes to defining the different types of tokens. This can be seen by the `Token Type (Fungible/Non-Fungible)`, `Token Unit(Fractional, Whole or Singleton)`, `Value  Type(Intrinsic or Reference)` or `Supply(Fixed, Capped-Variable, Gated or Infinite)` categories.
+2. **Impllcit**
+	It is fair to say that some of the described properties above are not necessary to be explicitly defined, f.e instead for HAPI to request both `Supply` and `maxSupply` to be set, HAPI can implicitly derive the types of the supported tokens based on the arguments passed.
+
+The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as enums (`Token Type`) and the rest of the configuration is derived implicitly from the provided variables.
+
+The following matrix provides information on the mapping between token types and the required configuration:
+```
+| **Syntax**  | Description |
+| ----------- | ----------- |
+| Header      | Title       |
+| Paragraph   | Text        |
+```
 
 ## HAPI Changes
 
@@ -416,4 +434,3 @@ TODO
 
 ## Copyright
 This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
-
