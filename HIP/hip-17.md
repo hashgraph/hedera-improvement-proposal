@@ -1,14 +1,11 @@
-
 ---
 hip: 17
 title: HTS Non Fungible support
 author: Daniel Ivanov (@Daniel-K-Ivanov)
 type: Service
 status: Draft
-created: 2021-04-22
 discussions-to: TODO
 ---
-
 ## Abstract
 
 The HIP defines the changes that must be applied in order for Hedera Services to support Non-fungible tokens.
@@ -25,7 +22,7 @@ The following proposal is building on top of the current HTS API instead of crea
 
 ## Specification
 
-Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework) we can distinguish the following combinations of fungible and non-fungible tokens:
+Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework) we can define the following combinations of fungible and non-fungible tokens:
 
 ```
  HTS
@@ -88,11 +85,11 @@ The following matrix provides information on the mapping between token types and
 **Non-fungible Token Matrix**
 |                     	| Whole, Fixed* 	| Whole, Capped-Variable      	| Whole, Infinite             	|
 |---------------------	|---------------	|-----------------------------	|-----------------------------	|
-| TokenType           	| N/A           	| NON_FUNGIBLE                	| NON_FUNGIBLE                	|
-| decimals            	| N/A           	| 0                           	| 0                           	|
-| maxSupply           	| N/A           	| n                           	| UINT64_MAX_VALUE            	|
-| initialSupply       	| N/A           	| N/A                         	| N/A                         	|
-| supplyKey & wipeKey 	| N/A           	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	|
+| **TokenType**           	| N/A           	| NON_FUNGIBLE                	| NON_FUNGIBLE                	|
+| **decimals**            	| N/A           	| 0                           	| 0                           	|
+| **maxSupply**           	| N/A           	| n                           	| UINT64_MAX_VALUE            	|
+| **initialSupply**       	| N/A           	| N/A                         	| N/A                         	|
+| **supplyKey & wipeKey** 	| N/A           	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	|
 
 *Non-fungible tokens cannot have `Fixed` supply since the creation of  `N` number of NFTs will not be supported in version 1. `initialSupply` must always be `0` for tokens of type `NON_FUNGIBLE`
 
