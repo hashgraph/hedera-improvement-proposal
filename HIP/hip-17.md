@@ -357,9 +357,9 @@ message CryptoTransferTransactionBody {
 message TokenTransferList {
     TokenID token = 1; // The ID of the token
 +   oneof {
-!		repeated AccountAmount transfers = 2; // Applicable to tokens of type FUNGIBLE. Multiple list of AccountAmounts, each of which has an account and amount
-+	    repeated NftTransfer nftTransfers = 3; // Applicable to tokens of type NON_FUNGIBLE
-+	}
+!	repeated AccountAmount transfers = 2; // Applicable to tokens of type FUNGIBLE. Multiple list of AccountAmounts, each of which has an account and amount
++	repeated NftTransfer nftTransfers = 3; // Applicable to tokens of type NON_FUNGIBLE
++   }
 }
 ```
 
@@ -378,15 +378,15 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +}
 
 +message NftInfo {
-+	uint serialNumber = 1; // the serial number of the NFT
-+	AccountID owner = 2; // The current owner of the NFT
-+	bytes meta = 3; // NFT metadata
++    uint serialNumber = 1; // the serial number of the NFT
++    AccountID owner = 2; // The current owner of the NFT
++    bytes meta = 3; // NFT metadata
 +}
 
 +message NftGetInfoResponse {
-+	ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+	TokenID tokenId = 2; // The Token with NftType that this record is for
-+	repeated NftInfo nfts = 3; // List nft info associated to the specified token
++    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
++    TokenID tokenId = 2; // The Token with NftType that this record is for
++    repeated NftInfo nfts = 3; // List nft info associated to the specified token
 +}
 ```
 
@@ -405,9 +405,9 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +}
 
 +message NftGetInfoResponse {
-+	ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+	AccountID accountId = 2; // The Account that this record is for
-+	repeated NftInfo nfts = 3; // List nft info associated to the specified token
++    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
++    AccountID accountId = 2; // The Account that this record is for
++    repeated NftInfo nfts = 3; // List nft info associated to the specified token
 +}
 ```
 
