@@ -71,12 +71,30 @@ There are 2 approaches available when it comes to the HTS API and the configurat
 The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as enums (`Token Type`) and the rest of the configuration is derived implicitly from the provided variables.
 
 The following matrix provides information on the mapping between token types and the required configuration:
-```
-| **Syntax**  | Description |
-| ----------- | ----------- |
-| Header      | Title       |
-| Paragraph   | Text        |
-```
+
+
+
+**Fungible Token Matrix**
+
+|                     	| Fractional, Fixed             	| Fractional, Capped-Variable              	| Fractional, Infinite                     	| Whole, Fixed                  	| Whole, Capped-Variable                   	| Whole, Infinite                          	|
+|---------------------	|-------------------------------	|------------------------------------------	|------------------------------------------	|-------------------------------	|------------------------------------------	|------------------------------------------	|
+| **TokenType**           	| FUNGIBLE                      	| FUNGIBLE                                 	| FUNGIBLE                                 	| FUNGIBLE                      	| FUNGIBLE                                 	| FUNGIBLE                                 	|
+| **decimals**            	| decimals != 0                 	| decimals != 0                            	| decimals != 0                            	| 0                  	| 0                             	| decimals = 0                             	|
+| **maxSupply**           	| N                   	| N                              	| UINT64_MAX_VALUE               	| N                   	| maxSupply=N                              	| UINT64_MAX_VALUE               	|
+| **initialSupply**       	| N               	| x, where x <= maxSupply 	| x, where x <= maxSupply 	| N               	| x, where x <= maxSupply 	| x, where x <= maxSupply 	|
+| **supplyKey & wipeKey** 	| supplyKey=null & wipeKey=null 	| supplyKey=* & wipeKey=*                  	| supplyKey=* & wipeKey=*                  	| supplyKey=null & wipeKey=null 	| supplyKey=* & wipeKey=*                  	| supplyKey=* & wipeKey=*                  	|
+
+
+**Non-fungible Token Matrix**
+|                     	| Whole, Fixed* 	| Whole, Capped-Variable      	| Whole, Infinite             	|
+|---------------------	|---------------	|-----------------------------	|-----------------------------	|
+| TokenType           	| N/A           	| NON_FUNGIBLE                	| NON_FUNGIBLE                	|
+| decimals            	| N/A           	| 0                           	| 0                           	|
+| maxSupply           	| N/A           	| n                           	| UINT64_MAX_VALUE            	|
+| initialSupply       	| N/A           	| N/A                         	| N/A                         	|
+| supplyKey & wipeKey 	| N/A           	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	|
+
+*Non-fungible tokens cannot have `Fixed` supply since the creation of  `N` number of NFTs will not be supported in version 1. `initialSupply` must always be `0` for tokens of type `NON_FUNGIBLE`
 
 ## HAPI Changes
 
