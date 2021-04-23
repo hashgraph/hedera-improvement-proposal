@@ -416,9 +416,9 @@ Global dynamic variable must be added in the node configuring the maximum value 
 
 There are several implications for already existing HTS integrations. Due to the significant changes in the HAPI, the following operations are not backwards compatible:
 
-- [Mint](TokenMintTransactionBody)
-- [Burn](TokenBurnTransactionBody)
-- [Wipe](TokenWipeAccountTransactionBody)
+- [Mint](#TokenMintTransactionBody)
+- [Burn](#TokenBurnTransactionBody)
+- [Wipe](#TokenWipeAccountTransactionBody)
 
 
 ## Security Implicattions
