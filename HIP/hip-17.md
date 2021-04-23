@@ -393,7 +393,7 @@ Global dynamic variable must be added in the node configuring the maximum value 
 ### GetAccountNftInfo
 The following messagges must be added in order to support the new `GetAccountNftInfo` rpc call added to `HTS`.
 
-Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange` which can be calculated as `end-start`
+Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
 
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NftType */
@@ -416,12 +416,10 @@ Global dynamic variable must be added in the node configuring the maximum value 
 
 There are several implications for already existing HTS integrations. Due to the significant changes in the HAPI, the following operations are not backwards compatible:
 
-1. Token Create:
- - The new `tokenType` property has a default value`FUNGIBLE`. Developers creating new tokens without specifiying `tokenType` will result in fungible token created, thus this change is backwards compatible.
- - `maxSupply` property must be discussed to resolve backwards compatibility issues. It would be best to assume `2^64` as a default value (maximum supply). 
+- [Mint](TokenMintTransactionBody)
+- [Burn](TokenBurnTransactionBody)
+- [Wipe](TokenWipeAccountTransactionBody)
 
-2. Token Burn & Wipe:
- - Current `amount` property is to be deprecated. Instead of using `amount`, developers will need to use the newly introduced `AmountOrSerialNumbersList` message.
 
 ## Security Implicattions
 
@@ -433,15 +431,15 @@ TODO
 
 ## Reference implementation
 
-TODO
+Reference implementation for the protobuf will be implemented once the HAPI is finalised and approved
 
 ## Rejected Ideas
 
-TODO 
+No rejected ideas so far
 
 ## Open Issues
 
-TODO
+
 
 ## References
 
