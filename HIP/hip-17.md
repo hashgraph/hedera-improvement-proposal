@@ -377,7 +377,7 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
 +}
 
-+message NftInfo {
++message NftOwnershipInfo {
 +    uint serialNumber = 1; // the serial number of the NFT
 +    AccountID owner = 2; // The current owner of the NFT
 +    bytes meta = 3; // NFT metadata
@@ -386,7 +386,7 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +message NftGetInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    TokenID tokenId = 2; // The Token with NftType that this record is for
-+    repeated NftInfo nfts = 3; // List nft info associated to the specified token
++    repeated NftOwnershipInfo nfts = 3; // List nft info associated to the specified token
 +}
 ```
 
@@ -400,14 +400,20 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +message GetAccountNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    AccountID accountId = 2; // The Account for which information is requested
-+    uint64 start = 4; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
-+    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
++    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalNFTsOwned]
++    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalNFTsOwned]
++}
+
++message NftInfo {
++    TokenID tokenId = 1; // The ID of the token
++    uint serialNumber = 2; // The serial number of the NFT
++    bytes meta = 3; // The NFT metadata
 +}
 
 +message GetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    AccountID accountId = 2; // The Account that this record is for
-+    repeated NftInfo nfts = 3; // List nft info associated to the specified token
++    repeated NftInfo nfts = 3; // List nfts associated to the account
 +}
 ```
 
