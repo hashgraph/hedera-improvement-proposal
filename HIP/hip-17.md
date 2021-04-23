@@ -206,7 +206,8 @@ message TransactionReceipt {
     ScheduleID scheduleID = 12;
     // In the receipt of a ScheduleCreate or ScheduleSign that resolves to SUCCESS, the TransactionID that should be used to query for the receipt or record of the relevant scheduled transaction
     TransactionID scheduledTransactionID = 13;
-+   uint64 serialNumber = 14; // In the receipt of a TokenMintTransactionBody, the serial number of the newly created NFT    
++   // In the receipt of a TokenMintTransactionBody, the serial number of the newly created NFT
++   uint64 serialNumber = 14;     
 }
 ```
 
