@@ -404,7 +404,7 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
 +}
 
-+message NftGetInfoResponse {
++message GetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    AccountID accountId = 2; // The Account that this record is for
 +    repeated NftInfo nfts = 3; // List nft info associated to the specified token
