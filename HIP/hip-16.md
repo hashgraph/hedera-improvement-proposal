@@ -71,15 +71,17 @@ Every entity will receive one free auto renewal at implementation of this featur
 
 ## Security Implications
 
-A Hedera Account with zero balance at the point of renewal would become expired, and be removed after the grace period, if not renewed before then.
+A Hedera Account with zero hbar balance at the point of renewal would become expired, and be removed after the grace period, if not renewed before then.
 
-A Hedera Account with non-zero balance that is not sufficient to cover the entire cost of renewal will have its remaining balance wholly used for a shorter extension of the entity.
+A Hedera Account with non-zero hbar balance that is not sufficient to cover the entire cost of renewal will have its remaining balance wholly used for a shorter extension of the entity.
 
 If the autoRenewAccount of a topic does not have sufficient balance the topic would be deleted. The ledger cannot enforce agreements regarding funding of the topic made by participants in the topic. 
 
 Any entity can have its expiration time extended by anyone, not just by the admin account. The expiration time is the only field that can be changed in an update without being signed by the owner or the admin. (One exception: scheduled transactions cannot be renewed).
 
 Users who leverage omnibus entities for services including wallets, exchanges, and custody will need to account for the deduction of hbar from any Hedera autorenewal accounts used in their system at the time of autorenewal.
+
+Users who hold multiple tokens in their Hedera Account will have their accounts marked for deletion if they have zero hbar balance at the time of auto renewal. Tokens will need to be transferred out of the account before they can be deleted.
 
 ## How to Teach This
 
