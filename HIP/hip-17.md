@@ -2,7 +2,8 @@
 hip: 17
 title: HTS Non Fungible support
 author: Daniel Ivanov (@Daniel-K-Ivanov)
-type: Service
+type: Standards Track
+category: Service
 status: Draft
 discussions-to: TODO
 ---
