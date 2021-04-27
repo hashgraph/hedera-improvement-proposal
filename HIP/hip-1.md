@@ -10,7 +10,7 @@ discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discuss
 
 ## What is a HIP?
 
-HIP stands for Hedera Improvement Proposal. A HIP is intended to provide information or initiate engineering effort to update Hedera functionality. The HIP should be technically clear and concise.
+HIP stands for Hedera Improvement Proposal. A HIP is intended to provide information or initiate engineering effort to update Hedera functionality. The HIP should be technically clear and concise. HIPs should be as granular as possible. Small targeted HIPs are more likely to reach consensus and result in a reference implementation. This may require breaking a bigger idea into smaller components.
 
 HIPs are intended to be the primary mechanism for proposing new features, for collecting community input, and for documenting the design decisions that have gone into Hedera Hashgraph. The HIP author is responsible for building consensus within the community and documenting dissenting opinions.
 
