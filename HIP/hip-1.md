@@ -58,7 +58,16 @@ The HIP process begins with a new idea for Hedera. It is highly recommended that
 
 Each HIP must have a champion -- someone who writes the HIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The HIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is HIP-able. Circulating the idea in Hedera’s Discord server (https://hedera.com/discord) or in an issue in the Hedera HIP Github Repository (https://github.com/hashgraph/hedera-improvement-proposal) is the best way to do so.
 
-Vetting an idea publicly before going as far as writing a HIP is meant to save the potential author time. Asking the community first if an idea is original helps avoid too much time being spent on something that may be rejected based on prior discussions. It also helps to make sure the idea is applicable to the entire community and not just the author.
+Vetting an idea publicly before going as far as writing a HIP is meant to save the potential author time. Asking the community first if an idea is original helps avoid too much time being spent on something that may be rejected based on prior discussions. It also helps to make sure the idea is applicable to the entire community and not just the author. The ideal place to vet ideas is in the GitHub Discussions "Ideas" category (https://github.com/hashgraph/hedera-improvement-proposal/discussions/categories/ideas).
+
+Authors should:
+
+1. Create a new discussion with the category of "Ideas".
+2. Ensure that the title of the Idea is your proposed title for the HIP.
+3. Fill out as much of the HIP template as the initial discussion comment.
+4. Update the initial comment with any updates that have received consensus.
+
+The goal is that once the Idea has been fully vetted, it should be relatively trivial to submit a formal HIP.
 
 Once the champion has discovered with the Hedera community the acceptability of the idea, the proposal should be submitted as a draft HIP via a Github pull request. The draft must be written in HIP style as described below, else it will fail review immediately (although minor errors may be corrected by the editors).
 
