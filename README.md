@@ -34,6 +34,20 @@ Each HIP should only be one single key proposal and/or idea. The idea should be 
 
 An excellent place to discuss your proposal and get feedback is in the [issues section of this repository](https://github.com/hashgraph/hip/issues), or on [Hedera's Discord Server](https://hedera.com/discord); there you can start formalizing the language around your HIP and ensuring it has broad community support.
 
+## List of HIPs
+
+| Number | Title | Discussion | Status |
+|---|---|---|---:|
+| 1 | Hedera Improvement Proposal Process | https://github.com/hashgraph/hedera-improvement-proposal/discussions/54 | Draft |
+| 10 | Token Metadata JSON Schema | https://github.com/hashgraph/hedera-improvement-proposal/issues/40 | Draft |
+| 11 | Layer-2 Smart Contract Network | https://github.com/hashgraph/hedera-improvement-proposal/discussions/49 | Draft |
+| 12 | Zero Knowledge Proofs | https://github.com/hashgraph/hedera-improvement-proposal/discussions/52 | Draft |
+| 13 | Hedera Name Service | https://github.com/hashgraph/hedera-improvement-proposal/discussions/56 | Draft |
+| 14 | Hold | https://github.com/hashgraph/hedera-improvement-proposal/discussions/59 | Draft |
+| 15 | Address Checksum | https://github.com/hashgraph/hedera-improvement-proposal/discussions/47 | Draft |
+| 16 | Entity Auto-Renewal | https://github.com/hashgraph/hedera-improvement-proposal/discussions/64 | Draft |
+| 17 | HTS Non Fungible support | https://github.com/hashgraph/hedera-improvement-proposal/discussions/74 | Draft |
+
 ## Disclaimer(s): 
 
 These proposals and discussions have no effect regarding private (permissioned) implementations of the Hashgraph consensus algorithm; additionally, this repository and it’s contents are run by the Hedera Hashgraph community, which means they do not necessarily reflect the views and opinions of Hedera Hashgraph LLC.
