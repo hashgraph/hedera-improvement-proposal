@@ -22,7 +22,7 @@ HIPs are not meant to address *bugs* in implemented code. Bugs should be address
 
 There are three kinds of HIP:
 
-1. A **Standards Track** HIP describes a new feature or implementation for Hedera. It may also describe an interoperability standard that will be supported outside of the official Hedera node software stack. The Standards Track HIP abstract should include which part of the Hedera ecosystem it addresses:
+1. A **Standards Track** HIP describes a new feature or implementation for Hedera. It may also describe an interoperability standard that will be supported outside of the official Hedera node software stack. The Standards Track HIP abstract should include which part of the Hedera ecosystem it addresses. Standards Track HIPs require a specification and a reference implementation:
 
     **a. Core:** This includes proposals addressing the Hashgraph algorithm, peer-to-peer networking, etc. These types of features are implemented on Hedera consensus nodes.
 
@@ -102,7 +102,7 @@ However, content review and final acceptance of the HIP must be requested of the
 
 For a HIP to be accepted, it must meet certain minimum criteria. It must be a clear and complete description of the proposed improvement. The improvement must represent a net value-add. The proposed implementation, if applicable, must be solid and must not complicate the network unduly.
 
-Once a HIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and incorporated into the main source code repository, the status will be changed to “Final”. For Process HIPs and Standards Track HIPs that introduce protocol standards, once the process or protocol has been implemented and recognized as official by a combination of the community, core developers, and the Council, the status will be changed to “Final”.
+Once a HIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and incorporated into the main source code repository, the status will be changed to “Final”. A Standards Track HIP must include a specification and a reference implementation in order to be considered for a "Final" status. For Process HIPs and Standards Track HIPs that introduce protocol standards, once the process or protocol has been implemented and recognized as official by a combination of the community, core developers, and the Council, the status will be changed to “Final”.
 
 To allow gathering of additional design and interface feedback before committing to long term stability, a HIP may also be marked as “Provisional”. This is short for “Provisionally Accepted”, and indicates that the proposal has been accepted for inclusion, but additional user feedback is needed before the full design can be considered “Final”. Unlike regular accepted HIPs, provisionally accepted HIPs may still be Rejected or Withdrawn even after the related changes have been implemented.
 
