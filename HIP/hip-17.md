@@ -114,7 +114,7 @@ The following matrix provides information on the mapping between token types/pro
 ```
 
 ### TokenService
-The current proposal requires the addition of 2 new RPC endpoints to the existing `HTS` service - `getNftInfo` and `getAccountNftInfo`
+The current proposal requires the addition of 3 new RPC endpoints to the existing `HTS` service - `getNftInfo`, `getTokenNftInfo` and `getAccountNftInfo`
 
 Other than adding new `rpc` calls the following, already existing, operations must be modified: `createToken`, `mintToken`, `burnToken`, `wipeTokenAccount`, `getTokenInfo`
 
@@ -146,8 +146,10 @@ service TokenService {
    rpc dissociateTokens (Transaction) returns (TransactionResponse);
    // Retrieves the metadata of a token
    rpc getTokenInfo (Query) returns (Response);
+   // get info on NFT for a given Token of type NON_FUNGIBLE and serial number
+   rpc getNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
-+  rpc getNftInfo (Query) returns (Response);
++  rpc getTokenNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given account
 +  rpc getAccountNftInfo (Query) returns (Response);
 }
@@ -410,28 +412,46 @@ message TokenRelationship {
 ### GetNftInfo
 The following messages must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
 
-Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
-
 ```diff
-+/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NftType */
++/* Applicable only to tokens of type NON_FUNGIBLE. Get info on NFT for a given Token of type NON_FUNGIBLE and serial number */
 +message GetNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    TokenID tokenId = 2; // The ID of the token for which information is requested
-+    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
-+    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
++    uint64 serialNumber =3; // The serial number for the NFT for which information is requested
 +}
 
-+message NftOwnershipInfo {
++message NftInfo {
 +    uint serialNumber = 1; // the serial number of the NFT
 +    AccountID owner = 2; // The current owner of the NFT
 +    string memo = 3; // Represents the unique metadata for a given NFT instance
 +    Timestamp creationTime = 4; // The effective consensus timestamp at which the NFT was minted
 +}
 
-+message NftGetInfoResponse {
++message GetNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    TokenID tokenId = 2; // The Token with NftType that this record is for
-+    repeated NftOwnershipInfo nfts = 3; // List nft info associated to the specified token
++    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
++    repeated NftInfo nfts = 3; // List nft info associated to the specified token
++}
+```
+
+### GetTokenNftInfo
+The following messages must be added in order to support the new `GetTokenNftInfo` rpc call added to `HTS`.
+
+Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
+
+```diff
++/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE Token */
++message GetTokenNftInfoQuery {
++    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
++    TokenID tokenId = 2; // The ID of the token for which information is requested
++    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
++    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
++}
+
++message GetTokenNftInfoResponse {
++    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
++    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
++    repeated NftInfo nfts = 3; // List nft info associated to the specified token
 +}
 ```
 
@@ -451,7 +471,7 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; ownedNFTs]
 +}
 
-+message NftInfo {
++message NftOwnedInfo {
 +    TokenID tokenId = 1; // The ID of the token
 +    uint serialNumber = 2; // The serial number of the NFT
 +    string memo = 3; // Represents the unique metadata for a given NFT instance
@@ -461,7 +481,7 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +message GetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    AccountID accountId = 2; // The Account that this record is for
-+    repeated NftInfo nfts = 3; // List nfts associated to the account
++    repeated NftOwnedInfo nfts = 3; // List nfts associated to the account
 +}
 ```
 
