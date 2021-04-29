@@ -146,7 +146,7 @@ service TokenService {
    rpc dissociateTokens (Transaction) returns (TransactionResponse);
    // Retrieves the metadata of a token
    rpc getTokenInfo (Query) returns (Response);
-   // get info on NFT for a given Token of type NON_FUNGIBLE and serial number
+   // gets info on a NFT by TokenID (of type NON_FUNGIBLE) and serial number
    rpc getNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
 +  rpc getTokenNftInfo (Query) returns (Response);
@@ -210,7 +210,7 @@ Once created, an NFT instance cannot be updated, only transferred/wiped or burne
 ```diff
 +message AmountOrMemo {
 +	oneof {
-+		amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
++		uint64 amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
 +   		string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
 +	}
 +}
@@ -413,24 +413,24 @@ message TokenRelationship {
 The following messages must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
 
 ```diff
-+/* Applicable only to tokens of type NON_FUNGIBLE. Get info on NFT for a given Token of type NON_FUNGIBLE and serial number */
++/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on a NFT for a given TokenID (of type NON_FUNGIBLE) and serial number */
 +message GetNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    TokenID tokenId = 2; // The ID of the token for which information is requested
-+    uint64 serialNumber =3; // The serial number for the NFT for which information is requested
++    uint64 serialNumber = 3; // The serial number for the NFT for which information is requested
 +}
 
 +message NftInfo {
-+    uint serialNumber = 1; // the serial number of the NFT
++    uint64 serialNumber = 1; // the serial number of the NFT
 +    AccountID owner = 2; // The current owner of the NFT
-+    string memo = 3; // Represents the unique metadata for a given NFT instance
-+    Timestamp creationTime = 4; // The effective consensus timestamp at which the NFT was minted
++    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
++    string memo = 4; // Represents the unique metadata for a given NFT instance
 +}
 
 +message GetNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
-+    repeated NftInfo nfts = 3; // List nft info associated to the specified token
++    NftInfo nft = 3; // The NFT that his record is for
 +}
 ```
 
@@ -451,7 +451,7 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +message GetTokenNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
-+    repeated NftInfo nfts = 3; // List nft info associated to the specified token
++    repeated NftInfo nfts = 3; // List of NFTs associated to the specified token
 +}
 ```
 
@@ -474,14 +474,14 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +message NftOwnedInfo {
 +    TokenID tokenId = 1; // The ID of the token
 +    uint serialNumber = 2; // The serial number of the NFT
-+    string memo = 3; // Represents the unique metadata for a given NFT instance
-+    Timestamp creationTime = 4; // The effective consensus timestamp at which the NFT was minted
++    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
++    string memo = 4; // Represents the unique metadata for a given NFT instance
 +}
 
 +message GetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    AccountID accountId = 2; // The Account that this record is for
-+    repeated NftOwnedInfo nfts = 3; // List nfts associated to the account
++    repeated NftOwnedInfo nfts = 3; // List of NFTs associated to the account
 +}
 ```
 
