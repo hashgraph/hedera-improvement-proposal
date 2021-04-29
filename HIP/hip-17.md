@@ -114,7 +114,7 @@ The following matrix provides information on the mapping between token types/pro
 ```
 
 ### TokenService
-The current proposal requires the addition of 2 new RPC endpoints to the existing `HTS` service - `getNftInfoQuery` and `getAccountNftInfoQuery`
+The current proposal requires the addition of 2 new RPC endpoints to the existing `HTS` service - `getNftInfo` and `getAccountNftInfo`
 
 Other than adding new `rpc` calls the following, already existing, operations must be modified: `createToken`, `mintToken`, `burnToken`, `wipeTokenAccount`, `getTokenInfo`
 
@@ -147,9 +147,9 @@ service TokenService {
    // Retrieves the metadata of a token
    rpc getTokenInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
-+  rpc getNftInfoQuery (Query) returns (Response);
++  rpc getNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given account
-+  rpc getAccountNftInfoQuery (Query) returns (Response);
++  rpc getAccountNftInfo (Query) returns (Response);
 }
 ```
 
@@ -170,7 +170,7 @@ message TokenCreateTransactionBody {
 	string name = 2; // The publicly visible name of the token, limited to a UTF-8 encoding of length <tt>tokens.maxSymbolUtf8Bytes</tt>.
    	string symbol = 3; // The publicly visible token symbol, limited to a UTF-8 encoding of length <tt>tokens.maxTokenNameUtf8Bytes</tt>
 !	uint32 decimals = 4; // For tokens of type FUNGIBLE - the number of decimal places a token is divisible by. For tokens of type NON_FUNGIBLE - value must be 0. 
-+	uint64 maxSupply = 5; // IWA Compatibility. For tokens of type FUNGI BLE - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
++	uint64 maxSupply = 5; // IWA Compatibility. For tokens of type FUNGIBLE - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
 !	uint64 initialSupply = 6; // Specifies the initial supply of tokens to be put in circulation. The initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible. In the case for NON_FUNGIBLE Type the value must be 0
 !   	AccountID treasury = 7; // The account which will act as a treasury for the token. This account will receive the specified initial supply or the newly minted NFTs in the case for NON_FUNGIBLE Type
 	Key adminKey = 8; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
@@ -196,7 +196,7 @@ message TokenAssociateTransactionBody {
 ```
 ### TokenMintTransactionBody
 
-The property `amount` is to be deprecated and instead a new message `AmountOrMeta` to be used.
+The property `amount` is to be deprecated and instead a new message `AmountOrMemo` to be used.
 
 **Pros**
 - Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of minting operations
@@ -206,17 +206,17 @@ The property `amount` is to be deprecated and instead a new message `AmountOrMet
 
 Once created, an NFT instance cannot be updated, only transferred/wiped or burned.
 ```diff
-+message AmountOrMeta {
++message AmountOrMemo {
 +	oneof {
 +		amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
-+   		bytes meta = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
++   		string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
 +	}
 +}
 
 message TokenMintTransactionBody {
     TokenID token = 1; // The token for which to mint tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
 !   uint64 amount = 2; [deprecated=true] // The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63.
-+   AmountOrMeta amountOrMeta = 3;
++   AmountOrMemo amountOrMemo = 3;
 }
 
 ```
@@ -424,7 +424,8 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +message NftOwnershipInfo {
 +    uint serialNumber = 1; // the serial number of the NFT
 +    AccountID owner = 2; // The current owner of the NFT
-+    bytes meta = 3; // NFT metadata
++    string memo = 3; // Represents the unique metadata for a given NFT instance
++    Timestamp creationTime = 4; // The effective consensus timestamp at which the NFT was minted
 +}
 
 +message NftGetInfoResponse {
@@ -453,7 +454,8 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +message NftInfo {
 +    TokenID tokenId = 1; // The ID of the token
 +    uint serialNumber = 2; // The serial number of the NFT
-+    bytes meta = 3; // The NFT metadata
++    string memo = 3; // Represents the unique metadata for a given NFT instance
++    Timestamp creationTime = 4; // The effective consensus timestamp at which the NFT was minted
 +}
 
 +message GetAccountNftInfoResponse {
@@ -472,14 +474,19 @@ There are several implications for already existing HTS integrations. Due to the
 - [Burn](#TokenBurnTransactionBody)
 - [Wipe](#TokenWipeAccountTransactionBody)
 
-
 ## Security Implicattions
 
-TODO
+### Fees
+
+The existing fee schedule must be updated to support two separate fee schedule definitions for the same operation depending on the type of the Token. The current fee schedule for the HTS operations will be preserved for tokens of type `FUNGIBLE` and new fee schedule will be added for tokens of type `NON_FUNGIBLE` that will define the costs for executing operations on `NON_FUNGIBLE` token types.
+
+### Throttling
+
+One trade off that must be clarified is that by extending HTS with `NON_FUNGIBLE` support its impossible to throttle the operations separately. All HTS related operations (independent on the token type) will be using one throttling configuration and it will be applied for both token types.
 
 ## How to Teach This
 
-TODO
+The Hedera documentation is to be updated with the new version of HTS once implemented. Blog posts and guides can be written and distributed in the social media channels for educating the community on the new functionality.
 
 ## Reference implementation
 
