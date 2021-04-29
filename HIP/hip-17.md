@@ -114,7 +114,7 @@ The following matrix provides information on the mapping between token types/pro
 ```
 
 ### TokenService
-The current proposal requires the addition of 2 new RPC endpoints to the existing `HTS` service - `getNftInfoQuery` and `getAccountNftInfoQuery`
+The current proposal requires the addition of 3 new RPC endpoints to the existing `HTS` service - `getNftInfo`, `getTokenNftInfo` and `getAccountNftInfo`
 
 Other than adding new `rpc` calls the following, already existing, operations must be modified: `createToken`, `mintToken`, `burnToken`, `wipeTokenAccount`, `getTokenInfo`
 
@@ -146,10 +146,12 @@ service TokenService {
    rpc dissociateTokens (Transaction) returns (TransactionResponse);
    // Retrieves the metadata of a token
    rpc getTokenInfo (Query) returns (Response);
+   // gets info on a NFT by TokenID (of type NON_FUNGIBLE) and serial number
+   rpc getNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
-+  rpc getNftInfoQuery (Query) returns (Response);
++  rpc getTokenNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given account
-+  rpc getAccountNftInfoQuery (Query) returns (Response);
++  rpc getAccountNftInfo (Query) returns (Response);
 }
 ```
 
@@ -170,7 +172,7 @@ message TokenCreateTransactionBody {
 	string name = 2; // The publicly visible name of the token, limited to a UTF-8 encoding of length <tt>tokens.maxSymbolUtf8Bytes</tt>.
    	string symbol = 3; // The publicly visible token symbol, limited to a UTF-8 encoding of length <tt>tokens.maxTokenNameUtf8Bytes</tt>
 !	uint32 decimals = 4; // For tokens of type FUNGIBLE - the number of decimal places a token is divisible by. For tokens of type NON_FUNGIBLE - value must be 0. 
-+	uint64 maxSupply = 5; // IWA Compatibility. For tokens of type FUNGI BLE - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
++	uint64 maxSupply = 5; // IWA Compatibility. For tokens of type FUNGIBLE - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
 !	uint64 initialSupply = 6; // Specifies the initial supply of tokens to be put in circulation. The initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible. In the case for NON_FUNGIBLE Type the value must be 0
 !   	AccountID treasury = 7; // The account which will act as a treasury for the token. This account will receive the specified initial supply or the newly minted NFTs in the case for NON_FUNGIBLE Type
 	Key adminKey = 8; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
@@ -196,7 +198,7 @@ message TokenAssociateTransactionBody {
 ```
 ### TokenMintTransactionBody
 
-The property `amount` is to be deprecated and instead a new message `AmountOrMeta` to be used.
+The property `amount` is to be deprecated and instead a new message `AmountOrMemo` to be used.
 
 **Pros**
 - Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of minting operations
@@ -206,17 +208,17 @@ The property `amount` is to be deprecated and instead a new message `AmountOrMet
 
 Once created, an NFT instance cannot be updated, only transferred/wiped or burned.
 ```diff
-+message AmountOrMeta {
++message AmountOrMemo {
 +	oneof {
-+		amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
-+   		bytes meta = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
++		uint64 amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
++   		string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
 +	}
 +}
 
 message TokenMintTransactionBody {
     TokenID token = 1; // The token for which to mint tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
 !   uint64 amount = 2; [deprecated=true] // The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63.
-+   AmountOrMeta amountOrMeta = 3;
++   AmountOrMemo amountOrMemo = 3;
 }
 
 ```
@@ -270,7 +272,7 @@ All serial numbers specified must be owned by the Treasury account in order for 
 ```diff
 +message AmountOrSerialNumbers {
 +	oneof {
-+		amount = 1; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn/wipe
++		uint64 amount = 1; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn/wipe
 +		repeated uint64 serialNumbers=2; //Applicable to tokens of type NON_FUNGIBLE. The list of serial numbers to be burned/wiped.
 +	}
 +}
@@ -410,27 +412,46 @@ message TokenRelationship {
 ### GetNftInfo
 The following messages must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
 
+```diff
++/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on a NFT for a given TokenID (of type NON_FUNGIBLE) and serial number */
++message GetNftInfoQuery {
++    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
++    TokenID tokenId = 2; // The ID of the token for which information is requested
++    uint64 serialNumber = 3; // The serial number for the NFT for which information is requested
++}
+
++message NftInfo {
++    uint64 serialNumber = 1; // the serial number of the NFT
++    AccountID owner = 2; // The current owner of the NFT
++    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
++    string memo = 4; // Represents the unique metadata for a given NFT instance
++}
+
++message GetNftInfoResponse {
++    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
++    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
++    NftInfo nft = 3; // The NFT that his record is for
++}
+```
+
+### GetTokenNftInfo
+The following messages must be added in order to support the new `GetTokenNftInfo` rpc call added to `HTS`.
+
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
 
 ```diff
-+/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NftType */
-+message GetNftInfoQuery {
++/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE Token */
++message GetTokenNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    TokenID tokenId = 2; // The ID of the token for which information is requested
 +    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
 +}
 
-+message NftOwnershipInfo {
-+    uint serialNumber = 1; // the serial number of the NFT
-+    AccountID owner = 2; // The current owner of the NFT
-+    bytes meta = 3; // NFT metadata
-+}
-
-+message NftGetInfoResponse {
++message GetTokenNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    TokenID tokenId = 2; // The Token with NftType that this record is for
-+    repeated NftOwnershipInfo nfts = 3; // List nft info associated to the specified token
++    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
++    repeated NftInfo nfts = 3; // List of NFTs associated to the specified token
 +}
 ```
 
@@ -450,16 +471,17 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; ownedNFTs]
 +}
 
-+message NftInfo {
++message NftOwnedInfo {
 +    TokenID tokenId = 1; // The ID of the token
 +    uint serialNumber = 2; // The serial number of the NFT
-+    bytes meta = 3; // The NFT metadata
++    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
++    string memo = 4; // Represents the unique metadata for a given NFT instance
 +}
 
 +message GetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    AccountID accountId = 2; // The Account that this record is for
-+    repeated NftInfo nfts = 3; // List nfts associated to the account
++    repeated NftOwnedInfo nfts = 3; // List of NFTs associated to the account
 +}
 ```
 
@@ -472,14 +494,19 @@ There are several implications for already existing HTS integrations. Due to the
 - [Burn](#TokenBurnTransactionBody)
 - [Wipe](#TokenWipeAccountTransactionBody)
 
-
 ## Security Implicattions
 
-TODO
+### Fees
+
+The existing fee schedule must be updated to support two separate fee schedule definitions for the same operation depending on the type of the Token. The current fee schedule for the HTS operations will be preserved for tokens of type `FUNGIBLE` and new fee schedule will be added for tokens of type `NON_FUNGIBLE` that will define the costs for executing operations on `NON_FUNGIBLE` token types.
+
+### Throttling
+
+One trade off that must be clarified is that by extending HTS with `NON_FUNGIBLE` support its impossible to throttle the operations separately. All HTS related operations (independent on the token type) will be using one throttling configuration and it will be applied for both token types.
 
 ## How to Teach This
 
-TODO
+The Hedera documentation is to be updated with the new version of HTS once implemented. Blog posts and guides can be written and distributed in the social media channels for educating the community on the new functionality.
 
 ## Reference implementation
 
