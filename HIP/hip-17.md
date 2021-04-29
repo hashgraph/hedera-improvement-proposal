@@ -272,7 +272,7 @@ All serial numbers specified must be owned by the Treasury account in order for 
 ```diff
 +message AmountOrSerialNumbers {
 +	oneof {
-+		amount = 1; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn/wipe
++		uint64 amount = 1; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn/wipe
 +		repeated uint64 serialNumbers=2; //Applicable to tokens of type NON_FUNGIBLE. The list of serial numbers to be burned/wiped.
 +	}
 +}
