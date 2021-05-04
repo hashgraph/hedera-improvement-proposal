@@ -62,7 +62,7 @@ for the action on each entity that is automatically renewed. Hedera Services wil
 [entity-removal-record](https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#entity-removal-record)
 for the action on each entity that is automatically removed.
 
-If an entity `E` is created with auto-renew account `A`, then the transaction must extend the expiration time of `A` to be at least equal to `E` (unless it's already equal or greater).  That ensures that if `E` is an entity that can't be updated (e.g., an immutable smart contract with no admin key), then `A` will never expire before `E`. Similarly, if an update to `E` extends its expiration, then `A` must also be extended to last at least as long. This is also true if `E` is a TokenType, and `A` is its treasury.
+If an entity `E` is created with auto-renew account `A`, then the transaction must extend the expiration time of `A` to be at least equal to `E` (unless it's already equal or greater).  That ensures that if `E` is an entity that can't be updated (e.g., an immutable smart contract with no admin key), then `A` will never expire before `E`. Similarly, if an update or auto-update to `E` extends its expiration, then `A` must also be extended to last at least as long. This is also true if `E` is a TokenType, and `A` is its treasury.
 
 Crypto accounts will be prioritized for implementation of the auto-renewal feature, followed by consensus topics, tokens and smart contracts. Schedule entities
 do not auto-renew, and cannot be manually renewed with a transaction, and are always removed from the ledger when they expire.
