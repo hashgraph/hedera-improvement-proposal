@@ -146,8 +146,8 @@ service TokenService {
    rpc dissociateTokens (Transaction) returns (TransactionResponse);
    // Retrieves the metadata of a token
    rpc getTokenInfo (Query) returns (Response);
-   // gets info on a NFT by TokenID (of type NON_FUNGIBLE) and serial number
-   rpc getNftInfo (Query) returns (Response);
++  // gets info on a NFT by TokenID (of type NON_FUNGIBLE) and serial number
++  rpc getNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
 +  rpc getTokenNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given account
