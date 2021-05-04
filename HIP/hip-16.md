@@ -78,7 +78,7 @@ ACTIVE ----------------------------------------------------> ACTIVE
          (wait until expiration time)    (autorenew fails)              (grace period)
 ACTIVE -----------------------------------------------------> EXPIRED -----------------> REMOVED
   ^                                                              |
-  |   (an account chooses to renew with an update transaction)   |
+  |   (any account can renew it with an update transaction)      |
   +--------------------------------------------------------------+
 ```
 
