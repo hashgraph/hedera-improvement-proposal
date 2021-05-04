@@ -67,23 +67,21 @@ do not auto-renew, and cannot be manually renewed with a transaction, and are al
 
 To summarize, the state of an entity can change like this:
 ```
-         (delete transaction)                 (wait until expiration time)
-ACTIVE ------------------------> DELETED ------------------------------------> REMOVED
-
-
-
-
-           (wait until expiration time)    (auto-renew) 
-ACTIVE ----------------------------------------------------> ACTIVE
-
-
-
-
-         (wait until expiration time)    (auto-renew fails)             (grace period)
-ACTIVE -----------------------------------------------------> EXPIRED -----------------> REMOVED
-  ^                                                              |
-  |   (any account can renew it with an update transaction)      |
-  +--------------------------------------------------------------+
+                                            (success)                                           (success)
+     +------------------------------------------+---------------------------------------------------+ 
+     |                                          |                                                   |
+     |                                          |                                                   |
+     v    (wait until expiration time)          |    (fail)           (wait for grace period)       |      (fail)
+ACTIVE ---------------------------------> AUTO-RENEW -----> EXPIRED --------------------------> AUTO-RENEW -----> REMOVED
+ |   ^                                                         |
+ |   |                                                         |
+ |   +---------------------------------------------------------+
+ |                                           (update transaction from any account)
+ |
+ |
+ |
+ |    (delete transaction)                 (wait until expiration time)
+ +---------------------------> DELETED ------------------------------------> REMOVED                                             
 ```
 
 ## Backwards Compatibility
