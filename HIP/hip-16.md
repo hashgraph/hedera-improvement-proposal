@@ -65,6 +65,23 @@ for the action on each entity that is automatically removed.
 Crypto accounts will be prioritized for implementation of the autorenewal feature, followed by consensus topics, tokens and smart contracts. Schedule entities
 do not autorenew, and cannot be manually renewed with a transaction, and are always removed from the ledger when they expire.
 
+To summarize, the state of an entity can change like this:
+```
+         (delete transaction)                 (wait until expiration time)
+ACTIVE ------------------------> DELETED ------------------------------------> REMOVED
+
+
+           (wait until expiration time)    (autorenew) 
+ACTIVE ----------------------------------------------------> ACTIVE
+
+
+         (wait until expiration time)    (autorenew fails)              (grace period)
+ACTIVE -----------------------------------------------------> EXPIRED -----------------> REMOVED
+  ^                                                              |
+  |   (an account chooses to renew with an update transaction)   |
+  +--------------------------------------------------------------+
+```
+
 ## Backwards Compatibility
 
 There is no change in existing protobufs, other than adding optional `autorenewAccount` fields to entities that currently lack them. Account and entity owners must ensure that linked autorenew accounts have sufficient balances for autorenewal fees, or risk permanent removal of their entity.
