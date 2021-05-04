@@ -70,7 +70,7 @@ do not auto-renew, and cannot be manually renewed with a transaction, and are al
 To summarize, the state of an entity can change like this:
 ```
                                      (success)                                       (success)
-    +------------------------------------+-----------------------------------------------+ 
+    +------------------------------------+-----------------------------------------------+
     |                                    |                                               |
     |                                    |                                               |
     v  (wait until expiration time)      |     (fail)         (wait for grace period)    |       (fail)
@@ -79,12 +79,12 @@ ACTIVE ---------------------------> AUTO-RENEW -----> EXPIRED ------------------
  |  |                                                    |
  |  |       (update transaction from any account)        |
  |  +----------------------------------------------------+
- |                                     
+ |
  |
  |
  |
  | (delete transaction)               (wait until expiration time)
- +---------------------> DELETED -------------------------------------> REMOVED                                             
+ +---------------------> DELETED -------------------------------------> REMOVED
 ```
 
 ## Backwards Compatibility
