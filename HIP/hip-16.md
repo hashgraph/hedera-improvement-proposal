@@ -71,8 +71,12 @@ To summarize, the state of an entity can change like this:
 ACTIVE ------------------------> DELETED ------------------------------------> REMOVED
 
 
+
+
            (wait until expiration time)    (autorenew) 
 ACTIVE ----------------------------------------------------> ACTIVE
+
+
 
 
          (wait until expiration time)    (autorenew fails)              (grace period)
