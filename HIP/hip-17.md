@@ -352,8 +352,8 @@ message CryptoTransferTransactionBody {
 }
 
 +message NftTransfer {  
-+   AccountID sender = 1;  // Sending account
-+   AccountID receiver = 2;  // Receiving account
++   AccountID senderAccountID = 1;  // Sending account
++   AccountID receiverAccountID = 2;  // Receiving account
 +   uint64 serialNumber = 3;  // Serial number that is being transferred
 +}
 
