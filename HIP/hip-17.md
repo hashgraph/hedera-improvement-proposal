@@ -14,7 +14,7 @@ This HIP defines the changes that must be applied in order for the Hedera Token 
 
 ## Motivation
 
-The growing demand and use-cases for tokenisation point out that the current HTS design does not support all of the needs of the community. In this HIP we would like to describe a set of changes that would enable non-fungible types of tokens to be issued natively on Hedera Hashgraph. Having support for such tokens will allow an extended range of applications to be built on top of HTS.
+The growing demand and use-cases for tokenization point out that the current HTS design does not support all the needs of the community. In this HIP we would like to describe a set of changes that would enable non-fungible types of tokens to be issued natively on Hedera Hashgraph. Having support for such tokens will allow an extended range of applications to be built on top of HTS.
 
 ## Rationale
 
@@ -46,16 +46,16 @@ Tokens that have interchangeable value with one another, where any quantity of t
 Describes a token that can be divided into smaller fractions, represented as decimals. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals != 0`. 
 
 #### Whole
-Describes a token that cannot be divided into smaller fractions. Meaning that subdivision is not allowed - just whole number quantities. Current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals=0`.
+Describes a token that cannot be divided into smaller fractions. Meaning subdivision is not allowed - just whole number quantities. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals=0`.
 
 ### Non-fungible
 The NFT type is not interchangeable with other tokens of the same type as they typically have different values. 
 
 #### Whole
-Each instance of a token in the class can share some property values with other tokens in the class and have distincly unique values between them. They cannot be divided into smaller fractions, represented as decimals. Whole NFTs can be created by defining the `tokenType` as `NON_FUNGIBLE` and executing `Mint` operation on the Token.
+Each instance of a token in the class can share some property values with other tokens in the class and have distinctly unique values between them. They cannot be divided into smaller fractions, represented as decimals. Whole NFTs can be created by defining the `tokenType` as `NON_FUNGIBLE` and executing `Mint` operation on the Token.
 
 #### Fractional
-Similar to `Whole`, in terms that each instance of a token in the class can share some property values with other tokens in the class and have distincly unique values between them, but unlike `Whole`, they CAN be divided into smaller fractions.
+Similar to `Whole`, in terms that each instance of a token in the class can share some property values with other tokens in the class and have distinctly unique values between them, but unlike `Whole`, they CAN be divided into smaller fractions.
 
 The proposed specification does not support Fractional NFTs natively. They can be supported using the [Hybrid](#Hybrid-Tokens) approach.
 
@@ -70,10 +70,10 @@ TODO
 There are 2 approaches available when it comes to the HTS API and the configuration of the Token. 
 1. **Explicit**
 	The [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework)  uses an explicit approach when it comes to defining the different types of tokens. This can be seen by the `Token Type (Fungible/Non-Fungible)`, `Token Unit(Fractional, Whole or Singleton)`, `Value  Type(Intrinsic or Reference)` or `Supply(Fixed, Capped-Variable, Gated or Infinite)` categories.
-2. **Impllcit**
-	It is fair to say that some of the described properties above are not necessary to be explicitly defined, f.e instead for HAPI to request both `Supply` and `maxSupply` to be set, HAPI can implicitly derive the types of the supported tokens based on the arguments passed.
+2. **Implicit**
+	It is fair to say that some described properties above are not necessary to be explicitly defined, f.e instead for HAPI to request both `Supply` and `maxSupply` to be set, HAPI can implicitly derive the types of the supported tokens based on the arguments passed.
 
-The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as enums (example `Token Type`) and the rest of the configuration is derived implicitly from the provided variables.
+The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as enums (example `Token Type`), and the rest of the configuration is derived implicitly from the provided variables.
 
 The following matrix provides information on the mapping between token types/properties and the corresponding configuration:
 
@@ -91,6 +91,7 @@ The following matrix provides information on the mapping between token types/pro
 
 
 **Non-fungible Token Matrix****
+
 |                     	| Whole, Fixed* 	| Whole, Capped-Variable      	| Whole, Infinite             	| Singleton**                 	|
 |---------------------	|---------------	|-----------------------------	|-----------------------------	|-----------------------------	|
 | **tokenType**           	| NON_FUNGIBLE  	| NON_FUNGIBLE                	| NON_FUNGIBLE                	| NON_FUNGIBLE                	|
@@ -99,11 +100,11 @@ The following matrix provides information on the mapping between token types/pro
 | **initialSupply**       	| N/A           	| 0                           	| 0                           	| 0                           	|
 | **supplyKey & wipeKey** 	| N/A           	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	|
 
-*Non-fungible tokens cannot have `Fixed` supply since the creation of  `N` number of NFTs will not be supported in version 1. `initialSupply` must always be `0` for tokens of type `NON_FUNGIBLE`
+*Non-fungible tokens cannot have `Fixed` supply since the creation of  `N` number of NFTs will not be supported in version 1. `initialSupply` must always be `0` for tokens of type `NON_FUNGIBLE`.
 
-**Fixed/Capped-Variable or Infinite are invalid properties for NFT of type Singleton
+**Fixed/Capped-Variable or Infinite are invalid properties for NFT of type Singleton.
 
-***The proposal does not support Fractional NFTs
+***The proposal does not support Fractional NFTs.
 
 ## HAPI Changes
 
@@ -202,7 +203,7 @@ message TokenAssociateTransactionBody {
 The property `amount` is to be deprecated and instead a new message `AmountOrMemo` to be used.
 
 **Pros**
-- Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of minting operations
+- Explicit definition - using the `oneof` structure, clients can explicitly differentiate between the 2 types of minting operations
 
 **Cons**
  - Breaking change
@@ -212,7 +213,7 @@ Once created, an NFT instance cannot be updated, only transferred/wiped or burne
 +message AmountOrMemo {
 +	oneof {
 +		uint64 amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
-+   		string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
++   		string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created. Maximum allowed size is 100 bytes
 +	}
 +}
 
@@ -264,7 +265,7 @@ message TransactionReceipt {
 The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used.
 
 **Pros**
-- Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of burn operations
+- Explicit definition - using the `oneof` structure, clients can explicitly differentiate between the 2 types of burn operations
 
 **Cons**
  - Breaking change
@@ -289,7 +290,7 @@ message TokenBurnTransactionBody {
 The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used. 
 
 **Pros**
-- Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of wipe operations
+- Explicit definition - using the `oneof` structure, clients can explicitly differentiate between the 2 types of wipe operations
 
 **Cons**
  - It is a breaking change
@@ -338,11 +339,11 @@ message TokenInfo {
 
 **Rationale**
 
-With the current proposal, HTS API is being extended to support `NON_FUNGIBLE` types of tokens. All of the changes to the HAPI are being contained under the HTS service. Transfers in the HAPI are unified, meaning that there is only 1 `CryptoTransferTransactionBody` that is used to represent both `hbar` and HTS token transfers. The proposed solution keeps the consistency of containing the changes under the HTS specific API by extending the `TokenTransferList` with new type of transfer - Non fungible token transfer
+With the current proposal, HTS API is being extended to support `NON_FUNGIBLE` types of tokens. All the changes to the HAPI are being contained under the HTS service. Transfers in the HAPI are unified, meaning there is only 1 `CryptoTransferTransactionBody` that is used to represent both `hbar` and HTS token transfers. The proposed solution keeps the consistency of containing the changes under the HTS specific API by extending the `TokenTransferList` with new type of transfer - Non fungible token transfer.
 
 The change is backwards compatible due to the usage of `oneof`.
 
-The major difference between `FUNGIBLE` and `NON_FUNGIBLE` transfers is the representation type.  As per the [IWA specifciation](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md#representation-type), we can distinguish 2 types of representations - `common` and `unique`. `AccountAmount` message type uses the `common` representation type and `NftTransfer` uses the `unique` representation type.
+The major difference between `FUNGIBLE` and `NON_FUNGIBLE` transfers is the representation type.  As per the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md#representation-type), we can distinguish 2 types of representations - `common` and `unique`. `AccountAmount` message type uses the `common` representation type and `NftTransfer` uses the `unique` representation type.
 
 ```diff
 message CryptoTransferTransactionBody {
@@ -351,9 +352,9 @@ message CryptoTransferTransactionBody {
 }
 
 +message NftTransfer {  
-+   AccountID fromAccount = 1;  // Sending account
-+   AccountID toAccount = 2;  // Receiving account
-+   uint64 serialNo = 3;  // Serial number that is being transferred
++   AccountID sender = 1;  // Sending account
++   AccountID receiver = 2;  // Receiving account
++   uint64 serialNumber = 3;  // Serial number that is being transferred
 +}
 
 /* A list of token IDs and amounts representing the transferred out (negative) or into (positive) amounts, represented in the lowest denomination of the token */
@@ -410,6 +411,21 @@ message TokenRelationship {
 }
 ```
 
+### TokenBalances
+
+```diff
+/* A number of <i>transferable units</i> of a certain token.
+
+The transferable unit of a token is its smallest denomination, as given by the token's <tt>decimals</tt> property---each minted token contains <tt>10<sup>decimals</sup></tt> transferable units. For example, we could think of the cent as the transferable unit of the US dollar (<tt>decimals=2</tt>); and the tinybar as the transferable unit of hbar (<tt>decimals=8</tt>).
+
+Transferable units are not directly comparable across different tokens. */
+message TokenBalance {
+     TokenID tokenId = 1; // A unique token id
+!    uint64 balance = 2; // Number of transferable units of the identified token. For token of type FUNGIBLE - balance in the smallest denomination. For token of type NON_FUNGBILE - the number of NFTs held by the account 
+!    uint32 decimals = 3; // Tokens divide into <tt>10<sup>decimals</sup></tt> pieces. Always 0 for tokens of type NON_FUNGIBLE
+}
+```
+
 ### GetNftInfo
 The following messages must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
 
@@ -441,12 +457,14 @@ The following messages must be added in order to support the new `GetTokenNftInf
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
 
 ```diff
-+/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE Token */
++/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE Token.
+Example: If there are 10 NFTs issued, having start=0 and end=5 will query for the first 5 NFTs. Querying all 10 NFTs will require start=0 and end=10 
+*/
 +message GetTokenNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    TokenID tokenId = 2; // The ID of the token for which information is requested
-+    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
-+    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
++    uint64 start = 3; // Specifies the start index (including) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
++    uint64 end = 4; // Specifies the end index (excluding) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
 
 +message GetTokenNftInfoResponse {
@@ -464,12 +482,14 @@ Global dynamic variable must be added in the node configuring the maximum value 
 `ownedNFTs` is the number of NFTs that the specified account owns. The value can be retrieved from the `CryptoGetInfo` query.
 
 ```diff
-+/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M owned by the specified accountId */
++/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M owned by the specified accountId.
+Example: If Account A owns 5 NFTs (might be of different Token Entity), having start=0 and end=5 will return all of the NFTs
+*/
 +message GetAccountNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    AccountID accountId = 2; // The Account for which information is requested
-+    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; ownedNFTs]
-+    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; ownedNFTs]
++    uint64 start = 3; // Specifies the start index (including) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
++    uint64 end = 4; // Specifies the end index (excluding) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
 
 +message NftOwnedInfo {
@@ -486,6 +506,30 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +}
 ```
 
+## Example
+
+The following operations must be performed in order to create new `NON_FUNGIBLE` token, issue NFTs and transfer them:
+1. Creating `NON_FUNGIBLE` Token - Execute `TokenCreate` operation setting the `tokenType` to `NON_FUNGIBLE`. There must be a `supplyKey` set in order to create new NFT instances.
+2. Create new `NFT` instance - Execute `TokenMint` operation. The `memo` field is used for storing the metadata of the `NFT`. Once executed, the newly created `NFT` will have `serialNumber` set as part of the transaction receipt. The newly minted `NFT`s are owned by the treasury account specified on Token create operation.
+3. Associate `NON_FUNGIBLE` Token - Similarly to fungible token transfers, non-fungible transfers require the receiver of the account to be associated to the specified `Token` first. In order for an account to receive `NFT` instances, he must execute `TokenAssociate` operation. 
+4. Transferring `NFT` instances -  Execute `CryptoTransfer` transaction, populating the `TokenTransfer` list with a `nftTransfer` entry. Example:
+```
+cryptoTransferTransactionBody = {
+    tokenTransferList = [
+        {
+            token = "0.0.1500"
+            nftTransfers = [
+                {
+                    sender = "0.0.1234"
+                    receiver = "0.0.1235"
+                    serialNumber = 42
+                }
+            ]
+        }
+    ]
+}
+```
+  
 
 ## Backwards Compatibility
 
@@ -495,7 +539,7 @@ There are several implications for already existing HTS integrations. Due to the
 - [Burn](#TokenBurnTransactionBody)
 - [Wipe](#TokenWipeAccountTransactionBody)
 
-## Security Implicattions
+## Security Implications
 
 ### Fees
 
