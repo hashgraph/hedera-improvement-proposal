@@ -5,7 +5,7 @@ author: Daniel Ivanov (@Daniel-K-Ivanov)
 type: Standards Track
 category: Service
 status: Draft
-discussions-to: TODO
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
 ---
 ## Abstract
 
