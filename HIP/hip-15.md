@@ -73,13 +73,13 @@ d = int array for the digits of a (using 10 to represent "."), so 0.0.123 is [0,
 h = unsigned byte array containing the ledger ID followed by 6 zero bytes
 p3 = 26 * 26 * 26
 p5 = 26 * 26 * 26 * 26 * 26
-s0 = (d[0] + d[2] + d[4] + d[6] + ...) mod 11
-s1 = (d[1] + d[3] + d[5] + d[7] + ...) mod 11
-s = (...((((d[0] * 31) + d[1]) * 31) + d[2]) * 31 + ... ) * 31 + d[d.length-1]) mod p3
+sd0 = (d[0] + d[2] + d[4] + d[6] + ...) mod 11
+sd1 = (d[1] + d[3] + d[5] + d[7] + ...) mod 11
+sd = (...((((d[0] * 31) + d[1]) * 31) + d[2]) * 31 + ... ) * 31 + d[d.length-1]) mod p3
 sh = (...(((h[0] * 31) + h[1]) * 31) + h[2]) * 31 + ... ) * 31 + h[h.length-1]) mod p5
-c = (((d.length mod 5) * 11 + s0) * 11 + s1) * p3 + s + sh ) mod p5
-c = (c * 1000003) % p5
-checksum = c, written as 5 digits in base 26, using a-z
+c = (((d.length mod 5) * 11 + sd0) * 11 + sd1) * p3 + sd + sh ) mod p5
+cp = (c * 1000003) % p5
+checksum = cp, written as 5 digits in base 26, using a-z
 ```
 
 The checksum is a function of the ledger ID, so that the same address will have different checksums if it is on different ledgers. Cryptographically secure ledger IDs will be implemented as part of state proofs. But for now, the following three ledgers will each have a ledger ID consisting of a single byte:
@@ -151,10 +151,15 @@ When calculating checksums for all accounts of the form `0.0.x` as `x` counts up
 
 ## Reference Implementation
 
-Example code can be downloaded for these languages:
+Example code can be downloaded for these languages (the reference implementation is the Java version):
+- Pseudocode: [HIP-15-pseudocode.md](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-pseudocode.md)
+- Java: [AddressChecksums.java](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/AddressChecksums.java)
+- Javascript: [HIP-15-javascript.html](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-javascript.html)
+- Spreadsheet: [HIP-15-spreadsheet.xlsx](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-spreadsheet.xlsx)
+- Mathematica: [HIP-15-mathematica.nb.txt](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-mathematica.nb.txt)
+- All of the above: [HIP-15-all.zip](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-all.zip)
 
-- [AddressChecksums.java.zip](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/AddressChecksums.java.zip)
-- [HIP-15-javascript.html.zip](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-javascript.html.zip)
+
 
 ## Rejected Ideas
 
