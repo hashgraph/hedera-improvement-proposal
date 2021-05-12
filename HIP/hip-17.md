@@ -69,8 +69,10 @@ TODO
 ### Explicit vs Implicit definition
 There are 2 approaches available when it comes to the HTS API and the configuration of the Token. 
 1. **Explicit**
+
 	The [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework)  uses an explicit approach when it comes to defining the different types of tokens. This can be seen by the `Token Type (Fungible/Non-Fungible)`, `Token Unit(Fractional, Whole or Singleton)`, `Value  Type(Intrinsic or Reference)` or `Supply(Fixed, Capped-Variable, Gated or Infinite)` categories.
 2. **Implicit**
+
 	It is fair to say that some described properties above are not necessary to be explicitly defined, f.e instead for HAPI to request both `Supply` and `maxSupply` to be set, HAPI can implicitly derive the types of the supported tokens based on the arguments passed.
 
 The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as enums (example `Token Type`), and the rest of the configuration is derived implicitly from the provided variables.
@@ -176,7 +178,7 @@ message TokenCreateTransactionBody {
 !	uint32 decimals = 4; // For tokens of type FUNGIBLE - the number of decimal places a token is divisible by. For tokens of type NON_FUNGIBLE - value must be 0. 
 +	int64 maxSupply = 5; // IWA Compatibility. For tokens of type FUNGIBLE - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
 !	uint64 initialSupply = 6; // Specifies the initial supply of tokens to be put in circulation. The initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible. In the case for NON_FUNGIBLE Type the value must be 0
-!   AccountID treasury = 7; // The account which will act as a treasury for the token. This account will receive the specified initial supply or the newly minted NFTs in the case for NON_FUNGIBLE Type
+!       AccountID treasury = 7; // The account which will act as a treasury for the token. This account will receive the specified initial supply or the newly minted NFTs in the case for NON_FUNGIBLE Type
 	Key adminKey = 8; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
    	Key kycKey = 9; // The key which can grant or revoke KYC of an account for the token's transactions. If empty, KYC is not required, and KYC grant or revoke operations are not possible.
    	Key freezeKey = 10; // The key which can sign to freeze or unfreeze an account for token transactions. If empty, freezing is not possible
@@ -212,8 +214,8 @@ Once created, an NFT instance cannot be updated, only transferred/wiped or burne
 ```diff
 +message AmountOrMemo {
 +	oneof {
-+		int64 amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
-+   	string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created. Maximum allowed size is 100 bytes
++           int64 amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
++   	    string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created. Maximum allowed size is 100 bytes
 +	}
 +}
 
@@ -391,7 +393,7 @@ message CryptoGetInfoResponse {
         repeated LiveHash liveHashes = 14; // All of the livehashes attached to the account (each of which is a hash along with the keys that authorized it and can delete it)
         repeated TokenRelationship tokenRelationships = 15; // All tokens related to this account
         string memo = 16; // The memo associated with the account
-+	    int64 ownedNFTs = 17; // The number of NFTs that are owned by this account
++       int64 ownedNFTs = 17; // The number of NFTs that are owned by this account
     }
     AccountInfo accountInfo = 2; // Info about the account (a state proof can be generated for this)
 }
@@ -462,8 +464,8 @@ Global dynamic variable must be added in the node configuring the maximum value 
 
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE Token.
-+Example: If there are 10 NFTs issued, having start=0 and end=5 will query for the first 5 NFTs. Querying +all 10 NFTs will require start=0 and end=10 
-+*/
++ * Example: If there are 10 NFTs issued, having start=0 and end=5 will query for the first 5 NFTs. Querying +all 10 NFTs will require start=0 and end=10 
++ */
 +message GetTokenNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    TokenID tokenId = 2; // The ID of the token for which information is requested
@@ -487,8 +489,8 @@ Global dynamic variable must be added in the node configuring the maximum value 
 
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M owned by the specified accountId.
-Example: If Account A owns 5 NFTs (might be of different Token Entity), having start=0 and end=5 will return all of the NFTs
-*/
++ * Example: If Account A owns 5 NFTs (might be of different Token Entity), having start=0 and end=5 will return all of the NFTs
++ */
 +message GetAccountNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    AccountID accountId = 2; // The Account for which information is requested
