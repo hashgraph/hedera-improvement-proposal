@@ -1,17 +1,16 @@
----
-hip: 16
-title: Entity Auto-Renewal
-author: Leemon Baird (@lbaird), Nosh Mody (@noshmody), Quan Nguyen (@qnswirlds)
-type: Standards Track
-category: Service
-status: Draft
-created: 2021-03-29
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/64
-updated:
-requires:
-replaces:
-superseded-by:
----
+- hip: 16
+- title: Entity Auto-Renewal
+- author: Leemon Baird (@lbaird), Nosh Mody (@noshmody), Quan Nguyen (@qnswirlds)
+- type: Standards Track
+- category: Service
+- status: Draft
+- created: 2021-03-29
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/64
+- updated:
+- requires:
+- replaces:
+- superseded-by:
+
 
 ## Abstract
 
