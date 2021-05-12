@@ -1,13 +1,11 @@
----
-hip: 12
-title: Zero Knowledge Proofs
-author: Rahul Kothari - rahul.kothari.201@gmail.com
-type: Standards Track
-category: API
-status: Draft
-created: 2021-03-06
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/52
----
+- hip: 12
+- title: Zero Knowledge Proofs
+- author: Rahul Kothari - rahul.kothari.201@gmail.com
+- type: Standards Track
+- category: API
+- status: Draft
+- created: 2021-03-06
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/52
 
 ## Abstract
 
