@@ -4,12 +4,9 @@
 - type: Standards Track
 - category: Application
 - status: Draft
-- created: 2020-2-18
+- created: 2021-02-18
 - discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/40
-- updated: 2020-3-08
-- requires:
-- replaces:
-- superseded-by:
+- updated: 2021-05-12
 
 ## Abstract
 
