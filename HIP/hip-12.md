@@ -6,6 +6,7 @@
 - status: Draft
 - created: 2021-03-06
 - discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/52
+- updated: 2021-05-12
 
 ## Abstract
 
