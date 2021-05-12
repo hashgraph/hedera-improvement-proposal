@@ -85,7 +85,7 @@ The following matrix provides information on the mapping between token types/pro
 |---------------------	|-------------------------------	|------------------------------------------	|------------------------------------------	|-------------------------------	|------------------------------------------	|------------------------------------------	|
 | **tokenType**           	| FUNGIBLE                      	| FUNGIBLE                                 	| FUNGIBLE                                 	| FUNGIBLE                      	| FUNGIBLE                                 	| FUNGIBLE                                 	|
 | **decimals**            	| decimals != 0                 	| decimals != 0                            	| decimals != 0                            	| 0                  	| 0                             	| 0                             	|
-| **maxSupply**           	| N                   	| N                              	| UINT64_MAX_VALUE               	| N                   	| N                              	| UINT64_MAX_VALUE               	|
+| **maxSupply**           	| N                   	| N                              	| INT64_MAX_VALUE               	| N                   	| N                              	| INT64_MAX_VALUE               	|
 | **initialSupply**       	| N               	| x, where x <= N 	| x, where x <= N 	| N               	| x, where x <= N 	| x, where x <= N 	|
 | **supplyKey & wipeKey** 	| supplyKey=null & wipeKey=null 	| supplyKey=* & wipeKey=*                  	| supplyKey=* & wipeKey=*                  	| supplyKey=null & wipeKey=null 	| supplyKey=* & wipeKey=*                  	| supplyKey=* & wipeKey=*                  	|
 
@@ -96,7 +96,7 @@ The following matrix provides information on the mapping between token types/pro
 |---------------------	|---------------	|-----------------------------	|-----------------------------	|-----------------------------	|
 | **tokenType**           	| NON_FUNGIBLE  	| NON_FUNGIBLE                	| NON_FUNGIBLE                	| NON_FUNGIBLE                	|
 | **decimals**            	| N/A           	| 0                           	| 0                           	| 0                           	|
-| **maxSupply**           	| N/A           	| n                           	| UINT64_MAX_VALUE            	| 1                           	|
+| **maxSupply**           	| N/A           	| n                           	| INT64_MAX_VALUE            	| 1                           	|
 | **initialSupply**       	| N/A           	| 0                           	| 0                           	| 0                           	|
 | **supplyKey & wipeKey** 	| N/A           	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	|
 
@@ -174,9 +174,9 @@ message TokenCreateTransactionBody {
 	string name = 2; // The publicly visible name of the token, limited to a UTF-8 encoding of length <tt>tokens.maxSymbolUtf8Bytes</tt>.
    	string symbol = 3; // The publicly visible token symbol, limited to a UTF-8 encoding of length <tt>tokens.maxTokenNameUtf8Bytes</tt>
 !	uint32 decimals = 4; // For tokens of type FUNGIBLE - the number of decimal places a token is divisible by. For tokens of type NON_FUNGIBLE - value must be 0. 
-+	uint64 maxSupply = 5; // IWA Compatibility. For tokens of type FUNGIBLE - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
++	int64 maxSupply = 5; // IWA Compatibility. For tokens of type FUNGIBLE - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
 !	uint64 initialSupply = 6; // Specifies the initial supply of tokens to be put in circulation. The initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible. In the case for NON_FUNGIBLE Type the value must be 0
-!   	AccountID treasury = 7; // The account which will act as a treasury for the token. This account will receive the specified initial supply or the newly minted NFTs in the case for NON_FUNGIBLE Type
+!   AccountID treasury = 7; // The account which will act as a treasury for the token. This account will receive the specified initial supply or the newly minted NFTs in the case for NON_FUNGIBLE Type
 	Key adminKey = 8; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
    	Key kycKey = 9; // The key which can grant or revoke KYC of an account for the token's transactions. If empty, KYC is not required, and KYC grant or revoke operations are not possible.
    	Key freezeKey = 10; // The key which can sign to freeze or unfreeze an account for token transactions. If empty, freezing is not possible
@@ -212,8 +212,8 @@ Once created, an NFT instance cannot be updated, only transferred/wiped or burne
 ```diff
 +message AmountOrMemo {
 +	oneof {
-+		uint64 amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
-+   		string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created. Maximum allowed size is 100 bytes
++		int64 amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
++   	string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created. Maximum allowed size is 100 bytes
 +	}
 +}
 
@@ -257,7 +257,7 @@ message TransactionReceipt {
     // In the receipt of a ScheduleCreate or ScheduleSign that resolves to SUCCESS, the TransactionID that should be used to query for the receipt or record of the relevant scheduled transaction
     TransactionID scheduledTransactionID = 13;
 +   // In the receipt of a TokenMintTransactionBody, the serial number of the newly created NFT
-+   uint64 serialNumber = 14;     
++   int64 serialNumber = 14;     
 }
 ```
 
@@ -274,8 +274,8 @@ All serial numbers specified must be owned by the Treasury account in order for 
 ```diff
 +message AmountOrSerialNumbers {
 +	oneof {
-+		uint64 amount = 1; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn/wipe
-+		repeated uint64 serialNumbers=2; //Applicable to tokens of type NON_FUNGIBLE. The list of serial numbers to be burned/wiped.
++		int64 amount = 1; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn/wipe
++		repeated int64 serialNumbers = 2; //Applicable to tokens of type NON_FUNGIBLE. The list of serial numbers to be burned/wiped.
 +	}
 +}
 
@@ -316,7 +316,7 @@ message TokenInfo {
    string name = 3; // The name of the token. It is a string of ASCII only characters
    string symbol = 4; // The symbol of the token. It is a UTF-8 capitalized alphabetical string
 !  uint32 decimals = 5; // The number of decimal places a token is divisible by. Always 0 for tokens of type NON_FUNGIBLE. This field can never be changed! 
-+  uint64 maxSupply = 6; // For tokens of type FUNGIBLE - The Maximum number of fungible tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be in circulation. This field can never be changed! 
++  int64 maxSupply = 6; // For tokens of type FUNGIBLE - The Maximum number of fungible tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be in circulation. This field can never be changed! 
 !  uint64 totalSupply = 7; // For tokens of type FUNGIBLE - the total supply of tokens that are currently in circulation. For tokens of type NON_FUNGIBLE - the number of NFTs created of this token instance
    AccountID treasury = 8; // The ID of the account which is set as Treasury
    Key adminKey = 9; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
@@ -354,15 +354,15 @@ message CryptoTransferTransactionBody {
 +message NftTransfer {  
 +   AccountID senderAccountID = 1;  // Sending account
 +   AccountID receiverAccountID = 2;  // Receiving account
-+   uint64 serialNumber = 3;  // Serial number that is being transferred
++   int64 serialNumber = 3;  // Serial number that is being transferred
 +}
 
 /* A list of token IDs and amounts representing the transferred out (negative) or into (positive) amounts, represented in the lowest denomination of the token */
 message TokenTransferList {
     TokenID token = 1; // The ID of the token
 +   oneof {
-!	repeated AccountAmount transfers = 2; // Applicable to tokens of type FUNGIBLE. Multiple list of AccountAmounts, each of which has an account and amount
-+	repeated NftTransfer nftTransfers = 3; // Applicable to tokens of type NON_FUNGIBLE
+!	    repeated AccountAmount transfers = 2; // Applicable to tokens of type FUNGIBLE. Multiple list of AccountAmounts, each of which has an account and amount
++	    repeated NftTransfer nftTransfers = 3; // Applicable to tokens of type NON_FUNGIBLE
 +   }
 }
 ```
@@ -391,7 +391,7 @@ message CryptoGetInfoResponse {
         repeated LiveHash liveHashes = 14; // All of the livehashes attached to the account (each of which is a hash along with the keys that authorized it and can delete it)
         repeated TokenRelationship tokenRelationships = 15; // All tokens related to this account
         string memo = 16; // The memo associated with the account
-+	uint64 ownedNFTs = 17; // The number of NFTs that are owned by this account
++	    int64 ownedNFTs = 17; // The number of NFTs that are owned by this account
     }
     AccountInfo accountInfo = 2; // Info about the account (a state proof can be generated for this)
 }
@@ -430,15 +430,20 @@ message TokenBalance {
 The following messages must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
 
 ```diff
++/* Represents a NFT on the ledger */
++message NftId {
++	TokenID tokenId = 1; // The (non-fungible) token of which this NFT is an instance  
++	int64 serialNumber = 2; // The unique identifier of this instance
++}
+
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on a NFT for a given TokenID (of type NON_FUNGIBLE) and serial number */
 +message GetNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+    TokenID tokenId = 2; // The ID of the token for which information is requested
-+    uint64 serialNumber = 3; // The serial number for the NFT for which information is requested
++    NftId nftId = 2; // The NFT of interest
 +}
 
 +message NftInfo {
-+    uint64 serialNumber = 1; // the serial number of the NFT
++    NftId nftId = 1; // The ID of the NFT instance
 +    AccountID owner = 2; // The current owner of the NFT
 +    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
 +    string memo = 4; // Represents the unique metadata for a given NFT instance
@@ -446,8 +451,7 @@ The following messages must be added in order to support the new `GetNftInfo` rp
 
 +message GetNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
-+    NftInfo nft = 3; // The NFT that his record is for
++    NftInfo nft = 2; // The NFT that his record is for
 +}
 ```
 
@@ -458,13 +462,13 @@ Global dynamic variable must be added in the node configuring the maximum value 
 
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE Token.
-Example: If there are 10 NFTs issued, having start=0 and end=5 will query for the first 5 NFTs. Querying all 10 NFTs will require start=0 and end=10 
-*/
++Example: If there are 10 NFTs issued, having start=0 and end=5 will query for the first 5 NFTs. Querying +all 10 NFTs will require start=0 and end=10 
++*/
 +message GetTokenNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    TokenID tokenId = 2; // The ID of the token for which information is requested
-+    uint64 start = 3; // Specifies the start index (including) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
-+    uint64 end = 4; // Specifies the end index (excluding) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
++    int64 start = 3; // Specifies the start index (inclusive) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
++    int64 end = 4; // Specifies the end index (exclusive) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
 
 +message GetTokenNftInfoResponse {
@@ -488,21 +492,14 @@ Example: If Account A owns 5 NFTs (might be of different Token Entity), having s
 +message GetAccountNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    AccountID accountId = 2; // The Account for which information is requested
-+    uint64 start = 3; // Specifies the start index (including) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
-+    uint64 end = 4; // Specifies the end index (excluding) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
-+}
-
-+message NftOwnedInfo {
-+    TokenID tokenId = 1; // The ID of the token
-+    uint serialNumber = 2; // The serial number of the NFT
-+    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
-+    string memo = 4; // Represents the unique metadata for a given NFT instance
++    int64 start = 3; // Specifies the start index (inclusive) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
++    int64 end = 4; // Specifies the end index (exclusive) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
 
 +message GetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    AccountID accountId = 2; // The Account that this record is for
-+    repeated NftOwnedInfo nfts = 3; // List of NFTs associated to the account
++    repeated NftInfo nfts = 3; // List of NFTs associated to the account
 +}
 ```
 
@@ -563,7 +560,26 @@ No rejected ideas so far
 
 ## Open Issues
 
-TODO
+### 1. Flatten vs one-of structure
+
+`TokenMintTransactionBody` has a `one-of` field. Some concerns against using the `one-of` approach:
+-  It’s a breaking change to clients, and it requires both services and mirror node to always look at both fields for information. Mirror nodes indefinitely whether removed from proto or not.
+-  It’s not a good logical grouping which is indicated by its name just being the concatenation of other fields within it.
+-  It doesn't support future expandability. If in the future we also need an additional field that only applies to NFTs it can’t be put into this oneof.
+-  It differs from how some other transactions handle fields that only apply to only NFT or FTs. For example, `TokenCreateTransactionBody` has `initialSupply` and `decimals` that only apply to fungible.
+-  It would be simpler and less breaking to simply flatten the list of fields and indicate in the comments which apply to FT vs NFT
+
+The same question is applicable to `amountOrSerialNumbers` used in `TokenBurnTransactionBody` and `TokenWipeTransactionBody`
+
+### 2. Populating Redundant information on Queries
+
+The `NftInfo` message contains the information related to a given `NFT` instance. In the case of `GetNftInfo` query, there are no redundant properties populated, however, the message is used in `GetTokenNftInfo` as-well as in `GetAccountNftInfo`. Depending on the query, some properties will be redundant. For example:
+- When querying for `GetTokenNftInfo`, the `NFT`s returned will populate the `tokenId` property inside `NftId` message even though it will be redundant
+- When querying for `GetAccountNftInfo`, the `NFT`s returned will populate the `owner` property inside `NftInfo` message even though it will be redundant.
+
+Initially the plan was to **NOT** populate `tokenId` on `GetTokenNftInfo` and `owner` on `GetAccountNftInfo`, however with the introduction of the `NftId` message it does not seem consistent to populate only the `serialNumber` property of the `NftId` message on `GetTokenInfoQueries`.
+
+When it comes to `GetAccountNftInfo` query, the `NFT`s returned **could** not populate the `owner` property of the `NftInfo` message, however this will introduce inconsistencies since in one of the queries redundant properties are populated (`GetTokenNftInfo`), but in others, they are skipped (`GetAccountNftInfo`) 
 
 ## References
 
