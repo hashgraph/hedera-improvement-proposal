@@ -47,6 +47,7 @@ An excellent place to discuss your proposal and get feedback is in the [issues s
 | 15 | [Address Checksum](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-15.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/47 | Draft |
 | 16 | [Entity Auto-Renewal](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-16.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/64 | Draft |
 | 17 | [Non-Fungible Tokens](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-17.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/74 | Draft |
+| 18 | [Custom Hedera Token Service Fees](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-18.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/90 | Draft |
 
 ## Disclaimer(s): 
 
