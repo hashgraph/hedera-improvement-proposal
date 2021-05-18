@@ -1,11 +1,12 @@
----
-Title: Custom Hedera Token Service Fees
-Author: Cooper Kunz <cooper@calaxy.com>, Rahul Kothari <rahul.kothari.201@gmail.com>
-Type: Standard, Service
-Status: Draft
-Created: April 30, 2021
-Discussions: https://github.com/hashgraph/hedera-improvement-proposal/discussions/90
----
+- hip: 18 
+- title: Custom Hedera Token Service Fees
+- author: Cooper Kunz <cooper@calaxy.com>, Rahul Kothari <rahul.kothari.201@gmail.com>
+- type: Standard
+- category: Service
+- status: Draft
+- created: 2021-04-30
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/90
+- updated: 2021-05-18
 
 ## Abstract
 We propose adding a limited set of functionality to the Hedera Token Service (HTS) that allows developers to define custom fees between different tokens at time of creation, or at a later modification date with Hedera’s controlled mutability ([1](https://hedera.com/blog/code-is-law-but-what-if-the-law-needs-to-change)). These custom token fees will enable dynamic ecosystem fees as we see with projects such as Uniswap ([2](https://uniswap.org/docs/v2/protocol-overview/how-uniswap-works/)), or even Hedera itself ([3](https://hedera.com/hh_whitepaper_v2.1-20200815.pdf)). Additional implementations could even allow implementation of custom, and if desired, perpetual royalties ([4](https://messari.io/article/explain-it-like-i-am-5-nfts)), for any token issued on HTS, whether fungible or non-fungible.
