@@ -1,7 +1,7 @@
 - hip: 18 
 - title: Custom Hedera Token Service Fees
 - author: Cooper Kunz <cooper@calaxy.com>, Rahul Kothari <rahul.kothari.201@gmail.com>
-- type: Standard
+- type: Standards Track
 - category: Service
 - status: Draft
 - created: 2021-04-30
