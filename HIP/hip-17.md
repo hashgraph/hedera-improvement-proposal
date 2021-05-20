@@ -10,7 +10,7 @@ discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discuss
 
 ## Abstract
 
-The HIP defines the changes that must be applied in order for Hedera Services to support Non-fungible tokens.
+The HIP defines the changes that must be applied in order for Hedera Services to support new token types as-well as conform to the [IWA Specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md) as much as possible.
 
 ## Motivation
 
@@ -18,34 +18,36 @@ The growing demand and use-cases for tokenization point out that the current HTS
 
 ## Rationale
 
-The following proposal is building on top of the current HTS API instead of creating a brand new NFT service. There are 2 major reasons for that:
+The following proposal is building on top of the current HTS API instead of creating a brand-new service. There are 2 major reasons for that:
 - Developers desire the tokenization APIs to look similar for both fungible and non-fungible tokens
 - Though fungible and non-fungible tokens are different, there are a lot of commonalities - admin keys, KYC, supply, mint and burn behaviours
 
 ## Specification
 
-Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework) we can define the following combinations of fungible and non-fungible tokens:
+Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework) we can define the following subset of token combinations:
 
 ```
  HTS
 │
 └─── Fungible
-│   └─── Fractional ---> Currently supported by HTS
-│   └─── Whole ---> Currently supported by HTS   
-└─── Non-Fungible
-    └─── Whole ---> Supported with the current proposal             
-    └─── Fractional ---> Not supported by the proposal, though can be supported by HIP standards
-    └─── Singleton ---> Supported with the current proposal
+│   └─── Common ---> Currently supported by HTS
+│   └─── Unique ---> Addressed in this proposal   
+└─── Non-Fungible             
+    └─── Unique ---> Addressed in this proposal
 ```
 
-### Fungible
+### Common Fungible
 
 Tokens that have interchangeable value with one another, where any quantity of them has the same value as another equal quantity if they are in the same class or series.
+TODO
 
-#### Fractional
+### Unique Fungible
+
+TODO
 Describes a token that can be divided into smaller fractions, represented as decimals. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals != 0`. 
 
-#### Whole
+#### Unique Non-Fungible
+TODO
 Describes a token that cannot be divided into smaller fractions. Meaning subdivision is not allowed - just whole number quantities. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals=0`.
 
 ### Non-fungible
@@ -73,14 +75,13 @@ There are 2 approaches available when it comes to the HTS API and the configurat
 	The [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework)  uses an explicit approach when it comes to defining the different types of tokens. This can be seen by the `Token Type (Fungible/Non-Fungible)`, `Token Unit(Fractional, Whole or Singleton)`, `Value  Type(Intrinsic or Reference)` or `Supply(Fixed, Capped-Variable, Gated or Infinite)` categories.
 2. **Implicit**
 
-	It is fair to say that some described properties above are not necessary to be explicitly defined, f.e instead for HAPI to request both `Supply` and `maxSupply` to be set, HAPI can implicitly derive the types of the supported tokens based on the arguments passed.
+	It is fair to say that some described properties above are not necessary to be explicitly defined, f.e instead for HAPI to request a separate `enum` for `WHOLE/FRACTIONAL` to be set, it can implicitly derive the types of the token based on the `decimals` property that is passed.
 
-The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as enums (example `Token Type`), and the rest of the configuration is derived implicitly from the provided variables.
+The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as enums (example `TokenType` and `TokenRepresentationType`), and the rest of the configuration is derived implicitly from the provided variables (deriving `Fractional/Whole` from `decimals`)
 
 The following matrix provides information on the mapping between token types/properties and the corresponding configuration:
 
-
-
+TODO change?
 **Fungible Token Matrix**
 
 |                     	| Fractional, Fixed             	| Fractional, Capped-Variable              	| Fractional, Infinite                     	| Whole, Fixed                  	| Whole, Capped-Variable                   	| Whole, Infinite                          	|
