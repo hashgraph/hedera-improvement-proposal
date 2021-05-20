@@ -386,3 +386,6 @@ Other general/categorical examples include:
 - Automated community incentives 
 - Native protocol tokens being built upon Hedera, e.g. those used in many 3rd party apps
 - Trustless perpetual royalties, e.g. NFTs
+
+## Copyright
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
