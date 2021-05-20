@@ -386,3 +386,19 @@ Other general/categorical examples include:
 - Automated community incentives 
 - Native protocol tokens being built upon Hedera, e.g. those used in many 3rd party apps
 - Trustless perpetual royalties, e.g. NFTs
+
+## References
+- 1 - https://hedera.com/blog/code-is-law-but-what-if-the-law-needs-to-change
+- 2 - https://uniswap.org/docs/v2/protocol-overview/how-uniswap-works/
+- 3 - https://hedera.com/hh_whitepaper_v2.1-20200815.pdf
+- 4 - https://messari.io/article/explain-it-like-i-am-5-nfts
+- 5 - https://hedera.com/hh_tokenization-whitepaper_v2_20210101.pdf
+- 6 - https://docs.hedera.com/guides/docs/sdks/tokens/define-a-token
+- 7 - https://github.com/hashgraph/hedera-improvement-proposal/issues/33
+- 8 - https://docs.hedera.com/guides/core-concepts/scheduled-transaction
+- 9 - https://docs.hedera.com/guides/docs/hedera-api/basic-types/feedata
+- 10 - https://www.youtube.com/watch?v=hCPXKR1e7Ro
+- 11 - https://docs.hedera.com/guides/docs/hedera-api/consensus-service/consensussubmitmessage#consensussubmitmessagetransactionbody
+
+## Copyright
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
