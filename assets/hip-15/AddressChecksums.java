@@ -102,13 +102,13 @@ public class AddressChecksums {
 	 * h = unsigned byte array containing the ledger ID followed by 6 zero bytes
 	 * p3 = 26 * 26 * 26
 	 * p5 = 26 * 26 * 26 * 26 * 26
-	 * s0 = (d[0] + d[2] + d[4] + d[6] + ...) mod 11
-	 * s1 = (d[1] + d[3] + d[5] + d[7] + ...) mod 11
-	 * s = (...((((d[0] * 31) + d[1]) * 31) + d[2]) * 31 + ... ) * 31 + d[d.length-1]) mod p3
+	 * sd0 = (d[0] + d[2] + d[4] + d[6] + ...) mod 11
+	 * sd1 = (d[1] + d[3] + d[5] + d[7] + ...) mod 11
+	 * sd = (...((((d[0] * 31) + d[1]) * 31) + d[2]) * 31 + ... ) * 31 + d[d.length-1]) mod p3
 	 * sh = (...(((h[0] * 31) + h[1]) * 31) + h[2]) * 31 + ... ) * 31 + h[h.length-1]) mod p5
-	 * c = (((d.length mod 5) * 11 + s0) * 11 + s1) * p3 + s + sh ) mod p5
-	 * c = (c * 1000003) mod p5
-	 * checksum = c, written as 5 digits in base 26, using a-z
+	 * c = (((d.length mod 5) * 11 + sd0) * 11 + sd1) * p3 + sd + sh ) mod p5
+	 * cp = (c * 1000003) mod p5
+	 * checksum = cp, written as 5 digits in base 26, using a-z
 	 * }</pre>
 	 *
 	 * @param ledgerId
@@ -121,11 +121,12 @@ public class AddressChecksums {
 		String a = addr;      //address, such as "0.0.123"
 		int[] d = new int[addr.length()]; //digits of address, with 10 for '.', such as [0,10,0,10,1,2,3]
 		byte[] h = ledgerId;  //ledger ID as an array of unsigned bytes
-		int s0 = 0;           //sum of even positions (mod 11)
-		int s1 = 0;           //sum of odd positions (mod 11)
-		int s = 0;            //weighted sum of all positions (mod p3)
+		int sd0 = 0;           //sum of even positions (mod 11)
+		int sd1 = 0;           //sum of odd positions (mod 11)
+		int sd = 0;            //weighted sum of all positions (mod p3)
 		int sh = 0;           //hash of the ledger ID
-		long c = 0;           //the checksum, as a single number (it's a long, to prevent overflow in c * m)
+		long c = 0;           //the checksum, before the final permutation
+		long cp = 0;           //the checksum, as a single number (it's a long, to prevent overflow)
 		String checksum = ""; //the answer to return
 		final int p3 = 26 * 26 * 26;             //3 digits base 26
 		final int p5 = 26 * 26 * 26 * 26 * 26;   //5 digits base 26
@@ -138,11 +139,11 @@ public class AddressChecksums {
 			d[i] = (a.charAt(i) == '.' ? 10 : (a.charAt(i) - ascii_0));
 		}
 		for (int i = 0; i < d.length; i++) {
-			s = (w * s + d[i]) % p3;
+			sd = (w * sd + d[i]) % p3;
 			if (i % 2 == 0) {
-				s0 = (s0 + d[i]) % 11;
+				sd0 = (sd0 + d[i]) % 11;
 			} else {
-				s1 = (s1 + d[i]) % 11;
+				sd1 = (sd1 + d[i]) % 11;
 			}
 		}
 		for (byte sb : h) {
@@ -151,11 +152,11 @@ public class AddressChecksums {
 		for (int i = 0; i < 6; i++) { //process 6 zeros as if they were appended to the ledger ID
 			sh = (w * sh + 0) % p5;
 		}
-		c = ((((a.length() % 5) * 11 + s0) * 11 + s1) * p3 + s + sh) % p5;
-		c = (c * m) % p5;
+		c = ((((a.length() % 5) * 11 + sd0) * 11 + sd1) * p3 + sd + sh) % p5;
+		cp = (c * m) % p5;
 		for (int i = 0; i < 5; i++) {
-			checksum = Character.toString(ascii_a + (int)(c % 26)) + checksum;
-			c /= 26;
+			checksum = Character.toString(ascii_a + (int)(cp % 26)) + checksum;
+			cp /= 26;
 		}
 
 		return checksum;
