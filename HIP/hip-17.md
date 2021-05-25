@@ -156,11 +156,11 @@ service TokenService {
 
 ### BaseTypes
 ```diff
-+ /**
-+   * Possible Token Types (IWA Compatibility).
-+   * Apart from fungible and non-fungible, Tokens can have either a common or unique representation. This distinction might seem subtle, but it is important when considering
-+   * how tokens can be traced and if they can have isolated and unique properties.
-+   */
++/**
++ * Possible Token Types (IWA Compatibility).
++ * Apart from fungible and non-fungible, Tokens can have either a common or unique representation. This distinction might seem subtle, but it is important when considering
++ * how tokens can be traced and if they can have isolated and unique properties.
++ */
 +enum TokenType {
 +    /**
 +     * Interchangeable value with one another, where any quantity of them has the same value as another equal quantity if they are in the same class.
@@ -168,15 +168,10 @@ service TokenService {
 +     */
 +    FUNGIBLE_COMMON = 0;
 +    /**
-+     * Interchangeable value with one another, where any quantity of them has the same value as another equal quantity if they are in the same class.
-+     * Individually traced and can carry unique properties (e.g. serial number).
-+     */
-+    FUNGIBLE_UNIQUE = 1;
-+    /**
 +     * Unique, not interchangeable with other tokens of the same type as they typically have different values.
 +     * Individually traced and can carry unique properties (e.g. serial number).
 +     */
-+    NON_FUNGIBLE_UNIQUE = 2;
++    NON_FUNGIBLE_UNIQUE = 1;
 +}
 ```
 
