@@ -126,7 +126,7 @@ https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.
 
 https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#entity-removal-record
 
-**This Entity Auto-Renewal feature has been implemented in Hedera Services via [PR #1376](https://github.com/hashgraph/hedera-services/pull/1376)**
+> **Note: This Entity Auto-Renewal feature has been implemented in Hedera Services via [PR #1376](https://github.com/hashgraph/hedera-services/pull/1376).**
 
 ## Rejected Ideas
 
