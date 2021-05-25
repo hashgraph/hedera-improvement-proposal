@@ -88,7 +88,7 @@ The following matrix provides information on the mapping between token types/pro
 | **supplyKey & wipeKey** 	| supplyKey=null & wipeKey=null 	| supplyKey=* & wipeKey=*                  	| supplyKey=* & wipeKey=*                  	| supplyKey=null & wipeKey=null 	| supplyKey=* & wipeKey=*                  	| supplyKey=* & wipeKey=*                  	|
 
 
-**Non-fungible Unique Token Matrix****
+**Non-fungible Unique Token Matrix**
 
 |                     	| Whole, Fixed* 	| Whole, Capped-Variable      	| Whole, Infinite             	| Singleton**                 	|
 |---------------------	|---------------	|-----------------------------	|-----------------------------	|-----------------------------	|
