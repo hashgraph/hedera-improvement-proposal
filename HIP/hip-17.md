@@ -173,12 +173,21 @@ service TokenService {
 +     */
 +    NON_FUNGIBLE_UNIQUE = 1;
 +}
+
++/**
++ * Possible Token Supply Types (IWA Compatibility).
++ * Indicates how many tokens can have during its lifetime.
++ */
++enum TokenSupplyType {
++    INFINITE = 0; // Indicates that tokens of that type have an upper bound of Long.MAX_VALUE.
++    FINITE = 1; // Indicates that tokens of that type have an upper bound of maxSupply, provided on token creation.
++}
 ```
 
 ### TokenCreateTransactionBody
 
 - By default, already existing tokens will be of type `FUNGIBLE_COMMON` (backwards compatible)
-- By default, if `maxSupply` is not provided, the token will be defined as having `Infinite` supply. (backwards compatible)
+- By default, if `maxSupply` is not provided, the token will be defined as having `INFINITE` supply. (backwards compatible)
 
 ```diff
 message TokenCreateTransactionBody {
@@ -543,12 +552,7 @@ No rejected ideas so far
 
 ## Open Issues
 
-### 1. Two fields, each used depending on the token type
-
-`TokenMintTransactionBody` has both an `amount` and `metadata`, each used depending on the token type.
-A similar problem applies for `amount` and `serialNumbers`, used in `TokenBurnTransactionBody` and `TokenWipeTransactionBody`.
-
-### 2. Populating Redundant information on Queries
+### 1. Populating Redundant information on Queries
 
 The `NftInfo` message contains the information related to a given `NFT` instance. In the case of `GetNftInfo` query, there are no redundant properties populated, however, the message is used in `GetTokenNftInfo` as-well as in `GetAccountNftInfo`. Depending on the query, some properties will be redundant. For example:
 - When querying for `GetTokenNftInfo`, the `NFT`s returned will populate the `tokenId` property inside `NftId` message even though it will be redundant
