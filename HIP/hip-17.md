@@ -423,20 +423,20 @@ The following messages must be added in order to support the new `GetNftInfo` rp
 
 ```diff
 +/* Represents an NFT on the Ledger */
-+message NftId {
-+    TokenID tokenId = 1; // The (non-fungible) token of which this NFT is an instance
++message NftID {
++    TokenID tokenID = 1; // The (non-fungible) token of which this NFT is an instance
 +    int64 serialNumber = 2; // The unique identifier of this instance
 +}
 +
 +/* Applicable only to tokens of type NON_FUNGIBLE_UNIQUE. Gets info on a NFT for a given TokenID (of type NON_FUNGIBLE_UNIQUE) and serial number */
 +message GetNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+    NftId nftId = 2; // The ID of the NFT
++    NftID nftID = 2; // The ID of the NFT
 +}
 +
 +message NftInfo {
-+    NftId nftId = 1; // The ID of the NFT
-+    AccountID owner = 2; // The current owner of the NFT
++    NftID nftID = 1; // The ID of the NFT
++    AccountID accountID = 2; // The current owner of the NFT
 +    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
 +    bytes metadata = 4; // Represents the unique metadata of the NFT
 +}
@@ -444,7 +444,7 @@ The following messages must be added in order to support the new `GetNftInfo` rp
 +message GetNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    NftInfo nft = 2; // The information about this NFT
-+} 
++}
 ```
 
 ### GetTokenNftInfo
@@ -458,14 +458,14 @@ Global dynamic variable must be added in the node configuring the maximum value 
 + */
 +message GetTokenNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+    TokenID tokenId = 2; // The ID of the token for which information is requested
++    TokenID tokenID = 2; // The ID of the token for which information is requested
 +    int64 start = 3; // Specifies the start index (inclusive) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
 +    int64 end = 4; // Specifies the end index (exclusive) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
 +
 +message GetTokenNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
++    TokenID tokenID = 2; // The Token with type NON_FUNGIBLE that this record is for
 +    repeated NftInfo nfts = 3; // List of NFTs associated to the specified token
 +}
 ```
@@ -483,15 +483,14 @@ Global dynamic variable must be added in the node configuring the maximum value 
 + */
 +message GetAccountNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+    AccountID accountId = 2; // The Account for which information is requested
++    AccountID accountID = 2; // The Account for which information is requested
 +    int64 start = 3; // Specifies the start index (inclusive) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
 +    int64 end = 4; // Specifies the end index (exclusive) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
 +
 +message GetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    AccountID accountId = 2; // The Account that this record is for
-+    repeated NftInfo nfts = 3; // List of NFTs associated to the account
++    repeated NftInfo nfts = 2; // List of NFTs associated to the account
 +}
 ```
 
