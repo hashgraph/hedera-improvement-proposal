@@ -143,14 +143,15 @@ service TokenService {
    rpc associateTokens (Transaction) returns (TransactionResponse);
    // Dissociates tokens from an account
    rpc dissociateTokens (Transaction) returns (TransactionResponse);
+
    // Retrieves the metadata of a token
    rpc getTokenInfo (Query) returns (Response);
-+  // Retrieves the metadata of an NFT by TokenID and serial number
-+  rpc getNftInfo (Query) returns (Response);
-+  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
-+  rpc getTokenNftInfo (Query) returns (Response);
-+  // Gets info on NFTs N through M on the list of NFTs associated with a given account
-+  rpc getAccountNftInfo (Query) returns (Response);
++   // Gets info on NFTs N through M on the list of NFTs associated with a given account
++   rpc getAccountNftInfo (Query) returns (Response);
++   // Retrieves the metadata of an NFT by TokenID and serial number
++   rpc getNftInfo (Query) returns (Response);
++   // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
++   rpc getNftInfos (Query) returns (Response);
 }
 ```
 
@@ -230,7 +231,7 @@ Once created, an NFT instance cannot be updated, only transferred/wiped or burne
 message TokenMintTransactionBody {
     TokenID token = 1; // The token for which to mint tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
 !   uint64 amount = 2; // Applicable to tokens of type FUNGIBLE_COMMON. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63.
-+   bytes metadata = 3; // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. The metadata for the given NFT instance that is being created. Maximum allowed size is 100 bytes
++   repeated bytes metadata = 3; // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. A list of metadata that are being created. Maximum allowed size of each metadata is 100 bytes
 }
 
 ```
@@ -267,8 +268,8 @@ message TransactionReceipt {
     // In the receipt of a ScheduleCreate or ScheduleSign that resolves to SUCCESS, the TransactionID that should be used to query for the receipt or record of the relevant scheduled transaction
     TransactionID scheduledTransactionID = 13;
 +
-+   // In the receipt of a TokenMint for tokens of type NON_FUNGIBLE_UNIQUE, the serial number of the newly created NFT
-+   int64 serialNumber = 14; 
++   // In the receipt of a TokenMint for tokens of type NON_FUNGIBLE_UNIQUE, the serial numbers of the newly created NFTs
++   repeated int64 serialNumbers = 14;
 }
 ```
 
@@ -281,7 +282,7 @@ All serial numbers specified must be owned by the Treasury account in order for 
 message TokenBurnTransactionBody {
 	TokenID token = 1; // The token for which to burn tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
 !	uint64 amount = 2; // Applicable to tokens of type FUNGIBLE_COMMON. The amount to burn from the Treasury Account. Amount must be a positive non-zero number, not bigger than the token balance of the treasury account (0; balance], represented in the lowest denomination
-+	repeated int64 serialNumbers = 3; // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. The list of serial numbers to be burned
++	repeated int64 serialNumbers = 3; // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. The list of serial numbers to be burned.
 }
 ```
 
@@ -418,8 +419,8 @@ message TokenBalance {
 }
 ```
 
-### GetNftInfo
-The following messages must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
+### TokenGetNftInfo
+The following messages must be added in order to support the new `TokenGetNftInfo` rpc call added to `HTS`.
 
 ```diff
 +/* Represents an NFT on the Ledger */
@@ -429,26 +430,26 @@ The following messages must be added in order to support the new `GetNftInfo` rp
 +}
 +
 +/* Applicable only to tokens of type NON_FUNGIBLE_UNIQUE. Gets info on a NFT for a given TokenID (of type NON_FUNGIBLE_UNIQUE) and serial number */
-+message GetNftInfoQuery {
++message TokenGetNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    NftID nftID = 2; // The ID of the NFT
 +}
 +
-+message NftInfo {
++message TokenNftInfo {
 +    NftID nftID = 1; // The ID of the NFT
 +    AccountID accountID = 2; // The current owner of the NFT
 +    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
 +    bytes metadata = 4; // Represents the unique metadata of the NFT
 +}
 +
-+message GetNftInfoResponse {
++message TokenGetNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    NftInfo nft = 2; // The information about this NFT
++    TokenNftInfo nft = 2; // The information about this NFT
 +}
 ```
 
-### GetTokenNftInfo
-The following messages must be added in order to support the new `GetTokenNftInfo` rpc call added to `HTS`.
+### TokenGetNftInfos
+The following messages must be added in order to support the new `TokenGetNftInfos` rpc call added to `HTS`.
 
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
 
@@ -456,22 +457,22 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +/* Applicable only to tokens of type NON_FUNGIBLE_UNIQUE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE_UNIQUE Token.
 + * Example: If there are 10 NFTs issued, having start=0 and end=5 will query for the first 5 NFTs. Querying +all 10 NFTs will require start=0 and end=10
 + */
-+message GetTokenNftInfoQuery {
++message TokenGetNftInfosQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    TokenID tokenID = 2; // The ID of the token for which information is requested
 +    int64 start = 3; // Specifies the start index (inclusive) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
 +    int64 end = 4; // Specifies the end index (exclusive) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
 +
-+message GetTokenNftInfoResponse {
++message TokenGetNftInfosResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    TokenID tokenID = 2; // The Token with type NON_FUNGIBLE that this record is for
-+    repeated NftInfo nfts = 3; // List of NFTs associated to the specified token
++    repeated TokenNftInfo nfts = 3; // List of NFTs associated to the specified token
 +}
 ```
 
-### GetAccountNftInfo
-The following messages must be added in order to support the new `GetAccountNftInfo` rpc call added to `HTS`.
+### TokenGetAccountNftInfo
+The following messages must be added in order to support the new `TokenGetAccountNftInfo` rpc call added to `HTS`.
 
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
 
@@ -481,16 +482,16 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +/* Applicable only to tokens of type NON_FUNGIBLE_UNIQUE. Gets info on NFTs N through M owned by the specified accountId.
 + * Example: If Account A owns 5 NFTs (might be of different Token Entity), having start=0 and end=5 will return all of the NFTs
 + */
-+message GetAccountNftInfoQuery {
++message TokenGetAccountNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
 +    AccountID accountID = 2; // The Account for which information is requested
 +    int64 start = 3; // Specifies the start index (inclusive) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
 +    int64 end = 4; // Specifies the end index (exclusive) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
 +
-+message GetAccountNftInfoResponse {
++message TokenGetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    repeated NftInfo nfts = 2; // List of NFTs associated to the account
++    repeated TokenNftInfo nfts = 2; // List of NFTs associated to the account
 +}
 ```
 
@@ -553,13 +554,13 @@ No rejected ideas so far
 
 ### 1. Populating Redundant information on Queries
 
-The `NftInfo` message contains the information related to a given `NFT` instance. In the case of `GetNftInfo` query, there are no redundant properties populated, however, the message is used in `GetTokenNftInfo` as-well as in `GetAccountNftInfo`. Depending on the query, some properties will be redundant. For example:
-- When querying for `GetTokenNftInfo`, the `NFT`s returned will populate the `tokenId` property inside `NftId` message even though it will be redundant
-- When querying for `GetAccountNftInfo`, the `NFT`s returned will populate the `owner` property inside `NftInfo` message even though it will be redundant.
+The `NftInfo` message contains the information related to a given `NFT` instance. In the case of `TokenGetNftInfo` query, there are no redundant properties populated, however, the message is used in `TokenGetNftInfos`, as well as in `TokenGetAccountNftInfo`. Depending on the query, some properties will be redundant. For example:
+- When querying for `TokenGetNftInfos`, the `NFT`s returned will populate the `tokenId` property inside `NftID` message even though it will be redundant
+- When querying for `TokenGetAccountNftInfo`, the `NFT`s returned will populate the `owner` property inside `NftInfo` message even though it will be redundant.
 
-Initially the plan was to **NOT** populate `tokenId` on `GetTokenNftInfo` and `owner` on `GetAccountNftInfo`, however with the introduction of the `NftId` message it does not seem consistent to populate only the `serialNumber` property of the `NftId` message on `GetTokenInfoQueries`.
+Initially the plan was to **NOT** populate `tokenId` on `TokenGetNftInfos` and `owner` on `TokenGetAccountNftInfo`, however with the introduction of the `NftID` message it does not seem consistent to populate only the `serialNumber` property of the `NftID` message on `GetTokenInfoQueries`.
 
-When it comes to `GetAccountNftInfo` query, the `NFT`s returned **could** not populate the `owner` property of the `NftInfo` message, however this will introduce inconsistencies since in one of the queries redundant properties are populated (`GetTokenNftInfo`), but in others, they are skipped (`GetAccountNftInfo`) 
+When it comes to `TokenGetAccountNftInfo` query, the `NFT`s returned **could** not populate the `owner` property of the `TokenNftInfo` message, however this will introduce inconsistencies since in one of the queries redundant properties are populated (`TokenGetNftInfos`), but in others, they are skipped (`TokenGetAccountNftInfo`). 
 
 ## References
 
