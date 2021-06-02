@@ -404,6 +404,15 @@ message TokenRelationship {
 }
 ```
 
+### AccountBalanceFile
+
+```diff
+message TokenUnitBalance {
+    TokenID tokenId = 1; // A unique token id
+!	uint64 balance = 2; // Number of transferable units of the identified token. For token of type FUNGIBLE_COMMON - balance in the smallest denomination. For token of type NON_FUNGIBLE_UNIQUE - the number of NFTs held by the account
+}
+```
+
 ### TokenBalances
 
 ```diff
