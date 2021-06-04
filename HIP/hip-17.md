@@ -45,7 +45,7 @@ attributed to an owner (Hedera Account).
 Describes a token that can be divided into smaller fractions, represented as decimals. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals != 0`.
 
 #### Whole
-Describes a token that cannot be divided into smaller fractions. Meaning subdivision is not allowed - just whole number quantities. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting decimals=0.
+Describes a token that cannot be divided into smaller fractions. Meaning subdivision is not allowed - just whole number quantities. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals=0`.
 
 ### Non-fungible Unique
 The NFT type is not interchangeable with other tokens of the same type as they typically have different values.
