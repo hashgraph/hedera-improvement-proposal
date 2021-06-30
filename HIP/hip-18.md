@@ -369,12 +369,12 @@ Example of a new transaction record:
 ## Additional examples
 ```
 new TokenCreateTransaction()
-	.setName(..)
-	.setCustomFee({token-id}}, {value}, {account-id})
-	.setCustomFee(0.0.987, 100, 0.0.123)
-	...
-	.execute(client)
-```	
+    .setName(..)
+    .setCustomFee({token-id}}, {value}, {account-id})
+    .setCustomFee(0.0.987, 100, 0.0.123)
+    ...
+    .execute(client)
+```
 
 In this example, the token created would require 100 tokens with entity ID 0.0.987 to be transferred into the account
 with entity ID 0.0.123. Account 0.0.123 could obviously be a single individual’s account, or it could be a
@@ -384,7 +384,8 @@ demo ([10](https://www.youtube.com/watch?v=hCPXKR1e7Ro)).
 This could be expanded to include multiple custom fees per token, up to the 6kb transaction limit imposed by the Hedera
 network as it currently
 stands ([11](https://docs.hedera.com/guides/docs/hedera-api/consensus-service/consensussubmitmessage#consensussubmitmessagetransactionbody)),
-or another threshold determined to help reduce the potential of a DDoS attack on the network through bloated custom token fee schedules.
+or another threshold determined to help reduce the potential of a DDoS attack on the network through bloated custom
+token fee schedules.
 
 ```
 new TokenCreateTransaction()
@@ -394,9 +395,11 @@ new TokenCreateTransaction()
     .setCustomFee(HBAR, 10, 0.0.753)
     ...
     .execute(client)
-```	
+```
 
-An obvious example for this is a multiparty ecosystem, with a community managed treasury, a foundation treasury, and the genesis application. Or in the meta-example, Hedera having distinct buckets for each the node, service, and network fees respectively which could trustlessly be managed by different entities, like a DAO.
+An obvious example for this is a multiparty ecosystem, with a community managed treasury, a foundation treasury, and the
+genesis application. Or in the meta-example, Hedera having distinct buckets for each the node, service, and network fees
+respectively which could trustlessly be managed by different entities, like a DAO.
 
 We also propose adding the following percentage based variation of the base implementation. 
 
@@ -409,7 +412,10 @@ new TokenCreateTransaction()
     .execute(client)
 ```
 
-Typically, percentage royalties will be deducted from the tokens being transferred. If there are no tokens being transferred, then when tokens are created there can be a “minimum” or fallback price denominated in any token. In the example below 10 tokens with entity ID 0.0.987 would be required to be sent to account 0.0.123 in the case there was a 0 value transaction, or anything that would result in a royalty percentage fee less than the minimum. 
+Typically, percentage royalties will be deducted from the tokens being transferred. If there are no tokens being
+transferred, then when tokens are created there can be a “minimum” or fallback price denominated in any token. In the
+example below 10 tokens with entity ID 0.0.987 would be required to be sent to account 0.0.123 in the case there was a
+0 value transaction, or anything that would result in a royalty percentage fee less than the minimum.
 
 ```
 new TokenCreateTransaction()
@@ -422,10 +428,13 @@ new TokenCreateTransaction()
     .execute(client)
 ```
 
-If the token relationship or fee ID is defined as empty, or null, then the custom fee is applied to the token that is being created (because there isn’t yet an entity ID by which we can refer to it). If there are not enough tokens, or those tokens are not sufficiently divisible, then an error for “insufficient custom token transaction fee” (or something similar) would be thrown. It would be on the user transacting to go out and accumulate enough tokens in their wallet to successfully execute the transaction with the defined custom token fee schedules. 
+If the token relationship or fee ID is defined as empty, or null, then the custom fee is applied to the token that is
+being created (because there isn’t yet an entity ID by which we can refer to it). If there are not enough tokens, or
+those tokens are not sufficiently divisible, then an error for “insufficient custom token transaction fee” (or something
+similar) would be thrown. It would be on the user transacting to go out and accumulate enough tokens in their wallet to
+successfully execute the transaction with the defined custom token fee schedules.
 
 ```
-
 new TokenCreateTransaction()
     .setName(..)
     .setCustomFeePercentage({token-id}}, {value}, {account-id})
@@ -435,7 +444,11 @@ new TokenCreateTransaction()
 ```
 
 ## Use cases 
-Currently on Hedera, there is no decentralized and trustless mechanism of distributing the value that is captured when a token transfer occurs. At least, not natively at Layer 1. If issuing an NFT, for a single example, a user could simply transact that token peer-to-peer via a wallet that supports HTS and circumvent any potential fees that are implemented at the application layer, removing the trustless value proposition that new asset classes like NFTs enable for their creators. This prposal allows this use case to be easily addressed, among a large variety of others.
+Currently on Hedera, there is no decentralized and trustless mechanism of distributing the value that is captured when
+a token transfer occurs. At least, not natively at Layer 1. If issuing an NFT, for a single example, a user could simply
+transact that token peer-to-peer via a wallet that supports HTS and circumvent any potential fees that are implemented
+at the application layer, removing the trustless value proposition that new asset classes like NFTs enable for their
+creators. This prposal allows this use case to be easily addressed, among a large variety of others.
 
 Other general/categorical examples include:
 
@@ -459,4 +472,5 @@ Other general/categorical examples include:
 - 11 - https://docs.hedera.com/guides/docs/hedera-api/consensus-service/consensussubmitmessage#consensussubmitmessagetransactionbody
 
 ## Copyright
-This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE)
+or (https://www.apache.org/licenses/LICENSE-2.0)
