@@ -58,7 +58,7 @@ IF provider is undefined
 
 ## Backwards Compatibility
 
-This implementation will not effect prior solutions and is fully backwards compatible
+This HIP is entirely opt-in, and does not break any existing functionality. It simply provides standards which wallets and dApps can follow in order to interact with each other.
 
 ## Security Implications
 
@@ -70,13 +70,11 @@ Small simple examples and Guides could be incorperated into the existing Hedera 
 
 ## Reference Implementation
 
-The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+To be developed.
 
 ## Rejected Ideas
 
-Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
-
-In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
+N/A
 
 ## Open Issues
 
