@@ -89,6 +89,7 @@ Open issues (not required for implementation current HIP) are allowing users of 
 - [3] https://eips.ethereum.org/EIPS/eip-1102#eth_requestaccounts
 - [4] https://www.w3.org/TR/REC-DOM-Level-1/introduction.html#
 - [5] https://github.com/NoahZinsmeister/web3-react
+- [6] https://github.com/ethereum/EIPs/blob/master/EIPS/eip-712.md
 
 ## Copyright/license
 
