@@ -20,7 +20,7 @@ with a standardized URI.
 
 Non-fungible tokens often have metadata associated with them and this HIP provides a way to
 access them with a standardized URI, hosted by Hedera.
-Third party applications would be then able to use this standardized URI to integrate with and
+Third-party applications would then be able to use this standardized URI to integrate with and
 display a token's metadata and image (for example: DECENT Wallet [0]).
 Non-Hedera NFT's could also utilize this feature to host their metadata, like ERC-721.
 
