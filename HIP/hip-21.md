@@ -1,6 +1,6 @@
 | hip               | title              | author         | type            | status         | created       | discussions |
 | ----------- | -----------  | ----------- | ----------- |----------- | ----------- | ----------- |
-| TBD            | Free network info query | Simi Hunjan (@SimiHunjan ) |Service| Draft | 2021-06-09   |   https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
+| HIP-21            | Free network info query | Simi Hunjan (@SimiHunjan ) |Service| Draft | 2021-06-09   |   https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
 
 ## Abstract
 
@@ -19,7 +19,7 @@ The address book files 0.0.101 and 0.0.102 collectively maintain information abo
 - Description
 - Stake
 
-Today, applications have to use the File Service and submit two file contents query requests to return all the required node information. This results in two transaction fees for processing each of the queries. The information contained within the address book files are required for clients to send Hedera transactions or queries to valid Hedera consensus nodes.
+Today, applications have to use the File Service and submit two file contents query requests to return all the required node information. This results in two transaction fees for processing each of the queries. The information contained within the address book files is required for clients to send Hedera transactions or queries to valid Hedera consensus nodes.
 
 ## Rationale 
 
