@@ -1,6 +1,6 @@
 | hip               | title              | author         | type            | status         | created       | discussions |
 | ----------- | -----------  | ----------- | ----------- |----------- | ----------- | ----------- |
-| HIP-21            | Free network info query | Simi Hunjan (@SimiHunjan ) |Service| Draft | 2021-06-09   |   https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
+| hip-21            | Free network info query | Simi Hunjan (@SimiHunjan ) |Service| Draft | 2021-06-09   |   https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
 
 ## Abstract
 
@@ -23,7 +23,7 @@ Today, applications have to use the File Service and submit two file contents qu
 
 ## Rationale 
 
-The proposal is to create a free non-file HAPI query to return network information. As we continue to grow the network and transition into a permissionless model, the number of times the local address book will be required to update will increase. The transaction fee associated with current file query hinders the ability to update the address book as frequently as it might be needed for applications to ensure their address book is always up to date. This information should be free. 
+The proposal is to create a free non-file HAPI query to return network information. As we continue to grow the network and transition into a permissionless model, the number of times the local address book will be required to update will increase. The transaction fee associated with the current file query hinders the ability to update the address book as frequently as it might be needed for applications to ensure their address book is always up to date. This information should be free. 
 
 ## Specification 
 
@@ -52,7 +52,7 @@ service NetworkService {
 
 ## How to Teach This
 
-- Comments in the protobuf files in the [hedera-protobufs](https://github.com/hashgraph/hedera-protobufs) repository describing the nature of query
+- Comments in the protobuf files in the [hedera-protobufs](https://github.com/hashgraph/hedera-protobufs) repository describing the nature of the query
 - Description and code example of the query added to Hedera documentation
 - Reviewed in Engineering Insights
 
