@@ -6,7 +6,7 @@ Stephanie Yi stephanie.yi@luthersystems.com, Declan Fox declan.fox@luthersystems
 - category: Service
 - status: Draft
 - created: 2021-06-29
-- discussions-to:
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/110
 - updated:
 - requires:
 - replaces:
