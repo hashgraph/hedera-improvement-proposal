@@ -1,38 +1,43 @@
 - hip: XX
 - title: Wallet connect experience
-- author: [0xJepsen](https://github.com/0xJepsen), [rocketmay](https://github.com/rocketmay)
+- author: [0xJepsen](https://github.com/0xJepsen), //[rocketmay](https://github.com/rocketmay)
 - type: Standards Track
 - category: Application
 - status: Draft 
 - created: <07/03/21>
 - discussions-to: <https://github.com/hashgraph/hedera-improvement-proposal/discussions/98>
-- updated: <07/03/21>
+- updated: <07/08/21> <07/03/21>
 - requires: <HIP number(s)>
 - replaces: <HIP number(s)>
 - superseded-by: <HIP number(s)>
 
 ## Abstract
 
-This specification proposes a standardized way for wallets to send and receive API calls from a Hedera dApp. This standard allows decentralized applications to request authorization of user's wallets for the dApp's protocols.
+This specification proposes a method for daps to send (yet-to-be-signed) transactions to (browser based) wallets for users to sign. Once a user authorizes a transaction it is send back to the applicaion where it can be submitted to the network.
+
+Since the signed transactions are submitted to the network (via the Hedera API) by the decentralized applications, this preposal does not require any new endpoints in from the Hedera API.
+
+The preposed solutions introduces a simple new module used to send and recieve transaction data before they are submitted to the Hedera publilc network.
 
 ## Motivation
 
-Developers are currently creating web auth mechanisms from scratch for Hedera-based web apps. This is limiting consumer adoption and resulting in a poor user and developer experience. A standard protocol for decentralized applications to communicate with clients and allow clients to authorize their wallets would significantly improve the developer and user experience. The Hedera development space is still young, with many new projects developing promising ideas. Before long, these projects will need to have a standardized method of communication, much like what exists in the Ethereum space.
+Developers are currently creating web authentication mechanisms from scratch for Hedera-based web apps. This is limiting consumer adoption and resulting in a poor user and developer experience. A standard protocol for decentralized applications to communicate with clients and allow clients to sign transactions would significantly improve the developer and user experience. The Hedera development space is still young, with many new projects developing promising ideas. These projects will need a standardized method of communication, much like what exists in the Ethereum space.
 
-Taking the Metamask wallet as an example, Metamask offers a seamless way for users to interact with dApps, sending requests and signing transactions without compromising the security of their accounts. Note that Metamask offers a complete pathway for connecting the wallet to dApps, including features such as onboarding which would not apply to this HIP.
+Taking the Metamask wallet as an example, Metamask offers a seamless way for users to interact with dApps, sending requests and signing transactions without compromising the security of their accounts. 
 
-Without a communication standard, projects in the space are more or less required to implement their wallets to allow users to sign for transactions and services. This adds overhead for the project team and represents a risk to the user who must reveal sensitive account information to these projects.
+Without a communication standard, projects in the space are required to reinvent the wheel for every application and wallet. This adds overhead for the project team and represents a risk to the user who must reveal sensitive account information to these projects.
 
 ## Rationale
 
-We propose establishing a standard for applications to provide REST endpoints based on the Hedera SDK documentation[1]. REST is a flexible and universal client-server communication API already used by the Hedera SDK for communicating with mirror nodes. Building on this to allow wallets and other client applications to communicate with other applications is straightforward. The Hedera SDK provides a template for function names and data structures that can be followed to simplify design decisions.
+We propose establishing a standard for applications to present clients with a transaction to be ssigned by the user. The module allows the Dapp to present transaction data the the DOM environment where it can be viewed by browsser extensions. There is no sensitive information within the transaction data. The brower extension wallets can then recieve the transaction data and sign it with a digital signature from there private key. It is well known that digital signatures do not expose and sensitive information about the private key. There well established digital signing and verification algorithms.
+
 
 ## Specification
 
-JavaScript is the primary language that can communicate with the browser's [DOM](https://www.w3.org/TR/REC-DOM-Level-1/introduction.html#). It will be necessary for dApps to utilize the JavaScript SDK. A new RPC method incorporated into the existing SDK `requestAccounts` is proposed. Calling this method may trigger a user interface that allows the user to approve or reject account access for a given app. This method returns a `Promise` that is resolved with an `Array` of accounts or is rejected with an `Error` if accounts are not available.
+JavaScript is the primary language that can communicate with the browser's [DOM](https://www.w3.org/TR/REC-DOM-Level-1/introduction.html#). It will be necessary for this module to be a JavaScript module. The module with create an HTML element with the transaction data in the required format. 
 
-  `Hedera.requestAccounts`
-  
+
+
 ### Protocol
 
 ```START dapp
