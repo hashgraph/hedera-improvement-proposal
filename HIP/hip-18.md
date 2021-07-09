@@ -421,32 +421,20 @@ Example of a new transaction record:
     "realmNum": 0
   },
   "transactionFee": 1000000000,
-  "customTokenFees": [
-      {
-        "tokenID": {
-          "num": 127877,
-          "shardNum": 0,
-          "realmNum": 0
-        },
-        "accountAmount": [
-          {
-            "accountID": {
-              "num": 40938,
-              "shardNum": 0,
-              "realmNum": 0
-            },
-            "amount": -10000000000
-          },
-          {
-            "accountID": {
-              "num": 54429,
-              "shardNum": 0,
-              "realmNum": 0
-            },
-            "amount": 10000000000
-          }
-        ]
+  "assessedCustomFees": [
+    {
+      "amount": 10000000000,
+      "tokenId": {
+        "num": 127877,
+        "shardNum": 0,
+        "realmNum": 0
+      },
+      "feeCollectorAccountId": {
+        "num": 54429,
+        "shardNum": 0,
+        "realmNum": 0
       }
+    }
   ],
   "transactionValidDurationInSec": 120,
   "generateRecord": false,
