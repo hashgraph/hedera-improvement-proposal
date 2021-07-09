@@ -50,24 +50,25 @@ $PROTOCOL_GAS token to send to {entity-1}, 2 $PROTOCOL_GAS tokens to {entity-2},
 We believe and emphasize that this needs to be done natively on Hedera’s ledger via the Token Service, or some type of
 scripting language, and not at a layer 2 or via an application network to ensure that it has the same immutability
 characteristics and deterministic functionality required for things like 3rd party cryptocurrency exchange listings and
-3rd party wallet support. Certainly there are fancy cryptographic ways to get around this with multisignature and/or
-multiparty transfers, or some mythical implementation of Hedera’s newly released scheduled
-transactions ([8](https://docs.hedera.com/guides/core-concepts/scheduled-transaction)), but this is a notably better
-user experience for both developers and end users.
+3rd party wallet support. While there may be some coordinated cryptographic workarounds to achieve this with
+multisignature and/or multiparty transfers and integration with Hedera’s newly released scheduled
+transactions ([8](https://docs.hedera.com/guides/core-concepts/scheduled-transaction)), this approach is a notably
+better user experience for both developers and end-users.
 
-Currently each transaction on Hedera has a JSON represented transaction
+Currently each transaction on Hedera requires a transaction
 fee ([9](https://docs.hedera.com/guides/docs/hedera-api/basic-types/feedata)). This includes a list of accounts that are
-part of each transaction. By enabling the ability for new HTS based tokens to optionally append a few custom entities
-and associated payments to this list dramatically expand the functionality and programmability available natively on
-Hedera.
+part of each transaction. By enabling the ability for new HTS based tokens to optionally add a few custom entities and 
+associated payments to this list dramatically expand the functionality and programmability available natively on Hedera.
 
 ## Specification
 
-At the top level, we propose adding the following:
+At the conceptual level, we propose adding the following:
 ```
 CustomFee Class:
-	- safePercentage percentageOfFee
-	- AccountID treasuryId
+  - one of
+    - safePercentage percentageOfFee         
+    - fixedFee amountOfTokens
+  - AccountID treasuryId
 
 HederaToken:
 	- customFees[] customFees
@@ -78,19 +79,190 @@ HederaTokenTransfer(tokenId, amount, toAddress):
 	remainingPercent = 1
 	
 	for customFee in customFees:
-		tokenTransfer(tokenId, amount*customFee.percentageOfFee, customFee.treasuryId)
-		remainingPercent -= customFee.percentageOfFee
+        if customFee is percentageOfFee
+            tokenTransfer(tokenId, amount*customFee.percentageOfFee, customFee.treasuryId)
+            remainingPercent -= customFee.percentageOfFee
+        else customFee is fixedFee
+            tokenTransfer(fixedFee.Token, fixedFee.amount, customFee.treasuryId)    
 	
 	tokenTransfer(tokenId, amount*remainingPercent, toAddress)
 
-TokenUpdateTransaction:
-	- addCustomFee()
+TokenUpdateTransactions:
+	- updateCustomFee()
+  - updateFeeScheduleKey()
 	
 TokenInfo:
 	- call getCustomFee()
 ```
 
 Note: see the reference implementation section for more details.
+
+## HAPI Changes
+
+At the gRPC Protocol level we propose adding 6 new messages and modifies 6 existing messages in a forward compatible way:
+
+### Fraction
+Adds message `Fraction` representing a fraction of the amount of a transfer to collect as a custom fee.
+```protobuf
+message Fraction {
+  // The fraction's numerator
+  int64 numerator = 1;   
+  // The fractions's denominator
+  int64 denominator = 2; 
+}
+```
+
+### FractionalFee
+Adds message `FractionalFee` representing a fee type that is a fraction of the transferred units of a token to assess 
+as a fee in the denomination of units of the token to which this fractional fee is attached.
+```protobuf
+message FractionalFee {
+  // The fraction of the transferred units to assess as a fee
+  Fraction fractional_amount = 1; 
+  // The minimum amount to assess
+  int64 minimum_amount = 2;
+  // The maximum amount to assess (zero implies no maximum)
+  int64 maximum_amount = 3;
+}
+```
+
+### FixedFee
+Adds message `FixedFee` representing a fee type having a fixed number of units (hBar or token) charged when the 
+transaction transferring the token is executed.
+```protobuf
+message FixedFee {
+  // The number of units to assess as a fee
+  int64 amount = 1;
+  // The denomination of the fee; taken as hbar if left unset
+  TokenID denominating_token_id = 2;
+}
+```
+
+### CustomFee
+Adds message `CustomFee` defining type of fee and account receiving the fee assessed during a CryptoTransfer of the 
+associated token. A custom fee may be either fixed or fractional and must specify a fee collector account to receive 
+the assessed fees.
+```protobuf
+message CustomFee {
+  oneof fee {
+    // Fixed fee to be charged
+    FixedFee fixed_fee = 1;
+    // Fractional fee to be charged
+    FractionalFee fractional_fee = 2; 
+  }
+  // The account to receive the custom fee
+  AccountID fee_collector_account_id = 3; 
+}
+```
+
+### AssessedCustomFee
+Adds message `AssessedCustomFee` representing a fee that was assessed during processing of a CryptoTransfer.
+```protobuf
+message AssessedCustomFee {
+  // The number of units assessed for the fee
+  int64 amount = 1; 
+  // The denomination of the fee; taken as hbar if left unset
+  TokenID token_id = 2;
+  // The account to receive the assessed fee
+  AccountID fee_collector_account_id = 3; 
+}
+```
+
+### TokenFeeScheduleUpdateTransactionBody
+Adds message `TokenFeeScheduleUpdateTransactionBody` representing a request made to the network to update a custom fee for a token.
+```protobuf
+message TokenFeeScheduleUpdateTransactionBody {
+  // The token whose fee schedule is to be updated
+  TokenID token_id = 1;
+  // The new custom fees to be assessed during a 
+  // CryptoTransfer that transfers units of this token
+  repeated CustomFee custom_fees = 2;
+}
+```
+
+### TokenCreateTransactionBody
+Updates message `TokenCreateTransactionBody` by adding a `fee_schudle_key` property identifying the key that must sign 
+transactions updating the list of custom fees and `custom_fees` for the list of fixed and fractional custom fees
+associated with the created token.
+```protobuf
+message TokenCreateTransactionBody {
+    ...
+    // The key which can change the token's custom fee schedule; 
+    // must sign a TokenFeeScheduleUpdate transaction.  If not specified
+    // the custom fee schedule cannot be changed after creation.
+    Key fee_schedule_key = 20; 
+    // The custom fees to be assessed during a
+    // CryptoTransfer that transfers units of this token
+    repeated CustomFee custom_fees = 21; 
+}
+```
+
+### TokenInfo
+Updates message `TokenInfo` returned from token information queries to include the administrative key for updating
+custom fee schedules and the current list of custom fixed and fractional fees associated with the token.
+```protobuf
+message TokenInfo {
+    ...
+    // The key which can change the custom fee 
+    // schedule of the token; if not set, the fee
+    // schedule is immutable.
+    Key fee_schedule_key = 22;
+    // The custom fees to be assessed during a 
+    // CryptoTransfer that transfers units of this token
+    repeated CustomFee custom_fees = 23;
+}
+```
+
+### TokenService
+Updates message `TokenService` to include the method updating a custom fee schedule for a token.
+```protobuf
+service TokenService {
+    ...
+    // Updates the custom fee schedule on a token
+    rpc updateTokenFeeSchedule (Transaction) returns (TransactionResponse);
+    ...
+}
+```
+
+### TokenUpdateTransactionBody
+Updates message `TokenUpdateTransactionBody` to include the administrative key for updating custom fees as an optional entry.
+```protobuf
+message TokenUpdateTransactionBody {
+    ...
+    // If set, the new key to use to update the token's 
+    // custom fee schedule; if the token does not 
+    // currently have this key, transaction will resolve 
+    // to TOKEN_HAS_NO_FEE_SCHEDULE_KEY
+    Key fee_schedule_key = 14; 
+}
+```
+
+### TransactionBody
+Updates message `TransactionBody` adding the transaction body for updating custom fees for a given token.
+```protobuf
+message TransactionBody {
+  ...
+  oneof data {
+    ...
+    // Updates a token's custom fee schedule
+    TokenFeeScheduleUpdateTransactionBody token_fee_schedule_update = 45; 
+    ...
+  }
+}
+```
+
+### TransactionRecord
+Updates message `TransactionRecord` to include the list of custom fees assessed as a part of executing the transaction
+represented by this record.
+```protobuf
+message TransactionRecord {
+    ...
+    // All custom fees that were assessed during 
+    // a CryptoTransfer, and must be paid if the 
+    // transaction status resolved to SUCCESS
+    repeated AssessedCustomFee assessed_custom_fees = 13;
+}
+```
 
 ## Backwards Compatibility
 
