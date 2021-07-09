@@ -65,34 +65,34 @@ associated payments to this list dramatically expand the functionality and progr
 At the conceptual level, we propose adding the following:
 ```
 CustomFee Class:
-  - one of
-    - safePercentage percentageOfFee         
-    - fixedFee amountOfTokens
-  - AccountID treasuryId
+    - one of
+        - percentageOfFee percent out of the total amount every time a transfer of units of this token is executed
+        - fixedFee fixed amount of some token
+    - AccountID feeCollector
 
 HederaToken:
-	- customFees[] customFees
-	- getCustomFees()
-	
+    - CustomFee[] customFees
+    - getCustomFees()
+
 HederaTokenTransfer(tokenId, amount, toAddress):
-	customFees = tokenId.getCustomFees()
-	remainingPercent = 1
-	
-	for customFee in customFees:
+    customFees = tokenId.getCustomFees()
+    remainingPercent = 1
+
+    for customFee in customFees:
         if customFee is percentageOfFee
-            tokenTransfer(tokenId, amount*customFee.percentageOfFee, customFee.treasuryId)
-            remainingPercent -= customFee.percentageOfFee
+            tokenTransfer(tokenId, amount*percentageOfFee.percent, customFee.feeCollector)
+            remainingPercent -= percentageOfFee.percent
         else customFee is fixedFee
-            tokenTransfer(fixedFee.Token, fixedFee.amount, customFee.treasuryId)    
-	
+            tokenTransfer(fixedFee.token, fixedFee.amount, customFee.feeCollector)
+
 	tokenTransfer(tokenId, amount*remainingPercent, toAddress)
 
-TokenUpdateTransactions:
-	- updateCustomFee()
-  - updateFeeScheduleKey()
-	
+TokenUpdate transactions:
+    - updateCustomFees()
+    - updateFeeScheduleKey()
+
 TokenInfo:
-	- call getCustomFee()
+    - call getCustomFees()
 ```
 
 Note: see the reference implementation section for more details.
@@ -296,7 +296,7 @@ transferred.
 ## Reference implementation
 
 Current transaction record:
-```
+```json
 {
   "signatures": [],
   "transactionID": {
@@ -404,7 +404,7 @@ Current transaction record:
 ```
 
 Example of a new transaction record:
-```
+```json
 {
   "signatures": [],
   "transactionID": {
