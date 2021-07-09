@@ -1,6 +1,6 @@
 - hip: XX
 - title: Wallet connect experience
-- author: [0xJepsen](https://github.com/0xJepsen), //[rocketmay](https://github.com/rocketmay)
+- author: [0xJepsen](https://github.com/0xJepsen), [rocketmay](https://github.com/rocketmay)
 - type: Standards Track
 - category: Application
 - status: Draft 
@@ -35,6 +35,8 @@ We propose establishing a standard for applications to present clients with a tr
 ## Specification
 
 JavaScript is the primary language that can communicate with the browser's [DOM](https://www.w3.org/TR/REC-DOM-Level-1/introduction.html#). It will be necessary for this module to be a JavaScript module. The module with create an HTML element with the transaction data in the required format. 
+
+The module likely incorperate some existing technologies like [expressjs](https://expressjs.com/) to communicate to the client 
 
 
 
