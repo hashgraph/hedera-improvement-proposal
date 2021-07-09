@@ -169,7 +169,7 @@ message AssessedCustomFee {
 ```
 
 ### TokenFeeScheduleUpdateTransactionBody
-Adds message `TokenFeeScheduleUpdateTransactionBody` representing a request made to the network to update a custom fee for a token.
+Adds message `TokenFeeScheduleUpdateTransactionBody` representing a request made to the network to update custom fees for a token.
 ```protobuf
 message TokenFeeScheduleUpdateTransactionBody {
   // The token whose fee schedule is to be updated
@@ -177,6 +177,31 @@ message TokenFeeScheduleUpdateTransactionBody {
   // The new custom fees to be assessed during a 
   // CryptoTransfer that transfers units of this token
   repeated CustomFee custom_fees = 2;
+}
+```
+
+### TransactionBody
+Updates message `TransactionBody` adding the transaction body for updating custom fees for a given token.
+```protobuf
+message TransactionBody {
+  ...
+  oneof data {
+    ...
+    // Updates a token's custom fee schedule
+    TokenFeeScheduleUpdateTransactionBody token_fee_schedule_update = 45;
+    ...
+  }
+}
+```
+
+### TokenService
+Updates message `TokenService` to include the method updating a custom fee schedule for a token.
+```protobuf
+service TokenService {
+    ...
+    // Updates the custom fee schedule on a token
+    rpc updateTokenFeeSchedule (Transaction) returns (TransactionResponse);
+    ...
 }
 ```
 
@@ -188,9 +213,9 @@ associated with the created token.
 message TokenCreateTransactionBody {
     ...
     // The key which can change the token's custom fee schedule; 
-    // must sign a TokenFeeScheduleUpdate transaction.  If not specified
+    // must sign a TokenFeeScheduleUpdate transaction. If not specified
     // the custom fee schedule cannot be changed after creation.
-    Key fee_schedule_key = 20; 
+    Key fee_schedule_key = 20;
     // The custom fees to be assessed during a
     // CryptoTransfer that transfers units of this token
     repeated CustomFee custom_fees = 21; 
@@ -213,17 +238,6 @@ message TokenInfo {
 }
 ```
 
-### TokenService
-Updates message `TokenService` to include the method updating a custom fee schedule for a token.
-```protobuf
-service TokenService {
-    ...
-    // Updates the custom fee schedule on a token
-    rpc updateTokenFeeSchedule (Transaction) returns (TransactionResponse);
-    ...
-}
-```
-
 ### TokenUpdateTransactionBody
 Updates message `TokenUpdateTransactionBody` to include the administrative key for updating custom fees as an optional entry.
 ```protobuf
@@ -234,20 +248,6 @@ message TokenUpdateTransactionBody {
     // currently have this key, transaction will resolve 
     // to TOKEN_HAS_NO_FEE_SCHEDULE_KEY
     Key fee_schedule_key = 14; 
-}
-```
-
-### TransactionBody
-Updates message `TransactionBody` adding the transaction body for updating custom fees for a given token.
-```protobuf
-message TransactionBody {
-  ...
-  oneof data {
-    ...
-    // Updates a token's custom fee schedule
-    TokenFeeScheduleUpdateTransactionBody token_fee_schedule_update = 45; 
-    ...
-  }
 }
 ```
 
