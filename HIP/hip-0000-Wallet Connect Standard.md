@@ -36,9 +36,9 @@ We propose establishing a standard for applications to present clients with a tr
 
 JavaScript is the primary language that can communicate with the browser's [DOM](https://www.w3.org/TR/REC-DOM-Level-1/introduction.html#). It will be necessary for this module to be a JavaScript module. The module with create an HTML element with the transaction data in the required format. 
 
-The module likely incorperate some existing technologies like [expressjs](https://expressjs.com/) to communicate to the client 
+Both browsers and web-aplications utilize a [manifest.json](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) file configure how the application will behave under certain circumstances. The `browserAction.enable()` should be called when the aplication see's that the preposed module is being used by the webapplication. This allows the browser action for the tab. It will be disabled by default. The browser extension can then use [content-scripts](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts) to execute a specific file with the `.js` extension. This file will establish a connection with the server using [expressjs](https://expressjs.com/). The communication is thus established. The server can then send unsigned transactions to the user for them to sign and then send back to the Dapp server.
 
-
+Access refers to the user authorizing a transaction presented to it by the server with a digital signature. 
 
 ### Protocol
 
