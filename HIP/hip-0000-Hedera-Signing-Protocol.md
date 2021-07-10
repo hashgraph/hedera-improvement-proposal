@@ -52,7 +52,7 @@ _Start of Protocol Scope_
 
 2. The Server queries the browser for extensions which implement the Hedera Signing Protocol
 3. The Server generates a list of Clients and the Account IDs that the Clients manage
-4. The User selects the desired account which they want to perform the transaction.
+4. The User selects the desired Client/Account pair which they want to perform the transaction.
 5. The Server creates a transaction, freezes it, and JSONifies it for use as txnObject in Step 6.
 6. The Server sends a sendTransaction RPC to the Client, with txnObject as a param. 
 7. The Client displays the transaction to the User and prompts the user to Sign the transaction or Cancel.
