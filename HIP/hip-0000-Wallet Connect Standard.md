@@ -90,6 +90,12 @@ This HIP is entirely opt-in and does not modify any existing functionality. It s
 
 ## Security Implications
 
+Clients are responsible for locally signing transactions. At no point are private keys ever shared or revealed to the Server. This is the main purpose of this protocol. Because no sensitive account data is shared, account security through this protocol is maintained.
+
+On the other hand, there are many considerations which developers should take into account when implementing this protocol into their applications:
+
+Nothing can be done about a Server (intentionally or not) generating an incorrect transaction. A malicious Server can generate a transaction that is different than what the user is expecting. This protocol assumes that the Client properly unpackages the transactions that it receives and displays the information in a readable, clear manner to the user for their review, and that the User is given accurate information and a clear indication of what action they are approving by signing the transaction.
+
 The permissions schema referenced below in the Open Issues section would provide more robust security for users.
 
 ## How to Teach This
