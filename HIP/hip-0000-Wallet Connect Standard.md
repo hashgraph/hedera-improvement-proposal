@@ -58,18 +58,19 @@ _Start of Protocol Scope
 _End of Protocol Scope
 9. The Server displays the result and continues the user experience.
 
-Notes:
+**Notes:**
 
-Step 2: Clients that implement the protocol will contain a 'HederaSP' identifier in their manifest.json. The Server can then query for extensions which have the identifier and populate a list. 
+**Step 2**: Clients that implement the protocol will contain a 'HederaSP' identifier in their manifest.json. The Server can then query for extensions which have the identifier and populate a list. 
 
-Step 3: The Server sends the RPC "requestAccounts" to each Client identified in step 2.
-		Each Client implements requestAccounts() which returns an array of Hedera Account IDs (type string).
+**Step 3**: The Server sends the RPC "requestAccounts" to each Client identified in step 2.
 
-Step 4: The Server should display the list of Accounts, sorted by Client. As part of this step the Server may query the network to obtain further information to assist the user in their choice (such as account balance), though this is not strictly part of the protocol.
+Each Client implements requestAccounts() which returns an array of Hedera Account IDs (type string).
 
-		The User will then select the Account which they want to perform the transaction with.
+**Step 4**: The Server should display the list of Accounts, sorted by Client. As part of this step the Server may query the network to obtain further information to assist the user in their choice (such as account balance), though this is not strictly part of the protocol.
+
+The User will then select the Account which they want to perform the transaction with.
 		
-Step 6: The Server calls the Client RPC sendTransaction, which contains a number of parameters.
+**Step 6**: The Server calls the Client RPC sendTransaction, which contains a number of parameters.
 	
 	const txnParams = {
 	
