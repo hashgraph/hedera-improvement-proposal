@@ -1,5 +1,5 @@
 - hip: XX
-- title: Wallet connect experience
+- title: Wallet Connect Experience
 - author: [0xJepsen](https://github.com/0xJepsen), [rocketmay](https://github.com/rocketmay)
 - type: Standards Track
 - category: Application
@@ -13,11 +13,11 @@
 
 ## Abstract
 
-This specification proposes a method for daps to send (yet-to-be-signed) transactions to (browser based) wallets for users to sign. Once a user authorizes a transaction it is send back to the applicaion where it can be submitted to the network.
+This specification proposes a method for dApps to send (yet-to-be-signed) transactions to (browser based) wallets for users to sign. Once a user authorizes a transaction it is send back to the application where it can then be submitted to the network by the dApp.
 
-Since the signed transactions are submitted to the network (via the Hedera API) by the decentralized applications, this preposal does not require any new endpoints in from the Hedera API.
+Since the signed transactions are submitted to the network by the decentralized application, this proposal does not require any new Hedera API endpoints.
 
-The preposed solutions introduces a simple new module used to send and recieve transaction data before they are submitted to the Hedera publilc network.
+The proposed solution introduces a javascript module used to send and receive and sign transaction data before they are submitted to the Hedera publilc network.
 
 ## Motivation
 
@@ -29,18 +29,18 @@ Without a communication standard, projects in the space are required to reinvent
 
 ## Rationale
 
-We propose establishing a standard for applications to present clients with a transaction to be ssigned by the user. The module allows the Dapp to present transaction data the the DOM environment where it can be viewed by browsser extensions. There is no sensitive information within the transaction data. The brower extension wallets can then recieve the transaction data and sign it with a digital signature from there private key. It is well known that digital signatures do not expose and sensitive information about the private key. There well established digital signing and verification algorithms.
+We propose establishing a standard for applications to present clients with a transaction to be signed by the user. The module allows the dApp to present transaction data to the DOM environment where it can be viewed by client applications. There is no sensitive account information within the transaction data. The client applications can then recieve the transaction data and sign it with a digital signature using their private key without exposing the key to the dApp. The signed transaction is then submitted to the Hedera API network.
 
 
 ## Specification
 
 JavaScript is the primary language that can communicate with the browser's [DOM](https://www.w3.org/TR/REC-DOM-Level-1/introduction.html#). It will be necessary for this module to be a JavaScript module. The module with create an HTML element with the transaction data in the required format. 
 
-Both browsers and web-aplications utilize a [manifest.json](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) file configure how the application will behave under certain circumstances. The `browserAction.enable()` should be called when the aplication see's that the preposed module is being used by the webapplication. This allows the browser action for the tab. It will be disabled by default. The browser extension can then use [content-scripts](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts) to execute a specific file with the `.js` extension. 
+Both browsers and web applications utilize a [manifest.json](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) file to configure how the application will behave under certain circumstances. The `browserAction.enable()` should be called when the application recognizes the proposed module being used by the web application. This allows the browser action for the tab. It will be disabled by default. The browser extension can then use [content-scripts](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts) to execute a specific file with the `.js` extension. 
 
 This file will establish a connection with the server using [expressjs](https://expressjs.com/) or [socket.io](https://socket.io/). Communication should be established with a handshake for a secure connection.
 
-The server can then send unsigned transactions to the user for them to sign and then send back to the Dapp server.
+The server can then send unsigned transactions to the user for them to sign and then send back to the dApp.
 
 The schema for the transactions would `jsonRpcRequest` and `jsonRcpResponse`
 
@@ -63,7 +63,7 @@ IF provider is undefined
 
 ## Backwards Compatibility
 
-This HIP is entirely opt-in and does not break any existing functionality. It simply provides standards that wallets and dApps can follow to interact with each other.
+This HIP is entirely opt-in and does not modify any existing functionality. It simply provides standards that client applications (such as wallets) and dApps can follow to interact with each other.
 
 ## Security Implications
 
@@ -71,7 +71,7 @@ The permissions schema referenced below in the Open Issues section would provide
 
 ## How to Teach This
 
-Simple examples and Guides will be incorporated into the existing Hedera documentation. Additionally, developer advocates can write education content on the 'How to' of this feature. 
+Simple examples and guides will be incorporated into the existing Hedera documentation. Additionally, developer advocates can write educational content on the 'How to' of this feature. 
 
 ## Reference Implementation
 
