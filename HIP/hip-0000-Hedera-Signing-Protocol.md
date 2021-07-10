@@ -47,7 +47,9 @@ JavaScript is the primary language that can communicate with the browser's [DOM]
 This is the generalized flow:
 
 1. The User sends a request to the Server for a transaction that they wish to make through the Server's interface.
-_Start of Protocol Scope
+
+_Start of Protocol Scope_
+
 2. The Server queries the browser for extensions which implement the Hedera Signing Protocol
 3. The Server generates a list of Clients and the Account IDs that the Clients manage
 4. The User selects the desired account which they want to perform the transaction.
@@ -55,7 +57,9 @@ _Start of Protocol Scope
 6. The Server then sends a sendTransaction RPC to the Client. This RPC method is standardized as part of the protocol and initializes the connection between the Server and the Client.
 7. The Client displays the transaction to the User and prompts the user to Sign the transaction or Cancel.
 8. The Client executes the signed transaction, and sends a response to the Server (transaction Receipt, or cancel).
-_End of Protocol Scope
+
+_End of Protocol Scope_
+
 9. The Server displays the result and continues the user experience.
 
 **Notes:**
