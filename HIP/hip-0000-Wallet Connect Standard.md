@@ -6,7 +6,7 @@
 - status: Draft 
 - created: <07/03/21>
 - discussions-to: <https://github.com/hashgraph/hedera-improvement-proposal/discussions/98>
-- updated: <07/08/21> <07/03/21>
+- updated: <07/09/21> <07/08/21> <07/03/21>
 - requires: <HIP number(s)>
 - replaces: <HIP number(s)>
 - superseded-by: <HIP number(s)>
