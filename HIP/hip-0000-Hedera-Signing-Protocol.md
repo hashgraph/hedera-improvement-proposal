@@ -42,7 +42,7 @@ This protocol is designed to allow any Client to implement it and be accessed by
 
 ## Specification
 
-JavaScript is the primary language that can communicate with the browser's [DOM](https://www.w3.org/TR/REC-DOM-Level-1/introduction.html#). It is thus necessary for this module to be a JavaScript module. The transaction signing process is governed by this protocol, hereby refered to as the Hedera Signing Protocol.
+JavaScript is the primary language that can communicate with the browser's [DOM](https://www.w3.org/TR/REC-DOM-Level-1/introduction.html#). It is thus necessary for this module to be a JavaScript module. The transaction transmission and signing process is governed by this protocol.
 
 This is the generalized flow:
 
