@@ -21,7 +21,7 @@ The Requesting Website : The web application providing a service. This applicati
 
 The Client : The client application, henceforth referred to as the Client. This application is controlled by the user and has access to a Hedera Account Private Key, which is used to sign the transactions for the services provided by the Requesting Website. An example would be the Metamask wallet for the Ethereum blockchain.
 
-This proposal does not require any new Hedera API endpoints. 
+This proposal does not require any new Hedera API endpoints. In addition, this protocol is designed to function without making any calls to the Hedera API. Any API calls are done outside the scope of this protocol.
 
 This proposal introduces a javascript module used to send and receive and sign transaction data before they are submitted to the Hedera public network. The module will be open source and installable as a public node module for ease of inclusion into applications. 
 
@@ -56,11 +56,10 @@ _Start of Protocol Scope_
 5. The Requesting Website creates a transaction, freezes it, and JSONifies it for use as txnObject in Step 6.
 6. The Requesting Website sends a sendTransaction RPC to the Client, with txnObject as a param. 
 7. The Client displays the transaction to the User and prompts the user to Sign the transaction or Cancel.
-8. The Client executes the signed transaction, and sends a response to the Requesting Website (transaction Receipt, or cancel).
-
+8. The Client sends the signed transaction back to the Requesting Website
 _End of Protocol Scope_
 
-9. The Requesting Website displays the result and continues the user experience.
+9. The Requesting Website executes the transaction on the Hedera API, displays the result and continues the user experience.
 
 **Notes:**
 
@@ -91,9 +90,7 @@ If the account ID in txnObject does not match an account ID served by the Client
 If the Client does not implement the specific transaction type that has been sent through, it can return a TransactionNotSupported error to the Requesting Website.
 If the Client cancels the transaction a generic TransactionCancelled error is returned.
 
-**Step 8**: The Client is responsible for executing the transaction, and sends a receipt to the Requesting Website so the Requesting Website can display an appropriate response.
-
-If the transaction fails, the Client sends the error result to the Requesting Website.
+**Step 9**: The Requesting Website is responsible for executing the transaction, which allows for multi-sig type transactions to be coordinated by the Requesting Website. 
 
 ## Backwards Compatibility
 
