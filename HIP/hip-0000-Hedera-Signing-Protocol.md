@@ -66,6 +66,8 @@ _End of Protocol Scope_
 
 **Step 2**: Clients that implement the protocol will contain a 'HederaSP' identifier in their manifest.json. The Server can then query for extensions which have the identifier and populate a list. 
 
+An empty list signifies that there are no compatible browser extensions. It is then up to the Server if they want to provide options/instructions to the user.
+
 **Step 3**: The Server sends the RPC "requestAccounts" to each Client identified in step 2.
 
 Each Client implements requestAccounts() which returns an array of Hedera Account IDs (type string).
@@ -81,13 +83,17 @@ The User will then select the Account which they want to perform the transaction
 	txnObject: 'xxxx' // the frozen transaction object JSONified
 	memo: 'string' // An optional string that contains further information about the transaction. Note that this can be different than the memo in the transaction object itself
 	}
-	
-**Step 7**: The Client receives txnParams through sendTransaction() and displays the data to the user for their approval. Note that displaying the information of the transaction is not part of this protocol, however it is recommended as best practice that the Client unpackages the transaction and displays all the relevant information.
 
+
+**Step 7**: The Client receives txnParams through sendTransaction() and displays the data to the user for their approval. Note that displaying the information of the transaction is not part of this protocol, however it is recommended as best practice that the Client unpackages the transaction and displays all the relevant information.
+	
+If the account ID in txnObject does not match an account ID served by the Client, it sends back an InvalidAccountID error.
 If the Client does not implement the specific transaction type that has been sent through, it can return a TransactionNotSupported error to the Server.
+If the Client cancels the transaction a generic TransactionCancelled error is returned.
 
 **Step 8**: The Client is responsible for executing the transaction, and sends a receipt to the Server so the Server can display an appropriate response.
 
+If the transaction fails, the Client sends the error result to the Server.
 
 ## Backwards Compatibility
 
