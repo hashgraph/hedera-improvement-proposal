@@ -17,9 +17,9 @@ This specification proposes a protocol for web applications to send pregenerated
 
 This protocol describes the interactions of two actors:
 
-The Server : The web application providing a service, henceforth referred to as the Server. This application is not controlled by the user, but is providing a service which interacts with the user's Hedera account in some fashion. An example would be Uniswap for the Ethereum blockchain.
+The Requesting Website : The web application providing a service. This application is not controlled by the user, but is providing a service which interacts with the user's Hedera account in some fashion. An example would be Uniswap for the Ethereum blockchain.
 
-The Client : The client application, henceforth referred to as the Client. This application is controlled by the user and has access to a Hedera Account Private Key, which is used to sign the transactions for the services provided by the Server. An example would be the Metamask wallet for the Ethereum blockchain.
+The Client : The client application, henceforth referred to as the Client. This application is controlled by the user and has access to a Hedera Account Private Key, which is used to sign the transactions for the services provided by the Requesting Website. An example would be the Metamask wallet for the Ethereum blockchain.
 
 This proposal does not require any new Hedera API endpoints. 
 
@@ -35,9 +35,9 @@ Without a communication standard, projects in the space are required to reinvent
 
 ## Rationale
 
-We propose establishing a standard protocol for Servers to present Clients with transactions to be signed by the User. The module allows the Server to present transaction data to the DOM environment where it can be viewed by the Client. There is no sensitive account information within the transaction data. The Client recieves the transaction data and signs it using their private key without exposing the key to the Server. The signed transaction is then submitted to the Hedera API network by the Client and the receipt is sent to the Server.
+We propose establishing a standard protocol for Requesting Websites to present Clients with transactions to be signed by the User. The module allows the Requesting Website to present transaction data to the DOM environment where it can be viewed by the Client. There is no sensitive account information within the transaction data. The Client recieves the transaction data and signs it using their private key without exposing the key to the Requesting Website. The signed transaction is then submitted to the Hedera API network by the Client and the receipt is sent to the Requesting Website.
 
-This protocol is designed to allow any Client to implement it and be accessed by Servers, thus providing maximum flexibility for users and developers. It is similar to Wallet Connect, which is an open protocol. Contrast this with Metamask's protocol which is designed specifically for Metamask.
+This protocol is designed to allow any Client to implement it and be accessed by Requesting Websites, thus providing maximum flexibility for users and developers. It is similar to Wallet Connect, which is an open protocol. Contrast this with Metamask's protocol which is designed specifically for Metamask.
 
 
 ## Specification
@@ -46,37 +46,37 @@ JavaScript is the primary language that can communicate with the browser's [DOM]
 
 This is the generalized flow:
 
-1. The User sends a request to the Server for a transaction that they wish to make through the Server's interface.
+1. The User sends a request to the Requesting Website for a transaction that they wish to make through the Requesting Website's interface.
 
 _Start of Protocol Scope_
 
-2. The Server queries the browser for extensions which implement the Hedera Signing Protocol
-3. The Server generates a list of Clients and the Account IDs that the Clients manage
+2. The Requesting Website queries the browser for extensions which implement the Hedera Signing Protocol
+3. The Requesting Website generates a list of Clients and the Account IDs that the Clients manage
 4. The User selects the desired Client/Account pair which they want to perform the transaction.
-5. The Server creates a transaction, freezes it, and JSONifies it for use as txnObject in Step 6.
-6. The Server sends a sendTransaction RPC to the Client, with txnObject as a param. 
+5. The Requesting Website creates a transaction, freezes it, and JSONifies it for use as txnObject in Step 6.
+6. The Requesting Website sends a sendTransaction RPC to the Client, with txnObject as a param. 
 7. The Client displays the transaction to the User and prompts the user to Sign the transaction or Cancel.
-8. The Client executes the signed transaction, and sends a response to the Server (transaction Receipt, or cancel).
+8. The Client executes the signed transaction, and sends a response to the Requesting Website (transaction Receipt, or cancel).
 
 _End of Protocol Scope_
 
-9. The Server displays the result and continues the user experience.
+9. The Requesting Website displays the result and continues the user experience.
 
 **Notes:**
 
-**Step 2**: Clients that implement the protocol will contain a 'HederaSP' identifier in their manifest.json. The Server can then query for extensions which have the identifier and populate a list. 
+**Step 2**: Clients that implement the protocol will contain a 'HederaSP' identifier in their manifest.json. The Requesting Website can then query for extensions which have the identifier and populate a list. 
 
-An empty list signifies that there are no compatible browser extensions. It is then up to the Server if they want to provide options/instructions to the user.
+An empty list signifies that there are no compatible browser extensions. It is then up to the Requesting Website if they want to provide options/instructions to the user.
 
-**Step 3**: The Server sends the RPC "requestAccounts" to each Client identified in step 2.
+**Step 3**: The Requesting Website sends the RPC "requestAccounts" to each Client identified in step 2.
 
 Each Client implements requestAccounts() which returns an array of Hedera Account IDs (type string).
 
-**Step 4**: The Server should display the list of Accounts, sorted by Client. As part of this step the Server may query the network to obtain further information to assist the user in their choice (such as account balance), though this is not strictly part of the protocol.
+**Step 4**: The Requesting Website should display the list of Accounts, sorted by Client. As part of this step the Requesting Website may query the network to obtain further information to assist the user in their choice (such as account balance), though this is not strictly part of the protocol.
 
 The User will then select the Account which they want to perform the transaction with.
 		
-**Step 6**: The Server calls the Client RPC sendTransaction, which contains a number of parameters.
+**Step 6**: The Requesting Website calls the Client RPC sendTransaction, which contains a number of parameters.
 	
 	const txnParams = {
 	
@@ -88,12 +88,12 @@ The User will then select the Account which they want to perform the transaction
 **Step 7**: The Client receives txnParams through sendTransaction() and displays the data to the user for their approval. Note that displaying the information of the transaction is not part of this protocol, however it is recommended as best practice that the Client unpackages the transaction and displays all the relevant information.
 	
 If the account ID in txnObject does not match an account ID served by the Client, it sends back an InvalidAccountID error.
-If the Client does not implement the specific transaction type that has been sent through, it can return a TransactionNotSupported error to the Server.
+If the Client does not implement the specific transaction type that has been sent through, it can return a TransactionNotSupported error to the Requesting Website.
 If the Client cancels the transaction a generic TransactionCancelled error is returned.
 
-**Step 8**: The Client is responsible for executing the transaction, and sends a receipt to the Server so the Server can display an appropriate response.
+**Step 8**: The Client is responsible for executing the transaction, and sends a receipt to the Requesting Website so the Requesting Website can display an appropriate response.
 
-If the transaction fails, the Client sends the error result to the Server.
+If the transaction fails, the Client sends the error result to the Requesting Website.
 
 ## Backwards Compatibility
 
@@ -101,11 +101,11 @@ This HIP is entirely opt-in and does not modify any existing functionality. It s
 
 ## Security Implications
 
-Clients are responsible for locally signing transactions. At no point are private keys ever shared or revealed to the Server. This is the main purpose of this protocol. Because no sensitive account data is shared, account security through this protocol is maintained.
+Clients are responsible for locally signing transactions. At no point are private keys ever shared or revealed to the Requesting Website. This is the main purpose of this protocol. Because no sensitive account data is shared, account security through this protocol is maintained.
 
 On the other hand, there are many considerations which developers should take into account when implementing this protocol into their applications:
 
-Nothing can be done about a Server (intentionally or not) generating an incorrect transaction. A malicious Server can generate a transaction that is different than what the user is expecting. This protocol assumes that the Client properly unpackages the transactions that it receives and displays the information in a readable, clear manner to the user for their review, and that the User is given accurate information and a clear indication of what action they are approving by signing the transaction.
+Nothing can be done about a Requesting Website (intentionally or not) generating an incorrect transaction. A malicious Requesting Website can generate a transaction that is different than what the user is expecting. This protocol assumes that the Client properly unpackages the transactions that it receives and displays the information in a readable, clear manner to the user for their review, and that the User is given accurate information and a clear indication of what action they are approving by signing the transaction.
 
 The permissions schema referenced below in the Open Issues section would provide more robust security for users.
 
