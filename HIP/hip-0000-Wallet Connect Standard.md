@@ -78,16 +78,16 @@ The User will then select the Account which they want to perform the transaction
 	memo: 'string' // An optional string that contains further information about the transaction. Note that this can be different than the memo in the transaction object itself
 	}
 	
-Step 7: The Client receives txnParams through sendTransaction() and displays the data to the user for their approval. Note that displaying the information of the transaction is not part of this protocol, however it is recommended as best practice that the Client unpackages the transaction and displays all the relevant information.
+**Step 7**: The Client receives txnParams through sendTransaction() and displays the data to the user for their approval. Note that displaying the information of the transaction is not part of this protocol, however it is recommended as best practice that the Client unpackages the transaction and displays all the relevant information.
 
 If the Client does not implement the specific transaction type that has been sent through, it can return a TransactionNotSupported error to the Server.
 
-Step 8: The Client is responsible for executing the transaction, and sends a receipt to the Server so the Server can display an appropriate response.
+**Step 8**: The Client is responsible for executing the transaction, and sends a receipt to the Server so the Server can display an appropriate response.
 
 
 ## Backwards Compatibility
 
-This HIP is entirely opt-in and does not modify any existing functionality. It simply provides standards that client applications (such as wallets) and dApps can follow to interact with each other.
+This HIP is entirely opt-in and does not modify any existing functionality. It simply provides standards that client applications (such as wallets) and web applications can follow to interact with each other.
 
 ## Security Implications
 
