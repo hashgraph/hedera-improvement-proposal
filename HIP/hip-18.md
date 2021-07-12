@@ -530,8 +530,8 @@ Example of a new transaction record:
 ```
 new TokenCreateTransaction()
     .setName(..)
-    .setCustomFee({token-id}}, {value}, {account-id})
-    .setCustomFee(0.0.987, 100, 0.0.123)
+    .addCustomFee({token-id}, {value}, {account-id})
+    .addCustomFee(0.0.987, 100, 0.0.123)
     ...
     .execute(client)
 ```
@@ -541,18 +541,13 @@ with entity ID 0.0.123. Account 0.0.123 could obviously be a single individual�
 multisignature account managed by an HCS based validator network, as we’ve recently seen in Greg Scullard’s NFT auction
 demo ([10](https://www.youtube.com/watch?v=hCPXKR1e7Ro)).
 
-This could be expanded to include multiple custom fees per token, up to the 6kb transaction limit imposed by the Hedera
-network as it currently
-stands ([11](https://docs.hedera.com/guides/docs/hedera-api/consensus-service/consensussubmitmessage#consensussubmitmessagetransactionbody)),
-or another threshold determined to help reduce the potential of a DDoS attack on the network through bloated custom
-token fee schedules.
-
+This could be expanded to include up to 10 custom fees per token.
 ```
 new TokenCreateTransaction()
     .setName(..)
-    .setCustomFee(0.0.987, 100, 0.0.123)
-    .setCustomFee(0.0.987, 200, 0.0.456)
-    .setCustomFee(HBAR, 10, 0.0.753)
+    .addCustomFee(0.0.987, 100, 0.0.123)
+    .addCustomFee(0.0.654, 200, 0.0.456)
+    .addCustomFee(HBAR, 10, 0.0.753)
     ...
     .execute(client)
 ```
@@ -561,29 +556,26 @@ An obvious example for this is a multiparty ecosystem, with a community managed 
 genesis application. Or in the meta-example, Hedera having distinct buckets for each the node, service, and network fees
 respectively which could trustlessly be managed by different entities, like a DAO.
 
-We also propose adding the following percentage based variation of the base implementation. 
-
+We also propose adding the following percentage based variation of the base implementation. Note that the token in the
+percentage will be the same as the token to be created or updated, hence omitted in the transaction.
 ```
 new TokenCreateTransaction()
     .setName(..)
-    .setCustomFeePercentage({token-id}}, {value}, {account-id})
-    .setCustomFeePercentage(0.0.987, 10%, 0.0.123)
+    .addCustomFeePercentage({percent}, {account-id})
+    .addCustomFeePercentage(10%, 0.0.123)
     ...
     .execute(client)
 ```
 
 Typically, percentage royalties will be deducted from the tokens being transferred. If there are no tokens being
 transferred, then when tokens are created there can be a “minimum” or fallback price denominated in any token. In the
-example below 10 tokens with entity ID 0.0.987 would be required to be sent to account 0.0.123 in the case there was a
-0 value transaction, or anything that would result in a royalty percentage fee less than the minimum.
-
+example below 10 tokens would be required to be sent to account 0.0.123 in the case there was a 0 value transaction, or
+anything that would result in a royalty percentage fee less than the minimum.
 ```
 new TokenCreateTransaction()
     .setName(..)
-    .setCustomFeePercentage({token-id}}, {value}, {account-id})
-    .setCustomFeePercentage(0.0.987, 10%, 0.0.123)
-    .setMinimumCustomFeeValue({token-id}, {value}, {account-id})
-    .setMinimumCustomFeeValue(0.0.987, 10, 0.0.123)
+    .addCustomFeePercentage(10%, 0.0.123)
+        .setMinimumAmount(10)
     ...
     .execute(client)
 ```
@@ -597,8 +589,7 @@ successfully execute the transaction with the defined custom token fee schedules
 ```
 new TokenCreateTransaction()
     .setName(..)
-    .setCustomFeePercentage({token-id}}, {value}, {account-id})
-    .setCustomFeePercentage(null, 10%, 0.0.123)
+    .addCustomFee(null, 100, 0.0.123)
     ...
     .execute(client)
 ```
@@ -629,7 +620,6 @@ Other general/categorical examples include:
 - 8 - https://docs.hedera.com/guides/core-concepts/scheduled-transaction
 - 9 - https://docs.hedera.com/guides/docs/hedera-api/basic-types/feedata
 - 10 - https://www.youtube.com/watch?v=hCPXKR1e7Ro
-- 11 - https://docs.hedera.com/guides/docs/hedera-api/consensus-service/consensussubmitmessage#consensussubmitmessagetransactionbody
 
 ## Copyright
 This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE)
