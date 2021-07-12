@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+
+package HIPXXX;
+
+
+message LimitsRequest{
+    required int32 MaxTransactionFee  = 1; //maybe we make these types bigger to prevent overflow
+    required int32 PreAuthorizationLimit = 2; //maybe we make these types bigger to prevent overflow
+    optional Capabilities =3 ;
+    optional Memo = 4;
+}
+
+message limitResponse{
+    required LimitsResponse = 1;
+    required MaxTransactionFee = 2;
+    required PreAuthorizationLimit = 3;
+    optional Capabilities = 4;
+    optional Memo =5;
+}
+message signRequest {
+    reuired Hash = 1;
+    required BodyBytes = 2;
+    optional Memo = 3;
+}
+
+message signResponse {
+    required Hash = 1;
+    required ResponseCode = 2;
+    required SigMap = 3; 
+    optional Memo = 4;
+}
+
+message SignAndSubmitRequest {
+    required Hash = 1;
+    required BodyBytes = 2;
+    required SigMap = 3;
+    optional Memo = 4;
+}
+message SignAndSubmitResponse {
+    required Hash = 1;
+    required ResponseCode response = 2;
+    required Receipt = 3;
+    optional Memo = 4;
+}
+
+message SubmitRequest {
+    required Hash = 1;
+    required BodyBytes = 2;
+    required SigMap = 3;
+    optional Memo = 4;
+}
+message SubmitResponse {
+    required Hash = 1;
+    required ResponseCode response = 2;
+    required Receipt = 3;
+    optional Memo = 4;
+}
+
+message ResponseCode {
+    optional Success = 1;
+    optional Rejected = 2;
+    optional UnrecognizedTransaction = 3;
+    optional MaxTransactionFeeExceeded = 4;
+    optional PreAuthroizationLimitExceeded = 5;
+    optional CapabilityNotSupported = 6;
+    optional TransactionException = 7;
+}
+
+
+service Exchange {
+    //unary
+    rpc sign(signRequest) returns (signResponse); // returns transaction signed with ECDSA
+    rpc submit(SubmitRequest,) returns (SubmitResponse);
+    rpc sign_and_submit(SignAndSubmitRequest) returns (SignAndSubmitResponse);
+}
+
+
+// Method for parsing bodybits?
+// ECDSA for signing? (same format the network takes?)
+// gRPC/http2 for sure
+// not dependant on HAPI? or incorperated?
+
+
+// If using HAP we can use the TransactionBody fields like below
+// message transaction {
+//     required TransactionBody transaction =1; //From the HAPI, has the transaction ID field
+//     optional digital_signature = 2; // ECDSA of TX ID
+// }
+// message receipt {
+//     required TransactionReceipt receipt = 1;
+// }
