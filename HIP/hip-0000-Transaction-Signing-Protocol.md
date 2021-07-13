@@ -18,7 +18,7 @@ This specification proposes a protocol for exchanging unsigned transactions and 
 
 ## Motivation
 
-Developers are currently creating web authentication mechanisms from scratch for Hedera-based web apps. This is limits consumer adoption and results in a poor user and developer experience. A standard protocol for decentralized applications to communicate with clients and allow clients to sign transactions would significantly improve the developer and user experience. The Hedera development space is still young, with many new projects developing promising ideas. These projects will need a standardized method of communication, much like what exists in the Ethereum space.
+Developers are currently creating web authentication mechanisms from scratch for Hedera-based web apps. This limits consumer adoption and results in a poor user and developer experience. A standard protocol for decentralized applications to communicate with clients and allow clients to sign transactions would significantly improve the developer and user experience. The Hedera development space is still young, with many new projects developing promising ideas. These projects will need a standardized method of communication, much like what exists in the Ethereum space.
 
 Taking the Metamask wallet as an example, Metamask offers a seamless way for users to interact with dApps, sending requests and signing transactions without compromising the security of their accounts. Another example is Wallet Connect, which is an open protocol for signing ETH transactions.
 
@@ -26,7 +26,14 @@ Without a communication standard, projects in the space are required to reinvent
 
 ## Rationale
 
-We propose establishing a standard protocol for sending and receiving transactions to be signed. There is no sensitive account information within the transaction data. We prepose protobufs for four RPC calls and their corresponding requests and responses. The four calls shall be `RequestLimit`, `Sign`, `Submit`, and `SubmitAndSign`.  `RequestLimit` allows for information like `MaxTransactionFee` and `PreAuthorizationLimit` to be obtained entities utilizing the protocol. `Sign` allows an entity to provide a `SigMap` like that used in the hedera API to bytes of a transaction. `Submit` provides the requesting entity with a response containing information of a signed transaction. `SignAndSubmit` allows for both the sign and submit actions to be carried out in half of the number of responses and requests. These calls allow for a single transaction to be signed by multiple keys for multi signature protocols.
+We propose establishing a standard protocol for sending and receiving transactions to be signed. There is no sensitive account information within the transaction data. We prepose protobufs for four RPC calls and their corresponding requests and responses. The four calls shall be `RequestLimit`, `Sign`, `Submit`, and `SubmitAndSign`.  
+
+* `RequestLimit` allows for information like `MaxTransactionFee` and `PreAuthorizationLimit` to be obtained entities utilizing the protocol. 
+* `Sign` allows an entity to provide a `SigMap` like that used in the hedera API to bytes of a transaction. 
+* `Submit` provides the requesting entity with a response containing information of a signed transaction. 
+* `SignAndSubmit` allows for both the sign and submit actions to be carried out in half of the number of responses and requests. 
+
+These calls allow for a single transaction to be signed by multiple keys for multi signature protocols.
 
 ## Specification
 
@@ -40,7 +47,7 @@ message LimitsRequest{
     optional Memo = 5;
 }
 
-message limitResponse{
+message LimitResponse{
     required ResponseCode response = 1;
     required MaxTransactionFee = 2;
     required PreAuthorizationLimit = 3;
@@ -48,13 +55,13 @@ message limitResponse{
     optional Memo = 5;
 }
 
-message signRequest {
-    reuired Hash = 1; // corolation ID if not rpc
+message SignRequest {
+    required Hash = 1; // correlation ID if not rpc
     required BodyBytes = 2; // hex
     optional Memo = 3;
 }
 
-message signResponse {
+message SignResponse {
     required Hash = 1;
     required ResponseCode = 2;
     required SigMap = 3; //matches HAPI sigMap , examples is .net sdk
@@ -112,11 +119,11 @@ service Exchange {
 
 ## Backwards Compatibility
 
-This HIP is entirely opt-in and does not modify any existing functionality. It simply provides standards that client applications (such as wallets) and web applications can follow to interact with each other.
+The standards defined in this HIP are entirely opt-in and do not modify any existing functionality. It simply provides standards that client applications (such as wallets) and web applications can follow to interact with each other.
 
 ## Security Implications
 
-Clients are responsible for locally signing transactions. At no point are private keys ever shared or revealed to the protocol. Because no sensitive account data is shared, account security through this protocol is maintained.
+Clients are responsible for locally signing transactions. At no point are private keys shared or revealed to the protocol. As no sensitive account data is shared, account security through this protocol is maintained.
 
 On the other hand, there are many considerations which developers should take into account when implementing this protocol into their applications:
 
