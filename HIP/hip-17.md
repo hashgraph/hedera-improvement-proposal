@@ -103,15 +103,21 @@ The following matrix provides information on the mapping between token types/pro
 **Fixed/Capped-Variable or Infinite are invalid properties for NFT of type Singleton
 
 ***The proposal does not support Fractional NFTs
+
 ## HAPI Changes
+
 ### Legend
+
 ```diff
 + Green represents new property/message added
 ! Orange represents modified property/message
 ```
+
 ### TokenService
 The current proposal requires the addition of 3 new RPC endpoints to the existing `HTS` service - `getNftInfo`, `getTokenNftInfo` and `getAccountNftInfo`
+
 Other than adding new `rpc` calls the following, already existing, operations must be modified: `createToken`, `mintToken`, `burnToken`, `wipeTokenAccount`, `getTokenInfo`
+
 ```diff
 service TokenService {
    // Creates a new Token by submitting the transaction
@@ -148,15 +154,19 @@ service TokenService {
 +  rpc getAccountNftInfo (Query) returns (Response);
 }
 ```
+
 ### TokenCreateTransactionBody
+
 - By default, already existing tokens will be of type `FUNGIBLE` (backwards compatible)
 - By default, if `maxSupply` is not provided, the token will be defined as having `Infinite` supply. (backwards compatible)
+
 ```diff
 +//Fungible or Non-Fungible Token Base. Cannot be updated using admin key
 +enum TokenType {
 +	FUNGIBLE = 0;
 +	NON_FUNGIBLE = 1;
 +}
+
 message TokenCreateTransactionBody {
 +	TokenType tokenType = 1; // IWA compatibility. Specifies fungible or not
 	string name = 2; // The publicly visible name of the token, limited to a UTF-8 encoding of length <tt>tokens.maxSymbolUtf8Bytes</tt>.
@@ -177,7 +187,9 @@ message TokenCreateTransactionBody {
    	string memo = 17; // The memo associated with the token (UTF-8 encoding max 100 bytes)
 }
 ```
+
 ### TokenAssociateTransactionBody 
+
 ```diff
 message TokenAssociateTransactionBody {
     AccountID account = 1; // The account to be associated with the provided tokens
@@ -185,11 +197,15 @@ message TokenAssociateTransactionBody {
 }
 ```
 ### TokenMintTransactionBody
+
 The property `amount` is to be deprecated and instead a new message `AmountOrMemo` to be used.
+
 **Pros**
 - Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of minting operations
+
 **Cons**
  - Breaking change
+
 Once created, an NFT instance cannot be updated, only transferred/wiped or burned.
 ```diff
 +message AmountOrMemo {
@@ -198,14 +214,18 @@ Once created, an NFT instance cannot be updated, only transferred/wiped or burne
 +   		string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created
 +	}
 +}
+
 message TokenMintTransactionBody {
     TokenID token = 1; // The token for which to mint tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
 !   uint64 amount = 2; [deprecated=true] // The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63.
 +   AmountOrMemo amountOrMemo = 3;
 }
+
 ```
+
 ### TransactionReceipt
 The transaction receipt is to be updated with a new field `serialNumber` used to represent the newly created NFT instance.
+
 ```diff
 message TransactionReceipt {
     // The consensus status of the transaction; is UNKNOWN if consensus has not been reached, or if the
@@ -238,12 +258,16 @@ message TransactionReceipt {
 +   uint64 serialNumber = 14;     
 }
 ```
+
 ### TokenBurnTransactionBody
 The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used.
+
 **Pros**
 - Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of burn operations
+
 **Cons**
  - Breaking change
+
 All serial numbers specified must be owned by the Treasury account in order for them to be burned successfully.
 ```diff
 +message AmountOrSerialNumbers {
@@ -252,18 +276,23 @@ All serial numbers specified must be owned by the Treasury account in order for 
 +		repeated uint64 serialNumbers=2; //Applicable to tokens of type NON_FUNGIBLE. The list of serial numbers to be burned/wiped.
 +	}
 +}
+
 message TokenBurnTransactionBody {
 	TokenID token = 1; // The token for which to burn tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
 !	uint64 amount = 2; [deprecated=true] // The amount to burn from the Treasury Account. Amount must be a positive non-zero number, not bigger than the token balance of the treasury account (0; balance], represented in the lowest denomination.
 +	AmountOrSerialNumbers amountOrSerialNumbers= 3; // Defines the amount or list of serial numbers to be burned
 }
 ```
+
 ### TokenWipeAccountTransactionBody
 The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used. 
+
 **Pros**
 - Explicit definiton - using the `oneof` structure, clients can explicitly differenciate between the 2 types of wipe operations
+
 **Cons**
  - It is a breaking change
+
 All serial numbers specified must NOT be owned by the Treasury account in order for them to be wiped successfully.
 ```diff
 message TokenWipeAccountTransactionBody {
@@ -272,9 +301,12 @@ message TokenWipeAccountTransactionBody {
 !	uint64 amount = 3; [deprecated=true] // The amount of tokens to wipe from the specified account. Amount must be a positive non-zero number in the lowest denomination possible, not bigger than the token balance of the account (0; balance]
 +	AmountOrSerialNumbers amountOrSerialNumbers= 3; // Defines the amount or list of serial numbers to be wiped
 }
+
 ```
+
 ### TokenInfo
 New `tokenType` and `maxSupply` fields to be added in the `TokenInfo` query. 
+
 ```diff
 message TokenInfo {
 +  TokenType tokenType = 1; // IWA compatibility. Specifies fungible or not
@@ -298,22 +330,31 @@ message TokenInfo {
    Timestamp expiry = 19; // The epoch second at which the token will expire
    string memo = 20; // The memo associated with the token
 }
+
 ```
+
 ### TokenTransferList
+
 **Rationale**
+
 With the current proposal, HTS API is being extended to support `NON_FUNGIBLE` types of tokens. All of the changes to the HAPI are being contained under the HTS service. Transfers in the HAPI are unified, meaning that there is only 1 `CryptoTransferTransactionBody` that is used to represent both `hbar` and HTS token transfers. The proposed solution keeps the consistency of containing the changes under the HTS specific API by extending the `TokenTransferList` with new type of transfer - Non fungible token transfer
+
 The change is backwards compatible due to the usage of `oneof`.
+
 The major difference between `FUNGIBLE` and `NON_FUNGIBLE` transfers is the representation type.  As per the [IWA specifciation](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md#representation-type), we can distinguish 2 types of representations - `common` and `unique`. `AccountAmount` message type uses the `common` representation type and `NftTransfer` uses the `unique` representation type.
+
 ```diff
 message CryptoTransferTransactionBody {
    TransferList transfers = 1;
    repeated TokenTransferList tokenTransfers = 2;
 }
+
 +message NftTransfer {  
 +   AccountID fromAccount = 1;  // Sending account
 +   AccountID toAccount = 2;  // Receiving account
 +   uint64 serialNo = 3;  // Serial number that is being transferred
 +}
+
 /* A list of token IDs and amounts representing the transferred out (negative) or into (positive) amounts, represented in the lowest denomination of the token */
 message TokenTransferList {
     TokenID token = 1; // The ID of the token
@@ -323,7 +364,9 @@ message TokenTransferList {
 +   }
 }
 ```
+
 ### CryptoGetInfoResponse
+
 ```diff
 /* Response when the client sends the node CryptoGetInfoQuery */
 message CryptoGetInfoResponse {
@@ -351,7 +394,9 @@ message CryptoGetInfoResponse {
     AccountInfo accountInfo = 2; // Info about the account (a state proof can be generated for this)
 }
 ```
+
 ### TokenRelationship
+
 ```diff
 /* Token's information related to the given Account */
 message TokenRelationship {
@@ -363,8 +408,10 @@ message TokenRelationship {
 !   uint32 decimals = 6; // The number of decimal places a token is divisible by. Always 0 for tokens of type NON_FUNGIBLE
 }
 ```
+
 ### GetNftInfo
 The following messages must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
+
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on a NFT for a given TokenID (of type NON_FUNGIBLE) and serial number */
 +message GetNftInfoQuery {
@@ -372,21 +419,26 @@ The following messages must be added in order to support the new `GetNftInfo` rp
 +    TokenID tokenId = 2; // The ID of the token for which information is requested
 +    uint64 serialNumber = 3; // The serial number for the NFT for which information is requested
 +}
+
 +message NftInfo {
 +    uint64 serialNumber = 1; // the serial number of the NFT
 +    AccountID owner = 2; // The current owner of the NFT
 +    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
 +    string memo = 4; // Represents the unique metadata for a given NFT instance
 +}
+
 +message GetNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
 +    NftInfo nft = 3; // The NFT that his record is for
 +}
 ```
+
 ### GetTokenNftInfo
 The following messages must be added in order to support the new `GetTokenNftInfo` rpc call added to `HTS`.
+
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
+
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE Token */
 +message GetTokenNftInfoQuery {
@@ -395,16 +447,21 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; totalSupply]
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; totalSupply]
 +}
+
 +message GetTokenNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
 +    repeated NftInfo nfts = 3; // List of NFTs associated to the specified token
 +}
 ```
+
 ### GetAccountNftInfo
 The following messages must be added in order to support the new `GetAccountNftInfo` rpc call added to `HTS`.
+
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
+
 `ownedNFTs` is the number of NFTs that the specified account owns. The value can be retrieved from the `CryptoGetInfo` query.
+
 ```diff
 +/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M owned by the specified accountId */
 +message GetAccountNftInfoQuery {
@@ -413,12 +470,14 @@ Global dynamic variable must be added in the node configuring the maximum value 
 +    uint64 start = 3; // Specifies the start (including) of the range of NFTs to query for. Value must be in the range (0; ownedNFTs]
 +    uint64 end = 4; // Specifies the end (including) of the range of NFTs to query for. Value must be in the range [start; ownedNFTs]
 +}
+
 +message NftOwnedInfo {
 +    TokenID tokenId = 1; // The ID of the token
 +    uint serialNumber = 2; // The serial number of the NFT
 +    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
 +    string memo = 4; // Represents the unique metadata for a given NFT instance
 +}
+
 +message GetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
 +    AccountID accountId = 2; // The Account that this record is for
@@ -427,32 +486,43 @@ Global dynamic variable must be added in the node configuring the maximum value 
 ```
 
 
-
 ## Backwards Compatibility
 
-There should be a failsafe for when a DSA holder needs to transfer the wallet to a different wallet that the holder owns for whatever reason.  This can be done by negating any fee when the DSA is sent back to the original issuer (or perhaps just validator node operator).  This can be done by the DSA holder getting in touch with the [chosen] responsible party, explaining the situation and kindly ask them to forward the DSA to the desired address once the responsible party receives it.  A side benefit of this is: should the issuer want to reclaim the asset, they would not have to pay the specified fee that would just rebound to their wallet.
+There are several implications for already existing HTS integrations. Due to the significant changes in the HAPI the following operations are not backwards compatible:
 
-## Security Implications
+- [Mint](#TokenMintTransactionBody)
+- [Burn](#TokenBurnTransactionBody)
+- [Wipe](#TokenWipeAccountTransactionBody)
 
-Idk, not my department.  Let the paid professionals figure the security out.
+## Security Implicattions
+
+### Fees
+
+The existing fee schedule must be updated to support two separate fee schedule definitions for the same operation depending on the type of the Token. The current fee schedule for the HTS operations will be preserved for tokens of type `FUNGIBLE` and new fee schedule will be added for tokens of type `NON_FUNGIBLE` that will define the costs for executing operations on `NON_FUNGIBLE` token types.
+
+### Throttling
+
+One trade off that must be clarified is that by extending HTS with `NON_FUNGIBLE` support its impossible to throttle the operations separately. All HTS related operations (independent on the token type) will be using one throttling configuration and it will be applied for both token types.
 
 ## How to Teach This
 
-Once this feature is deployed and in the live marketplace, I’ll happily put together a video tutorial.  And if the effects of strong decentralization are felt, I suspect video tutorials will pop up globally.
+The Hedera documentation is to be updated with the new version of HTS once implemented. Blog posts and guides can be written and distributed in the social media channels for educating the community on the new functionality.
 
-## Reference Implementation
+## Reference implementation
 
-None available.  Some NFT platform websites have to have this already.  Maybe opensea.io or something?
+Reference implementation for the protobuf will be implemented once the HAPI is finalised and approved
 
 ## Rejected Ideas
 
-Fire away yo!
+No rejected ideas so far
 
 ## Open Issues
 
-The code and implementation
+TODO
 
-## Copyright/license
+## References
 
-No copyright/license, the Hedera community can just have this idea.  Happy to take part in an open source endeavor. 🤙
-{"mode":"full","isActive":false}
+- [IWA Specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md)
+
+## Copyright
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
