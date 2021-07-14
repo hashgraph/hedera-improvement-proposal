@@ -1,12 +1,17 @@
-- hip: 13
-- title: Hedera Name Service
-- author: H. Bart - hbart.lit@gmail.com
-- type: Standards Track
-- category: Service
-- status: Draft
-- created: 2021-03-13
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/56
-- updated: 2021-05-12
+---
+hip: 13
+title: Hedera Name Service
+author: H. Bart - hbart.lit@gmail.com
+type: Standards Track
+category: Service
+status: Draft
+created: 2021-03-13
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/56
+updated:
+requires:
+replaces:
+superseded-by:
+---
 
 ## Abstract
 
