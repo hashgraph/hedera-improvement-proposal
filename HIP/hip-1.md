@@ -179,7 +179,7 @@ HIPs should be written in markdown format. There is a template to follow.
 
 ### HIP Header Preamble
 
-Each HIP must begin with a header preamble in list format. The headers must appear in the following order. Headers marked with “*” are optional and are described below. All other headers are required.
+Each HIP must begin with an RFC 822 style header preamble, preceded and followed by three hyphens ( --- ). The headers must appear in the following order. Headers marked with “*” are optional and are described below. All other headers are required.
 
 - hip: HIP number (this is determined by the HIP editor)
 - title: HIP title
