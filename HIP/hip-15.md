@@ -146,7 +146,6 @@ Example code can be downloaded for these languages:
 - [AddressChecksums.java.zip](https://github.com/hashgraph/hedera-improvement-proposal/files/5861407/AddressChecksums.java.zip)
 - [HIP-1_javascript.html.zip](https://github.com/hashgraph/hedera-improvement-proposal/files/5861376/HIP-1_javascript.html.zip)
 
-
 ## Rejected Ideas
 
 - 2021-01-23: The decision to change from `0.0.x(yyyyy)` format to `0.0.x-yyyyy` with strict input requirements became the majority preference and examples were updated to reflect the preference.
