@@ -1,57 +1,58 @@
----
-hip: 17
-title: HTS Non Fungible support
-author: Daniel Ivanov (@Daniel-K-Ivanov)
-type: Standards Track
-category: Service
-status: Draft
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
----
+- hip: 17
+- title: Non-Fungible Tokens
+- author: Daniel Ivanov (@Daniel-K-Ivanov)
+- type: Standards Track
+- category: Service
+- status: Draft
+- created: 2021-04-22
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
+- updated: 2021-05-25
+
 ## Abstract
 
-The HIP defines the changes that must be applied in order for Hedera Services to support Non-fungible tokens.
+This HIP defines the changes that must be applied in order for the Hedera Token Service to support non-fungible tokens.
 
 ## Motivation
 
-The growing demand and use-cases for tokenisation point out that the current HTS design does not support all of the needs of the community. In this HIP we would like to describe a set of changes that would enable non-fungible types of tokens to be issued natively on Hedera Hashgraph. Having support for such tokens will allow an extended range of applications to be built on top of HTS.
+The growing demand and use-cases for tokenization point out that the current HTS design does not support all the needs of the community. In this HIP we would like to describe a set of changes that would enable non-fungible types of tokens to be issued natively on Hedera Hashgraph. Having support for such tokens will allow an extended range of applications to be built on top of HTS.
 
 ## Rationale
 
-The following proposal is building on top of the current HTS API instead of creating a brand new NFT service. There are 2 major reasons for that:
+The following proposal is building on top of the current HTS API instead of creating a brand-new service. There are 2 major reasons for that:
 - Developers desire the tokenization APIs to look similar for both fungible and non-fungible tokens
 - Though fungible and non-fungible tokens are different, there are a lot of commonalities - admin keys, KYC, supply, mint and burn behaviours
 
 ## Specification
 
-Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework) we can define the following combinations of fungible and non-fungible tokens:
+Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework) we can define the following subset of token combinations:
 
 ```
  HTS
 │
-└─── Fungible
-│   └─── Fractional ---> Currently supported by HTS
-│   └─── Whole ---> Currently supported by HTS   
-└─── Non-Fungible
-    └─── Whole ---> Supported with the current proposal             
-    └─── Fractional ---> Not supported by the proposal, though can be supported by HIP standards
-    └─── Singleton ---> Supported with the current proposal
+└─── Fungible Common     ---> Currently supported by HTS
+└─── Fungible Unique     ---> Currently not addressed in this Proposal  
+└─── Non-Fungible Common ---> Currently not addressed in this Proposal            
+└─── Non-Fungible Unique ---> Addressed in this proposal
 ```
 
-### Fungible
+### Fungible Common
 
 Tokens that have interchangeable value with one another, where any quantity of them has the same value as another equal quantity if they are in the same class or series.
+Common tokens share a single set of properties, are not distinct from one another, and their only representation is via a balance or quantity,
+attributed to an owner (Hedera Account).
 
 #### Fractional
-Describes a token that can be divided into smaller fractions, represented as decimals. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals != 0`. 
+Describes a token that can be divided into smaller fractions, represented as decimals. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals != 0`.
 
 #### Whole
-Describes a token that cannot be divided into smaller fractions. Meaning that subdivision is not allowed - just whole number quantities. Current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals=0`.
+Describes a token that cannot be divided into smaller fractions. Meaning subdivision is not allowed - just whole number quantities. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals=0`.
 
-### Non-fungible
+### Non-fungible Unique
 The NFT type is not interchangeable with other tokens of the same type as they typically have different values.
+Unique tokens have their own identities and can be individually traced. Each unique token can carry unique properties that cannot be changed in one place.
 
 #### Whole
-Each instance of a token in the class can share some property values with other tokens in the class and have distincly unique values between them. They cannot be divided into smaller fractions, represented as decimals. Whole NFTs can be created by defining the `tokenType` as `NON_FUNGIBLE` and executing `Mint` operation on the Token.
+Each instance of a token in the class can share some property values with other tokens in the class and have distinctly unique values between them. They cannot be divided into smaller fractions, represented as decimals. Whole NFTs can be created by defining the `tokenType` as `NON_FUNGIBLE_UNIQUE` and executing `Mint` operation on the Token.
 
 #### Fractional
 Similar to `Whole`, in terms that each instance of a token in the class can share some property values with other tokens in the class and have distinctly unique values between them, but unlike `Whole`, they CAN be divided into smaller fractions.
