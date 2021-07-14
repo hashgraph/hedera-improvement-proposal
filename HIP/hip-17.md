@@ -1,17 +1,16 @@
 ---
 hip: 17
-title: Perpetual Commissions Upon DSA(Digital Scarce Asset] Transfer
-author: Mike (@corviato1)
-type: Feature
-category: Smart Contract, or Protocol Level
+title: HTS Non Fungible support
+author: Daniel Ivanov (@Daniel-K-Ivanov)
+type: Standards Track
+category: Service
 status: Draft
-created: 2021-04-15
-discussions-to: https://github.com/ <idk, somewhere I guess?>
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
 ---
 
 ## Abstract
 
-A way to enable royalties on HBAR.
+The HIP defines the changes that must be applied in order for Hedera Services to support Non-fungible tokens.
 
 ## Motivation
 
