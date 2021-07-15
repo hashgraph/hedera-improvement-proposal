@@ -53,7 +53,6 @@ This HIP establishes a standard protocol for sending and receiving transactions 
     This is a streamlined call which reduces the number of messages sent between entities. The receiving entity returns the response from HAPI to the requesting entity.
 
 
-
 ## Specification
 
 ```
