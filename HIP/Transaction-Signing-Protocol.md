@@ -13,7 +13,11 @@
 
 ## Abstract
 
-This specification proposes a protocol for exchanging unsigned transactions and signatures.
+This specification proposes a protocol for exchanging transactions between applications. This protocol lays out the base RPC's that applications will be able to implement to exchange transactions and request signatures.
+
+Future protocols can be built upon this specification that lay out the mechanisms for applications to find each other and establish connections to utilize the RPC's.
+
+Entities which implement this protocol can be wallets, dApps, or other applications. The entity that sends the RPC call is referred to as the requesting entity, and the one that receives the RPC call and responds to it is referred to as the receiving entity.
 
 
 ## Motivation
@@ -24,87 +28,114 @@ Taking the Metamask wallet as an example, Metamask offers a seamless way for use
 
 Without a communication standard, projects in the space are required to reinvent the wheel for every application and wallet. This adds overhead for the project team. This also represents a significant risk to the user who must reveal sensitive account information to web applications in order to interact with the Hedera network.
 
+This HIP describes the Transaction Signing Protocol whose purpose is to establish a standard for applications to follow. 
+
+Follow up HIPs will build on this standard to lay out implementation of the protocol on different platforms (for example, the javascript web extension methodology that metamask uses for dApps to locate the Metamask client on a user's browser). We envision that there may be multiple such protocols, depending on required functionality, which include use cases such as desktop clients, P2P transfer, automated transfer between applications, etc. The Transaction Signing Protocol is intended to be robust enough handle these use cases as a base protocol.
+
 ## Rationale
 
-We propose establishing a standard protocol for sending and receiving transactions to be signed. There is no sensitive account information within the transaction data. We prepose protobufs for four RPC calls and their corresponding requests and responses. The four calls shall be `RequestLimit`, `Sign`, `Submit`, and `SubmitAndSign`.  
+This HIP establishes a standard protocol for sending and receiving transactions to be signed. There is no sensitive account information within the transaction data. We prepose protobufs for four RPC calls and their corresponding requests and responses. The four calls are `RequestLimit`, `Sign`, `Submit`, and `SubmitAndSign`.  
 
-* `RequestLimit` allows for information like `MaxTransactionFee` and `PreAuthorizationLimit` to be obtained entities utilizing the protocol. 
-* `Sign` allows an entity to provide a `SigMap` like that used in the hedera API to bytes of a transaction. 
-* `Submit` provides the requesting entity with a response containing information of a signed transaction. 
-* `SignAndSubmit` allows for both the sign and submit actions to be carried out in half of the number of responses and requests. 
+* `RequestLimit` allows for information like `MaxTransactionFee` and `PreAuthorizationLimit` to be requested from entities. 
 
-These calls allow for a single transaction to be signed by multiple keys for multi signature protocols.
+    This call can be used to query entities for their capabilities, to filter out entities which do not have the appropriate account permissions/settings or implement the required functions of the requesting entity. It can also potentially be used as a pre-authorization mechanism, for example a site that may prompt the user "This site wants to spend up to $50, is that OK?", and the wallet can then approve transactions up to that limit without interrupting the user.
+
+* `Sign` sends an unsigned transaction to an entity. The entity signs the transaction and returns the `SigMap` like that used in the hedera API to bytes of a transaction.
+
+    This call allows the requesting entity to generate a transaction, have it signed by the appropriate entity, then process and eventually execute the transaction on the HAPI. This gives the requesting entity control over the transaction and allows functionality such as multi-sig transactions to be fulfilled by the requesting entity.
+
+* `Submit` sends a transaction to an entity to submit to the HAPI. Any required signatures are included in the message.
+
+    This call allows for an entity to send a signed transaction to another entity for that entity to execute. The receiving entity returns the response from HAPI to the requesting entity.
+
+* `SignAndSubmit` sends a transaction to an entity, which is expected to sign the transaction and execute it on HAPI.
+
+    This is a streamlined call which reduces the number of messages sent between entities. The receiving entity returns the response from HAPI to the requesting entity.
+
 
 ## Specification
 
 ```
+
+message ResponseCode {
+    required uint64 id = 1
+    enum Response {
+        Success = 0;
+        Rejected = 1;
+        UnrecognizedTransaction = 2;
+        MaxTransactionFeeExceeded = 3;
+        PreAuthroizationLimitExceeded = 4;
+        CapabilityNotSupported = 5;
+        TransactionException = 6;
+        }
+    Response response = 2;
+}
+
+message SignaturePair {
+    bytes pubKeyPrefix = 1; // First few bytes of the public key
+    oneof signature {
+        bytes contract = 2; // smart contract virtual signature (always length zero)
+        bytes ed25519 = 3; // ed25519 signature
+        bytes RSA_3072 = 4; //RSA-3072 signature
+        bytes ECDSA_384 = 5; //ECDSA p-384 signature
+    }
+}
+message SignatureMap {
+    repeated SignaturePair sigPair = 1; // Each signature pair corresponds to a unique Key required to sign the transaction.
+}
+
 message LimitsRequest{
-    required int32 MaxTransactionFee  = 1; //maybe we make these types bigger to prevent overflow
-    required int32 PreAuthorizationLimit = 2; //maybe we make these types bigger to prevent overflow
-    //required publickey = 3; //potential auth, would also need a ECDSA
-    //signed object
-    optional Capabilities = 4; // What can this wallet do? Limitations 
-    optional Memo = 5;
+    required uint64 maxTransactionFee  = 1;
+    required uint64 preAuthorizationLimit = 2;
+    optional bytes memo = 3;
 }
 
 message LimitResponse{
     required ResponseCode response = 1;
-    required MaxTransactionFee = 2;
-    required PreAuthorizationLimit = 3;
-    optional Capabilities = 4;
-    optional Memo = 5;
+    required uint64 maxTransactionFee = 2;
+    required uint64 preAuthorizationLimit = 3;
+    optional bytes memo = 5;
 }
 
 message SignRequest {
-    required Hash = 1; // correlation ID if not rpc
-    required BodyBytes = 2; // hex
-    optional Memo = 3;
+    required bytes hash = 1; // correlation ID if not rpc
+    required bytes bodyBytes = 2; // hex
+    optional bytes memo = 3;
 }
 
 message SignResponse {
-    required Hash = 1;
-    required ResponseCode = 2;
-    required SigMap = 3; //matches HAPI sigMap , examples is .net sdk
-    optional Memo = 4;
+    required bytes hash = 1;
+    required ResponseCode response = 2;
+    required SignatureMap sigMap = 3; //matches HAPI sigMap , examples is above
+    optional bytes memo = 4;
 }
 
 message SignAndSubmitRequest {
-    required Hash = 1;
-    required BodyBytes = 2;
-    required SigMap = 3;
-    optional Memo = 4;
+    required bytes hash = 1;
+    required bytes bodyBytes = 2;
+    required SignatureMap sigMap = 3;
+    optional bytes memo = 4;
 }
 message SignAndSubmitResponse { // for optimization over the wire --> less req res
-    required Hash = 1;
+    required bytes hash = 1;
     required ResponseCode response = 2;
-    required Receipt = 3;
-    optional Memo = 4;
+    required TransactionReceipt receipt = 3; // from HAPI
+    optional bytes memo = 4;
 }
 
 message SubmitRequest {
-    required Hash = 1;
-    required BodyBytes = 2;
-    required SigMap = 3;
-    optional Memo = 4;
+    required bytes hash = 1;
+    required bytes bodyBytes = 2;
+    required SignatureMap sigMap = 3;
+    optional bytes memo = 4;
 }
 
 message SubmitResponse {
-    required Hash = 1;
+    required bytes hash = 1;
     required ResponseCode response = 2;
-    required Receipt = 3;
-    optional Memo = 4;
+    required TransactionReceipt receipt = 3; // from HAPI
+    optional bytes memo = 4;
 }
-
-message ResponseCode {
-    optional Success = 1;
-    optional Rejected = 2;
-    optional UnrecognizedTransaction = 3;
-    optional MaxTransactionFeeExceeded = 4;
-    optional PreAuthroizationLimitExceeded = 5;
-    optional CapabilityNotSupported = 6;
-    optional TransactionException = 7;
-}
-
 
 service Exchange {
     //unary
@@ -119,7 +150,7 @@ service Exchange {
 
 ## Backwards Compatibility
 
-The standards defined in this HIP are entirely opt-in and do not modify any existing functionality. It simply provides standards that client applications (such as wallets) and web applications can follow to interact with each other.
+The standards defined in this HIP are entirely opt-in and do not modify any existing functionality. It simply provides standards that applications can follow to interact with each other.
 
 ## Security Implications
 
@@ -127,7 +158,7 @@ Clients are responsible for locally signing transactions. At no point are privat
 
 On the other hand, there are many considerations which developers should take into account when implementing this protocol into their applications:
 
-Nothing can be done about a Requesting enitity (intentionally or not) generating an incorrect transaction. A malicious Requesting Website can generate a transaction that is different than what the user is expecting. This protocol assumes that the Client properly unpackages the transactions that it receives and displays the information in a readable, clear manner to the user for their review, and that the User is given accurate information and a clear indication of what action they are approving by signing the transaction.
+Nothing can be done about a requesting enitity (intentionally or not) generating an incorrect transaction. A malicious Requesting Website can generate a transaction that is different than what the user is expecting. This protocol assumes that the Client properly unpackages the transactions that it receives and displays the information in a readable, clear manner to the user for their review, and that the User is given accurate information and a clear indication of what action they are approving by signing the transaction.
 
 The permissions schema referenced below in the Open Issues section would provide more robust security for users.
 
