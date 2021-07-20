@@ -85,6 +85,7 @@ An empty list signifies that there are no compatible browser extensions. It is t
 
 Each Client implements RequestAccounts() which returns a set of Hedera Account IDs. They can either return the request automatically (since account ID's are typically not sensitive information), or the application can display a prompt to the user asking to release the accountIDs to the requesting application.
 
+```
 service RequestAccounts {
     rpc GetAccountList (AccountListQuery) returns (AccountListResponse) {
     }
@@ -105,6 +106,7 @@ message AccountInfo {
     required bytes = 1;
     optional bytes memo = 2;
 }
+```
 
 **Step 3**: The requesting entity should display the list of Accounts, sorted by Client. As part of this step the Requesting Website may query the network to obtain further information to assist the user in their choice (such as account balance), though this is not strictly part of the protocol.
 
@@ -115,7 +117,7 @@ The User will then select the Account which they want to perform the transaction
 Each Client implements ConnectApplication() which prompts the user to connect the web extension with the application - "(requestingApplication) wants to connect to (Web Extension Name). Approve / Reject" . Upon approval, the receiving application (web extension) saves the application identifier to its list of connected applications.
 
 This serves two functions. First, it's a way for web extensions to conveniently 'remember' which sites they've been connected on and allow web applications to connect automatically when the user revisits the website.  It also serves as a way for web extensions to protect their users by (optionally) only accepting Transaction calls from sites they have been connected to. Further security features could be added in the future to verify the identity of requesting entities to decrease fraudulent transaction calls.
-
+```
 service ConnectApplication {
     rpc ConnectApplicationRequest (ConnectApplicationQuery) returns (ConnectApplicationResponse) {
     }
@@ -129,7 +131,7 @@ message ConnectApplicationQuery{
 message ConnectApplicationResponse{
     required bool approved = 1; // true if approved, false if rejected
 }
-
+```
 **Transaction Transfer Notes:**
 
 The Transaction Transfer Protocol occurs every time the web application wants to send a transaction to the receiving application. By necessity it can only occur once a web application has been selected from the Client Query Flow.
