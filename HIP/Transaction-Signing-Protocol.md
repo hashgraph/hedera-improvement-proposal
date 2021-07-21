@@ -55,7 +55,7 @@ This HIP establishes a standard protocol for sending and receiving transactions 
 
 ## Specification
 
-```
+```protobuf
 
 message ResponseCode {
     required uint64 id = 1
