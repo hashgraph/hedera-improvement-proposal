@@ -58,8 +58,8 @@ This HIP establishes a standard protocol for sending and receiving transactions 
 ```protobuf
 
 message ResponseCode {
-    required uint64 id = 1
-    enum Response {
+    uint64 id = 1
+    oneof Response {
         Success = 0;
         Rejected = 1;
         UnrecognizedTransaction = 2;
@@ -85,63 +85,63 @@ message SignatureMap {
 }
 
 message LimitsRequest{
-    required uint64 maxTransactionFee  = 1;
-    required uint64 preAuthorizationLimit = 2;
-    optional bytes memo = 3;
+    uint64 maxTransactionFee  = 1;
+    uint64 preAuthorizationLimit = 2;
+    bytes memo = 3;
 }
 
 message LimitResponse{
-    required ResponseCode response = 1;
-    required uint64 maxTransactionFee = 2;
-    required uint64 preAuthorizationLimit = 3;
-    optional bytes memo = 5;
+    ResponseCode response = 1;
+    uint64 maxTransactionFee = 2;
+    uint64 preAuthorizationLimit = 3;
+    bytes memo = 5;
 }
 
 message SignRequest {
-    required bytes hash = 1; // correlation ID if not rpc
-    required bytes bodyBytes = 2; // hex
-    optional bytes memo = 3;
+    bytes hash = 1; // correlation ID if not rpc
+    bytes bodyBytes = 2; // hex
+    bytes memo = 3;
 }
 
 message SignResponse {
-    required bytes hash = 1;
-    required ResponseCode response = 2;
-    required SignatureMap sigMap = 3; //matches HAPI sigMap , examples is above
-    optional bytes memo = 4;
+    bytes hash = 1;
+    ResponseCode response = 2;
+    SignatureMap sigMap = 3; //matches HAPI sigMap , examples is above
+    bytes memo = 4;
 }
 
 message SignAndSubmitRequest {
-    required bytes hash = 1;
-    required bytes bodyBytes = 2;
-    required SignatureMap sigMap = 3;
-    optional bytes memo = 4;
+    bytes hash = 1;
+    bytes bodyBytes = 2;
+    SignatureMap sigMap = 3;
+    bytes memo = 4;
 }
 message SignAndSubmitResponse { // for optimization over the wire --> less req res
-    required bytes hash = 1;
-    required ResponseCode response = 2;
-    required TransactionReceipt receipt = 3; // from HAPI
-    optional bytes memo = 4;
+    bytes hash = 1;
+    ResponseCode response = 2;
+    TransactionReceipt receipt = 3; // from HAPI
+    bytes memo = 4;
 }
 
 message SubmitRequest {
-    required bytes hash = 1;
-    required bytes bodyBytes = 2;
-    required SignatureMap sigMap = 3;
-    optional bytes memo = 4;
+    bytes hash = 1;
+    bytes bodyBytes = 2;
+    SignatureMap sigMap = 3;
+    bytes memo = 4;
 }
 
 message SubmitResponse {
-    required bytes hash = 1;
-    required ResponseCode response = 2;
-    required TransactionReceipt receipt = 3; // from HAPI
-    optional bytes memo = 4;
+    bytes hash = 1;
+    ResponseCode response = 2;
+    TransactionReceipt receipt = 3; // from HAPI
+    bytes memo = 4;
 }
 
 service Exchange {
     //unary
-    rpc requestLimit(LimitsRequest) returns (limitResponse)
+    rpc requestLimit(LimitsRequest) returns (limitResponse);
     rpc sign(signRequest) returns (signResponse); // returns transaction signed with ECDSA
-    rpc submit(SubmitRequest,) returns (SubmitResponse);
+    rpc submit(SubmitRequest) returns (SubmitResponse);
     rpc sign_and_submit(SignAndSubmitRequest) returns (SignAndSubmitResponse);
 }
 ```
