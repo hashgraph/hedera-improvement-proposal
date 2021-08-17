@@ -138,6 +138,23 @@ message FixedFee {
 }
 ```
 
+### RoyaltyFee
+A fee to assess during a CryptoTransfer that changes ownership of an NFT. Defines
+the fraction of the fungible value exchanged for an NFT that the ledger should collect
+as a royalty. ("Fungible value" includes both ℏ and units of fungible HTS tokens.) When
+the NFT sender does not receive any fungible value, the ledger will assess the fallback
+fee, if present, to the new NFT owner. Royalty fees can only be added to tokens of type
+type NON_FUNGIBLE_UNIQUE.
+
+```protobuf
+message RoyaltyFee {
+  // The fraction of fungible value exchanged for an NFT to collect as royalty
+  Fraction exchange_value_fraction = 1;
+  // If present, the fixed fee to assess to the NFT receiver when no fungible value is exchanged with the sender
+  FixedFee fallback_fee = 2; 
+}
+```
+
 ### CustomFee
 Adds message `CustomFee` defining type of fee and account receiving the fee assessed during a CryptoTransfer of the 
 associated token. A custom fee may be either fixed or fractional and must specify a fee collector account to receive 
@@ -148,7 +165,9 @@ message CustomFee {
     // Fixed fee to be charged
     FixedFee fixed_fee = 1;
     // Fractional fee to be charged
-    FractionalFee fractional_fee = 2; 
+    FractionalFee fractional_fee = 2;
+    // Royalty fee to be charged
+    RoyaltyFee royalty_fee = 4; 
   }
   // The account to receive the custom fee
   AccountID fee_collector_account_id = 3; 
@@ -164,7 +183,9 @@ message AssessedCustomFee {
   // The denomination of the fee; taken as hbar if left unset
   TokenID token_id = 2;
   // The account to receive the assessed fee
-  AccountID fee_collector_account_id = 3; 
+  AccountID fee_collector_account_id = 3;
+  // The account(s) whose final balances would have been higher in the absence of this assessed fee
+  repeated AccountID effective_payer_account_id = 4; 
 }
 ```
 
