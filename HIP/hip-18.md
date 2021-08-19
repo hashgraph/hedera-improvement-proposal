@@ -184,7 +184,7 @@ message AssessedCustomFee {
   TokenID token_id = 2;
   // The account to receive the assessed fee
   AccountID fee_collector_account_id = 3;
-  // The account(s) whose final balances would have been higher in the absence of this assessed fee
+  // The sender or receiver account(s) that were charged the custom fees
   repeated AccountID effective_payer_account_id = 4; 
 }
 ```
