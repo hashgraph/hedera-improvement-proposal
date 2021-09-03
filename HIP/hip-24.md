@@ -1,11 +1,11 @@
-- hip: [TBD]
+- hip: 24
 - title: Pause feature on Hedera Token Service
 - author: chung@xfers.com, junhao@xfers.com, zhikai@xfers.com
 - type: Standards Track
 - category: Application
 - status: Draft
 - created: 2021-08-09
-- discussions-to: 
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/126
 - updated: 2021-08-31
 
 ## **Abstract**
