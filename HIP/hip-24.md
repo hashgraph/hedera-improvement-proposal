@@ -6,7 +6,7 @@
 - status: Draft
 - created: 2021-08-09
 - discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/126
-- updated: 2021-08-31
+- updated: 2021-09-06
 
 ## **Abstract**
 
@@ -23,8 +23,6 @@ There are several reasons that would justify the need for a pause feature;
 We propose to establish a standard for HTS where a pause feature can be included for tokens deployed via HTS. This will be opt-in and allows token issuers the flexibility of including or excluding the pause functionality based on the token issuers' requirements. 
 
 ## **Specification**
-
-To be Completed.
 
 - Add a `pauseKey` to create token spec. The key can do both pause and unpause a token
 
@@ -43,6 +41,36 @@ To be Completed.
         repeated CustomFee custom_fees = 21; // The custom fees to be assessed during a CryptoTransfer that transfers units of this token
         Key pauseKey = 22; // [New] The key which can pause the token. If empty, pause is not possible
 
+    }
+    ```
+
+- Add a HAPI transaction called `pauseToken` and `unpauseToken` to Hedera Token Service, representing `TokenPauseTransaction` and `TokenUnpauseTransaction`
+
+    ```protobuf
+    /* Transactions and queries for the Token Service */
+    service TokenService {
+        // Creates a new Token by submitting the transaction
+        rpc createToken (Transaction) returns (TransactionResponse);
+        // Updates the account by submitting the transaction
+        rpc updateToken (Transaction) returns (TransactionResponse);
+        // Mints an amount of the token to the defined treasury account
+        rpc mintToken (Transaction) returns (TransactionResponse);
+        // Burns an amount of the token from the defined treasury account
+        rpc burnToken (Transaction) returns (TransactionResponse);
+    	...
+    	...
+		...
+    	// [New] Pause the token
+        rpc pauseToken (Transaction) returns (TransactionResponse);
+    	// [New] Unpause the token
+        rpc unpauseToken (Transaction) returns (TransactionResponse);
+    	...
+    	...
+    	...
+    	// Retrieves the metadata of an NFT by TokenID and serial number
+        rpc getTokenNftInfo (Query) returns (Response);
+        // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
+        rpc getTokenNftInfos (Query) returns (Response);
     }
     ```
 
