@@ -1,19 +1,19 @@
-> *There has been discussion ([https://github.com/hashgraph/hedera-improvement-proposal/discussions/107](https://github.com/hashgraph/hedera-improvement-proposal/discussions/107)) and a proposed HIP draft ([https://github.com/ArkaneNetwork/hedera-improvement-proposal/blob/master/HIP/hip-0000-makeTokenAssociationOptIn.md](https://github.com/ArkaneNetwork/hedera-improvement-proposal/blob/master/HIP/hip-0000-makeTokenAssociationOptIn.md)) for a request for automatic token associations. This document builds on that concept to propose an updated HIP to the community. I have tried to not modify the structure of the original HIP draft as much as possible.*
-
 * hip: 23
 * title: Make the need for token association opt-in
 * author: Gerbert Vandenberghe (gerbert-vandenberghe)
 * type: Standard Track - Service
 * status: Draft
 * created: 2021-06-22
-* discussions-to:
+* discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/107
 * updated: 2021-09-01
 
 **Abstract**
+
 The need to associate a wallet with a certain token in order to be able to receive this token on the wallet poses usability issues and makes some business flows that are common practice in the blockchain and NFT space impossible.
 The proposal is to provide an ability for Hedera accounts to pre-approve a number of token association slots that can be used for any tokens without the need to explicitly associate.
 
 **Motivation**
+
 The need for token associations makes the user flow much more complex as every time the user wants to be able to receive a certain token he has to explicitly allow the wallet to receive this token. Since every NFT is a different token, the user should associate his wallet with each NFT he wants to receive.
 We want to build applications that everyone can use, without the need to know anything about blockchain or cryptocurrencies. Users have to be able to log in on e.g. games with their web wallet using social logins, where in the background a web wallet for them is created and linked to the games they play. While playing the game they can earn NFTs and should be able to receive them in their wallet, without having to go to their wallet and find a way to associate the wallet with these game tokens.
 When these users log in with their web wallet on a store to buy fantokens or other NFTs, they should be able to immediately receive these tokens in their wallet, without complicating the user flow.
@@ -21,6 +21,7 @@ We build apps on Hedera for the masses and not for people that are knowledgeable
 ****
 
 **Rationale**
+
 The token association is an advanced feature for users who are well aware of blockchain and cryptocurrency. For this, we would make the need for token association an opt-in instead of an opt-out.
 ****
 
@@ -76,11 +77,12 @@ Account holders: The account holder could have potentially adverse consequences 
 **Reference Implementation**
 
 **Rejected Ideas**
+
 **Open Issues**
+
 **References**
+
 **Copyright/license**
+
 This document is licensed under the Apache License, Version 2.0 -- see LICENSE or ([https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0))
 
-[Project Plan](https://www.notion.so/Project-Plan-5fd8626feeb846c491b205186dd2c25d)
-
-[Architecture Design](https://www.notion.so/Architecture-Design-10abf613d2fe4ea29f2ae65fbda17ad4)
