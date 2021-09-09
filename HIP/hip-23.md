@@ -9,15 +9,16 @@
 
 **Abstract**
 
-The need to associate a wallet with a certain token in order to be able to receive this token on the wallet poses usability issues and makes some business flows that are common practice in the blockchain and NFT space impossible.
+The need to associate a Hedera account with a certain token in order to be able to receive this token on the account poses usability issues and makes some business flows that are common practice in the blockchain and NFT space impossible.
 The proposal is to provide an ability for Hedera accounts to pre-approve a number of token association slots that can be used for any tokens without the need to explicitly associate.
 
 **Motivation**
 
-The need for token associations makes the user flow much more complex as every time the user wants to be able to receive a certain token he has to explicitly allow the wallet to receive this token. Since every NFT is a different token, the user should associate his wallet with each NFT he wants to receive.
+The need for token associations makes the user flow much more complex as every time the user wants to be able to receive a certain token he has to explicitly allow the account to receive this token. Since every NFT is a different token, the user should associate their account with each NFT he wants to receive.
 We want to build applications that everyone can use, without the need to know anything about blockchain or cryptocurrencies. Users have to be able to log in on e.g. games with their web wallet using social logins, where in the background a web wallet for them is created and linked to the games they play. While playing the game they can earn NFTs and should be able to receive them in their wallet, without having to go to their wallet and find a way to associate the wallet with these game tokens.
 When these users log in with their web wallet on a store to buy fantokens or other NFTs, they should be able to immediately receive these tokens in their wallet, without complicating the user flow.
-We build apps on Hedera for the masses and not for people that are knowledgeable on blockchain and crypto and to be able to do so we have to remove this need for token associations.
+We build apps on Hedera for the masses and not for people that are knowledgeable on blockchain and crypto and to be able to do so we have to remove t
+need for token associations.
 ****
 
 **Rationale**
