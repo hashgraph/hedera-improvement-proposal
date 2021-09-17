@@ -53,7 +53,9 @@ An excellent place to discuss your proposal and get feedback is in the [issues s
 | 21 | [Free network info query](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-21.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/82 | Draft |
 | 22 | [ZKP-based Selective Attribute Disclosure in the DID SDK](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-22.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/105 | Draft |
 | 23 | [Make the need for token association opt-in](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-23.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/107 | Draft |
-| 24 | [Pause feature on Hedera Token Service](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-23.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/126 | Draft |
+| 24 | [Pause feature on Hedera Token Service](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-24.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/126 | Draft |
+| 25 | [On-disk Virtual Merkle Tree](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-25.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/139 | Draft |
+| 26 | [Migrate Smart Contract Service EVM to Hyperledger Besu EVM](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-26.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/140 | Draft |
 
 ## Disclaimer(s):
 
