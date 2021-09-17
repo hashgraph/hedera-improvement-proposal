@@ -1,12 +1,12 @@
-- hip: <HIP number (this is determined by the HIP editor)>
-- title: Virtual Merkle
+- hip: HIP-25
+- title: On-disk Virtual Merkle Tree
 - author: Richard Bair (@rbair23), Jasper Potts (@jasperpotts)
 - type: Standards Track
 - category: Core
 - status: Draft
 - created: 2021-09-07
-- discussions-to: <a URL pointing to the official discussion thread>
-- updated: <comma separated list of dates>
+- discussions-to: [Virtual Merkel Discussions](https://github.com/hashgraph/hedera-improvement-proposal/discussions/139)
+- updated: 2021-09-17
 
 ## Abstract
 
