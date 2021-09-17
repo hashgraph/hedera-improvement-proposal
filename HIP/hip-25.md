@@ -5,7 +5,7 @@
 - category: Core
 - status: Draft
 - created: 2021-09-07
-- discussions-to: [Virtual Merkel Discussions](https://github.com/hashgraph/hedera-improvement-proposal/discussions/139)
+- discussions-to: [Virtual Merkle Discussions](https://github.com/hashgraph/hedera-improvement-proposal/discussions/139)
 - updated: 2021-09-17
 
 ## Abstract
