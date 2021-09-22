@@ -56,6 +56,7 @@ An excellent place to discuss your proposal and get feedback is in the [issues s
 | 24 | [Pause feature on Hedera Token Service](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-24.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/126 | Draft |
 | 25 | [On-disk Virtual Merkle Tree](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-25.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/139 | Draft |
 | 26 | [Migrate Smart Contract Service EVM to Hyperledger Besu EVM](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-26.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/140 | Draft |
+| 27 | [Universal-Resolver-Support](hhttps://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-27-Universal-Resolver-Support.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/103 | Draft |
 
 ## Disclaimer(s):
 
