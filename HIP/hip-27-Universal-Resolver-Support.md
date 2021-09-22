@@ -1,6 +1,6 @@
 # Adding support for resolving Hedera DIDs through the DIF Community Universal Resolver
 ​
-- hip: 
+- hip: 27
 - title: Adding support for resolving Hedera DIDs through the DIF Community Universal Resolver
 - author: Jo Vercammen - jo.vercammen@meeco.me
 - type: Standards Track
