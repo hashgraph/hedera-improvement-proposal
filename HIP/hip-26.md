@@ -216,31 +216,31 @@ from `SELFDESTRUCT` have been completely removed.
 
 #### Table of Gas Cost Changes
 
-| Operation | Current Hedera | London Cost | HIP-26 Cost | 
-|-|-|-|-| 
-| Code deposit | Floating Hedera Storage Cost per byte | 200 * bytes | Max of Hedera and London | 
-| BALANCE <br/>(cold account) | 20 | 2600 | 2600 | 
-| BALANCE <br/>(warm account) | 20 | 100 | 100 |
-| EXP | 10 + 10/byte | 10 + 50/byte | 10 + 50/byte |
-| EXTCODECOPY <br/>(cold account) | 20 + Mem | 2600 + Mem | 2600 + Mem |
-| EXTCODECOPY <br/>(warm account) | 20 + Mem | 100 + Mem | 100 + Mem |
-| EXTCODEHASH <br/>(cold account) | 400 | 2600 | 2600 |
-| EXTCODEHASH <br/>(warm account) | 400 | 100 | 100 |
-| EXTCODESIZE <br/>(cold account) | 20 | 2600 | 2600 |
-| EXTCODESIZE <br/>(warm account) | 20 | 100 | 100 |
-| LOG0, LOG1, LOG2,<br/> LOG3, LOG4 | Floating Hedera Ram Cost per byte | 375 + 375*topics + data Mem | Max of London or Hedera |
-| SLOAD <br/>(cold slot) | 50 | 2100 | 2100 |
-| SLOAD <br/>(warm slot) | 50 | 100 | 100 |
-| SSTORE <br/>(new slot) | Floating Hedera Storage Cost per byte| 22,100 | Max of Hedera and London |
-| SSTORE <br/>(existing slot, <br/>cold acccess) | 5,000 | 2,900 | 2,900 |
-| SSTORE <br/>(existing slot, <br/>warm access) | 5,000 | 100 | 100 |
-| SSTORE <br/>refund | All new slot charges | Only transient storage | Only transient storage |
-| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> (cold recipient) | 40 | 2,600 | 2,600
-| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> (warm recipient) | 40 | 100 | 100 |
-| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> Hbar/Eth Transfer Surcharge | 9,000 | 9,000 | 9,000 |
-| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> New Account Surcharge | <i>revert</i> | 25,000 | <i>revert</i> |
-| SELFDESTRUCT <br/>(cold beneficiary) | 0 |  2600 | 2600 |
-| SELFDESTRUCT <br/>(warm beneficiary) | 0 | 0 | 0 |
+| Operation                                                                           | Current Hedera                        | London Cost                 | HIP-26 Cost              |
+| ----------------------------------------------------------------------------------- | ------------------------------------- | --------------------------- | ------------------------ |
+| Code deposit                                                                        | Floating Hedera Storage Cost per byte | 200 * bytes                 | Max of Hedera and London |
+| BALANCE <br/>(cold account)                                                         | 20                                    | 2600                        | 2600                     |
+| BALANCE <br/>(warm account)                                                         | 20                                    | 100                         | 100                      |
+| EXP                                                                                 | 10 + 10/byte                          | 10 + 50/byte                | 10 + 50/byte             |
+| EXTCODECOPY <br/>(cold account)                                                     | 20 + Mem                              | 2600 + Mem                  | 2600 + Mem               |
+| EXTCODECOPY <br/>(warm account)                                                     | 20 + Mem                              | 100 + Mem                   | 100 + Mem                |
+| EXTCODEHASH <br/>(cold account)                                                     | 400                                   | 2600                        | 2600                     |
+| EXTCODEHASH <br/>(warm account)                                                     | 400                                   | 100                         | 100                      |
+| EXTCODESIZE <br/>(cold account)                                                     | 20                                    | 2600                        | 2600                     |
+| EXTCODESIZE <br/>(warm account)                                                     | 20                                    | 100                         | 100                      |
+| LOG0, LOG1, LOG2,<br/> LOG3, LOG4                                                   | Floating Hedera Ram Cost per byte     | 375 + 375*topics + data Mem | Max of London or Hedera  |
+| SLOAD <br/>(cold slot)                                                              | 50                                    | 2100                        | 2100                     |
+| SLOAD <br/>(warm slot)                                                              | 50                                    | 100                         | 100                      |
+| SSTORE <br/>(new slot)                                                              | Floating Hedera Storage Cost per byte | 22,100                      | Max of Hedera and London |
+| SSTORE <br/>(existing slot, <br/>cold acccess)                                      | 5,000                                 | 2,900                       | 2,900                    |
+| SSTORE <br/>(existing slot, <br/>warm access)                                       | 5,000                                 | 100                         | 100                      |
+| SSTORE <br/>refund                                                                  | All new slot charges                  | Only transient storage      | Only transient storage   |
+| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> (cold recipient)            | 40                                    | 2,600                       | 2,600                    |
+| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> (warm recipient)            | 40                                    | 100                         | 100                      |
+| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> Hbar/Eth Transfer Surcharge | 9,000                                 | 9,000                       | 9,000                    |
+| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> New Account Surcharge       | <i>revert</i>                         | 25,000                      | <i>revert</i>            |
+| SELFDESTRUCT <br/>(cold beneficiary)                                                | 0                                     | 2600                        | 2600                     |
+| SELFDESTRUCT <br/>(warm beneficiary)                                                | 0                                     | 0                           | 0                        |
 
 <!--| CREATE | | REVERT | | RETURNDATACOPY | | RETURNDATASIZE |-->
 
