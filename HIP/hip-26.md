@@ -123,6 +123,38 @@ transaction `gasLimit` will be the lowest of the gas limit requested in the
 transaction or a global upper gas limit configured for all smart contracts. The
 current maximum configured gas limit per transaction is 300,000 gas.
 
+#### Enumerating created contracts in ContractCreateResult
+
+Previously in `ContractCreateResult` responses we would list sub-contracts
+created as a part of the `ContractCreate` operation in the `createdContractIDs`
+field, but not the contract that was directly created as part of the call. Now
+all contracts that are created as a consequence of the `ContractCreate` call are
+enumerated, including the primary new contract.
+
+#### Self Destruct during Contract Creation
+
+If a contract was being created and the new contract called `SELFDESTRUCT` in
+the initcode we would not mark the `MerkleAccount` `isDeleted` field as true. If
+the `SELFDESTRUCT` was called as part of a function call we would mark it as
+true. 
+
+Now regardless of whether the call to `SELFDESTRUCT` occurred in initcode
+or in a function call the `isDeleted` field is set to true.
+
+#### Errors moving from PreCheck errors to Transaction Errors
+
+Code relating to validation errors has been cleaned up. Only errors detectable
+in GRPC objects will cause precheck errors and all other errors will be reported
+as part of the transaction.
+
+The following errors in contract creation are moving out of precheck errors and
+into transaction errors: `INVALID_RENEWAL_PERIOD`,
+`AUTORENEW_DURATION_NOT_IN_RANGE`, `CONTRACT_NEGATIVE_GAS`,
+`CONTRACT_NEGATIVE_VALUE`, `MEMO_TOO_LONG`, `INVALID_ZERO_BYTE_IN_STRING`.
+
+The following errors in contract call are moving out of precheck errors and into
+transaction errors: `CONTRACT_NEGATIVE_GAS`, `CONTRACT_NEGATIVE_VALUE`.
+
 ### Upgrade to "London" Hard Fork
 
 The smart contract platform will be upgraded to support the EVM visible changes
@@ -181,6 +213,40 @@ this scheme.
 In the London gas schedule the amount of gas that can be returned from storage
 access usage patterns has been significantly reduced. Account refunds
 from `SELFDESTRUCT` have been completely removed.
+
+#### Table of Gas Cost Changes
+
+| Operation | Current Hedera | London Cost | HIP-26 Cost | 
+|-|-|-|-| 
+| Code deposit | Floating Hedera Storage Cost per byte | 200 * bytes | Max of Hedera and London | 
+| BALANCE <br/>(cold account) | 20 | 2600 | 2600 | 
+| BALANCE <br/>(warm account) | 20 | 100 | 100 |
+| EXP | 10 + 10/byte | 10 + 50/byte | 10 + 50/byte |
+| EXTCODECOPY <br/>(cold account) | 20 + Mem | 2600 + Mem | 2600 + Mem |
+| EXTCODECOPY <br/>(warm account) | 20 + Mem | 100 + Mem | 100 + Mem |
+| EXTCODEHASH <br/>(cold account) | 400 | 2600 | 2600 |
+| EXTCODEHASH <br/>(warm account) | 400 | 100 | 100 |
+| EXTCODESIZE <br/>(cold account) | 20 | 2600 | 2600 |
+| EXTCODESIZE <br/>(warm account) | 20 | 100 | 100 |
+| LOG0, LOG1, LOG2,<br/> LOG3, LOG4 | Floating Hedera Ram Cost per byte | 375 + 375*topics + data Mem | Max of London or Hedera |
+| SLOAD <br/>(cold slot) | 50 | 2100 | 2100 |
+| SLOAD <br/>(warm slot) | 50 | 100 | 100 |
+| SSTORE <br/>(new slot) | Floating Hedera Storage Cost per byte| 22,100 | Max of Hedera and London |
+| SSTORE <br/>(existing slot, <br/>cold acccess) | 5,000 | 2,900 | 2,900 |
+| SSTORE <br/>(existing slot, <br/>warm access) | 5,000 | 100 | 100 |
+| SSTORE <br/>refund | All new slot charges | Only transient storage | Only transient storage |
+| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> (cold recipient) | 40 | 2,600 | 2,600
+| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> (warm recipient) | 40 | 100 | 100 |
+| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> Hbar/Eth Transfer Surcharge | 9,000 | 9,000 | 9,000 |
+| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> New Account Surcharge | <i>revert</i> | 25,000 | <i>revert</i> |
+| SELFDESTRUCT <br/>(cold beneficiary) | 0 |  2600 | 2600 |
+| SELFDESTRUCT <br/>(warm beneficiary) | 0 | 0 | 0 |
+
+<!--| CREATE | | REVERT | | RETURNDATACOPY | | RETURNDATASIZE |-->
+
+The terms 'warm' and 'cold' in the above table correspond with wether the 
+account or storage slot has been read or written to within the current smart
+contract transaction, even if within a child call frame.
 
 ## Security Implications
 
