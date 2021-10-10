@@ -67,7 +67,7 @@ Note that a deterministic state transition in the context of this document is fa
 
 Figure 2: A Conceptual Overview of the relationships between Policy Workflows, Policy Actions and Workgroups managing Policy Actions and Policy Workflows. Source: This document 
 
-# Policy Action
+### Policy Action
 
 First, this document will discuss the requirements for policy action that will be implemented in the Virtual State Machine of a Policy Workflow Engine. Note that strictly speaking one needs to differentiate between the policy action as a logical construct defined in a document, and its instantiation within a PWE such as a GTS which is called a policy action instance. In the following, and unless required for disambiguation, this document shall use policy action also to mean policy action instance. 
 
@@ -105,7 +105,7 @@ Furthermore, and very importantly, a policy action must be deterministic. This m
 Also, the output from a policy action execution must be finalized the indication of acceptance of a policy defined quorum of policy workgroup participants associated with the policy action. This means that the output of a policy action execution must be verified and agreed upon by a previously defined number of the policy action participants. This naturally extends to the input as well. 
 
 
-# Policy Workflow
+### Policy Workflow
 
 After specifying a policy action, this document will now turn to a policy workflow.
 
@@ -121,7 +121,7 @@ This means that the output of one or more parallel policy actions in a workflow 
 
 Finally, a policy workflow with more than one policy action must have a unique identifier within a PWE. And a policy workflow with more than one policy action and a given set of inputs mut be sequentially executed. This simply means that for a given set of inputs there is only one path through a given policy workflow.
 
-# Policy Workflow Workgroup
+### Policy Workflow Workgroup
 
 In this section, the document will discuss the requirements for a policy workflow workgroup (PWW). Note that which policy workflow participants may or may not be able to create a policy workgroup is up to the individual PWE implementations. However, there must be at least one policy workflow role that has the authorization to create a PWW. Also, a PWW must consist of at least one participant and must have at least one administrator. Finally, a PWW MUST have at least one security policy.
 
@@ -172,7 +172,7 @@ The state of a PWSO must only be changed based on a valid policy action request 
 
 This document will discuss the requirements of a policy action request (PAR) and what constitutes a valid PAR in the next section. Note, that PWSO may be associated with the state of a policy action instance.
 
-# Policy Workflow Engine Transactions
+### Policy Workflow Engine Transactions
 
 PWSO are altered through PARs submitted by requesters, see also Figure 1. In the following, this document specifies requirements for the structure and characteristics of PARs.
 
