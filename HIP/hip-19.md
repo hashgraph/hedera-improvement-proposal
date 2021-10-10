@@ -6,11 +6,11 @@
 - status: Draft
 - created: 2021-6-07
 - discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/101 
-- updated: 2021-6-07
+- updated: 2021-10-10
 
 ## Abstract
 
-This specification provides a standard way to use Decentralized Identifiers (DIDs) within Hedera state entity memo fields and thereby support the issuance of Verifiable Credentials about Hedera state entities. Just as the owner of a Hedera entity demonstrates that ownership and so claims associated authorizations via signatures with the private key(s) corresponding to the entity, a controller of a DID demonstrates that control via signatures with (likely) a different private key. Consequently, the DID controller can, when engaging in off-Hedera interactions, effectively demonstrate their association to the Hedera state entity without any on-Hedera transaction.
+This specification provides a standard way to use Decentralized Identifiers (DIDs), Verifiable Credentials (VCs), or Verified Presentations within Hedera state entity memo fields and thereby support the issuance of Verifiable Credentials or Verifiable Presentations about Hedera state entities. Just as the owner of a Hedera entity demonstrates that ownership and so claims associated authorizations via signatures with the private key(s) corresponding to the entity, a controller of a DID demonstrates that control via signatures with (likely) a different private key. Consequently, the DID controller can, when engaging in off-Hedera interactions, effectively demonstrate their association to the Hedera state entity without any on-Hedera transaction.
 
 ## Motivation
 
@@ -22,7 +22,19 @@ According to the W3C, a DID, is “a globally unique identifier that does not re
 
 DIDs can be dereferenced or resolved to a DID Document - a set of data that describes the subject of a DID, including mechanisms like public keys that the DID subject can use to authenticate itself and prove association with the DID. DID Documents are graph-based data structures that are typically expressed using JSON-LD.
 
-Relative to other identifier formats, DIDs have the advantages of being:
+Alternatively, if a use case would require Verified Credentials (VC) or Verified Presentations (VP), then the IDs of these objects must be populated in Hedera memo fields. 
+
+We follow the definition of a [W3C Verifiable Credential](https://www.w3.org/TR/vc-data-model/#credentials)
+> A credential is a set of one or more claims made by the same entity. Credentials might also include an identifier and metadata to describe properties of the credential, such as the issuer, the expiry date and time, a representative image, a public key to use for verification purposes, the revocation mechanism, and so on. The metadata might be signed by the issuer. A verifiable credential is a set of tamper-evident claims and metadata that cryptographically prove who issued it.
+
+A verifiable presentation in the context of this document is used according to the [W3C Verifiable Credential Presentation Description](https://www.w3.org/TR/vc-data-model/#presentations) 
+> A verifiable presentation expresses data from one or more verifiable credentials, and is packaged in such a way that the authorship of the data is verifiable. If verifiable credentials are presented directly, they become verifiable presentations. Data formats derived from verifiable credentials that are cryptographically verifiable, but do not of themselves contain verifiable credentials, might also be verifiable presentations.
+
+> The data in a presentation is often about the same subject, but might have been issued by multiple issuers. The aggregation of this information typically expresses an aspect of a person, organization, or entity.
+
+A presentation of one or more credentials must follow the specification in [W3C Verifiable Credential Standard for a Verfiable Presentation](https://www.w3.org/TR/vc-data-model/#presentations-0) such that that the authorship of the data in the Verifiable Presentation is verifiable.
+
+Relative to other identifier formats, DIDs, VCs, and VPs have the advantages of being:
 
 - standardized 
 - guaranteed global uniqueness
@@ -32,10 +44,10 @@ Relative to other identifier formats, DIDs have the advantages of being:
 
 ## Rationale
 
-When used in a memo field of a Hedera entity, DIDs could be used to 
+When used in a memo field of a Hedera entity, DIDs, VCs, and VPs could be used to 
 
 - Link a Hedera entity to associated metadata, such as an NFT description 
-- Link a Hedera entity to an external service, for instance a DID on an HTS token could represent the KYC provider that administers the KYC flag on user accounts 
+- Link a Hedera entity to an external service, for instance a DID or a VC on an HTS token could represent the KYC provider that administers the KYC flag on user accounts 
 - Link a Hedera entity to a different public key than of the owner/admin – enabling off-ledger authenticated interactions between that owner and other parties (without reusing Hedera keys) 
 - Link two different Hedera entities, for instance an HCS topic and a corresponding HTS token 
 - Link a Hedera entity to appropriate certifications about the actors that own or manage that entity, for instance, the renewable energy certifications (using the Verifiable Credentials [2] standard) of an inverter as validated by a 3rd party
@@ -49,8 +61,9 @@ When used in a memo field of a Hedera entity, DIDs could be used to
 - DID 
 - DID Controller
 - DID Document
-- Verifiable Credential
+- Verifiable Credentials
 - Verifiable Credential Subject
+- Verifiable Presentations
 - Verifier
 - Issuer
 
@@ -145,6 +158,24 @@ An example VC with a HederaEntityID claim identifying the Hedera entity to which
   }
 }
 ```
+
+### Verifiable Presentations
+
+Presentations MAY be used to combine and present credentials. They can be packaged in such a way that the authorship of the data is verifiable. The data in a presentation is often all about the same subject, but there is no limit to the number of subjects or issuers in the data. The aggregation of information from multiple verifiable credentials is a typical use of verifiable presentations. Below is the basic structure for a Verified Presentation:
+
+```{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.w3.org/2018/credentials/examples/v1"
+  ],
+  "id": "urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5",
+  "type": ["VerifiablePresentation", "CredentialManagerPresentation"],
+  "verifiableCredential": [{  }],
+  "proof": [{  }]
+}
+```
+
+The contents of the verifiableCredential property shown above are verifiable credentials, as described by this specification. 
 
 ## Backwards Compatibility
 
