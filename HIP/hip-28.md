@@ -1,15 +1,12 @@
-- hip: <HIP number (this is determined by the HIP editor)>
-- title: <HIP title>
-- author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
-- type: <Standards Track | Informational | Process>
-- category: <Core | Service | API | Mirror | Application>
-- status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
-- created: <date created on>
-- discussions-to: <a URL pointing to the official discussion thread>
-- updated: <comma separated list of dates>
-- requires: <HIP number(s)>
-- replaces: <HIP number(s)>
-- superseded-by: <HIP number(s)>
+- hip: 28
+- title: Guardian Type Solution
+- author: Matthew Smithies <matt.s@dovu.io> and Daniel Norkin <daniel.norkin@envisionblockchain.com>
+- type: Standards Track
+- category: Application
+- status: Draft
+- created: 2021-10-10
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/83
+- updated: 2021-10-10
 
 ## Abstract
 
