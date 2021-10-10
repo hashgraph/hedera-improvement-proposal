@@ -1,6 +1,6 @@
 - hip: 28
 - title: Guardian Type Solution
-- author: Matthew Smithies <matt.s@dovu.io> and Daniel Norkin <daniel.norkin@envisionblockchain.com>
+- author: Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
 - type: Standards Track
 - category: Application
 - status: Draft
