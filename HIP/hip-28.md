@@ -59,7 +59,9 @@ Provide a list of "user stories" to express how this feature, functionality, imp
   
 ## Specification
 
-(WIP) A PWE execution within the context of this document is the deterministic state transition from state A to state B of a policy state object, and where the state object represents a valid policy workflow state between policy workflow participants within a Policy Context. A valid policy workflow state represents a data set that has been obtained from the correct application of a set of policy rules and data to a set of policy action and workflow input data, the output of which has been accepted by the required participants as specified in a policy.
+(WIP) (note for later to insert link to the full specification...this is just an excerpt) 
+
+A PWE execution within the context of this document is the deterministic state transition from state A to state B of a policy state object, and where the state object represents a valid policy workflow state between policy workflow participants within a Policy Context. A valid policy workflow state represents a data set that has been obtained from the correct application of a set of policy rules and data to a set of policy action and workflow input data, the output of which has been accepted by the required participants as specified in a policy.
 
 Note that a deterministic state transition in the context of this document is facilitated by the combination of one or more policy actions grouped within a policy workflow. Also, note that a policy workflow is the execution of a series of causally connected and deterministic policy actions where the policy workflow or policy action participants are grouped into one or more workgroups that are attached to policy action of a policy workflow.
 
