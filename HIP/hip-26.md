@@ -136,10 +136,10 @@ enumerated, including the primary new contract.
 If a contract was being created and the new contract called `SELFDESTRUCT` in
 the initcode we would not mark the `MerkleAccount` `isDeleted` field as true. If
 the `SELFDESTRUCT` was called as part of a function call we would mark it as
-true. 
+true.
 
-Now regardless of whether the call to `SELFDESTRUCT` occurred in initcode
-or in a function call the `isDeleted` field is set to true.
+Now regardless of whether the call to `SELFDESTRUCT` occurred in initcode or in
+a function call the `isDeleted` field is set to true.
 
 #### Errors moving from PreCheck errors to Transaction Errors
 
@@ -216,37 +216,40 @@ from `SELFDESTRUCT` have been completely removed.
 
 #### Table of Gas Cost Changes
 
-| Operation                                                                           | Current Hedera                        | London Cost                 | HIP-26 Cost              |
-| ----------------------------------------------------------------------------------- | ------------------------------------- | --------------------------- | ------------------------ |
-| Code deposit                                                                        | Floating Hedera Storage Cost per byte | 200 * bytes                 | Max of Hedera and London |
-| BALANCE <br/>(cold account)                                                         | 20                                    | 2600                        | 2600                     |
-| BALANCE <br/>(warm account)                                                         | 20                                    | 100                         | 100                      |
-| EXP                                                                                 | 10 + 10/byte                          | 10 + 50/byte                | 10 + 50/byte             |
-| EXTCODECOPY <br/>(cold account)                                                     | 20 + Mem                              | 2600 + Mem                  | 2600 + Mem               |
-| EXTCODECOPY <br/>(warm account)                                                     | 20 + Mem                              | 100 + Mem                   | 100 + Mem                |
-| EXTCODEHASH <br/>(cold account)                                                     | 400                                   | 2600                        | 2600                     |
-| EXTCODEHASH <br/>(warm account)                                                     | 400                                   | 100                         | 100                      |
-| EXTCODESIZE <br/>(cold account)                                                     | 20                                    | 2600                        | 2600                     |
-| EXTCODESIZE <br/>(warm account)                                                     | 20                                    | 100                         | 100                      |
-| LOG0, LOG1, LOG2,<br/> LOG3, LOG4                                                   | Floating Hedera Ram Cost per byte     | 375 + 375*topics + data Mem | Max of London or Hedera  |
-| SLOAD <br/>(cold slot)                                                              | 50                                    | 2100                        | 2100                     |
-| SLOAD <br/>(warm slot)                                                              | 50                                    | 100                         | 100                      |
-| SSTORE <br/>(new slot)                                                              | Floating Hedera Storage Cost per byte | 22,100                      | Max of Hedera and London |
-| SSTORE <br/>(existing slot, <br/>cold acccess)                                      | 5,000                                 | 2,900                       | 2,900                    |
-| SSTORE <br/>(existing slot, <br/>warm access)                                       | 5,000                                 | 100                         | 100                      |
-| SSTORE <br/>refund                                                                  | All new slot charges                  | Only transient storage      | Only transient storage   |
-| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> (cold recipient)            | 40                                    | 2,600                       | 2,600                    |
-| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> (warm recipient)            | 40                                    | 100                         | 100                      |
-| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> Hbar/Eth Transfer Surcharge | 9,000                                 | 9,000                       | 9,000                    |
-| CALL, CALLCODE, <br/>DELEGATECALL, <br/>STATICCALL<br/> New Account Surcharge       | <i>revert</i>                         | 25,000                      | <i>revert</i>            |
-| SELFDESTRUCT <br/>(cold beneficiary)                                                | 0                                     | 2600                        | 2600                     |
-| SELFDESTRUCT <br/>(warm beneficiary)                                                | 0                                     | 0                           | 0                        |
+| Operation                                           |                            Current Hedera |                      London Cost |                      HIP-26 Cost |
+| --------------------------------------------------- | ----------------------------------------: | -------------------------------: | -------------------------------: |
+| Code deposit                                        | Floating Hedera<br/>Storage Cost per byte |                      200 * bytes |      Max of London<br/>or Hedera |
+| BALANCE <br/>(cold account)                         |                                        20 |                             2600 |                             2600 |
+| BALANCE <br/>(warm account)                         |                                        20 |                              100 |                              100 |
+| EXP                                                 |                              10 + 10/byte |                     10 + 50/byte |                     10 + 50/byte |
+| EXTCODECOPY <br/>(cold account)                     |                                  20 + Mem |                       2600 + Mem |                       2600 + Mem |
+| EXTCODECOPY <br/>(warm account)                     |                                  20 + Mem |                        100 + Mem |                        100 + Mem |
+| EXTCODEHASH <br/>(cold account)                     |                                       400 |                             2600 |                             2600 |
+| EXTCODEHASH <br/>(warm account)                     |                                       400 |                              100 |                              100 |
+| EXTCODESIZE <br/>(cold account)                     |                                        20 |                             2600 |                             2600 |
+| EXTCODESIZE <br/>(warm account)                     |                                        20 |                              100 |                              100 |
+| LOG0, LOG1, LOG2,<br/> LOG3, LOG4                   |     Floating Hedera<br/>Ram Cost per byte |  375 + 375*topics<br/>+ data Mem |      Max of London<br/>or Hedera |
+| SLOAD <br/>(cold slot)                              |                                        50 |                             2100 |                             2100 |
+| SLOAD <br/>(warm slot)                              |                                        50 |                              100 |                              100 |
+| SSTORE <br/>(new slot)                              | Floating Hedera<br/>Storage Cost per byte |                           22,100 |      Max of London<br/>or Hedera |
+| SSTORE <br/>(existing slot, <br/>cold access)       |                                     5,000 |                            2,900 |                            2,900 |
+| SSTORE <br/>(existing slot, <br/>warm access)       |                                     5,000 |                              100 |                              100 |
+| SSTORE <br/>refund                                  |                  All new<br/>slot charges | Only transient<br/>storage slots | Only transient<br/>storage slots |
+| CALL <i>et al</i>.<br/> (cold recipient)            |                                        40 |                            2,600 |                            2,600 |
+| CALL <i>et al</i>.<br/> (warm recipient)            |                                        40 |                              100 |                              100 |
+| CALL <i>et al</i>.<br/> Hbar/Eth Transfer Surcharge |                                     9,000 |                            9,000 |                            9,000 |
+| CALL <i>et al</i>.<br/> New Account Surcharge       |                             <i>revert</i> |                           25,000 |                    <i>revert</i> |
+| SELFDESTRUCT <br/>(cold beneficiary)                |                                         0 |                             2600 |                             2600 |
+| SELFDESTRUCT <br/>(warm beneficiary)                |                                         0 |                                0 |                                0 |
 
 <!--| CREATE | | REVERT | | RETURNDATACOPY | | RETURNDATASIZE |-->
 
-The terms 'warm' and 'cold' in the above table correspond with wether the 
+The terms 'warm' and 'cold' in the above table correspond with whether the
 account or storage slot has been read or written to within the current smart
 contract transaction, even if within a child call frame.
+
+'CALL <i>et al.</i>' includes with limitation CALL, CALLCODE, DELEGATECALL, and
+STATICCALL
 
 ## Security Implications
 
@@ -261,7 +264,8 @@ attack surfaces. The same specifications and Hedera integrations will exist.
 
 ## Reference Implementation
 
-To be done
+Hedera Services
+PR [#2208](https://github.com/hashgraph/hedera-services/pull/2208)
 
 ## Rejected Ideas
 
@@ -290,7 +294,7 @@ Service on the EVM provides the least amount of backwards compatibility issues.
 ### Eliminating Smart Contract Service Support
 
 Eliminating the EVM as a whole would foreclose future growth of the Hedera
-Platform in the "on-chain" smart contracts arena.
+Platform in the "on-chain" smart contract arena.
 
 ## Open Issues
 
