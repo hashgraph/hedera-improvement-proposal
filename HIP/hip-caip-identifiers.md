@@ -29,7 +29,7 @@ the CAIP repository as multiple CAIPs.
 
 ## Rationale
 
-There are two key palaces multiple variations of the identifier could be made.
+There are two key places multiple variations of the identifier could be made.
 The first is the style of the blockchain identifier. Because Hedera is intended
 to only serve a small set of purpose built networks the style that Steller
 adopted in
@@ -38,14 +38,6 @@ seemed more appropriate.
 
 For separators of the shard, realm and identifiers replacing the dotted notation
 with the dashed notation was deemed more readable than the alternatives.
-<!--
-For asset and account identifiers the relevant CAIPs ([CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md) and [CAIP-19](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-19.md)) only permit alphanumeric values for the account id, prohibiting dashes and periods. To address this letters with semantic meanings were selected.
-
-## User stories
-
-Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
-
--->  
 
 ## Specification
 
@@ -65,26 +57,6 @@ week.
 `hedera:devnet` refers to any non-shared developer local network.
 
 ### Account Identifier
-
-<!--
-For account identifiers each of realm, shard, and account ID will be preceded with a lower case `r`, `s`, and `a` respectively. The realm, shard, and account ID will be expressed in decimal, and the results concatenated in realm, shard, account id order.
-
-Examples:
-
-```
-# Treasury account
-hedera:mainnet:r0s0a2
-
-# Funding account
-hedera:mainnet:r0s0a98
-
-# Address Book Account
-hedera:mainnet:r0s0a55
-
-# Account '9.8.765432'
-hedera:mainnet:r9s8a765432
-```
--->
 
 The account address is each of realm, shard, and account ID separated with a
 dash (`-`). The format of the realm, shard, and account ID are unsigned integer
@@ -150,16 +122,6 @@ hedera:mainnet/nft:0-0-720/3
 The dotted rendition of the Hedera accounts will remain as the canonical
 representation within Hedera. CAIP identifiers are only to be used when required
 by interoperability.
-
-<!--
-## Security Implications
-
-If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
-
-## How to Teach This
-
-For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
--->
 
 ## Reference Implementation
 
