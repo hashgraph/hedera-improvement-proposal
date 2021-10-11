@@ -7,7 +7,7 @@
 - status: Draft
 - created: 16 September 2021
 - discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/140
-- updated: 17 September 2021
+- updated: 11 October 2021
 - requires:
 - replaces:
 - superseded-by:
