@@ -20,7 +20,14 @@ To incentivize good environmental stewardship, regulatory bodies have defined st
 
 ## Rationale
 
-There are generally two types of carbon credits: 
+With regards to ecological markets, business leaders will find themselves in these four phases:
+
+* Creating Verified Supply
+* Establishing Demand
+* Buying & Selling
+* Offsetting
+
+There are many rationales that can be applied here such as Greenhouse Gas Emission Profiles and Renewalable Energy Credits. For purposes of this rationale we will focus on two types of carbon credits: 
 
 * emission allowances and 
 * carbon offsets. 
@@ -40,6 +47,8 @@ This is where a Guardian type solution that leverages a PWE, is a sensible appro
 * W3C Verifiable Presentations (VPs)
 * Decentralized ledger technologies.
 * Policy workflow engines through fully configurable and human readable “logic blocks” accessible through either a user interface or an application programming interface (API). 
+
+Like mentioned at the beginning of this section, similar logic can be easily applied to other rationales. 
 
 ## User stories
 
