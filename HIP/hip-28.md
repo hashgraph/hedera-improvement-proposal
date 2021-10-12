@@ -243,6 +243,8 @@ If a PWW has more than one administrator, there must be a policy defined consens
 
 Finally, a PWW may be attached to one or more policy action instances, and a policy workgroup attached to a policy workflow must be also attached to each policy action in the policy workflow.
 
+Every participant within a Policy Workflow Workgroup must have an associated Hedera Consensus Service Topic to log the activities performed such as policy configuration, interaction with Policy Workflow Actions, authorizations, etc. 
+
 #### Policy Workflow State Objects
 This document has been defining and discussing policy workflow state objects (PWSOs) in the context of a PWE, hence, it needs to define stateful object processing. This necessitates a state or account-based model for policy workflow state objects. This is analogous to the Ethereum model using accounts and state object for smart contracts.
 
@@ -321,9 +323,11 @@ The following requirements are addressing the operating scenario where a PWE con
 * A PWE may consist of more than one processing node. This document will call such a structure a PWE network.
 * If there is a PWE network to execute and finalize PARs, it must utilize a policy-based consensus algorithm with a finite time to finality of a PAR, i.e., the time after the processing of PAR is completed and accepted by all relevant policy workflow participants.
 * If there is a PWE network and it chooses consensus on the execution of a PAR, there must be consensus on both the order and the correct execution of PARs.
-* If there is a PWE network and it chooses consensus on the execution of a PAR, it must use a common execution framework. Note that if more than one execution framework were chosen, no consensus could be reached on the outcome of a transaction because the state representation is execution framework dependent.
+* If there is a PWE network and it chooses consensus on the execution of a PAR, it must use a common execution framework. Note that if more than one execution framework were chosen, no consensus could be reached on the outcome of a because the state representation is execution framework dependent.
 
 Finally, PARs, and PWSO data and their histories must be stored as partially persistent data.
+
+Each Policy Workflow Transaction is sent to Hedera Consensus Service Topics for the purposes for immutability and public auditability. The data contained within the Policy Workflow Transactions can be used to mint tokens using Hedera Token Service, create verifiable crendentials, create verifiable presentations, etc. 
 
 #### Policy Workflow and Policy Action Execution Framework
 
