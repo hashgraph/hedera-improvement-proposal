@@ -61,8 +61,6 @@ TBA
 
 ## Specification
 
-(WIP) (note for later to insert link to the full specification...this is just an excerpt)
-
 In this section, the document discusses the Guardian's key concepts and definitions.
 
 ### W3C Decentralized Identifier
@@ -140,6 +138,10 @@ A verifiable presentation in the context of this document is used according to t
 In the context of this document, one or more Verifiable Presentations are made from a Credential Holder to a Credential Verifier as defined in the W3C Verifiable Credential Standard and as established in the applicable Policy Context. Therefore, the Credential Holders and Credential Verifiers must comply with the requirements in [3.1 W3C Decentralized Identifier](#31-W3C-Decentralized-Identifier) and [3.2 W3C Verifiable Credential](#32-W3C-Verfiable-Credential).
 
 A presentation of one or more credentials must follow the specification in [W3C Verifiable Credential Standard for a Verfiable Presentation](https://www.w3.org/TR/vc-data-model/#presentations-0) such that that the authorship of the data in the Verifiable Presentation is verifiable.
+
+Below is an example that builds a relationship between the aggregated Verfiable Credentials that will be presented within a Verifiable Presentation:
+
+![Verifiable Presentation Example](https://user-images.githubusercontent.com/40637665/137018906-8c7e2f53-aaef-49ec-886c-c939ace5752e.jpg)
 
 ### Policy Workflow Engine
 
@@ -488,7 +490,9 @@ There will be a open-source reposity with a reference implementation of the Guar
 
 ## Reference Implementation
 
-There will be a open-source reposity with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications.
+There will be a open-source repository with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications. This reference implementation is designed with modularity so that different components may be swapped out based on various implementation requirements. Please see the open-source Guardian's architecture diagram below:
+
+![Open Source Guardian Architecture](https://user-images.githubusercontent.com/40637665/137015939-135e2f50-6123-4abf-936d-5c1c2516926d.png)
 
 ## Rejected Ideas
 
