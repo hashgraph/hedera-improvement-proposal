@@ -12,6 +12,8 @@
 
 The Guardian is a modular open-source solution that includes best-in-class identity management and decentralized ledger technology (DLT) libraries. At the heart of the Guardian solution is a sophisticated Policy Workflow Engine (PWE) that enables the ability for applications to offer a requirements-based tokenization implementation. 
 
+This document formally specifies the Guardian with a specification on the Policy Workflow Engine.
+
 ## Motivation
 
 To incentivize good environmental stewardship, regulatory bodies have defined standards and business requirements to incentivize organizations to adopt Carbon Credits. These very specific standards and business requirements offer a good way to demonstrate how a PWE becomes a business-critical component for a requirements-based, trusted tokenization service.
@@ -29,7 +31,7 @@ The process to create a carbon offset claim that can be validated and verified t
 * Greenwashing
 * Overall lack of trust. 
 
-This is where a solution based on a PWE, such as the Guardian, is a sensible approach to ameliorate the issue with the current processes. The dynamic PWE can mirror the standards and business requirements of regulatory bodies. In particular, the Guardian’s PWE offers carbon markets the ability to operate in a fully auditable ecosystem by including:
+This is where a Guardian type solution that leverages a PWE, is a sensible approach to ameliorate the issue with the current processes. The dynamic PWE can mirror the standards and business requirements of regulatory bodies. In particular, the Guardian solution offers carbon markets the ability to operate in a fully auditable ecosystem by including:
 * W3C Decentralized Identifiers (DIDs)
 * W3C Verifiable Credentials (VCs)
 * W3C Verifiable Presentations (VPs)
@@ -59,7 +61,105 @@ TBA
 
 ## Specification
 
-(WIP) (note for later to insert link to the full specification...this is just an excerpt) 
+(WIP) (note for later to insert link to the full specification...this is just an excerpt)
+
+In this section, the document discusses the Guardian's key concepts and definitions.
+
+### W3C Decentralized Identifier
+
+Uniqueness and security of identifiers used in the issuance of carbon offset claims and associated assets are very important to unambiguously identify entities interacting with and through one or more solutions, such as the Guardian, and keep those interactions secure. Furthermore, to facilitate automation and real-time interactions within and through a Guardian-type solution (GTS), the discovery of identifiers and an ability to resolve them to the underlying public keys that secure them is also critical.
+
+This leads to the following specifications:
+
+* Entities interacting with and through a GTS must each have a unique identifier.
+* Any unique identifier utilized in a GTS must be associated with a set of public keys.
+* Any unique identifier utilized in a GTS must be discoverable by a 3rd party.
+* Any unique identifier utilized in a GTS must be resolvable to its associated public keys used for cryptographic authentication of the unique identifier.
+* Any unique identifier utilized in a GTS must follow the W3C DID Core specification [[W3C DID](https://www.w3.org/TR/did-core/)].
+
+Per W3C: 
+> Decentralized identifiers (DIDs) are a new type of identifier that enables verifiable, decentralized digital identity. A DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) as determined by the controller of the DID. In contrast to typical, federated identifiers, DIDs have been designed so that they may be decoupled from centralized registries, identity providers, and certificate authorities. Specifically, while other parties might be used to help enable the discovery of information related to a DID, the design enables the controller of a DID to prove control over it without requiring permission from any other party. DIDs are URIs that associate a DID subject with a DID document allowing trustable interactions associated with that subject.
+> 
+> Each DID document can express cryptographic material, verification methods, or services, which provide a set of mechanisms enabling a DID controller to prove control of the DID. Services enable trusted interactions associated with the DID subject. A DID might provide the means to return the DID subject itself, if the DID subject is an information resource such as a data model."
+> 
+> This document specifies the DID syntax, a common data model, core properties, serialized representations, DID operations, and an explanation of the process of resolving DIDs to the resources that they represent.```
+
+### W3C Verifiable Credential 
+
+Entity identities and credentials, such as carbon offset claims, are established outside of the context, and, therefore, the scope of a GTS. Hence, it is required that GTS participants -- Requesters, Providers, and, if distinct, GTS Operators -- to establish the trust context of acceptable identities and credentials for a GTS, and for a given Policy Context. This statement also applies to a network of GTSs which are to interoperate with one another.
+
+Note that a Policy Context is comprised of the legal and jurisdictional requirements established by a specific Policy issued by the policy issuing organization such as a regulatory or government body.
+
+We follow the definition of a [W3C Verifiable Credential](https://www.w3.org/TR/vc-data-model/#credentials)
+> A credential is a set of one or more claims made by the same entity. Credentials might also include an identifier and metadata to describe properties of the credential, such as the issuer, the expiry date and time, a representative image, a public key to use for verification purposes, the revocation mechanism, and so on. The metadata might be signed by the issuer. A verifiable credential is a set of tamper-evident claims and metadata that cryptographically prove who issued it.
+
+The following specifications are made for credentials utilized within the context of one or more GTSs and a specific Policy context:
+
+* A unique identifier utilized within a GTS should be linked to an (Legal) Entity accepted by GTS participants and within the context of a Policy to be applied. 
+* A Trust context for the unique identifier is to be achieved through a cryptographically signed, cryptographically verifiable, and cryptographically revocable credential based on the public keys associated with the unique identifier of the credential issuer.
+
+In the context of this document, a Legal Entity is an individual, organization, or company that has legal rights and obligations.
+
+Note that credentials utilized within one or more GTSs may be self-issued. The acceptance of self-issued credentials is up to the participants within a Policy context that need to rely on the claim(s) within a self-issued credential.
+
+Furthermore, 
+* The unique identifier of the (Legal) Entity must be the subject of the credential.
+* The unique identifier of the issuer of the (Legal) Entity credential utilized in the context of a Policy must have a credential linking the unique identifier of the issuer to an (Legal) Entity accepted by the participants within the Policy context.
+* A credential utilized within a Policy Context must follow the W3C Verifiable Credential specification [[W3C VC](https://www.w3.org/TR/vc-data-model/)].
+* A credential utilized within one or more GTSs and a specific Policy context must itself have a unique and resolvable identifier.
+
+Note, that the unique and resolvable identifier of a credential does not have to be associated with any cryptographic keys.
+
+Also, if present, the status of a credential utilized within one or more GTSs and a specific Policy Context must be discoverable by a party verifying the credential, called the credential verifier.
+
+In the context of this document, a credential verifier is defined per the [W3C Verifiable Credential Standard](https://www.w3.org/TR/vc-data-model/).
+
+Finally,
+* A credential utilized within one or more GTSs and a specific Policy Context should be discoverable by a participant as defined within within a Policy Context.
+* The presentation of a credential utilized within one or more within one or more GTSs and a specific Policy Context must be cryptographically signed by the presenter of the credential, also known as the credential holder.
+
+See the [W3C Verifiable Credential Standard](https://www.w3.org/TR/vc-data-model/) for a definition of credential holder. Also see the next section for definitions and requirements for a W3C verifiable presentation.
+
+Furthermore, if a credential holder is a participant in a specific Policy Context, the holder must have a unique identifier that has been established within the Policy Context the holder operates in.
+
+Also, a credential utilized in a GTS should be stored in the GTS.
+
+This avoids the re-presentation of the credential after the initial presentation.
+
+Finally, a credential holder must be able to prove control over a credential utilized in a Policy Context every time said credential is presented to a GTS or a Participant as defined in a Policy Context.
+
+Note that credential content verification can only be done through the inspection of underlying documentation or verification by the credential issuer, where the issuer(s) is defined in the Policy Context.
+
+### W3C Verifiable Presentation
+
+A verifiable presentation in the context of this document is used according to the [W3C Verifiable Credential Presentation Description](https://www.w3.org/TR/vc-data-model/#presentations) 
+> A verifiable presentation expresses data from one or more verifiable credentials, and is packaged in such a way that the authorship of the data is verifiable. If verifiable credentials are presented directly, they become verifiable presentations. Data formats derived from verifiable credentials that are cryptographically verifiable, but do not of themselves contain verifiable credentials, might also be verifiable presentations.
+
+> The data in a presentation is often about the same subject, but might have been issued by multiple issuers. The aggregation of this information typically expresses an aspect of a person, organization, or entity.
+
+In the context of this document, one or more Verifiable Presentations are made from a Credential Holder to a Credential Verifier as defined in the W3C Verifiable Credential Standard and as established in the applicable Policy Context. Therefore, the Credential Holders and Credential Verifiers must comply with the requirements in [3.1 W3C Decentralized Identifier](#31-W3C-Decentralized-Identifier) and [3.2 W3C Verifiable Credential](#32-W3C-Verfiable-Credential).
+
+A presentation of one or more credentials must follow the specification in [W3C Verifiable Credential Standard for a Verfiable Presentation](https://www.w3.org/TR/vc-data-model/#presentations-0) such that that the authorship of the data in the Verifiable Presentation is verifiable.
+
+### Policy Workflow Engine
+
+Starting with the [Wikipedia definition](https://en.wikipedia.org/wiki/Workflow_engine), this document defines a PWE to be a a software application that manages business processes based on business rules and business data which are defined within the context of a specific policy.
+
+A PWE, therefore, manages and monitors the state of required policy actions and the required information flow in a policy grouped into a policy workflow, and determines which are the next policy actions based on the state of a policy workflow. The policy actions may be anything from saving an application form in a document management system to sending a reminder e-mail to users or escalating overdue items to management.
+
+![Figure_1](https://i.imgur.com/TawXtWJ.jpg)
+
+Figure 1: Conceptual view of a general workflow engine. Source: [Yang, Huaizhou & Lv, Bowen & Shi, Wenbo & Sun, Jingxin. (2019). Research and Design of Lightweight Workflow Engine Based on SCA. Journal of Physics: Conference Series. 1237. 052006. 10.1088/1742-6596/1237/5/052006](https://www.researchgate.net/publication/334417867_Research_and_Design_of_Lightweight_Workflow_Engine_Based_on_SCA). 
+
+PWEs have mainly three functions:
+
+1. Verification of the current policy process status: Is it valid to execute a given policy action, given a current status?
+2. Determine the authority of policy workflow participants: Is the current user is permitted to execute the current policy action?
+3. Executing a conditional script: After passing the previous two policy actions, the PWE executes the next policy action, and if the execution successfully completes, it returns the success, if not, it reports the error to trigger and roll back the change.
+
+To summarize, a workflow engine is a core technique for a business process management software in which the workflow engine allocates tasks to different executors while communicating data among participants.
+
+### Policy Workflow Engine Specification
 
 A PWE execution within the context of this document is the deterministic state transition from state A to state B of a policy state object, and where the state object represents a valid policy workflow state between policy workflow participants within a Policy Context. A valid policy workflow state represents a data set that has been obtained from the correct application of a set of policy rules and data to a set of policy action and workflow input data, the output of which has been accepted by the required participants as specified in a policy.
 
@@ -69,7 +169,7 @@ Note that a deterministic state transition in the context of this document is fa
 
 Figure 2: A Conceptual Overview of the relationships between Policy Workflows, Policy Actions and Workgroups managing Policy Actions and Policy Workflows. Source: This document 
 
-### Policy Action
+#### Policy Action
 
 First, this document will discuss the requirements for policy action that will be implemented in the Virtual State Machine of a Policy Workflow Engine. Note that strictly speaking one needs to differentiate between the policy action as a logical construct defined in a document, and its instantiation within a PWE such as a GTS which is called a policy action instance. In the following, and unless required for disambiguation, this document shall use policy action also to mean policy action instance. 
 
@@ -108,7 +208,7 @@ Furthermore, and very importantly, a policy action must be deterministic. This m
 Also, the output from a policy action execution must be finalized the indication of acceptance of a policy defined quorum of policy workgroup participants associated with the policy action. This means that the output of a policy action execution must be verified and agreed upon by a previously defined number of the policy action participants. This naturally extends to the input as well. 
 
 
-### Policy Workflow
+#### Policy Workflow
 
 After specifying a policy action, this document will now turn to a policy workflow.
 
@@ -124,7 +224,7 @@ This means that the output of one or more parallel policy actions in a workflow 
 
 Finally, a policy workflow with more than one policy action must have a unique identifier within a PWE. And a policy workflow with more than one policy action and a given set of inputs mut be sequentially executed. This simply means that for a given set of inputs there is only one path through a given policy workflow.
 
-### Policy Workflow Workgroup
+#### Policy Workflow Workgroup
 
 In this section, the document will discuss the requirements for a policy workflow workgroup (PWW). Note that which policy workflow participants may or may not be able to create a policy workgroup is up to the individual PWE implementations. However, there must be at least one policy workflow role that has the authorization to create a PWW. Also, a PWW must consist of at least one participant and must have at least one administrator. Finally, a PWW MUST have at least one security policy.
 
@@ -141,7 +241,7 @@ If a PWW has more than one administrator, there must be a policy defined consens
 
 Finally, a PWW may be attached to one or more policy action instances, and a policy workgroup attached to a policy workflow must be also attached to each policy action in the policy workflow.
 
-# Policy Workflow State Objects
+#### Policy Workflow State Objects
 This document has been defining and discussing policy workflow state objects (PWSOs) in the context of a PWE, hence, it needs to define stateful object processing. This necessitates a state or account-based model for policy workflow state objects. This is analogous to the Ethereum model using accounts and state object for smart contracts.
 
 Therefore,
@@ -175,7 +275,7 @@ The state of a PWSO must only be changed based on a valid policy action request 
 
 This document will discuss the requirements of a policy action request (PAR) and what constitutes a valid PAR in the next section. Note, that PWSO may be associated with the state of a policy action instance.
 
-### Policy Workflow Engine Transactions
+#### Policy Workflow Engine Transactions
 
 PWSO are altered through PARs submitted by requesters, see also Figure 1. In the following, this document specifies requirements for the structure and characteristics of PARs.
 
@@ -223,7 +323,7 @@ The following requirements are addressing the operating scenario where a PWE con
 
 Finally, PARs, and PWSO data and their histories must be stored as partially persistent data.
 
-# Policy Workflow and Policy Action Execution Framework
+#### Policy Workflow and Policy Action Execution Framework
 
 The following section specifies a framework to create a policy workflow comprised of a modular Policy Actions with associated state transitions.
 
