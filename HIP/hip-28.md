@@ -396,14 +396,7 @@ None.
 
 ## Open Issues
 
-The Trust Enterprises initial specification of dNFTs has a number of issues:
-
-1. It's currently opinionated, has no community consensus, used as a product feature for organizations such as DOVU and SportsIcon.
-2. It's named with non-fungible but the token specification does not care if it is divisible, it purely is used as a marketing term to indicate a token linked to evidence.
-3. In our opinions, there is an expectation that additional HIPs for dNFTs will be created to form a vast number of use-cases as they represent a new genre of token due to flexibility that wasn't possible pre HCS and HTS.
-4. It assumes that the issuer of the token is the only entity that can create HCS messages for the given topic.
-Due to the reduction of HCS message sizes to 1024 bytes there needs to be "chunking on HCS" or a more reliance on other services.
-5. In particular, for IPFS is to include the CID within the meta to eliminate the DNS ransom issue for linked content for NFTs.
+None.
 
 ## References
 
