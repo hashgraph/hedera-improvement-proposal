@@ -10,13 +10,11 @@
 
 ## Abstract
 
-ntroduce a recommended path of the implementation of minting and maintenance of ecological tokens based on IWA sustainability specifications from the voluntary ecological markets taskforce. This combines and is the first use-case of Dynamics Non-Fungible / Fungible Tokens (dNFT/dFT) on hedera to provide an ability for tokens to attach an unlimited amount of evidence.
-
-note: dNFTs will form a separate HIP at a generic level, but were initially designed to meet the needs of carbon offsetting.
+The Guardian is a modular open-source solution that includes best-in-class identity management and decentralized ledger technology (DLT) libraries. At the heart of the Guardian solution is a sophisticated Policy Workflow Engine (PWE) that enables the ability for applications to offer a requirements-based tokenization implementation. 
 
 ## Motivation
 
-There are not enough verified carbon credits globally to meet demand. In turn, corporates are overpaying for carbon credits to meet ESG targets. In addition current carbon credit systems are not fit for purpose due to a number of issues including accountability, leakage, and additionally.
+To incentivize good environmental stewardship, regulatory bodies have defined standards and business requirements to incentivize organizations to adopt Carbon Credits. These very specific standards and business requirements offer a good way to demonstrate how a PWE becomes a business-critical component for a requirements-based, trusted tokenization service.
 
 There are generally two types of carbon credits: 
 * emission allowances and 
@@ -45,7 +43,7 @@ Soil is the greatest land store of carbon, and if correct agricultural processes
 There are a number of elements that are required:
 
 - A project owner that has been created and is linked to a new Ecological Project (EP).
-- A link between HTS and HCS, a common format.
+- A link between HTS (to issue tokenized carbon offsets) and HCS (to log the evidence supporting the issuance of tokenized carbon offsets), a common format.
 - A genesis message that would reference the initial asset in terms of a Core Carbon Principals (CCP) token.
 - State changes of the CCP representation, with versions and updates including additionally and leakage.
 - Continued messages, with a common schema that can be used as a mechanism to upload evidence.
@@ -53,10 +51,12 @@ There are a number of elements that are required:
 
 These elements listed above would require a dynamic Policy Workflow Engine.
 
+Listed above is just one rationale, however, a similar workflow will be required to fulfill various use cases / polices. 
+
 ## User stories
 
-Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
-  
+TBA
+
 ## Specification
 
 (WIP) (note for later to insert link to the full specification...this is just an excerpt) 
@@ -81,6 +81,7 @@ The basic policy action requirements are:
 * The output of a policy action must represent the validated result of an input into a policy workflow as a correct new policy workflow state.
 
 Note that a new policy workflow state after a correct policy action execution is defined as 
+
 ```
 New Policy Workflow State = Old Policy Workflow State + Validated and Accepted New Policy State Object + Policy Action Output 
 ```
