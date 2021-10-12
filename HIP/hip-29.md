@@ -121,11 +121,11 @@ Permissions are defined in Policy Workflow Workgroups.
 
 ## How to Teach This
 
-One example of how the Hedera JS DID SDK should be leveraged can be found in the reference implementation of the Guardian solution.
+One example of how the Hedera JS DID SDK should be leveraged can be found in the reference implementation of the open-source Guardian solution.
 
 ## Reference Implementation
 
-There will be a open-source reposity with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications.
+Reference implementation can be found in the open-source Guardian repo.
 
 ## Rejected Ideas
 
