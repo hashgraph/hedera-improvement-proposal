@@ -19,12 +19,12 @@ Proposal to add a network ID field to info responses for all entities.
 ## **Motivation**
 
 In the Hedera Transaction Tool application, users will have the ability to request account infos for accounts on previewnet, testnet, mainnet or a custom network. 
-You can then take the response, write it to a file, and distribute that file for others to update that accounts information. Since you can request account infos
-from multiple different networks you can't tell which network the response came from the file the response is stored in unless the user who requested it forwards that information to the other users. 
+You can then take the response, write it to a file, and distribute that file for others to update that account's information.
+Since you can request account infos from multiple different networks you can't tell which network the response came from the file the response is stored in unless the user who requested it forwards that information to the other users. 
 
 ## **Rationale**
 
-To solve this issue, we think it would make sense for all enitity info responses to include a `ledger_id` field where `00`= represents mainnet, `01` represents testnet, and `02` represents previewnet. 
+To solve this issue, we think it would make sense for all enitity info responses to include a `ledger_id` field where `00`= represents mainnet, `01` represents testnet, and `02` represents previewnet. Custom networks will be represented by an integer that can be calculated from the node IPs.
 
 ## **User Stories**
 As a developer I want to know which network the info response came from when the response information is written to a file that is then shared with other users of the application.
