@@ -1,6 +1,6 @@
 - hip: 28
 - title: Guardian Type Solution
-- author(s): Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
+- author(s): Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes@hbar.fund>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
 - type: Standards Track
 - category: Application
 - status: Draft
@@ -10,13 +10,13 @@
 
 ## Abstract
 
-The Guardian is a modular open-source solution that includes best-in-class identity management and decentralized ledger technology (DLT) libraries. At the heart of the Guardian solution is a sophisticated Policy Workflow Engine (PWE) that enables the ability for applications to offer a requirements-based tokenization implementation. 
+The Guardian is a modular open-source solution that includes best-in-class identity management and decentralized ledger technology (DLT) libraries. At the heart of the Guardian is a Policy Workflow Engine (PWE) that enables applications to offer linked audit trails for tokenization use cases. 
 
 This document formally specifies the Guardian with a specification on the Policy Workflow Engine.
 
 ## Motivation
 
-To incentivize good environmental stewardship, regulatory bodies have defined standards and business requirements to incentivize organizations to adopt Carbon Credits. These very specific standards and business requirements offer a good way to demonstrate how a PWE becomes a business-critical component for a requirements-based, trusted tokenization service.
+To incentivize good environmental stewardship, regulatory bodies have defined standards and business requirements to incentivize organizations to adopt Carbon Credits, Carbon Offsets, and other complimentary ESG/UN SDG Assets. These very specific standards and business requirements offer a good way to demonstrate how a PWE becomes a business-critical component for a requirements-based, trusted tokenization service.
 
 There are generally two types of carbon credits: 
 * emission allowances and 
@@ -35,21 +35,21 @@ This is where a Guardian type solution that leverages a PWE, is a sensible appro
 * W3C Decentralized Identifiers (DIDs)
 * W3C Verifiable Credentials (VCs)
 * W3C Verifiable Presentations (VPs)
-* Decentralized ledger technologies.
+* Public decentralized ledger technologies (DLTs).
 * Policy workflow engines through fully configurable and human readable “logic blocks” accessible through either a user interface or an application programming interface (API).
 
 ## Rationale
 
-Soil is the greatest land store of carbon, and if correct agricultural processes aren't followed this can trigger a negative effect of carbon stores. Organizations such as DOVU believe that such projects should include incentivization structures by default including a layer of accountability so that the carbon capture abilities of soil are optimized.
+Organizations like DOVU, who is building a soil carbon sequestration application, believe offset projects should include incentivization structures by default including a layer of accountability so that the carbon capture abilities are optimized. If correct processes in agricultural for DOVU's use case aren't followed this can trigger a negative effect of carbon stores. 
 
-There are a number of elements that are required:
+To avoid the negative effects there are a number of elements that are required:
 
 - A project owner that has been created and is linked to a new Ecological Project (EP).
 - A link between HTS (to issue tokenized carbon offsets) and HCS (to log the evidence supporting the issuance of tokenized carbon offsets), a common format.
 - A genesis message that would reference the initial asset in terms of a Core Carbon Principals (CCP) token.
 - State changes of the CCP representation, with versions and updates including additionally and leakage.
 - Continued messages, with a common schema that can be used as a mechanism to upload evidence.
-- I expect that this work will continue to evolve and adjust over time.
+- This work will continue to evolve and adjust over time.
 
 These elements listed above would require a dynamic Policy Workflow Engine.
 
