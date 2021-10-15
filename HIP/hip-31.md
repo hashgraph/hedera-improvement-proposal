@@ -4,8 +4,8 @@
 - category: API
 - status: Draft
 - created: 2021-10-14
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/n
-- updated:
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/165
+- updated: 2021-10-25
 
 ## Abstract
 
