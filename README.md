@@ -56,6 +56,9 @@ An excellent place to discuss your proposal and get feedback is in the [issues s
 | 24 | [Pause feature on Hedera Token Service](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-24.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/126 | Draft |
 | 25 | [On-disk Virtual Merkle Tree](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-25.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/139 | Draft |
 | 26 | [Migrate Smart Contract Service EVM to Hyperledger Besu EVM](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-26.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/140 | Draft |
+| 27 | [Adding support for resolving Hedera DIDs through the DIF Community Universal Resolver](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-27.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/103 | Draft |
+| 28 | [Guardian Type Solution](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-28.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/83 | Draft |
+| 29 | [JavaScript DID SDK](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-29.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/166 | Draft |
 
 ## Disclaimer(s):
 
