@@ -1,15 +1,12 @@
-- hip: &lt;HIP number (this is determined by the HIP editor)>
+- hip: 30
 - title: CAIP Identifiers for the Hedera Network
 - author: Danno Ferrin (danno.ferrin@hedera.com)
 - type: Standards Track
 - category: Application
 - status: Draft
 - created: 11 Oct 2021
-- discussions-to: &lt;a URL pointing to the official discussion thread>
-- updated: 
-- requires: 
-- replaces: 
-- superseded-by: 
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
+- updated: 15 Oct 2021 
 
 ## Abstract
 
@@ -137,9 +134,9 @@ have the networks be represented as `eip155:295`, `eip155:296`, `eip:297`
 and `eip:298` for Mainnet, Testnet, Previewnet, and devnet. The EIP155 number
 would be derived by the EVM `CHAINID` operation.
 
-Using this identifier, however, would misrepresent the level of compatability
+Using this identifier, however, would misrepresent the level of compatibility
 between Hedera and Ethereum chains. While Hedera does provide an EVM execution
-environment that is where the compatability ends. First, Hedera uses the Edwards
+environment that is where the compatibility ends. First, Hedera uses the Edwards
 25519 curve, and does not use the chain identifier as part of the signature (
 which is the expressed purpose of EIP-155). Neither does it expose Ethereum
 standard JSON-RPC apis at this time.
