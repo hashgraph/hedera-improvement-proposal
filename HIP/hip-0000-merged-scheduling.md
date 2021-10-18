@@ -32,7 +32,7 @@ Suppose a validator network is monitoring a stream of events, where each event `
 by a hash `He`, and should trigger the scheduling of a single related transaction `Xe` that needs a majority 
 of the validators' signatures to execute. 
 
-Suppose also the validators are all coded to set `memo=He` when trying to schedule transaction `Xe`.
+Suppose also that the validators all set `memo=He` when trying to schedule transaction `Xe`.
 
 Then by the uniqueness of the memos, there is no risk that two identical `ScheduleCreate`s are 
 _actually_ intended for two different events. But, with current network behavior, only the first 
