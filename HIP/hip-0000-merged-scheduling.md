@@ -15,9 +15,9 @@ it with `IDENTICAL_SCHEDULE_ALREADY_CREATED`. This is a reasonable---albeit cons
 since there is always a chance that the involved parties _really_ wanted two separate transactions, 
 and only "collided" by accident.
 
-However, in some cases the scheduling parties can arrange to avoid any accidental scheduling 
-collisions. In this case, if two or more parties submit `ScheduleCreate`s with the same transaction, 
-the network would better serve their needs by "merging" all the provided signatures into the same 
+However, in some cases the scheduling parties can arrange to avoid any accidental 
+collisions. In this case, when two or more parties submit `ScheduleCreate`s with the same transaction, 
+the network can better serve their needs by "merging" all the provided signatures into the same 
 scheduled transaction.
 
 In this HIP we propose a single new protobuf field `ScheduleCreateTransactionBody#merge_with_identical_schedule`
