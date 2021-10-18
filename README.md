@@ -59,7 +59,7 @@ An excellent place to discuss your proposal and get feedback is in the [issues s
 | 27 | [Adding support for resolving Hedera DIDs through the DIF Community Universal Resolver](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-27.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/103 | Draft |
 | 28 | [Guardian Type Solution](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-28.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/83 | Draft |
 | 29 | [JavaScript DID SDK](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-29.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/166 | Draft |
-
+| 30 | [CAIP Identifiers for the Hedera Network](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-30.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/169| Draft |
 ## Disclaimer(s):
 
 These proposals and discussions have no effect regarding private (permissioned) implementations of the Hashgraph consensus algorithm; additionally, this repository and it’s contents are run by the Hedera Hashgraph community, which means they do not necessarily reflect the views and opinions of Hedera Hashgraph LLC.
