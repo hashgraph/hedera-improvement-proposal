@@ -1,0 +1,337 @@
+- hip: &lt;HIP number (this is determined by the HIP editor)>
+- title: External Transaction Signing for SDK and other clients
+- author: Danno Ferrin (danno.ferrin@hedera.com)
+- type: Standards Track
+- category: Application
+- status: Draft
+- created: 19 Oct 2021
+- discussions-to: &lt;a URL pointing to the official discussion thread>
+- updated: &lt;comma separated list of dates>
+- requires: hip-caip-identifiers
+- replaces: &lt;HIP number(s)>
+- superseded-by: &lt;HIP number(s)>
+
+## Abstract
+
+An RPC protocol is described that would allow clients and SDKs to sign
+transactions with external programs, devices, and services.
+
+## Motivation
+
+The current Hedera SDK requires that the private keys for accounts be available
+and signed in process. One process is to provide the private key in an
+environmental variable and use local libraries to produces the signatures. This
+is a common approach used in Continuous Build systems and when properly handled
+provides good security. However, these keys can unlock large amounts of
+real-world value and the needed security posture needs to be better than "good."
+Typical high security setups involve hardware devices storing keys or external
+services with actual people gate-keeping activity. A process needs to be adopted
+that can seamlessly support both developer grade security and full production
+security.
+
+## Rationale
+
+As part of a larger DLT ecosystem Hedera should be better served by adopting
+existing cross-chain standards. Hence, the utility offered by teh Chain Agnostic
+Improvement Proposal group relating to RPC interactions was chosen as the main
+interface. In particular CAIP-25 and CAIP-27 provide the bulk of hte needed
+protocol. Some additional definitions of hedera signing operations is needed to
+finish our the full loop.
+
+## User stories
+
+As an SDK user I want to be able to configure my SDK builds to use an external
+signing tool to sign transactions.
+
+As an application I want to be able to use external signing tools at build time
+and at runtime.
+
+## Specification
+
+A websocket based proxy server adhering to CAIP-25 and CAIP-27 JSON-RPC calls
+will be used to provide signing services. Clients will need to configure and
+secure access to this websocket service and then use the provided handshake and
+provider request APIs to sign their transactions. Clients will then either need
+to submit the signed transaction or validate the submitted transaction was
+successfully submitted by the service.
+
+### Signing Proxy Server (CAIP-25 and CAIP-27)
+
+Signing will be supported by an external web socket server. This can either be
+the web server of the hardware wallet or external service, or it may be a bridge
+between hedera and the specific APIs of the hardware wallet or signing service.
+The specific implementation is a detail outside the scope of this spec.
+
+The APIs that will be used will be the CAIP-25 handshake request, the CAIP-27
+provider request wrapping the hedera `sign_transaction` or `send_transaction`
+call specified in this HIP.
+
+#### Sample call loop
+
+To begin a signing session the SDK or app will initiate a web socket connection
+to the proxy. A CAIP-25 handshake call must be successfully made at that point.
+Zero or more signing requests can be made via the CAIP-27 provider request. The
+session is ended by closing the websocket connection.
+
+If the app wishes to change the signing key then a separate websocket connection
+to the proxy server will need to be maintained in parallel or serialized.
+
+### Hedera signing JSON-RPC calls
+
+Two JSON-RPC methods are defined for use in the CAIP-27 provider
+request, `hedera_signTransaction` and `hedera_sendTransaction`.
+
+#### `hedera_signTransaction`
+
+This JSON-RPC method signs a transaction that can be submitted to the network
+via the exiting SDK methods. It is expected there will be some operation on the
+other end to validate the signature, possibly including user approval.
+
+There is one required and one optional parameter: The required parameter
+is `transaction`, which will be the hex encoded protobuf message that is being
+signed. The optional parameter is `pubKey`, which is the public key of the
+desired signature. If the signer has more than one key this is a required field.
+If `pubKey` is specified the signature returned MUST be that of the specified
+key.
+
+> An example not specifying a specific key
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "method": "hedera_signTransaction",
+>     "params": {
+>         "transaction": "fedbca9876543210"
+>     }
+> }
+> ```
+
+> An example specifying a private key
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "method": "hedera_signTransaction",
+>     "params": {
+>         "transaction": "fedbca9876543210",
+>         "pubkey": "f0e0d0c0b0a09876543210"
+>     }
+> }
+> ```
+
+The successful return will have one field `signature` that will be the hex
+encoded signature that can be added to the `sigMap` field of
+a `SignedTransaction` method. The transaction is not returned and must be the
+transaction of the request.
+
+> An example of a successful response
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "result": {
+>         "signature": "9876543210fedcba"
+>     }
+> }
+> ```
+
+There are a number of error messages corresponding to standard failure
+scenarios. If the call fails for some other reason the client MAY provide any
+sensible error code and description
+
+* When user disapproves of the specific transaction
+  * code = 5099
+  * message = "User disapproved requested transaction"
+* When the specified public key is not available
+  * code = 5098
+  * message = "Public key not available"
+* When wallet rejects the transaction before presenting it to the user
+  * code = 5199
+  * message = "Transaction rejected by wallet provider"
+* When the wallet has multiple private keys that could sign, but the user did
+  not specify a key
+  * code = 5198
+  * message = "Multiple public keys available"
+  * data (optional) = Array of hex encoded public keys available to sign
+
+> An example of a user rejected transaction
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "error": {
+>         "code": 5099,
+>         "message": "User disapproved requested transaction"
+>     }
+> }
+> ```
+
+> An example of a multiple public key error
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "error": {
+>         "code": 5198,
+>         "message": "Multiple public keys available",
+>         "data" : ["f0e0d0c0b0a09876543210","90e0d0c0b0a09876543210"]
+>     }
+> }
+> ```
+
+#### `hedera_sendTransaction`
+
+This JSON-RPC method signs a transaction and then submits it to the hedera
+network. It is expected there will be some operation on the other end to
+validate the signature, possibly including user approval.
+
+There is one required and one optional parameter: The required parameter
+is `transaction`, which will be the hex encoded protobuf message that is being
+signed. The optional parameter is `pubKey`, which is the public key of the
+desired signature. If the signer has more than one key this is a required field.
+If `pubKey` is specified the signature returned MUST be that of the specified
+key.
+
+> An example not specifying a specific key
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "method": "hedera_sendTransaction",
+>     "params": {
+>         "transaction": "fedbca9876543210"
+>     }
+> }
+> ```
+
+> An example specifying a private key
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "method": "hedera_sendTransaction",
+>     "params": {
+>         "transaction": "fedbca9876543210",
+>         "pubkey": "f0e0d0c0b0a09876543210"
+>     }
+> }
+> ```
+
+The successful return will have one field `transactionHash` that will be the hex
+encoded transaction hash. This identifier can be used in Mirror Node APIs to
+access the submitted transaction.
+
+> An example of a successful response
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "result": {
+>         "transactionHash": "9876543210fedcba"
+>     }
+> }
+> ```
+
+There are a number of error messages corresponding to standard failure
+scenarios. If the call fails for some other reason the client MAY provide any
+sensible error code and description
+
+* When user disapproves of the specific transaction
+  * code = 5099
+  * message = "User disapproved requested transaction"
+* When the specified public key is not available
+  * code = 5098
+  * message = "Public key not available"
+* When wallet rejects the transaction before presenting it to the user
+  * code = 5199
+  * message = "Transaction rejected by wallet provider"
+* When the wallet has multiple private keys that could sign, but the user did
+  not specify a key
+  * code = 5198
+  * message = "Multiple public keys available"
+  * data (optional) = Array of hex encoded public keys available to sign
+* When the Hedera network rejects the transaction
+  * code = 5299
+  * message = "Transaction rejected by Hedera network"
+  * data (optional) = String providing as much of the error message as the proxy
+    determines is appropriate
+
+> An example of a user rejected transaction
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "error": {
+>         "code": 5099,
+>         "message": "User disapproved requested transaction"
+>     }
+> }
+> ```
+
+> An example of a multiple public key error
+> ```json
+> {
+>     "id": 1,
+>     "jsonrpc": "2.0",
+>     "error": {
+>         "code": 5198,
+>         "message": "Multiple public keys available",
+>         "data" : ["f0e0d0c0b0a09876543210","90e0d0c0b0a09876543210"]
+>     }
+> }
+> ```
+
+## Backwards Compatibility
+
+These APIs do not displace the existing functionality provided by in-process
+signing, they exist as an additional option. Applications will continue to be
+able to sign transactions with a private key provided to them.
+
+## Security Implications
+
+This protocol allows applications to remove the concerns about handling a
+signing key within the application and delegate that responsibility to an
+external program. This should improve the general security posture of an app.
+
+Special attention needs to be paid to the endpoint's security. There are many
+techniques such as firewalls, interface binding, and TLS certificates, and JSWT
+to ensure the identity and provenance of the use fo the endpoints. Those are
+orthogonal to the protocol of the request and response itself.
+
+<!--
+## How to Teach This
+
+For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
+
+## Reference Implementation
+
+The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+-->
+
+## Rejected Ideas
+
+Direct interaction with Hardware Wallets was rejected because it is not portable
+and durable as a standard for interactions. Specific applications and build
+systems may adopt this approach, but it is difficult to standardize in a
+portable fashion.
+
+Using gRPC as the protocol is desirable, but cross chain standards have settled
+on JSON-RPC (via WebSockets or HTTP post) as a standard for interaction. The use
+of protoThere is a col buffers to encode the transactions is still a requirement
+as all chains have some opaque and chain specific data structure to sing.
+
+## Open Issues
+
+None currently
+
+## References
+
+- [CAIP-25](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-25.md)
+  JSON-RPC Provide Handshake
+- [CAIP-27](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-27.md)
+  JSON-RPC Provider Request
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 --
+see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
