@@ -154,6 +154,14 @@ into transaction errors: `INVALID_RENEWAL_PERIOD`,
 The following errors in contract call are moving out of precheck errors and into
 transaction errors: `CONTRACT_NEGATIVE_GAS`, `CONTRACT_NEGATIVE_VALUE`.
 
+#### Deprecated HAPI properties
+
+`fileID` property in the `ContractUpdateTransactionBody` protobuf (used in the `ContractUpdate` operation) is to be 
+deprecated because it is ignored and there is no reason and intention for implementing the described by the protobuf feature.
+
+`maxResultSize` property in the `ContractCallLocalQuery` protobuf (used in the `ContractLocalCall` operation) is to 
+be deprecated.
+
 ### Upgrade to "London" Hard Fork
 
 The smart contract platform will be upgraded to support the EVM visible changes
