@@ -90,7 +90,7 @@ message TransactionID {
 	Timestamp transactionValidStart = 1;
 	AccountID accountID = 2;
 	bool scheduled = 3; // Might be true if ContractCreate/Call is Scheduled TX
- +  int64 index = 4; // Will always be 0
++  int64 index = 4; // Will always be 0
 }
 ```
 
@@ -141,7 +141,7 @@ message TransactionID {
 	Timestamp transactionValidStart = 1;
 	AccountID accountID = 2;
 	bool scheduled = 3; // Will always be false
- +  int64 index = 4; // Incrementing integer starting from 0. Represents the number of System Precompiles triggered by the parent transaction.
++  int64 index = 4; // Incrementing integer starting from 0. Represents the number of System Precompiles triggered by the parent transaction.
 }
 ```
 
