@@ -1,10 +1,10 @@
 - hip: <HIP number (this is determined by the HIP editor)>
-- title: Add Parameter for Message Account Id to Mirror Node API
+- title: Message Account Id in Mirror Node API Response
 - author: scalemaildev
 - type: Standards Track
-- category: <Core | Service | API | Mirror | Application>
+- category: Mirror
 - status: Draft
-- created: <date created on>
+- created: 2021-10-18
 - discussions-to: <a URL pointing to the official discussion thread>
 - updated: <comma separated list of dates>
 - requires: <HIP number(s)>
@@ -13,13 +13,13 @@
 
 ## Abstract
 
-Add a parameter to the Hedera mirror node API that will return the Account ID of each message's sender.
+Add a parameter to the Hedera mirror node API that returns the Account ID of each message's sender in the metadata. This is specific to the message(s) GET request.
 
 ## Motivation
 
-In the development of the [Hashgraph Chess Application](https://github.com/scalemaildev/hashgraph_chess) I ran into a problem: the game needs to filter out chess moves or chat messages that aren't from one of the game's two players. But I also don't want to make either player the admin of their game's topic.
+In the development of the [Hashgraph Chess Application](https://github.com/scalemaildev/hashgraph_chess) I ran into a problem: the game needed to filter out chess moves and chat messages that aren't from one of the game's two players. But I also didn't want to make either player the admin of their game's topic.
 
-Since the Account ID of a message's sender isn't included in the message metadata, I had to put the sender's Account ID into the message content. This leaves the application open to spoof attacks. While there are some workaround methods to address this, the simplest method for addressing this problem would be to add a parameter to the mirror node's API that will ask it to return each message's sender's Account ID along with the rest of its metadata.
+Since the Account ID of a message's sender isn't included in the message metadata, I had to put their ID into the message content. This leaves the application open to spoof attacks, as anyone can submit a message with a false Account ID field. While there are some workaround methods to address this, the simplest method for resolving this problem would be to add a parameter to the mirror node's API that'll return each message's sender's Account ID along with the rest of its metadata during a GET request.
 
 ## Rationale
 
