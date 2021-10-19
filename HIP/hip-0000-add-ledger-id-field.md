@@ -1,4 +1,4 @@
-- hip: 0000
+- hip: <HIP number (this is determined by the HIP editor)>
 - title: Add Network ID Field to Info Responses
 - author: Simi Hunjan (simi@hedera.com), David Matusevich (davidmatusevich@swirlds.com)
 - type: Standards
