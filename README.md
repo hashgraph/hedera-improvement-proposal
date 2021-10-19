@@ -1,16 +1,16 @@
 ![](https://www.hedera.com/logo-capital-hbar-wordmark.jpg)
 
-## What is a HIP? 
+## What is a HIP?
 
-HIP stands for "Hedera Improvement Proposal". These improvement proposals can range from core protocol changes, to the applications, frameworks, and protocols built on top of the Hedera public network and used by the community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions, as well as tracking their HIP through the process outlined below. 
+HIP stands for "Hedera Improvement Proposal". These improvement proposals can range from core protocol changes, to the applications, frameworks, and protocols built on top of the Hedera public network and used by the community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions, as well as tracking their HIP through the process outlined below.
 
-## What is Hedera Hashgraph? 
+## What is Hedera Hashgraph?
 
-[Hedera Hashgraph](https://hedera.com) is the only public network built on top of [Dr. Leemon Baird](http://www.leemon.com/)’s [Hashgraph consensus algorithm](http://www.leemon.com/papers/2016b.pdf). Hedera goes beyond blockchain to provide the fast, fair, and secure environment needed to enable enterprise adoption of distributed ledger technologies. You can learn more about Hedera by [reading the Hedera whitepaper](https://hedera.com/whitepaper), and for a more detailed understanding of the Hashgraph Consensus Algorithm you can check out the [hashgraph algorithm whitepaper](http://www.leemon.com/papers/2016b.pdf). 
+[Hedera Hashgraph](https://hedera.com) is the only public network built on top of [Dr. Leemon Baird](http://www.leemon.com/)’s [Hashgraph consensus algorithm](http://www.leemon.com/papers/2016b.pdf). Hedera goes beyond blockchain to provide the fast, fair, and secure environment needed to enable enterprise adoption of distributed ledger technologies. You can learn more about Hedera by [reading the Hedera whitepaper](https://hedera.com/whitepaper), and for a more detailed understanding of the Hashgraph Consensus Algorithm you can check out the [hashgraph algorithm whitepaper](http://www.leemon.com/papers/2016b.pdf).
 
 ## Purpose
 
-The goal of HIPs is to have a place to propose new features, to collect community thoughts and input on a particular issue, and further to document all these subject matters in one place. It’s a great way to document these discussions and proposals [here on GitHub](https://github.com/hashgraph/hedera-improvement-proposal), because any [revisions made on these text files will be recorded](https://github.com/hashgraph/hedera-improvement-proposal/commits/master). 
+The goal of HIPs is to have a place to propose new features, to collect community thoughts and input on a particular issue, and further to document all these subject matters in one place. It’s a great way to document these discussions and proposals [here on GitHub](https://github.com/hashgraph/hedera-improvement-proposal), because any [revisions made on these text files will be recorded](https://github.com/hashgraph/hedera-improvement-proposal/commits/master).
 
 ## Process
 
@@ -22,18 +22,44 @@ Each HIP should only be one single key proposal and/or idea. The idea should be 
 
 ## Before Submitting
 
-1. Evaluate your idea: consider why you’d like to request changes or improvements, and how it benefits the Hedera Hashgraph community.  
+1. Evaluate your idea: consider why you’d like to request changes or improvements, and how it benefits the Hedera Hashgraph community.
 
-2. Thoroughly look through those proposals already submitted to ensure there are no duplicates. 
+2. Thoroughly look through those proposals already submitted to ensure there are no duplicates.
 
-3. Ask the Hedera Hashgraph community first if your idea is original, or has already been through the HIP process. 
- 
-4. Reevaluate your proposal to ensure sure the idea is applicable to the entire community and not just to one particular author, application, project, or protocol. 
+3. Ask the Hedera Hashgraph community first if your idea is original, or has already been through the HIP process.
+
+4. Reevaluate your proposal to ensure sure the idea is applicable to the entire community and not just to one particular author, application, project, or protocol.
 
 ##### Note
 
 An excellent place to discuss your proposal and get feedback is in the [issues section of this repository](https://github.com/hashgraph/hip/issues), or on [Hedera's Discord Server](https://hedera.com/discord); there you can start formalizing the language around your HIP and ensuring it has broad community support.
 
-## Disclaimer(s): 
+## List of HIPs
+
+| Number | Title | Discussion | Status |
+|---|---|---|---:|
+| 1 | [Hedera Improvement Proposal Process](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-1.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/54 | Draft |
+| 10 | [Token Metadata JSON Schema](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-10.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/50 | Draft |
+| 11 | [Layer-2 Smart Contract Network](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-11.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/49 | Draft |
+| 12 | [Zero Knowledge Proofs](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-12.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/52 | Draft |
+| 13 | [Hedera Name Service](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-13.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/56 | Draft |
+| 14 | [Hold](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-14.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/59 | Draft |
+| 15 | [Address Checksum](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-15.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/47 | Final |
+| 16 | [Entity Auto-Renewal](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-16.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/64 | Final |
+| 17 | [Non-Fungible Tokens](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-17.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/74 | Draft |
+| 18 | [Custom Hedera Token Service Fees](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-18.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/92 | Draft |
+| 19 | [Decentralized Identifiers in Memo Fields](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-19.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/101 | Draft |
+| 20 | [Standardized URI scheme to reference Hedera data](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-20.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/110 | Draft |
+| 21 | [Free network info query](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-21.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/82 | Draft |
+| 22 | [ZKP-based Selective Attribute Disclosure in the DID SDK](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-22.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/105 | Draft |
+| 23 | [Make the need for token association opt-in](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-23.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/107 | Draft |
+| 24 | [Pause feature on Hedera Token Service](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-24.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/126 | Draft |
+| 25 | [On-disk Virtual Merkle Tree](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-25.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/139 | Draft |
+| 26 | [Migrate Smart Contract Service EVM to Hyperledger Besu EVM](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-26.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/140 | Draft |
+| 27 | [Adding support for resolving Hedera DIDs through the DIF Community Universal Resolver](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-27.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/103 | Draft |
+| 28 | [Guardian Type Solution](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-28.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/83 | Draft |
+| 29 | [JavaScript DID SDK](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-29.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/166 | Draft |
+| 30 | [CAIP Identifiers for the Hedera Network](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-30.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/169| Draft |
+## Disclaimer(s):
 
 These proposals and discussions have no effect regarding private (permissioned) implementations of the Hashgraph consensus algorithm; additionally, this repository and it’s contents are run by the Hedera Hashgraph community, which means they do not necessarily reflect the views and opinions of Hedera Hashgraph LLC.

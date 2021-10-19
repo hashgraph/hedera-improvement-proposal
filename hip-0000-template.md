@@ -1,17 +1,15 @@
----
-hip: <HIP number (this is determined by the HIP editor)>
-title: <HIP title>
-author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
-type: <Standards Track | Informational | Process>
-category: <Core | Service | API | Mirror | Application>
-status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
-created: <date created on>
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
----
+- hip: <HIP number (this is determined by the HIP editor)>
+- title: <HIP title>
+- author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
+- type: <Standards Track | Informational | Process>
+- category: <Core | Service | API | Mirror | Application>
+- status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
+- created: <date created on>
+- discussions-to: <a URL pointing to the official discussion thread>
+- updated: <comma separated list of dates>
+- requires: <HIP number(s)>
+- replaces: <HIP number(s)>
+- superseded-by: <HIP number(s)>
 
 ## Abstract
 
@@ -27,6 +25,10 @@ The rationale fleshes out the specification by describing why particular design 
 
 The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
 
+## User stories
+
+Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
+  
 ## Specification
 
 The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.

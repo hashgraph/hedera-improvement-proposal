@@ -1,16 +1,15 @@
----
-hip: 1
-title: Hedera Improvement Proposal Process
-author: Ken Anderson (@kenthejr)
-type: Process
-status: Draft
-created: 2021-02-11
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
----
+- hip: 1
+- title: Hedera Improvement Proposal Process
+- author: Ken Anderson (@kenthejr)
+- type: Process
+- status: Draft
+- created: 2021-02-11
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
+- updated: 2021-05-12
 
 ## What is a HIP?
 
-HIP stands for Hedera Improvement Proposal. A HIP is intended to provide information or initiate engineering effort to update Hedera functionality. The HIP should be technically clear and concise.
+HIP stands for Hedera Improvement Proposal. A HIP is intended to provide information or initiate engineering effort to update Hedera functionality. The HIP should be technically clear and concise. HIPs should be as granular as possible. Small targeted HIPs are more likely to reach consensus and result in a reference implementation. This may require breaking a bigger idea into smaller components.
 
 HIPs are intended to be the primary mechanism for proposing new features, for collecting community input, and for documenting the design decisions that have gone into Hedera Hashgraph. The HIP author is responsible for building consensus within the community and documenting dissenting opinions.
 
@@ -22,7 +21,7 @@ HIPs are not meant to address *bugs* in implemented code. Bugs should be address
 
 There are three kinds of HIP:
 
-1. A **Standards Track** HIP describes a new feature or implementation for Hedera. It may also describe an interoperability standard that will be supported outside of the official Hedera node software stack. The Standards Track HIP abstract should include which part of the Hedera ecosystem it addresses:
+1. A **Standards Track** HIP describes a new feature or implementation for Hedera. It may also describe an interoperability standard that will be supported outside of the official Hedera node software stack. The Standards Track HIP abstract should include which part of the Hedera ecosystem it addresses. Standards Track HIPs require a specification and a reference implementation:
 
     **a. Core:** This includes proposals addressing the Hashgraph algorithm, peer-to-peer networking, etc. These types of features are implemented on Hedera consensus nodes.
 
@@ -58,7 +57,16 @@ The HIP process begins with a new idea for Hedera. It is highly recommended that
 
 Each HIP must have a champion -- someone who writes the HIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The HIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is HIP-able. Circulating the idea in Hedera’s Discord server (https://hedera.com/discord) or in an issue in the Hedera HIP Github Repository (https://github.com/hashgraph/hedera-improvement-proposal) is the best way to do so.
 
-Vetting an idea publicly before going as far as writing a HIP is meant to save the potential author time. Asking the community first if an idea is original helps avoid too much time being spent on something that may be rejected based on prior discussions. It also helps to make sure the idea is applicable to the entire community and not just the author.
+Vetting an idea publicly before going as far as writing a HIP is meant to save the potential author time. Asking the community first if an idea is original helps avoid too much time being spent on something that may be rejected based on prior discussions. It also helps to make sure the idea is applicable to the entire community and not just the author. The ideal place to vet ideas is in the GitHub Discussions "Ideas" category (https://github.com/hashgraph/hedera-improvement-proposal/discussions/categories/ideas).
+
+Authors should:
+
+1. Create a new discussion with the category of "Ideas".
+2. Ensure that the title of the Idea is your proposed title for the HIP.
+3. Fill out as much of the HIP template as the initial discussion comment.
+4. Update the initial comment with any updates that have received consensus.
+
+The goal is that once the Idea has been fully vetted, it should be relatively trivial to submit a formal HIP.
 
 Once the champion has discovered with the Hedera community the acceptability of the idea, the proposal should be submitted as a draft HIP via a Github pull request. The draft must be written in HIP style as described below, else it will fail review immediately (although minor errors may be corrected by the editors).
 
@@ -102,7 +110,7 @@ However, content review and final acceptance of the HIP must be requested of the
 
 For a HIP to be accepted, it must meet certain minimum criteria. It must be a clear and complete description of the proposed improvement. The improvement must represent a net value-add. The proposed implementation, if applicable, must be solid and must not complicate the network unduly.
 
-Once a HIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and incorporated into the main source code repository, the status will be changed to “Final”. For Process HIPs and Standards Track HIPs that introduce protocol standards, once the process or protocol has been implemented and recognized as official by a combination of the community, core developers, and the Council, the status will be changed to “Final”.
+Once a HIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and incorporated into the main source code repository, the status will be changed to “Final”. A Standards Track HIP must include a specification and a reference implementation in order to be considered for a "Final" status. For Process HIPs and Standards Track HIPs that introduce protocol standards, once the process or protocol has been implemented and recognized as official by a combination of the community, core developers, and the Council, the status will be changed to “Final”.
 
 To allow gathering of additional design and interface feedback before committing to long term stability, a HIP may also be marked as “Provisional”. This is short for “Provisionally Accepted”, and indicates that the proposal has been accepted for inclusion, but additional user feedback is needed before the full design can be considered “Final”. Unlike regular accepted HIPs, provisionally accepted HIPs may still be Rejected or Withdrawn even after the related changes have been implemented.
 
@@ -144,25 +152,27 @@ Each HIP should have the following parts/sections:
 
     The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
 
-5. Specification -- The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
+5. User stories -- Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
 
-6. Backwards Compatibility -- All HIPs that introduce backward incompatibilities must include a section describing these incompatibilities and their severity. The HIP must explain how the author proposes to deal with these incompatibilities. HIP submissions without a sufficient backward compatibility treatise may be rejected outright.
+6. Specification -- The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
 
-7. Security Implications -- If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
+7. Backwards Compatibility -- All HIPs that introduce backward incompatibilities must include a section describing these incompatibilities and their severity. The HIP must explain how the author proposes to deal with these incompatibilities. HIP submissions without a sufficient backward compatibility treatise may be rejected outright.
 
-8. How to Teach This -- For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
+8. Security Implications -- If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
 
-9. Reference Implementation -- The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+9. How to Teach This -- For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
 
-10. Rejected Ideas -- Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
+10. Reference Implementation -- The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+
+11. Rejected Ideas -- Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
 
     In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
 
-11. Open Issues -- While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
+12. Open Issues -- While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
 
-12. References -- A collections of URLs used as references through the HIP.
+13. References -- A collections of URLs used as references through the HIP.
 
-13. Copyright/license -- Each new HIP must be placed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
+14. Copyright/license -- Each new HIP must be placed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
 
 ## HIP Formats and Templates
 
@@ -170,7 +180,7 @@ HIPs should be written in markdown format. There is a template to follow.
 
 ### HIP Header Preamble
 
-Each HIP must begin with an RFC 822 style header preamble, preceded and followed by three hyphens ( --- ). The headers must appear in the following order. Headers marked with “*” are optional and are described below. All other headers are required.
+Each HIP must begin with a header preamble in list format. The headers must appear in the following order. Headers marked with “*” are optional and are described below. All other headers are required.
 
 - hip: HIP number (this is determined by the HIP editor)
 - title: HIP title
