@@ -58,10 +58,10 @@ message TransactionRecord {
     ContractFunctionResult contractCallResult = 7;
     ContractFunctionResult contractCreateResult = 8;
   }
-  TransferList transferList = 10; // Include net hbar transfers for all internal TX (including System Precompiles)
+  TransferList transferList = 10; // Include only top-level net hbar transfers + transaction fee
   repeated TokenTransferList tokenTransferLists = 11; // Will always be empty
   ScheduleID scheduleRef = 12; // Will always be empty
-  repeated AssessedCustomFee assessed_custom_fees = 13; // TODO - What should happen to Custom fees?
+  repeated AssessedCustomFee assessed_custom_fees = 13; // Probably empty, as ContractCall does not have custom fees 
   repeated TokenAssociation automatic_token_associations = 14; // Will always be empty
 }
 ```
@@ -108,10 +108,10 @@ message TransactionRecord {
     ContractFunctionResult contractCallResult = 7; // Will always be empty
     ContractFunctionResult contractCreateResult = 8; // Will always be empty
   }
-  TransferList transferList = 10; // Will always be empty (hbar transfers + fees are included in parent TX record)
+  TransferList transferList = 10; // All the created Hbar transfers from the nested/child operations + their respective fees
   repeated TokenTransferList tokenTransferLists = 11; // Will be populated in the case of HTS Transfer System precompile call
   ScheduleID scheduleRef = 12; // Will always be empty 
-  repeated AssessedCustomFee assessed_custom_fees = 13; // Might be populated in the case of HTS Transfer System precompile. TODO in the case of HBARS, where should we put them???
+  repeated AssessedCustomFee assessed_custom_fees = 13; // Might be populated in the case of HTS Transfer System precompile - when a HTS token has custom fees. 
   repeated TokenAssociation automatic_token_associations = 14; // Might be populated in the case of HTS Transfer System Precompile
 }
 ```
