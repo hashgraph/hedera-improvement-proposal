@@ -1,6 +1,6 @@
 - hip: 31
 - title: Introduction of System Precompiles
-- author: Yoan Sredkov <yoansredkov@gmail.com>
+- author: Yoan Sredkov <yoansredkov@gmail.com>, Daniel Ivanov <TODO MAIL>
 - type: Standards
 - category: Services
 - type: Draft
@@ -48,6 +48,10 @@ The index is 0 on the parent and never 0 on children. Ordering is the same as th
 - **Child TX Record / Precompile TX Record** → The TX records created because of Contract Create/Call called a `System Precompile`
 
 ### ContractCall/Create Transaction
+
+- The `ContractCall`/`ContractCreate` transaction is called **parent** transaction.
+- It can trigger the execution of another hedera operation
+- It will always have a 0 `index` property
 
 ```protobuf
 message TransactionRecord {
@@ -99,6 +103,10 @@ message TransactionID {
 
 ### System Precompile TX Records
 
+- Operations triggered by `ContractCall`/`ContractCreate` transactions are called `child`.
+- Those ops export transaction records, which have to be unique.(`consensusTimestamp` & `transactionID`)
+- They will always have unique `index` which is always > 0
+
 ```protobuf
 message TransactionRecord {
   TransactionReceipt receipt = 1;
@@ -148,7 +156,7 @@ message TransactionID {
 }
 ```
 
-### Visual explanation of the process:
+### The process of `ContractCall`:
 ![Flow](../assets/hip-31/CC%20txn%20record%20design.png)
 
 
