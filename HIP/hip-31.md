@@ -31,6 +31,9 @@ as the time of their execution.
 The record of the `ContractCall` execution will be called `parent` record.
 Each `System Precompile` will have to export transaction records for each executed operation. Those records will be called `child` records.
 As we need uniqueness in those records, and more specifically - the `TransactionID`, we need to add a new property - `uint64 index`.
+This index will serve the purpose of helping in calculating the `consensusTimestamp` of the child transaction, e.g:
+- `childTX.consensusTimestamp = parentTX.consensusTimestamp + index (added as nanoseconds)`.
+The index is 0 on the parent and never 0 on children. Ordering is the same as the execution order in the smart contract.
 The following paragraphs describe the changes to the API, as well as the mapping of the properties between the child/parent records:
 
 **Legend:**
@@ -142,11 +145,11 @@ message TransactionID {
 }
 ```
 
-### How it works:
+### Visual explanation of the process:
 ![Flow](../assets/hip-31/CC%20txn%20record%20design.png)
 
 
 
 ## Things to discuss:
-- HBar transfers when caused by custom fees
-- Transaction hash of child contracts
+- HBar transfers when caused by custom fees?
+- Transaction hash of child contracts?
