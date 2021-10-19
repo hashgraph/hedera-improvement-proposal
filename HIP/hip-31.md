@@ -28,13 +28,16 @@ As a developer, I want to know the exact functionalities which the contract has 
 as the time of their execution.
 
 ## Specification
+
 The record of the `ContractCall` execution will be called `parent` record.
 Each `System Precompile` will have to export transaction records for each executed operation. Those records will be called `child` records.
+
 As we need uniqueness in those records, and more specifically - the `TransactionID`, we need to add a new property - `uint64 index`.
 This index will serve the purpose of helping in calculating the `consensusTimestamp` of the child transaction, e.g:
 - `childTX.consensusTimestamp = parentTX.consensusTimestamp + index (added as nanoseconds)`.
 The index is 0 on the parent and never 0 on children. Ordering is the same as the execution order in the smart contract.
-The following paragraphs describe the changes to the API, as well as the mapping of the properties between the child/parent records:
+
+- The following paragraphs describe the changes to the API, as well as the mapping of the properties between the child/parent records:
 
 **Legend:**
 ```diff
@@ -42,7 +45,7 @@ The following paragraphs describe the changes to the API, as well as the mapping
 ! Orange represents modified property/message
 ```
 - **Parent TX record** → The Contract Create/Call operation
-- **Child TX Record / Precompile TX Record** → The TX records created because of Contract Create/Call called a system precompile
+- **Child TX Record / Precompile TX Record** → The TX records created because of Contract Create/Call called a `System Precompile`
 
 ### ContractCall/Create Transaction
 
@@ -152,4 +155,4 @@ message TransactionID {
 
 ## Things to discuss:
 - HBar transfers when caused by custom fees?
-- Transaction hash of child contracts?
+- Transaction hash of child records?
