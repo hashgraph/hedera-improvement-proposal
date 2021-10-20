@@ -156,11 +156,9 @@ transaction errors: `CONTRACT_NEGATIVE_GAS`, `CONTRACT_NEGATIVE_VALUE`.
 
 #### Deprecated HAPI properties
 
-`fileID` property in the `ContractUpdateTransactionBody` protobuf (used in the `ContractUpdate` operation) is to be
-deprecated because it is ignored and there is no reason and intention for implementing the described by the protobuf feature.
+The `fileID` property in the `ContractUpdate` operation (found in the `ContractUpdateTransactionBody` protobuf) will be deprecated. The wording of the field implies it updates the contract code while the comments indicate that it the assertion of where the initcode originated from will be changed. Ethereum contracts are expected to be immutable once deployed and so neither variation is appropriate, hence the field will be deprecated.
 
-`maxResultSize` property in the `ContractCallLocalQuery` protobuf (used in the `ContractLocalCall` operation) is to
-be deprecated.
+The `maxResultSize` property in the `ContractCallLocal` operation (found in the `ContractCallLocalQuery`) will be deprecated. In order to calculate the effective result size the entire operation needs to be executed, and then at the last moment an error is returned if the result is too large. The result is not stored in server ram nor is it stored in storage, so there is no fees associated with larger queries. Because of this any errors that setting it is hoping to avoid would still occur on the server and different errors would be returned instead. The limitations of Ethereum Gas already provide a reasonable limitation on unexpectedly large results. Hence this property will be ignored if specified and all results will be returned.
 
 ### Upgrade to "London" Hard Fork
 
