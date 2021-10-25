@@ -60,7 +60,7 @@ An excellent place to discuss your proposal and get feedback is in the [issues s
 | 28 | [Guardian Type Solution](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-28.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/83 | Draft |
 | 29 | [JavaScript DID SDK](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-29.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/166 | Draft |
 | 30 | [CAIP Identifiers for the Hedera Network](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-30.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/169| Draft |
-| 31 | [Add Token Transfer Decimal Information](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-31.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/n | Draft |
+| 31 | [Add Token Transfer Decimal Information](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-31.md) | https://github.com/hashgraph/hedera-improvement-proposal/discussions/165 | Draft |
 
 ## Disclaimer(s):
 
