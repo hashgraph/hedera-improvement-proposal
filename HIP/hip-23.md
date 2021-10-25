@@ -12,6 +12,8 @@
 The need to associate a Hedera account with a certain token in order to be able to receive this token on the account poses usability issues and makes some business flows that are common practice in the blockchain and NFT space impossible.
 The proposal is to provide an ability for Hedera accounts to pre-approve a number of token association slots that can be used for any tokens without the need to explicitly associate.
 
+This is a test update to the abstract.
+
 **Motivation**
 
 The need for token associations makes the user flow much more complex as every time the user wants to be able to receive a certain token he has to explicitly allow the account to receive this token. Since every NFT is a different token, the user should associate their account with each NFT he wants to receive.
