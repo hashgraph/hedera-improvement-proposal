@@ -1,3 +1,4 @@
+- hip:31
 - title: Add Token Transfer Decimal Information
 - author: Chris Campbell chris@launchbadge.com
 - type: Standards Track
