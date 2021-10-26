@@ -5,7 +5,10 @@
 - category: Application
 - status: Draft
 - created: 11 Oct 2021
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
+-
+
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
+
 - updated: 15 Oct 2021, 26 October 2021
 
 ## Abstract
@@ -57,9 +60,12 @@ week.
 
 The account address is the standard account identifier format. Each of realm,
 shard, and account ID separated with a dash (`.`). The format of the realm,
-shard, and account ID are unsigned integer in decimal representation. The
-optional checksum may be valid. Intermediaries may or may not validate the
-checksum, only Hedera Systems are guaranteed to reject an invalid checksum.
+shard, and account ID are unsigned integer in decimal representation.
+
+An optional checksum may be added after the account identifier delimited by a
+dash ('-'). It consists of up to 5 lowercase letters. The optional checksum may
+or may not be valid. Intermediaries may or may not validate the checksum, only
+Hedera Systems are guaranteed to reject an invalid checksum.
 
 Examples:
 
@@ -96,11 +102,19 @@ The asset reference of the token type is each of realm, shard, and token ID of
 the token separated with a dash (`.`). The format of the realm, shard, and token
 ID are unsigned integer in decimal representation.
 
+An optional checksum may be added after the token identifier delimited by a
+dash ('-'). It consists of up to 5 lowercase letters. The optional checksum may
+or may not be valid. Intermediaries may or may not validate the checksum, only
+Hedera Systems are guaranteed to reject an invalid checksum.
+
 Examples:
 
 ```
 # Fictitious token in realm 0, shard 0, and token ID 720
 hedera:mainnet/token:0.0.720
+
+# Fictitious token in realm 0, shard 0, and token ID 123, with checksum
+hedera:mainnet/token:0.0.123-vfmkw
 ```
 
 #### `nft`
@@ -108,6 +122,11 @@ hedera:mainnet/token:0.0.720
 The asset reference of the non-fungible token type is each of realm, shard, and
 token ID of the token separated with a dash (`.`). The format of the realm,
 shard, and token ID are unsigned integer in decimal representation.
+
+An optional checksum may be added after the token identifier delimited by a
+dash ('-'). It consists of up to 5 lowercase letters. The optional checksum may
+or may not be valid. Intermediaries may or may not validate the checksum, only
+Hedera Systems are guaranteed to reject an invalid checksum.
 
 The Token ID is the serial number. The format of the serial number is an
 unsigned integer in decimal representation.
@@ -117,6 +136,10 @@ Examples:
 ```
 # Fictitious token in realm 0, shard 0, token ID 721 serial number 3
 hedera:mainnet/nft:0.0.720/3
+
+# Fictitious token in realm 0, shard 0, token ID 123, with checksum
+# serial number 3
+hedera:mainnet/nft:0.0.123-vfmkw/3
 ```
 
 ## Backwards Compatibility
