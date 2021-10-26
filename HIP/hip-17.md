@@ -1,12 +1,14 @@
-- hip: 17
-- title: Non-Fungible Tokens
-- author: Daniel Ivanov (@Daniel-K-Ivanov)
-- type: Standards Track
-- category: Service
-- status: Draft
-- created: 2021-04-22
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
-- updated: 2021-05-25
+---
+hip: 17
+title: Non-Fungible Tokens
+author: Daniel Ivanov (@Daniel-K-Ivanov)
+type: Standards Track
+category: Service
+status: Draft
+created: 2021-04-22
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
+updated: 2021-05-25
+---
 
 ## Abstract
 

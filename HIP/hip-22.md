@@ -1,12 +1,12 @@
-# ZKP-based Selective Attribute Disclosure in the DID SDK
-
-- hip: 22
-- title: ZKP-based Selective Attribute Disclosure in the DID SDK
-- author: Maurizio Binello (maurizio@horizenlabs.io), Tim McHale (@tim-mchale)
-- type: Standards Track
-- category: Application
-- status: Idea
-- created: 2021.06.18
+---
+hip: 22
+title: ZKP-based Selective Attribute Disclosure in the DID SDK
+author: Maurizio Binello (maurizio@horizenlabs.io), Tim McHale (@tim-mchale)
+type: Standards Track
+category: Application
+status: Idea
+created: 2021.06.18
+---
 
 ## Abstract
 

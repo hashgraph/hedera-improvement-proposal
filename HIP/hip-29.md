@@ -1,11 +1,13 @@
-- hip: 29
-- title: JavaScript DID SDK
-- author(s): Daniel Norkin <daniel.norkin@envisionblockchain.com>
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 2021-10-11
-- updated: 2021-10-11
+---
+hip: 29
+title: JavaScript DID SDK
+author(s): Daniel Norkin <daniel.norkin@envisionblockchain.com>
+type: Standards Track
+category: Application
+status: Draft
+created: 2021-10-11
+updated: 2021-10-11
+---
 
 ## Abstract
 

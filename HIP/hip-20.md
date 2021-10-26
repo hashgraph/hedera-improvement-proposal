@@ -1,16 +1,14 @@
-- hip: 20
-- title: Standardized URI scheme to reference Hedera data
-- author: Khoa Luong khoa.luong@luthersystems.com, Sam Wood sam.wood@luthersystems.com,
+---
+hip: 20
+title: Standardized URI scheme to reference Hedera data
+author: Khoa Luong khoa.luong@luthersystems.com, Sam Wood sam.wood@luthersystems.com,
 Stephanie Yi stephanie.yi@luthersystems.com, Declan Fox declan.fox@luthersystems.com
-- type: Standards Track
-- category: Service
-- status: Draft
-- created: 2021-06-29
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/110
-- updated:
-- requires:
-- replaces:
-- superseded-by:
+type: Standards Track
+category: Service
+status: Draft
+created: 2021-06-29
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/110
+---
 
 ## Abstract
 This HIP defines a way for Hedera to host data in a centralized location and accessible

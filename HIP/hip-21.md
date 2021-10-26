@@ -1,6 +1,12 @@
-| hip               | title              | author         | type            | status         | created       | discussions |
-| ----------- | -----------  | ----------- | ----------- |----------- | ----------- | ----------- |
-| hip-21            | Free network info query | Simi Hunjan (@SimiHunjan ) |Service| Draft | 2021-06-09   |   https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
+---
+hip: 21
+title: Free network info query              
+author: Simi Hunjan (@SimiHunjan )
+type: Service
+status: Draft
+created: 2021-06-09 
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
+---
 
 ## Abstract
 

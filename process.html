@@ -1,0 +1,9 @@
+---
+layout: page
+title: Process
+---
+
+<p>
+    {% assign hips=site.pages|where:"type","Process" %}
+    {% include hipstable.md hips=hips %}
+</p>

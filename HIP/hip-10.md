@@ -1,12 +1,14 @@
-- hip: 10
-- title: Token Metadata JSON Schema
-- author: Sam Wood sam.wood@luthersystems.com, Susan Chan susan.chan@luthersystems.com, Stephanie Yi stephanie.yi@luthersystems.com, Khoa Luong khoa.luong@luthersystems.com
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 2021-02-18
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/40
-- updated: 2021-05-12
+---
+hip: 10
+title: Token Metadata JSON Schema
+author: Sam Wood sam.wood@luthersystems.com, Susan Chan susan.chan@luthersystems.com, Stephanie Yi stephanie.yi@luthersystems.com, Khoa Luong khoa.luong@luthersystems.com
+type: Standards Track
+category: Application
+status: Draft
+created: 2021-02-18
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/40
+updated: 2021-05-12
+---
 
 ## Abstract
 

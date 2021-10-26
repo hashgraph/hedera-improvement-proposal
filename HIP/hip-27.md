@@ -1,16 +1,15 @@
-# Adding support for resolving Hedera DIDs through the DIF Community Universal Resolver
-​
-- hip: 27
-- title: Adding support for resolving Hedera DIDs through the DIF Community Universal Resolver
-- author: Jo Vercammen - jo.vercammen@meeco.me
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 2021-06-06
-- discussions-to: 
-- updated: 
-​
-​
+---
+hip: 27
+title: Adding support for resolving Hedera DIDs through the DIF Community Universal Resolver
+author: Jo Vercammen - jo.vercammen@meeco.me
+type: Standards Track
+category: Application
+status: Draft
+created: 2021-06-06
+discussions-to: 
+updated: 
+---
+
 ## Abstract
 ​
 This HIP describes the extension of the DIF Universal Resolver with a Hedera DID Resolver. The DIF Universal Resolver is a combined community effort to provide a single solution to easily resolve different DID methods, with the goal to enable interoperability across different DID methods. By integrating the Hedera DID Resolver with the DIF Universal Resolver, it will recognise Hedera as one of the identity fabrics in the wider community and provide for interoperability between different DID methods.  

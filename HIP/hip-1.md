@@ -1,11 +1,13 @@
-- hip: 1
-- title: Hedera Improvement Proposal Process
-- author: Ken Anderson (@kenthejr)
-- type: Process
-- status: Draft
-- created: 2021-02-11
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
-- updated: 2021-05-12
+---
+hip: 1
+title: Hedera Improvement Proposal Process
+author: Ken Anderson (@kenthejr)
+type: Process
+status: Draft
+created: 2021-02-11
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
+updated: 2021-05-12
+---
 
 ## What is a HIP?
 
