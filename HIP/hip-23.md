@@ -2,7 +2,8 @@
 hip: 23
 title: Make the need for token association opt-in
 author: Gerbert Vandenberghe (gerbert-vandenberghe)
-type: Standards Track - Service
+type: Standards Track
+category: Service
 status: Draft
 created: 2021-06-22
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/107

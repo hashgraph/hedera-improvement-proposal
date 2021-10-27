@@ -1,8 +1,7 @@
 ---
 hip: 20
 title: Standardized URI scheme to reference Hedera data
-author: Khoa Luong khoa.luong@luthersystems.com, Sam Wood sam.wood@luthersystems.com,
-Stephanie Yi stephanie.yi@luthersystems.com, Declan Fox declan.fox@luthersystems.com
+author: Khoa Luong khoa.luong@luthersystems.com, Sam Wood sam.wood@luthersystems.com, Stephanie Yi stephanie.yi@luthersystems.com, Declan Fox declan.fox@luthersystems.com
 type: Standards Track
 category: Service
 status: Draft

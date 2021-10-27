@@ -1,8 +1,9 @@
 ---
 hip: 21
 title: Free network info query              
-author: Simi Hunjan (@SimiHunjan )
-type: Service
+author: Simi Hunjan (@SimiHunjan)
+type: Standards Track
+category: Application
 status: Draft
 created: 2021-06-09 
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/82

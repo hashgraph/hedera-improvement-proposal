@@ -2,7 +2,7 @@
 hip: 11
 title: Layer-2 Smart Contract Network
 author: Bryce Doganer (@BryceDoganer), Lucas Henning (@lucashenning)
-type: Standard Track
+type: Standards Track
 category: Application
 status: Draft
 created: 2021-02-23

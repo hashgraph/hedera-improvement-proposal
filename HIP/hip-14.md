@@ -1,8 +1,8 @@
 ---
 hip: 14
-title: Hold
+title: Token Hold Functionality
 author: Fernando Paris - fer@io.builders (@ferparishuertas)
-type: Standard Track
+type: Standards Track
 category: Service
 status: Draft
 created: 2021-03-24

@@ -1,12 +1,13 @@
 ---
 hip: 1
 title: Hedera Improvement Proposal Process
-author: Ken Anderson (@kenthejr)
-type: Process
-status: Draft
+author: Ken Anderson (@kenthejr), Serg Metelin (@sergmetelin), Simi Hunjan (@SimiHunjan)
+type: Standards Track
+category: Process
+status: Active
 created: 2021-02-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
-updated: 2021-05-12
+updated: 2021-10-27
 ---
 
 ## What is a HIP?
@@ -76,11 +77,15 @@ Once the champion has discovered with the Hedera community the acceptability of 
 
 The standard HIP workflow is:
 
-* You, the HIP author, fork the HIP repository, and create a file named hip-0000-my-feature.md (where “my-feature” is descriptive) that contains your new HIP. Use 0000 as your draft HIP number. This file should be created from the HIP template.
+* You, the HIP author, fork the HIP repository, and create a file named `hip-0000-my-feature.md` (where “my-feature” is descriptive) that contains your new HIP. Use 0000 as your draft HIP number. This file should be created from the HIP template.
 
 * In the “Type” header field, enter “Standards Track”, “Informational”, or “Process” as appropriate, and for “Status” field enter “Draft”.
 
-* Push this to your Github fork and submit a pull request.
+* Push this to your Github fork and submit a draft pull request (https://github.blog/2019-02-14-introducing-draft-pull-requests/).
+
+* As you iterate through the community feedback, you add changes to the HIP which will be reflected in the draft pull request.
+
+* Once you finalize the changes related to the feedback, convert the pull request from 'Draft' to 'Ready for review'
 
 * The HIP editors review your PR for structure, formatting, and other errors. Approval criteria are:
 
@@ -144,7 +149,7 @@ Informational and Process HIPs may be updated over time to reflect changes to th
 
 Each HIP should have the following parts/sections:
 
-1. Preamble -- RFC 822 style headers containing meta-data about the HIP, including the HIP number, a short descriptive title (limited to a maximum of 44 characters), the names and, optionally, the contact info for each author, etc.
+1. Preamble -- RFC 822 style headers containing meta-data about the HIP, including the HIP number, a short descriptive title (limited to a maximum of 44 characters), the names and, optionally, the contact info for each author, etc. The header items each should start with a new line and be wrapped in `---` symbols to format the preamble as a table and allow static site generators such as Jekyll use it as parameters for the page generation.
 
 2. Abstract -- a short (~200 word) description of the technical issue being addressed.
 
@@ -182,20 +187,25 @@ HIPs should be written in markdown format. There is a template to follow.
 
 ### HIP Header Preamble
 
-Each HIP must begin with a header preamble in list format. The headers must appear in the following order. Headers marked with “*” are optional and are described below. All other headers are required.
+Each HIP must begin with a header preamble in a table format. The headers must appear in the following order. Headers marked with “*” are optional and are described below. All other headers are required.
 
-- hip: HIP number (this is determined by the HIP editor)
-- title: HIP title
-- author: a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).
-- type: <Standards Track | Informational | Process>
-- \* category: <Core | Service | API | Mirror | Application>
-- status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
-- created: date created on
-- \* discussions-to: a URL pointing to the official discussion thread
-- \* updated: comma separated list of dates
-- \* requires: HIP number(s)
-- \* replaces: HIP number(s)
-- \* superseded-by: HIP number(s)
+---
+hip: HIP number (this is determined by the PR number and set by the editor)
+title: HIP title
+author: a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).
+\* working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
+type: <Standards Track | Informational | Process>
+\* category: <Core | Service | API | Mirror | Application>
+needs-tech-comm-approval: <true | false>
+status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
+created: date created on
+last-call-date-time: the anticipated date and time when this HIP will change status to `Last Call` 
+\* discussions-to: a URL pointing to the official discussion thread
+\* updated: comma separated list of dates
+\* requires: HIP number(s)
+\* replaces: HIP number(s)
+\* superseded-by: HIP number(s)
+---
 
 Headers that permit lists must separate elements with commas.
 
@@ -204,6 +214,26 @@ Headers requiring dates will always do so in the format of ISO 8601 (yyyy-mm-dd)
 #### `author` header
 
 The author header lists the names, email addresses or GitHub usernames of the authors/owners of the HIP. Those who prefer anonymity may use a username only, or a first name and a username. The format of the author header value must be:
+
+Random J. User <address@dom.ain>
+
+or
+
+Random J. User (@username)
+
+if the email address or GitHub username is included, and Random J. User
+
+if email or username are not given.
+
+It is not possible to use both an email and a GitHub username at the same time. If important to include both, one could include their name twice, once with the GitHub username and once with the email.
+
+At least one author must use a GitHub username in order to be notified on change requests and have the capability to approve or reject them.
+
+#### `working-group` header
+
+If the HIP includes multiple stakeholders, including technical and/or business stakeholders that can address questions and discussions about the HIP, they should be listed in this section. 
+
+Those who prefer anonymity may use a username only, or a first name and a username. The format of the author header value must be:
 
 Random J. User <address@dom.ain>
 
@@ -235,9 +265,17 @@ The Type header specifies the type of HIP: Standards Track, Informational, or Pr
 
 The category header specifies the HIP category (Core, Service, API, Mirror, Application). This is required for Standard Track HIPs only.
 
+#### `needs-tech-comm-approval` header
+
+This field specifies if the HIP needs to be reviewed and approved by the Hedera Council Technical Commitee before getting a `Final` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service`, `API` and `Mirror` categories, but can expand to other HIPs as well. The HIP author should set it based on their judgement of whether the HIP modifies any of the Hedera Core, Services, API or Mirror code, but the HIPs editors will double-check if the `true` flag needs to be set. 
+
 #### `created` header
 
 The created header records the date that the HIP was assigned a number. This header should be in ISO 8601 format (yyyy-mm-dd), e.g. 2019-09-16.
+
+#### `last-call-date-time` header
+
+The anticipated date and time when this HIP will change status to `Last Call`. This header should be in ISO 8601 format expressed in UTC (yyyy-mm-ddThh:mm:ssZ), e.g. 2019-09-16T13:15:30Z. This field is usually set as 7 days from the moment a pull requested is converted 
 
 #### `updated` header
 
