@@ -65,6 +65,13 @@ gas pre-consensus because network state can directly impact the flow of the
 transaction, which is why pre-consensus uses the `gasLimit` field and will be
 referred to as the gas reservation.
 
+`ContractCallLocalQuery` requests are not submitted to consensus and are only
+executed on the node receiving the message. Hence, they will only count against
+the local node's precheck throttle. `ContractCreate` and `ContractCall`
+transactions are executed in consensus and count against both precheck throttle
+limits and consensus throttle limits. The throttle limits for precheck and
+consensus may be set to different values.
+
 In order to ensure that the transactions can execute properly it is common to
 set a higher gas reservation than will be consumed by execution. In Ethereum
 Mainnet the entire reservation is charged to the account prior to execution and
@@ -89,6 +96,11 @@ transaction to consume the maximum gas per transaction without regard to the
 other transactions, so limits were based on this worst case scenario. Now that
 throttling is the aggregate gas used we can allow each transaction to consume
 large amounts of gas without concern for an extreme surge.
+
+When a transaction is submitted to a node with a `gasLimit` that is greater than
+the per-transaction gas limit the transaction must be rejected during precheck
+with a response code of `INDIVIDUAL_TX_GAS_LIMIT_EXCEEDED`. The transaction must
+not be submitted to consensus.
 
 <!-- todo propose a number and justify why.  Deploying a 24Kib Contract requires 6,533,640 gas minimum with London deposit costs. -->
 
@@ -124,11 +136,11 @@ will be used to determine the throttle, subject to gas minimums charged by the
 gas reservation refund.
 
 If a transaction's gas reservation exceeds the amount of gas left before
-throttling occurs then the transaction will be canceled with a `BUSY` response.
-This will be evaluated as the transactions are evaluated in-order, so if a
-consensus transaction with a lower gas limit follows that is less than the
-remaining throttle amount then that transaction will not be cancelled and will
-be executed.
+throttling occurs then the transaction will be canceled with
+a `CONSENSUS_GAS_EXHAUSTED` response. This will be evaluated as the transactions
+are evaluated in-order, so if a consensus transaction with a lower gas limit
+follows that is less than the remaining throttle amount then that transaction
+will not be cancelled and will be executed.
 
 ### Charging for reserved but unused Gas
 
@@ -136,6 +148,9 @@ If a transaction uses less than 80% of the gas reserved via the `gasLimit` field
 then the transaction will be charged 80% of the `gasLimit`. If the amount of gas
 used is equal to or greater than 80% the gas reserved via the `gasLimit` field
 then only the actual gas used will be charged.
+
+Gas that is reserved but not charged does not count against the throttling
+limit.
 
 ### Charging for Intrinsic and Contract Creation Gas
 
