@@ -127,6 +127,8 @@ When a HIP is Accepted, Rejected or Withdrawn, the HIP should be updated accordi
 
 HIPs can also be superseded by a different HIP, rendering the original obsolete. This is intended for Informational HIPs, where version 2 of an API can replace version 1.
 
+Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIPs editors will double-check if the `true` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council. 
+
 The possible paths of the status of HIPs are as follows:
 
 ![HIP States](../assets/hip-1/hip-states.png)
