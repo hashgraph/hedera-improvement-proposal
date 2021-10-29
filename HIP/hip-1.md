@@ -2,8 +2,7 @@
 hip: 1
 title: Hedera Improvement Proposal Process
 author: Ken Anderson (@kenthejr), Serg Metelin (@sergmetelin), Simi Hunjan (@SimiHunjan)
-type: Standards Track
-category: Process
+type: Process
 needs-council-approval: false
 status: Active
 created: 2021-02-11
@@ -43,15 +42,15 @@ There are three kinds of HIP:
 
 ### Hedera Council
 
-The Hedera Council or “the Council” is made up of large organizations who participate in decisions related to the technical development roadmap, treasury management, and general governance. The Council has the final say on Core, Service, and Mirror node Standards Track HIPs.
+The Hedera Council or "the Council" is made up of large organizations who participate in decisions related to the technical development roadmap, treasury management, and general governance. The Council has the final say on Core, Service, and Mirror node Standards Track HIPs.
 
 ### Hedera Core Developers
 
-Hedera Core Developers or “core developers” include those who are tasked with development of any part of the Hedera platform or ecosystem; this includes employees of Hedera, contractors hired by Hedera directly, and community developers who have received grants to develop and maintain a project.
+Hedera Core Developers or "core developers" include those who are tasked with development of any part of the Hedera platform or ecosystem; this includes employees of Hedera, contractors hired by Hedera directly, and community developers who have received grants to develop and maintain a project.
 
 ### HIP Editors
 
-The HIP editors or “editors” are individuals responsible for managing the administrative and editorial aspects of the HIP workflow. HIP editorship is by invitation of the current editors or by assignment by the Council.
+The HIP editors or "editors" are individuals responsible for managing the administrative and editorial aspects of the HIP workflow. HIP editorship is by invitation of the current editors or by assignment by the Council.
 
 ### Start with an idea for Hedera
 
@@ -76,15 +75,15 @@ Once the champion has discovered with the Hedera community the acceptability of 
 
 The standard HIP workflow is:
 
-* You, the HIP author, fork the HIP repository, and create a file named `hip-0000-my-feature.md` (where “my-feature” is descriptive) that contains your new HIP. Use 0000 as your draft HIP number. This file should be created from the HIP template.
+* You, the HIP author, fork the HIP repository, and create a file named `hip-0000-my-feature.md` (where "my-feature" is descriptive) that contains your new HIP. Use 0000 as your draft HIP number. This file should be created from the HIP template.
 
-* In the “Type” header field, enter “Standards Track”, “Informational”, or “Process” as appropriate, and for “Status” field enter “Draft”.
+* In the "Type" header field, enter "Standards Track", "Informational", or "Process" as appropriate, and for "Status" field enter "Draft".
 
-* Push this to your Github fork and submit a draft pull request (https://github.blog/2019-02-14-introducing-draft-pull-requests/).
+* Push this to your Github fork and submit a draft pull request ([https://github.blog/2019-02-14-introducing-draft-pull-requests/](https://github.blog/2019-02-14-introducing-draft-pull-requests/)).
 
 * As you iterate through the community feedback, you add changes to the HIP which will be reflected in the draft pull request.
 
-* Once you finalize the changes related to the feedback, convert the pull request from 'Draft' to 'Ready for review'
+* Once you finalize the changes related to the feedback, convert the pull request from "Draft" to "Review". This will signal an editor to review your HIP.
 
 * The HIP editors review your PR for structure, formatting, and other errors. Approval criteria are:
 
@@ -96,7 +95,7 @@ The standard HIP workflow is:
 
     Editors are generally quite lenient about this initial review, expecting that problems will be corrected by the reviewing process.
 
-    If the HIP isn’t ready for approval, an editor will send it back to the author for revision, with specific instructions.
+    If the HIP isn’t ready for approval, an editor will send it back to the author for revision, with specific instructions and will change the status of the HIP back to the "Draft".
 
 * Once approved, editors will assign your HIP a number and merge your PR into the main branch.
 
@@ -110,21 +109,19 @@ HIP authors are responsible for collecting community feedback on a HIP before su
 
 ### HIP Review & Resolution
 
-Once authors have completed a HIP, they may request a review for style and consistency from the HIP editors.
+Once authors have completed a HIP, they may request a review for style and consistency from the HIP editors. They can signal this by changing the status of the HIP in the HIP header from "Draft" to "Review".
 
 However, content review and final acceptance of the HIP must be requested of the core developers, which may include community developers responsible for the codebase being proposed for improvement.
 
 For a HIP to be accepted, it must meet certain minimum criteria. It must be a clear and complete description of the proposed improvement. The improvement must represent a net value-add. The proposed implementation, if applicable, must be solid and must not complicate the network unduly.
 
-Once a HIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and incorporated into the main source code repository, the status will be changed to “Final”. A Standards Track HIP must include a specification and a reference implementation in order to be considered for a "Final" status. For Process HIPs and Standards Track HIPs that introduce protocol standards, once the process or protocol has been implemented and recognized as official by a combination of the community, core developers, and the Council, the status will be changed to “Final”.
+To allow gathering of additional design and interface feedback before committing to long term stability, a HIP may will be marked as "Last Call". This indicates that the proposal has been accepted for inclusion, but additional user feedback is needed before the full design can be considered "Accepted". A HIP in the "Last Call" status may still be Rejected or Withdrawn even after the related changes have been implemented.
 
-To allow gathering of additional design and interface feedback before committing to long term stability, a HIP may also be marked as “Provisional”. This is short for “Provisionally Accepted”, and indicates that the proposal has been accepted for inclusion, but additional user feedback is needed before the full design can be considered “Final”. Unlike regular accepted HIPs, provisionally accepted HIPs may still be Rejected or Withdrawn even after the related changes have been implemented.
+Once a HIP has been accepted, the reference implementation must be completed. When the reference implementation is complete and incorporated into the main source code repository, the status will be changed to "Final". A Standards Track HIP must include a specification and a reference implementation in order to be considered for a "Final" status. For Process HIPs and Standards Track HIPs that introduce protocol standards, once the process or protocol has been implemented and recognized as official by a combination of the community, core developers, and the Council, the status will be changed to "Final".
 
-Wherever possible, it is considered preferable to reduce the scope of a proposal to avoid the need to rely on the “Provisional” status, as this status can lead to version compatibility challenges in the wider Hedera ecosystem.
+A HIP can also be assigned the status of "Deferred". The HIP author or an editor can assign the HIP this status when no progress is being made on the HIP. Once a HIP is deferred, a HIP editor can re-assign to draft status.
 
-A HIP can also be assigned the status of “Deferred”. The HIP author or an editor can assign the HIP this status when no progress is being made on the HIP. Once a HIP is deferred, a HIP editor can re-assign to draft status.
-
-A HIP can also be “Rejected”. Perhaps, after all is said and done, it was not a good idea. It is still important to have a record of this fact. The “Withdrawn” status is similar - it means that the HIP author themselves has decided that the HIP is actually a bad idea, or has accepted that a competing proposal is a better alternative.
+A HIP can also be "Rejected". Perhaps, after all is said and done, it was not a good idea. It is still important to have a record of this fact. The "Withdrawn" status is similar - it means that the HIP author themselves has decided that the HIP is actually a bad idea, or has accepted that a competing proposal is a better alternative.
 
 When a HIP is Accepted, Rejected or Withdrawn, the HIP should be updated accordingly.
 
@@ -132,9 +129,9 @@ HIPs can also be superseded by a different HIP, rendering the original obsolete.
 
 The possible paths of the status of HIPs are as follows:
 
-![HIP States](../assets/hip-1/hip-states.jpg)
+![HIP States](../assets/hip-1/hip-states.png)
 
-Some Informational or Process HIPs may also have a status of “Active” if they are never meant to be completed. An active HIP may be made "Inactive" or "Replaced" by another HIP.
+Some Informational or Process HIPs may also have a status of "Active" if they are never meant to be completed. An active HIP may be made "Inactive" or "Replaced" by another HIP.
 
 ### HIP Maintenance
 
@@ -158,7 +155,7 @@ Each HIP should have the following parts/sections:
 
     The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
 
-5. User stories -- Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
+5. User stories -- Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: "As (user persona), I want (to perform this action) so that (I can accomplish this goal)."
 
 6. Specification -- The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
 
@@ -168,7 +165,7 @@ Each HIP should have the following parts/sections:
 
 9. How to Teach This -- For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
 
-10. Reference Implementation -- The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+10. Reference Implementation -- The reference implementation must be complete before any HIP is given the status of "Final". The final implementation must include test code and documentation.
 
 11. Rejected Ideas -- Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
 
@@ -186,7 +183,7 @@ HIPs should be written in markdown format. There is a template to follow.
 
 ### HIP Header Preamble
 
-Each HIP must begin with a header preamble in a table format. The headers must appear in the following order. Headers marked with “*” are optional and are described below. All other headers are required.
+Each HIP must begin with a header preamble in a table format. The headers must appear in the following order. Headers marked with "*" are optional and are described below. All other headers are required.
 
 ---
 hip: HIP number (this is determined by the PR number and set by the editor)
@@ -198,7 +195,7 @@ type: <Standards Track | Informational | Process>
 needs-council-approval: <true | false>
 status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
 created: date created on
-last-call-date-time: the anticipated date and time when this HIP will change status to `Last Call` 
+last-call-date-time: the anticipated date and time when this HIP will change status to `Last Call`, filled out by the editor
 \* discussions-to: a URL pointing to the official discussion thread
 \* updated: comma separated list of dates
 \* requires: HIP number(s)
@@ -266,7 +263,7 @@ The category header specifies the HIP category (Core, Service, API, Mirror, Appl
 
 #### `needs-council-approval` header
 
-This field specifies if the HIP needs to be reviewed and approved by the Hedera Council Technical Committee before getting a `Final` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service`, `API` and `Mirror` categories, but can expand to other HIPs as well. The HIP author should set it based on their judgement of whether the HIP modifies any of the Hedera Core, Service, API or Mirror code, but the HIPs editors will double-check if the `true` flag needs to be set. 
+This field specifies if the HIP needs to be reviewed and approved by the Hedera Council Technical Committee before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP author should set it based on their judgement of whether the HIP modifies any of the Hedera Core, Service or Mirror code, but the HIPs editors will double-check if the `true` flag needs to be set. 
 
 #### `created` header
 
@@ -274,11 +271,11 @@ The created header records the date that the HIP was assigned a number. This hea
 
 #### `last-call-date-time` header
 
-The anticipated date and time when this HIP will change status to `Last Call`. This header should be in ISO 8601 format expressed in UTC (yyyy-mm-ddThh:mm:ssZ), e.g. 2019-09-16T13:15:30Z. This field is usually set as 7 days from the moment a pull requested is converted 
+The anticipated date and time when this HIP will change status to `Final`. This header should be in ISO 8601 format expressed in UTC (yyyy-mm-ddThh:mm:ssZ), e.g. 2019-09-16T13:15:30Z. This field is usually set as 14 days from the moment a pull requested is reviewed.
 
 #### `updated` header
 
-The updated header records the date(s) when the HIP was updated with “substantial” changes. The header is only valid for HIPs of Draft and Active status. This header should be in ISO 8601 format (yyyy-mm-dd), e.g. 2019-09-16.
+The updated header records the date(s) when the HIP was updated with "substantial" changes. The header is only valid for HIPs of Draft and Active status. This header should be in ISO 8601 format (yyyy-mm-dd), e.g. 2019-09-16.
 
 #### `requires` header
 
@@ -286,7 +283,7 @@ HIPs may have a requires header, indicating the HIP numbers that this HIP depend
 
 #### `superseded-by` and `replaces` headers
 
-HIPs may also have a superseded-by header indicating that a HIP has been rendered obsolete by a later document; the value is the number of the HIP that replaces the current document. The current document must change status to “Replaced” once the superseding HIP is changed to “Final” status. The newer HIP must have a replaces header containing the number of the HIP that it rendered obsolete.
+HIPs may also have a superseded-by header indicating that a HIP has been rendered obsolete by a later document; the value is the number of the HIP that replaces the current document. The current document must change status to "Replaced" once the superseding HIP is changed to "Final" status. The newer HIP must have a replaces header containing the number of the HIP that it rendered obsolete.
 
 ### Linking to other HIPs
 
@@ -294,7 +291,7 @@ References to other HIPs should follow the format HIP-N where N is the HIP numbe
 
 ### Auxiliary Files
 
-Images, diagrams, and auxiliary files should be included in a subdirectory of the assets folder for that HIP as follows: assets/hip-N (where N is to be replaced with the HIP number). When linking to an image in the HIP, use relative links such as ../assets/hip-1/image.png.
+Images, diagrams, and auxiliary files should be included in a subdirectory of the assets folder for that HIP as follows: assets/hip-N (where N is to be replaced with the HIP number). When linking to an image in the HIP, use relative links such as `../assets/hip-1/image.png`.
 
 ## Reporting HIP Bugs, or Submitting HIP Updates
 

@@ -6,7 +6,7 @@ working-group: a list of the technical and business stakeholders' name(s) and/or
 type: <Standards Track | Informational | Process>
 category: <Core | Service | Mirror | Application>
 needs-tech-comm-approval: <true | false>
-status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
+status: <Draft | Review | Last Call | Active | Inactive | Deferred | Rejected | Withdrawn | Accepted | Final | Replaced>
 created: <date created on>
 discussions-to: <a URL pointing to the official discussion thread>
 updated: <comma separated list of dates>
