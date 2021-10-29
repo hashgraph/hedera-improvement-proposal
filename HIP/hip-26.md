@@ -1,13 +1,14 @@
 ---
 hip: 26
 title: Migrate Smart Contract Service EVM to Hyperledger Besu EVM
-author: Daniel Ivanov (daniel@limechain.tech), Danno Ferrin (danno.ferrin@hedera.com)
+author: Daniel Ivanov <daniel@limechain.tech>, Danno Ferrin <danno.ferrin@hedera.com>
 type: Standards Track
-category: Services
-status: Draft
-created: 16 September 2021
+category: Service
+needs-council-approval: true
+status: Final
+created: 2021-09-16
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/140
-updated: 11 October 2021
+updated: 2021-10-27
 ---
 
 ## Abstract

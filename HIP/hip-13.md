@@ -1,9 +1,10 @@
 ---
 hip: 13
 title: Hedera Name Service
-author: H. Bart - hbart.lit@gmail.com
+author: H. Bart <hbart.lit@gmail.com>
 type: Standards Track
 category: Service
+needs-council-approval: true
 status: Draft
 created: 2021-03-13
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/56
@@ -34,7 +35,7 @@ Besides the mutual security benefits shared by both domain owners and their resp
 
 ## Specification
 
-Backwards Compatibility will be described more completely in the next section. To allow for backwards compatibility with existing DNS infrastructure Hedera will initially only allow for HNS native second-level domains(SLD) to be registered under the top-level domain(TLD) ".hh"(which is an initialism for Hedera Hashgraph). Furthermore, an SLD owner can register subdomains under their SLD, noting that the SLD comprises the subdomains in a non-fugible manner, hence any transfer of a given SLD entails the transfer of that SLD's subdomains if any. It is suggested that the Hedera Council secure ownership of the TLD ".hh" from ICANN.
+Backwards Compatibility will be described more completely in the next section. To allow for backwards compatibility with existing DNS infrastructure Hedera will initially only allow for HNS native second-level domains(SLD) to be registered under the top-level domain(TLD) ".hh"(which is an initialism for Hedera Hashgraph). Furthermore, an SLD owner can register subdomains under their SLD, noting that the SLD comprises the subdomains in a non-fungible manner, hence any transfer of a given SLD entails the transfer of that SLD's subdomains if any. It is suggested that the Hedera Council secure ownership of the TLD ".hh" from ICANN.
 
 HNS native SLDs can be registered in a fair equitable manner that mitigates issues such as domain hoarding and domain sniping(i.e. the early registration of potentially lucrative domains at a fixed cost in the hopes of selling at significant profits) by early adopters as follows:
 * on registration of an SLD by an *initial domain registrant* the SLD is auctioned off by the Hedera network as described below.

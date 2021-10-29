@@ -4,6 +4,7 @@ title: Entity Auto-Renewal
 author: Leemon Baird (@lbaird), Nosh Mody (@noshmody), Quan Nguyen (@qnswirlds)
 type: Standards Track
 category: Service
+needs-council-approval: true
 status: Final
 created: 2021-03-29
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/64

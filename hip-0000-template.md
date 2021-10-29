@@ -4,7 +4,7 @@ title: <HIP title>
 author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
 working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
 type: <Standards Track | Informational | Process>
-category: <Core | Service | API | Mirror | Application>
+category: <Core | Service | Mirror | Application>
 needs-tech-comm-approval: <true | false>
 status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
 created: <date created on>

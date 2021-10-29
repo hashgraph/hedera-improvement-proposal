@@ -1,9 +1,10 @@
 ---
 hip: 14
 title: Token Hold Functionality
-author: Fernando Paris - fer@io.builders (@ferparishuertas)
+author: Fernando Paris <fer@io.builders>, Fernando Paris <@ferparishuertas>
 type: Standards Track
 category: Service
+needs-council-approval: true
 status: Draft
 created: 2021-03-24
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/59
