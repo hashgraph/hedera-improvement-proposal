@@ -23,7 +23,7 @@ github_username: hashgraph
 
 # Build settings
 markdown: kramdown
-theme: minima
+theme: jekyll-theme-slate
 
 header_pages:
   - all.html
