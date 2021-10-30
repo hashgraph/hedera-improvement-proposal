@@ -50,6 +50,10 @@ This is the "Token Metadata JSON Schema" referenced above:
     "title": "Token Metadata",
     "type": "object",
     "properties": {
+        "version": {
+            "type": "string",
+            "description": "Semantic version for the metadata JSON format."
+        },
         "name": {
             "type": "string",
             "description": "Identifies the asset to which this token represents."
@@ -92,7 +96,10 @@ This is the "Token Metadata JSON Schema" referenced above:
 }
 ```
 
+The "version" field is a [semvar](https://semver.org/) version of the metadata JSON format. If omitted then the version MUST be interpreted as "0.0.1".
+
 If the "decimals" field is supplied in the token metadata, then it MUST match that specified for the token on HTS.
+
 
 ### Localization
 
