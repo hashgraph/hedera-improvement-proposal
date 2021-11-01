@@ -5,10 +5,7 @@
 - category: Application
 - status: Draft
 - created: 11 Oct 2021
--
-
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
-
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
 - updated: 15 Oct 2021, 26 October 2021
 
 ## Abstract
