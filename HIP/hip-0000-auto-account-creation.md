@@ -1,18 +1,13 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 32
 title: Auto Account Creation
 author: Leemon Baird <leemon@hedera.com>
-working-group: N/A
 type: Standards 
 category: Service 
 needs-tech-comm-approval: true
 status: Draft
-created: 2021/11/01
+created: 11-01-2021
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/187
-updated: 
-requires: 
-replaces: 
-superseded-by: 
 ---
 
 ## Abstract
