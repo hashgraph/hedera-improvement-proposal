@@ -7,7 +7,7 @@ type: Standards
 category: Service 
 needs-tech-comm-approval: true
 status: Draft
-created: 11/1/2021
+created: 2021/11/01
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/187
 updated: 
 requires: 
