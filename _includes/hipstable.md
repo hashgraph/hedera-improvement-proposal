@@ -1,3 +1,12 @@
+<style type="text/css">
+  .hipstable .title {
+    width: 67%;
+  }
+
+  .hipstable .author {
+    width: 33%;
+  }
+</style>
 {% for status in site.data.statuses %}
     {% assign hips = include.hips|where:"status",status|where:"category",category|where:"type",type %}
     {% assign count = hips|size %}
@@ -11,7 +20,7 @@
             <tr>
                 <td><a href="{{page.url|relative_url}}">{{page.hip|xml_escape}}</a></td>
                 <td class="title">{{page.title|xml_escape}}</td>
-                <td class="author">{{page.author|xml_escape}}</td>
+                <td class="author">{% include authorslist.html authors=page.author %}</td>
             </tr>
         {% endfor %}
         </table>

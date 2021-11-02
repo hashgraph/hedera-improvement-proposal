@@ -1,7 +1,7 @@
 ---
 hip: 24
 title: Pause feature on Hedera Token Service
-author: chung@xfers.com, junhao@xfers.com, zhikai@xfers.com
+author: chung@xfers.com <chung@xfers.com>, junhao@xfers.com <junhao@xfers.com>, zhikai@xfers.com <zhikai@xfers.com>
 type: Standards Track
 category: Service
 needs-council-approval: true

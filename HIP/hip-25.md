@@ -1,7 +1,7 @@
 ---
 hip: 25
 title: On-disk Virtual Merkle Tree
-author: Richard Bair <@rbair23>, Jasper Potts <@jasperpotts>
+author: Richard Bair (@rbair23), Jasper Potts (@jasperpotts)
 type: Standards Track
 category: Core
 needs-council-approval: true

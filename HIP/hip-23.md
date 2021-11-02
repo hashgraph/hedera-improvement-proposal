@@ -1,7 +1,7 @@
 ---
 hip: 23
 title: Make the need for token association opt-in
-author: Gerbert Vandenberghe (gerbert-vandenberghe)
+author: Gerbert Vandenberghe (@gerbert-vandenberghe)
 type: Standards Track
 category: Service
 needs-council-approval: true
