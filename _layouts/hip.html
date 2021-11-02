@@ -38,11 +38,13 @@ layout: default
     {% if page["discussions-to"] != undefined %}
       <tr><th>Discussions-To</th><td><a href="{{ page["discussions-to"] | uri_escape }}">{{ page["discussions-to"] | xml_escape }}</a></td></tr>
     {% endif %}
-    <tr><th>Status</th><td>{{ page.status | xml_escape }}
+    <tr><th>Status</th><td>{{ page.status | xml_escape }}</td></tr>
+    {% if page.needs-council-approval != undefined %}
+    <tr><th>Needs Council Approval</th><td>{{ page.needs-council-approval | xml_escape }}</td></tr>
+    {% endif %}
     {% if page.last-call-date-time != undefined %}
       <tr><th>Review period ends</th><td>{{ page.last-call-date-time | xml_escape }}</td></tr>
     {% endif %}
-    </td></tr>
     <tr><th>Type</th><td>{{ page.type | xml_escape }}</td></tr>
     {% if page.category != undefined %}
       <tr><th>Category</th><td>{{ page.category | xml_escape }}</td></tr>
