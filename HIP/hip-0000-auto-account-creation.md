@@ -44,7 +44,7 @@ As a wallet provider, I would like to create free Hedera accounts for users.
  
 ## Specification
   
- ### Implementation for Hedera
+### Implementation for Hedera
 
 HAPI will need to be updated to add 2 optional fields to the crypto transfer transaction. One is the "long-format account ID" (which is actually the public key in base 64). The other is the amount to transfer to that ID.
 
