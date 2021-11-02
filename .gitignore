@@ -13,3 +13,4 @@ _site/
 ## Environment normalization
 /.bundle/
 /vendor/bundle
+.idea
