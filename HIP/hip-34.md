@@ -1,15 +1,17 @@
-- hip: &lt;HIP number (this is determined by the HIP editor)>
-- title: Smart Contract Service Gas Based Throttling
-- author: Danno Ferrin (danno.ferrin@hedera.com)
-- type: Standards Track
-- category: Service
-- status: Draft
-- created: 27 Oct 2021
-- discussions-to: &lt;a URL pointing to the official discussion thread>
-- updated:
-- requires: 25, 26
-- replaces:
-- superseded-by:
+---
+hip: 34
+title: Smart Contract Service Gas Based Throttling
+author: Danno Ferrin (danno.ferrin@hedera.com)
+type: Standards Track
+category: Service
+status: Draft
+created: 2021-10-27
+discussions-to: &lt;a URL pointing to the official discussion thread>
+updated:
+requires: 25, 26
+replaces:
+superseded-by:
+---
 
 ## Abstract
 
