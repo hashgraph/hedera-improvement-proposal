@@ -4,7 +4,7 @@ title: Custom Hedera Token Service Fees
 author: Cooper Kunz <cooper@calaxy.com>, Rahul Kothari <rahul.kothari.201@gmail.com>
 type: Standards Track
 category: Service
-needs-council-approval: true
+needs-council-approval: Yes
 status: Final
 created: 2021-04-30
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/92

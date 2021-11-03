@@ -4,7 +4,7 @@ title: Adding support for resolving Hedera DIDs through the DIF Community Univer
 author: Jo Vercammen <jo.vercammen@meeco.me>
 type: Standards Track
 category: Application
-needs-council-approval: false
+needs-council-approval: No
 status: Draft
 created: 2021-06-06
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/103

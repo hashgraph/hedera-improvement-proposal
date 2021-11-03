@@ -4,7 +4,7 @@ title: Token Metadata JSON Schema
 author: Sam Wood <sam.wood@luthersystems.com>, Susan Chan <susan.chan@luthersystems.com>, Stephanie Yi <stephanie.yi@luthersystems.com>, Khoa Luong <khoa.luong@luthersystems.com>
 type: Standards Track
 category: Application
-needs-council-approval: false
+needs-council-approval: No
 status: Draft
 created: 2021-02-18
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/40
