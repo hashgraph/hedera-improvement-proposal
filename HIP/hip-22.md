@@ -4,7 +4,7 @@ title: ZKP-based Selective Attribute Disclosure in the DID SDK
 author: Maurizio Binello <maurizio@horizenlabs.io>, Tim McHale <@tim-mchale>
 type: Standards Track
 category: Application
-needs-council-approval: false
+needs-council-approval: No
 status: Draft
 created: 2021-06-18
 ---

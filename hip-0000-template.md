@@ -5,7 +5,7 @@ author: <a list of the author’s or authors’ name(s) and/or username(s), or n
 working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
 type: <Standards Track | Informational | Process>
 category: <Core | Service | Mirror | Application>
-needs-tech-comm-approval: <true | false>
+needs-council-approval: <Yes | No>
 status: <Draft | Review | Last Call | Active | Inactive | Deferred | Rejected | Withdrawn | Accepted | Final | Replaced>
 created: <date created on>
 discussions-to: <a URL pointing to the official discussion thread>

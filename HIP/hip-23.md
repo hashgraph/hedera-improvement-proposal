@@ -4,7 +4,7 @@ title: Make the need for token association opt-in
 author: Gerbert Vandenberghe (@gerbert-vandenberghe)
 type: Standards Track
 category: Service
-needs-council-approval: true
+needs-council-approval: Yes
 status: Final
 created: 2021-06-22
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/107
