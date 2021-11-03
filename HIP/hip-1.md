@@ -3,7 +3,7 @@ hip: 1
 title: Hedera Improvement Proposal Process
 author: Ken Anderson (@kenthejr), Serg Metelin (@sergmetelin), Simi Hunjan (@SimiHunjan)
 type: Process
-needs-council-approval: false
+needs-council-approval: No
 status: Active
 created: 2021-02-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
@@ -226,7 +226,7 @@ Each HIP must begin with a header preamble in a table format. The headers must a
 - working-group\*: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
 - type: <Standards Track | Informational | Process>
 - category\*: <Core | Service | API | Mirror | Application>
-- needs-council-approval: <true | false>
+- needs-council-approval: <Yes | No>
 - status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
 - created: date created on
 - last-call-date-time: the anticipated date and time when this HIP will change status to `Last Call`, filled out by the editor
@@ -296,7 +296,7 @@ The category header specifies the HIP category (Core, Service, API, Mirror, Appl
 
 #### `needs-council-approval` header
 
-This field specifies if the HIP needs to be reviewed and approved by the Hedera Council Technical Committee before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP author should set it based on their judgement of whether the HIP modifies any of the Hedera Core, Service or Mirror code, but the HIPs editors will double-check if the `true` flag needs to be set. 
+This field specifies if the HIP needs to be reviewed and approved by the Hedera Council Technical Committee before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP author should set it based on their judgement of whether the HIP modifies any of the Hedera Core, Service or Mirror code, but the HIPs editors will double-check if the `Yes` flag needs to be set. 
 
 #### `created` header
 

@@ -4,7 +4,7 @@ title: Hedera Name Service
 author: H. Bart <hbart.lit@gmail.com>
 type: Standards Track
 category: Service
-needs-council-approval: true
+needs-council-approval: Yes
 status: Draft
 created: 2021-03-13
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/56

@@ -4,7 +4,7 @@ title: Zero Knowledge Proofs
 author: Rahul Kothari <rahul.kothari.201@gmail.com>
 type: Standards Track
 category: Service
-needs-council-approval: true
+needs-council-approval: Yes
 status: Draft
 created: 2021-03-06
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/52

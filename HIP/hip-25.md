@@ -4,7 +4,7 @@ title: On-disk Virtual Merkle Tree
 author: Richard Bair (@rbair23), Jasper Potts (@jasperpotts)
 type: Standards Track
 category: Core
-needs-council-approval: true
+needs-council-approval: Yes
 status: Final
 created: 2021-09-07
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/139

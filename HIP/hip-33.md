@@ -3,7 +3,7 @@
 - author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds.com>
 - type: Standards
 - category: Service
-- needs-council-approval: true
+- needs-council-approval: Yes
 - status: Draft
 - created: 2021-10-19
 - discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/159
