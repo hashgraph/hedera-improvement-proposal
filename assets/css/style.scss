@@ -1,0 +1,19 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@import 'minima';
+
+.site-header {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+main.page-content {
+  div.wrapper {
+    max-width: unset;
+  }
+}

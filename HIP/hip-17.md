@@ -1,12 +1,15 @@
-- hip: 17
-- title: Non-Fungible Tokens
-- author: Daniel Ivanov (@Daniel-K-Ivanov)
-- type: Standards Track
-- category: Service
-- status: Draft
-- created: 2021-04-22
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
-- updated: 2021-05-25
+---
+hip: 17
+title: Non-Fungible Tokens
+author: Daniel Ivanov (@Daniel-K-Ivanov)
+type: Standards Track
+category: Service
+needs-council-approval: true
+status: Final
+created: 2021-04-22
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
+updated: 2021-10-27
+---
 
 ## Abstract
 
@@ -458,6 +461,9 @@ The following messages must be added in order to support the new `TokenGetNftInf
 ```
 
 ### TokenGetNftInfos
+
+:warning: :x: This functionality has been deprecated on Hedera Network and isn't available on the Mainnet, Testnet or Previewnet networks.
+
 The following messages must be added in order to support the new `TokenGetNftInfos` rpc call added to `HTS`.
 
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
@@ -481,6 +487,9 @@ Global dynamic variable must be added in the node configuring the maximum value 
 ```
 
 ### TokenGetAccountNftInfo
+
+:warning: :x: This functionality has been deprecated on Hedera Network and isn't available on the Mainnet, Testnet or Previewnet networks.
+
 The following messages must be added in order to support the new `TokenGetAccountNftInfo` rpc call added to `HTS`.
 
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
