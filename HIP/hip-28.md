@@ -1,12 +1,15 @@
-- hip: 28
-- title: Guardian Type Solution
-- author(s): Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 2021-10-10
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/83
-- updated: 2021-10-10
+---
+hip: 28
+title: Guardian Type Solution
+author: Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
+type: Standards Track
+category: Application
+needs-council-approval: false
+status: Final
+created: 2021-10-10
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/83
+updated: 2021-10-27
+---
 
 ## Abstract
 

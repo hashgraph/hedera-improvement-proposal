@@ -1,12 +1,15 @@
-- hip: HIP-25
-- title: On-disk Virtual Merkle Tree
-- author: Richard Bair (@rbair23), Jasper Potts (@jasperpotts)
-- type: Standards Track
-- category: Core
-- status: Draft
-- created: 2021-09-07
-- discussions-to: [Virtual Merkle Discussions](https://github.com/hashgraph/hedera-improvement-proposal/discussions/139)
-- updated: 2021-09-17
+---
+hip: 25
+title: On-disk Virtual Merkle Tree
+author: Richard Bair (@rbair23), Jasper Potts (@jasperpotts)
+type: Standards Track
+category: Core
+needs-council-approval: true
+status: Final
+created: 2021-09-07
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/139
+updated: 2021-09-17
+---
 
 ## Abstract
 

@@ -1,12 +1,14 @@
-- hip: 30
-- title: CAIP Identifiers for the Hedera Network
-- author: Danno Ferrin <danno.ferrin@hedera.com>
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 10-11-2021
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
-- updated: 10-15-2021, 10-26-2021
+---
+hip: 30
+title: CAIP Identifiers for the Hedera Network
+author: Danno Ferrin <danno.ferrin@hedera.com>
+type: Standards Track
+category: Application
+status: Draft
+created: 2021-10-11
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
+updated: 2021-10-15, 2021-10-26
+---
 
 ## Abstract
 

@@ -1,12 +1,15 @@
-- hip: 15
-- title: Address Checksum
-- author: Leemon Baird (@lbaird)
-- type: Standards Track
-- category: API
-- status: Final
-- created: 2021-03-11
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/47
-- updated: 2021-05-14
+---
+hip: 15
+title: Address Checksum
+author: Leemon Baird (@lbaird)
+type: Standards Track
+category: Service
+needs-council-approval: true
+status: Final
+created: 2021-03-11
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/47
+updated: 2021-05-14
+---
 
 ## Abstract
 

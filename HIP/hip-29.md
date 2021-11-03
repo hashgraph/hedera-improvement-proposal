@@ -1,12 +1,15 @@
-- hip: 29
-- title: JavaScript DID SDK
-- author(s): Daniel Norkin <daniel.norkin@envisionblockchain.com>
-- type: Standards Track
-- category: Application
-- status: Draft
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/166
-- created: 2021-10-11
-- updated: 2021-10-11
+---
+hip: 29
+title: JavaScript DID SDK
+author: Daniel Norkin <daniel.norkin@envisionblockchain.com>
+type: Standards Track
+category: Application
+needs-council-approval: false
+status: Final
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/166
+created: 2021-10-11
+updated: 2021-10-11
+---
 
 ## Abstract
 
