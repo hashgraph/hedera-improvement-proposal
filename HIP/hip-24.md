@@ -4,7 +4,7 @@ title: Pause feature on Hedera Token Service
 author: chung@xfers.com <chung@xfers.com>, junhao@xfers.com <junhao@xfers.com>, zhikai@xfers.com <zhikai@xfers.com>
 type: Standards Track
 category: Service
-needs-council-approval: true
+needs-council-approval: Yes
 status: Final
 created: 2021-08-09
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/126

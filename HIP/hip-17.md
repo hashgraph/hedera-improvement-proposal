@@ -4,7 +4,7 @@ title: Non-Fungible Tokens
 author: Daniel Ivanov (@Daniel-K-Ivanov)
 type: Standards Track
 category: Service
-needs-council-approval: true
+needs-council-approval: Yes
 status: Final
 created: 2021-04-22
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74

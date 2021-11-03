@@ -1,16 +1,14 @@
-- hip: 33
-- title: Add Network ID Field to Info Responses
-- author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds.com>
-- type: Standards
-- category: Service
-- needs-council-approval: true
-- status: Draft
-- created: 2021-10-19
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/159
-- updated: 
-- requires:
-- replaces:
-- superseded-by:
+---
+hip: 33
+title: Add Network ID Field to Info Responses
+author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds.com>
+type: Standards
+category: Service
+needs-council-approval: Yes
+status: Draft
+created: 2021-10-19
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/159
+---
 
 ## **Abstract**
 

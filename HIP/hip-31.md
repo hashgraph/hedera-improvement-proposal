@@ -4,7 +4,7 @@ title: Add Token Transfer Decimal Information
 author: Chris Campbell <chris@launchbadge.com>
 type: Standards Track
 category: Service
-needs-council-approval: true
+needs-council-approval: Yes
 status: Draft
 created: 2021-10-14
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/165

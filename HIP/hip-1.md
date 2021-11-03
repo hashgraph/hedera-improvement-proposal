@@ -3,7 +3,7 @@ hip: 1
 title: Hedera Improvement Proposal Process
 author: Ken Anderson (@kenthejr), Serg Metelin (@sergmetelin), Simi Hunjan (@SimiHunjan)
 type: Process
-needs-council-approval: false
+needs-council-approval: No
 status: Active
 created: 2021-02-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
@@ -147,7 +147,7 @@ When a HIP is Accepted, Rejected or Withdrawn, the HIP should be updated accordi
 
 HIPs can also be superseded by a different HIP, rendering the original obsolete. This is intended for Informational HIPs, where version 2 of an API can replace version 1.
 
-Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIPs editors will double-check if the `true` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council. 
+Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIPs editors will double-check if the `Yes` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council. 
 
 The possible paths of the status of HIPs are as follows:
 
@@ -162,7 +162,7 @@ The possible paths of the status of HIPs are as follows:
 - __Withdrawn__ - The HIP Author(s) have withdrawn the proposed HIP. This state has finality and can no longer be resurrected using this HIP number. If the idea is pursued at a later date - it is considered a new proposal.
 - __Rejected__ - Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP and prevents people from bringing up the same rejected idea again in subsequent discussions.
 - __Last Call__ - This is the final review window for a HIP before moving to "Accepted". A HIP editor will assign Last Call status and set a review end date (`last-call-date-time`), typically 14 days later. If this period results in necessary normative changes it will revert the HIP to Review.
-- __Council Review__ - Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP editors will double-check if the `true` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council.
+- __Council Review__ - Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP editors will double-check if the `Yes` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council.
 - __Accepted__ - An accepted HIP is a HIP that went through the "Last Call" status period without changes to the content and is considered ready for implementation. This is often a base HIP proposal for the development team to start implementing IP in code.
 - __Final__ - This HIP represents the final standard implemented in code. A Final HIP exists in a state of finality and should only be updated to correct errata and add non-normative clarifications.
 - __Active__ - Some Informational or Process HIPs may also have a status of "Active" if they are never meant to be completed. An "Active" HIP may be made "Inactive" or "Replaced" by another HIP.
@@ -226,7 +226,7 @@ Each HIP must begin with a header preamble in a table format. The headers must a
 - working-group\*: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
 - type: <Standards Track | Informational | Process>
 - category\*: <Core | Service | API | Mirror | Application>
-- needs-council-approval: <true | false>
+- needs-council-approval: <Yes | No>
 - status: <Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced >
 - created: date created on
 - last-call-date-time: the anticipated date and time when this HIP will change status to `Last Call`, filled out by the editor
@@ -296,7 +296,7 @@ The category header specifies the HIP category (Core, Service, API, Mirror, Appl
 
 #### `needs-council-approval` header
 
-This field specifies if the HIP needs to be reviewed and approved by the Hedera Council Technical Committee before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP author should set it based on their judgement of whether the HIP modifies any of the Hedera Core, Service or Mirror code, but the HIPs editors will double-check if the `true` flag needs to be set. 
+This field specifies if the HIP needs to be reviewed and approved by the Hedera Council Technical Committee before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP author should set it based on their judgement of whether the HIP modifies any of the Hedera Core, Service or Mirror code, but the HIPs editors will double-check if the `Yes` flag needs to be set. 
 
 #### `created` header
 

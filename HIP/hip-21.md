@@ -4,7 +4,7 @@ title: Free network info query
 author: Simi Hunjan <@SimiHunjan>
 type: Standards Track
 category: Service
-needs-council-approval: true
+needs-council-approval: Yes
 status: Draft
 created: 2021-06-09 
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
