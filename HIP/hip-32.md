@@ -3,8 +3,8 @@ hip: 32
 title: Auto Account Creation
 author: Leemon Baird <leemon@hedera.com>
 type: Standards 
-category: Service 
-needs-tech-comm-approval: true
+category: Service
+needs-council-approval: Yes
 status: Draft
 created: 11-01-2021
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/187
