@@ -1,15 +1,15 @@
-- hip: 26
-- title: Migrate Smart Contract Service EVM to Hyperledger Besu EVM
-- author: Daniel Ivanov (daniel@limechain.tech), Danno Ferrin (danno.ferrin@hedera.com)
-- type: Standards
-- category: Services
-- status: Draft
-- created: 16 September 2021
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/140
-- updated: 11 October 2021
-- requires:
-- replaces:
-- superseded-by:
+---
+hip: 26
+title: Migrate Smart Contract Service EVM to Hyperledger Besu EVM
+author: Daniel Ivanov <daniel@limechain.tech>, Danno Ferrin <danno.ferrin@hedera.com>
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Final
+created: 2021-09-16
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/140
+updated: 2021-10-27
+---
 
 ## Abstract
 
@@ -153,6 +153,12 @@ into transaction errors: `INVALID_RENEWAL_PERIOD`,
 
 The following errors in contract call are moving out of precheck errors and into
 transaction errors: `CONTRACT_NEGATIVE_GAS`, `CONTRACT_NEGATIVE_VALUE`.
+
+#### Deprecated HAPI properties
+
+The `fileID` property in the `ContractUpdate` operation (found in the `ContractUpdateTransactionBody` protobuf) will be deprecated. The wording of the field implies it updates the contract code while the comments indicate that it the assertion of where the initcode originated from will be changed. Ethereum contracts are expected to be immutable once deployed and so neither variation is appropriate, hence the field will be deprecated.
+
+The `maxResultSize` property in the `ContractCallLocal` operation (found in the `ContractCallLocalQuery`) will be deprecated. In order to calculate the effective result size the entire operation needs to be executed, and then at the last moment an error is returned if the result is too large. The result is not stored in server ram nor is it stored in storage, so there is no fees associated with larger queries. Because of this any errors that setting it is hoping to avoid would still occur on the server and different errors would be returned instead. The limitations of Ethereum Gas already provide a reasonable limitation on unexpectedly large results. Hence this property will be ignored if specified and all results will be returned.
 
 ### Upgrade to "London" Hard Fork
 

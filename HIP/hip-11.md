@@ -1,12 +1,15 @@
-- hip: 11
-- title: Layer-2 Smart Contract Network
-- author: Bryce Doganer (@BryceDoganer), Lucas Henning (@lucashenning)
-- type: Standard Track
-- category: Application
-- status: Draft
-- created: 2021-02-23
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/49
-- updated: 2021-05-12
+---
+hip: 11
+title: Layer-2 Smart Contract Network
+author: Bryce Doganer (@BryceDoganer), Lucas Henning (@lucashenning)
+type: Standards Track
+category: Application
+needs-council-approval: No
+status: Draft
+created: 2021-02-23
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/49
+updated: 2021-05-12
+---
 
 ## Abstract
 
