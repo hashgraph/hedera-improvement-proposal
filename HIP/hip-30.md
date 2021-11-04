@@ -4,6 +4,7 @@ title: CAIP Identifiers for the Hedera Network
 author: Danno Ferrin <danno.ferrin@hedera.com>
 type: Standards Track
 category: Application
+needs-council-approval: No
 status: Draft
 created: 2021-10-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
