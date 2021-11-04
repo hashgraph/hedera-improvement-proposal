@@ -40,7 +40,11 @@ layout: default
     {% endif %}
     <tr><th>Status</th><td>{{ page.status | xml_escape }}</td></tr>
     {% if page.needs-council-approval != undefined %}
-    <tr><th>Needs Council Approval</th><td>{{ page.needs-council-approval | xml_escape }}</td></tr>
+    {% if page.needs-council-approval == true %}
+    <tr><th>Needs Council Approval</th><td>Yes</td></tr>
+    {% else %}
+    <tr><th>Needs Council Approval</th><td>No</td></tr>
+    {% endif %}
     {% endif %}
     {% if page.last-call-date-time != undefined %}
       <tr><th>Review period ends</th><td>{{ page.last-call-date-time | xml_escape }}</td></tr>
@@ -54,10 +58,10 @@ layout: default
     <tr><th>Updated</th><td>{{ page.updated | xml_escape }}</td></tr>
     {% endif %}
     {% if page.requires != undefined %}
-      <tr><th>Requires</th><td>{% include HIPnums.html HIPs=page.requires %}</td></tr>
+      <tr><th>Requires</th><td>{% include hipnums.html hips=page.requires %}</td></tr>
     {% endif %}
     {% if page.replaces != undefined %}
-      <tr><th>Replaces</th><td>{% include HIPnums.html HIPs=page.replaces %}</td></tr>
+      <tr><th>Replaces</th><td>{% include hipnums.html hips=page.replaces %}</td></tr>
     {% endif %}
     {% if page["superseded-by"] != undefined %}
       <tr><th>Superseded by</th><td>{{ page.superseded-by | xml_escape }}</td></tr>
