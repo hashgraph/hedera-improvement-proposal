@@ -1,0 +1,38 @@
+- hip: ???
+- title: Ledger ID
+- author: Leemon Baird (@lbaird)
+- type: Active
+- category: Service
+- needs-council-approval: yes
+- status: Draft
+- created: 2021-11-05
+- discussions-to: 
+- updated: 
+## Abstract
+This HIP defines a ledger ID that uniquely identifies a particular DLT (Distributed Ledger Technology) network, and maintains a list of ledger IDs for several Hedera ledgers.  This will be updated when those IDs change.
+## Motivation
+It is useful to have a cryptographically-secure means to uniquely identify a ledger. This can be used in state proofs that a ledger contains a certain piece of information, such as a given balance for a given account as of a certain date. This ledger ID is not intended to be human readable, but to be machine readable and suitable for cryptographic proofs. For human-readable names for ledgers, see HIP-30.
+It is also important to maintain an updated list of such IDs. For the Hedera mainnet, there is currently only a temporary, non-secure ID. It will be replaced with a permanent ID in the new future. When that happens, the new ID will be listed here.
+## Rationale
+## Specification
+A `ledger ID` is a sequence of 1 or more bytes (255 max), uniquely identifying a single public or private ledger, in a form suitable as a basis for a cryptographic state proof. The following are the current IDs, which are temporary, only a single byte each, and not secure. They will be updated with longer, more secure IDs in the near future. Any software that is written to use ledger IDs should be designed so that it can be updated when the temporary IDs are replaced with permanent IDs.
+```
+0x00  Hedera mainnet
+0x01  Hedera stable testnet
+0x02  Hedera preview net
+```
+## Backwards Compatibility
+Both HIP-15 and HIP-33 and HAPI use the ledger ID. They will use the above byte strings as the values. Software using those ledger IDs will need to change when the above byte strings are changed from their temporary values to their permanent values. 
+## Security Implications
+The temporary ledger IDs are not cryptographically secure, but are helpful for avoiding accidental mistakes. When they are replaced with the permanent IDs, they can be used for secure state proofs, and other cryptographically-secure uses.
+## How to Teach This
+Other HIPs and standards should not include copies of the temporary ledger IDs.  They should, instead, reference this HIP. Once the temporary IDs are replaced with the permanent IDs, then other standards can start to simply copy them.
+## Reference Implementation
+## Rejected Ideas
+## Open Issues
+## References
+HIP-15
+HIP-30
+HIP-33
+## Copyright/license
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
