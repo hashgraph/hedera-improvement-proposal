@@ -1,12 +1,12 @@
-- hip: <HIP number (this is determined by the HIP editor)>
+- hip: 206
 - title: Hedera Token Service Precompiled Contract for Hedera SmartContract Service
 - author: Danno Ferrin <danno.ferrin@gmail.com>
 - type: Standards Track
 - category: Core
 - status: Draft
 - created: 2021-11-04
-- discussions-to: &lt;a URL pointing to the official discussion thread>
-- updated:
+- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/208
+- updated: 2021-11-08
 - requires:
 - replaces:
 - superseded-by:
