@@ -1,62 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.9 <0.9.0;
+pragma solidity >=0.5.0 <0.9.0;
 pragma experimental ABIEncoderV2;
 
-interface IHederaTokenService {
+import "./HederaResponseCodes.sol";
+import "./IHederaTokenService.sol";
 
-    /// Transfers cryptocurrency among two or more accounts by making the desired adjustments to their
-    /// balances. Each transfer list can specify up to 10 adjustments. Each negative amount is withdrawn
-    /// from the corresponding account (a sender), and each positive one is added to the corresponding
-    /// account (a receiver). The amounts list must sum to zero. Each amount is a number of tinybars
-    /// (there are 100,000,000 tinybars in one hbar).  If any sender account fails to have sufficient
-    /// hbars, then the entire transaction fails, and none of those transfers occur, though the
-    /// transaction fee is still charged. This transaction must be signed by the keys for all the sending
-    /// accounts, and for any receiving accounts that have receiverSigRequired == true. The signatures
-    /// are in the same order as the accounts, skipping those accounts that don't need a signature.
-    struct AccountAmount {
-        // The Account ID, as a solidity address, that sends/receives cryptocurrency or tokens
-        address accountID;
+contract HederaTokenService {
 
-        // The amount of  the lowest denomination of the given token that
-        // the account sends(negative) or receives(positive)
-        int64 amount;
-    }
-
-    /// A sender account, a receiver account, and the serial number of an NFT of a Token with
-    /// NON_FUNGIBLE_UNIQUE type. When minting NFTs the sender will be the default AccountID instance
-    /// (0.0.0 aka 0x0) and when burning NFTs, the receiver will be the default AccountID instance.
-    struct NftTransfer {
-        // The solidity address of the sender
-        address senderAccountID;
-
-        // The solidity address of the receiver
-        address receiverAccountID;
-
-        // The serial number of the NFT
-        int64 serialNumber;
-    }
-
-    struct TokenTransferList {
-        // The ID of the token as a solidity address
-        address token;
-
-        // Applicable to tokens of type FUNGIBLE_COMMON. Multiple list of AccountAmounts, each of which
-        // has an account and amount.
-        AccountAmount[] transfers;
-
-        // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. Multiple list of NftTransfers, each of
-        // which has a sender and receiver account, including the serial number of the NFT
-        NftTransfer[] nftTransfers;
-    }
-
-    /**********************
-     * Direct HTS Calls   *
-     **********************/
+    address constant precompileAddress = address(0x127);
 
     /// Initiates a Token Transfer
     /// @param tokenTransfers the list of transfers to do
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function tokenTransfer(TokenTransferList[] calldata tokenTransfers) external returns (int responseCode);
+    function tokenTransfer(IHederaTokenService.TokenTransferList[] memory tokenTransfers) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.tokenTransfer.selector, tokenTransfers));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
     /// Mints an amount of the token to the defined treasury account
     /// @param token The token for which to mint tokens. If token does not exist, transaction results in
@@ -67,7 +27,12 @@ interface IHederaTokenService {
     /// @param metadata Applicable to tokens of type NON_FUNGIBLE_UNIQUE. A list of metadata that are being created.
     ///                 Maximum allowed size of each metadata is 100 bytes
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function tokenMint(address token, uint64 amount, bytes calldata metadata) external returns (int responseCode);
+    function tokenMint(address token, uint64 amount, bytes memory metadata) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.tokenMint.selector,
+            token, amount, metadata));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
     /// Burns an amount fo teh token from the define treasury account
     /// @param token The token for which to burn tokens. If token does not exist, transaction results in
@@ -77,7 +42,12 @@ interface IHederaTokenService {
     ///                account (0; balance], represented in the lowest denomination.
     /// @param serialNumbers Applicable to tokens of type NON_FUNGIBLE_UNIQUE. The list of serial numbers to be burned.
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function tokenBurn(address token, uint64 amount, int64[] calldata serialNumbers) external returns (int responseCode);
+    function tokenBurn(address token, uint64 amount, int64[] memory serialNumbers) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.tokenBurn.selector,
+            token, amount, serialNumbers));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
     ///  Associates the provided account with the provided tokens. Must be signed by the provided
     ///  Account's key or called from the accounts contract key
@@ -96,7 +66,12 @@ interface IHederaTokenService {
     ///               Type, once an account is associated, it can hold any number of NFTs (serial numbers) of that
     ///               token type
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function associateTokens(address account, address[] calldata tokens) external returns (int responseCode);
+    function associateTokens(address account, address[] memory tokens) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.associateTokens.selector,
+            account, tokens));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
 
     /// Dissociates the provided account with the provided tokens. Must be signed by the provided
@@ -117,46 +92,69 @@ interface IHederaTokenService {
     /// @param account The account to be dissociated from the provided tokens
     /// @param tokens The tokens to be dissociated from the provided account.
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function dissociateTokens(address account, address[] calldata tokens) external returns (int responseCode);
+    function dissociateTokens(address account, address[] memory tokens) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.dissociateTokens.selector,
+            account, tokens));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
     /**********************
-     * ABIV1 calls        *
+     * ABI v1 calls       *
      **********************/
 
     /// Initiates a Fungible Token Transfer
     /// @param token The ID of the token as a solidity address
-    /// @param accountId account to do a transfer to/from
-    /// @param amount The amount from the accountId at the same index
-    function tokenTransferBulk(address token, address[] calldata accountId, int64[] calldata amount) external returns (int responseCode);
+    /// @param accountIds account to do a transfer to/from
+    /// @param amounts The amount from the accountId at the same index
+    function tokenTransferBulk(address token, address[] memory accountIds, int64[] memory amounts) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.tokenTransferBulk.selector,
+            token, accountIds, amounts));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
     /// Initiates a Non-Fungable Token Transfer
     /// @param token The ID of the token as a solidity address
     /// @param sender the sender of an nft
     /// @param receiver the receiver of the nft sent by the same index at sender
     /// @param serialNumber the serial number of the nft sent by the same index at sender
-    function tokenTransferBulkNFT(address token, address[] calldata sender, address[] calldata receiver, int64[] calldata serialNumber) external returns (int responseCode);
+    function tokenTransferBulkNFT(address token, address[] memory sender, address[] memory receiver, int64[] memory serialNumber) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.tokenTransferBulkNFT.selector,
+            token, sender, receiver, serialNumber));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
     /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
     /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
     /// (positive amount) or receiving (negative amount)
     /// @param token The token to transfer to/from
     /// @param sender The sender for the transaction
-    /// @param recipient The receiver of the transaction
+    /// @param receiver The receiver of the transaction
     /// @param amount Non-negative value to send. a negative value will result in a failure.
-    function tokenTransferSingle(address token, address sender, address recipient, int64 amount) external returns (int responseCode);
+    function tokenTransferSingle(address token, address sender, address receiver, int64 amount) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.tokenTransferSingle.selector,
+            token, sender, receiver, amount));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
     /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
     /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
     /// (positive amount) or receiving (negative amount)
     /// @param token The token to transfer to/from
     /// @param sender The sender for the transaction
-    /// @param recipient The receiver of the transaction
+    /// @param receiver The receiver of the transaction
     /// @param serialNum The serial number of the NFT to transfer.
-    function tokenTransferNFT(address token,  address sender, address recipient, int64 serialNum) external returns (int responseCode);
+    function tokenTransferNFT(address token, address sender, address receiver, int64 serialNum) internal returns (int responseCode) {
+        (bool success, bytes memory result) = precompileAddress.delegatecall(
+            abi.encodeWithSelector(IHederaTokenService.tokenTransferNFT.selector,
+            token, sender, receiver, serialNum));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
 
-    /**********************
-     * ERC-20 redirect    *
-     **********************/
-    /// redirect method from contract calls.  All calls must be DELEGATE_CALLs from token accounts.
-    function redirectForToken(address token, bytes calldata) external returns (int responseCode);
+
 }
+
+

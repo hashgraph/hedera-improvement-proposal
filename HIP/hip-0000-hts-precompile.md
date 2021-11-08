@@ -1,12 +1,11 @@
 - hip: <HIP number (this is determined by the HIP editor)>
-- title: Hyperledger Token Service Precompiled Contract for Hyperledger Smart
-  Contract Service
-- author: Danno Ferrin <danno.ferrin@gmail.com
+- title: Hedera Token Service Precompiled Contract for Hedera SmartContract Service
+- author: Danno Ferrin <danno.ferrin@gmail.com>
 - type: Standards Track
 - category: Core
 - status: Draft
 - created: 2021-11-04
-- discussions-to: <a URL pointing to the official discussion thread>
+- discussions-to: &lt;a URL pointing to the official discussion thread>
 - updated:
 - requires:
 - replaces:
@@ -20,15 +19,15 @@ and dissociate tokens programmatically.
 
 ## Motivation
 
-The fusion of the high performance token system in Hedera with programatic
+The fusion of the high performance token system in Hedera with programmatic
 contracts is a frequently requested feature. Specifically, the ability to manage
-tokens outside of the smart contract service as well as via smart contrats.
+tokens outside the smart contract service as well as via smart contracts.
 
 ## Rationale
 
 To bridge the EVM and Hedera services it will be necessary to use the EVM's
 precompiled contract facility. Because of the integration with Solidity it is
-also valuable to be able to treat the precompile as a system contract. Hence a
+also valuable to be able to treat the precompile as a system contract. Hence, a
 precompile whose input data follows the solidity calling conventions addresses
 both needs.
 
@@ -36,10 +35,10 @@ There are also 3 perspectives on the HTS System. The first perspective is with
 the same level of specificity the gRPC calls provide to the mapped service
 message. A second perspective is of Smart Contract authors trying to make
 gas-efficient calls. The third perspective is Smart Contract Engineers who want
-to treat HTS tokens as much like ERC-20 tokens as possible.
+to treat HTS tokens as much as ERC-20 tokens as possible.
 
 There are 5 main calls: transfer, mint, burn, associate, and dissociate. A layer
-of convience calls with explicit mapping to those main 5 calls will be provided
+of convince calls with explicit mapping to those main 5 calls will be provided
 for the second perspective. To support the third perspective a more involved
 solution across the HSCS will be used.
 
@@ -49,24 +48,27 @@ As a smart contract developer, I want to be able to transfer, mint, burn,
 associate, and dissociate smart contract tokens through solidity contract calls.
 
 As a smart contract developer, I want my smart contract to be able to transfer,
-mint, burn, associate, and dissociate tokens where autorization is granted
-because my smart contract initiated the call and without any ohter signatures.
+mint, burn, associate, and dissociate tokens where authorization is granted
+because my smart contract initiated the call and without any other signatures.
 
 As a hedera users, I want to be able to access my HTS tokens like an Ethereum
-ERC-20 token:
+ERC-20 token.
 
 ## Specification
 
 ### EVM Precompile
 
-The precompile address will be `0x???`  (0x127 for unicode h-bar? unicode t-bar?
-Whatever it is it needs to be between 256 and 1000). The precompile input data
-will follow the calling conventions of Solidity ABI version 1.
+The precompile address will be `0x???`  _\[\[0x127 for unicode h-bar? unicode
+t-bar? Whatever it is it needs to be between 256 and 1000\]\]_. The precompile
+input data will follow the calling conventions of Solidity ABI version 1.
 
 The gas cost of the precompile will be variable based on the specific function
 called, but will not be less than 1 gas per byte of data in the input data. Gas
 will be priced so that it will be cheaper to do calls directly to HTS rather
 than through HSCS where such calls are possible.
+
+> TODO
+> - [ ] Add a costing table when implementation is further developed.
 
 #### Solidity Function Signatures
 
@@ -74,21 +76,73 @@ The [Solidity file for development](../assets/hip-hts/solidity/IHederaTokenServi
 contains the function signatures that the precompile will respond to. It is
 included in this HIP by reference.
 
-> TBD:
+The `tokenTransfer` message will be supported by five distinct functions. The
+principal function `tokenTransfer` use of the ABIv2 multi-dimensional array
+encoding and supports the full atomic transfer of multiple token types in one
+transaction.
 
-- Support NFT calls? (transfer, mint, burn)
-- Support tokenGetInfo?  (total supply, symbol, etc)
-  - Maybe only support via ERC-20 redirect calls?
-- Support tokenUpdate?
-- Support token pause/unpause?
+To accommodate ABIv1 use four functions with a more focused application are
+provided. Two party single token transfers are supported
+by `tokenTransferSingle` for fungible tokens and `tokenTransferNFT` for NFTs.
+Two `AccountAmount` or a single `NFTTransfer` structs will be created for these
+calls.
+
+To do bulk transfers in a single token type the `tokenTransferBulk`
+and `tokenTransferBulkNFT` support fungible and non-fungible transfers between
+multiple parties. The size of each array for both calls needs to be the same,
+and each array index represents a separate `AccountAmount` or `NFTTransfer`
+object.
+
+The four remaining functions `tokenMint`, `tokenBurn`, `associateTokens`,
+and `dissociateTokens` serve as direct mappings to their respective gRPC calls.
+
+The ABI signature and hashes for each call are as follows
+
+| function               | hash       | signature                                                   |
+|------------------------|------------|-------------------------------------------------------------|
+| `tokenTransfer`        | `97df338d` | `((address,(address,int64)[],(address,address,int64)[])[])` |
+| `tokenTransferSingle`  | `3f274d0e` | `(address,address,address,int64)`                           |
+| `tokenTransferNFT`     | `7c502795` | `(address,address,address,int64)`                           |
+| `tokenTransferBulk`    | `3490d91e` | `(address,address[],int64[])`                               |
+| `tokenTransferBulkNFT` | `295e1328` | `(address,address[],address[],int64[])`                     |
+| `tokenMint`            | `43fe723f` | `(address,uint64,bytes)`                                    |
+| `tokenBurn`            | `1a1eb403` | `(address,uint64,int64[])`                                  |
+| `associateTokens`      | `2e63879b` | `(address,address[])`                                       |
+| `dissociateTokens`     | `78b63918` | `(address,address[])`                                       |
+
+> TBD:
+> - [ ] Support tokenGetInfo?  (total supply, symbol, etc.)
+    >
+
+-  [ ] Maybe only support via ERC-20 redirect calls?
+
+> - ~~[ ] Support tokenUpdate?~~ Not in the first pass
+> - ~~[ ] Support token pause/unpause?~~ Not in the first pass
 
 ### Contract Key
 
 To support contracts controlling features like minting and burning the defined
 but up until now unused field `contractID` in the `Key` protobuf message. When a
 token has a contract key as the admin key or one of the admin keys then that key
-is considered validated if the `caller` of the relevant method is the contract
-identified in the call.
+is considered validated if the `CALLER` of the relevant method is the contract
+identified in the call. as well as the sender of the contract itself. This is
+the effect of a `CALL` operation in the EVM.
+
+#### Delegatable Contract Key
+
+Some smart contracts may want to delegate control to a library contract. In
+order to allow this and preserve the default security of only permitting direct
+contract calls to the EVM a second contract key field `delegatableContractKey`
+will be added to the `Key` protobuf message. The requirement for authorization
+will be that only the `CALLER` of the call be the authorized contract ID. This
+will allow contracts to do a `DELEGATECALL` to the library and then the
+library (or any of the other sub-libraries it then `DELEGATECALL`s to)
+can `CALL` the precompile contract and have the authorization granted as though
+it was the origin of the current delegate call chain.
+
+Using a `contractKey` is the safer options and is recommended as the default
+contract level security.  `delegatableContractKey` should only be used when the
+library is fully known and audited ahead of time.
 
 ### Signature Verification
 
@@ -97,12 +151,20 @@ level contract call are considered, in addition to the immediate caller of the
 operation. This may result in a contract call that may need to be signed by more
 than the initial caller of the smart contract.
 
+In order for a signature to be used for verification the entire public key needs
+to be stored in the `pubKeyPrefix` field of the `SignaturePair` message. Any
+partial prefixes provided in the signature map will be ignored and will not
+properly authorize the contract, even if the signature is valid. This is the
+current practice of the Hedera supplied SDKs.
+
 ### ERC-20 calls directly to Token Accounts
 
 To enable HTS tokens to be more bradly used in DeFi applications the
-interactions with HSCS and Token accounts will be ehnance to allow HTS accounts
-to receive smart contract calls that will be immediatly delegated to the HTS
+interactions with HSCS and Token accounts will be enhanced to allow HTS accounts
+to receive smart contract calls that will be immediately delegated to the HTS
 precompile for evaluation.
+
+> NOTE! This may be moved to a different HIP and delivered in a different release.
 
 #### Redirect contract
 
@@ -111,7 +173,7 @@ bytestream will be available to `EXTCODEHASH`, `EXTCODESIZE` and `EXTCODECOPY`
 operations as though the smart contract were deployed itself. The EVM will
 execute the bytecode, which will wrap the call data with the address of the HTS
 Token, to a call to teh HTS precompile. The HTS precompile will then either
-execute or reject the call based on IERC20 mappings described in the next
+execute or reject the call based on `IERC20` mappings described in the next
 section.
 
 (The following pseudocode will be replaced with real EVM opcodes prior to
@@ -128,11 +190,16 @@ review)
 
 #### Supported ERC-20 operations
 
+Tokens of type FUNGIBLE_COMMON will support standard ERC-20 calls.
+
 The following ERC-20 operations will be supported:
 
-- `function totalSupply() external view returns (uint256);`
-- `function balanceOf(address account) external view returns (uint256);`
-- `function transfer(address recipient, uint256 amount) external returns (bool);`
+- `function name() public view returns (string)`
+- `function symbol() public view returns (string)`
+- `function decimals() public view returns (uint8)`
+- `function totalSupply() external view returns (uint256)`
+- `function balanceOf(address account) external view returns (uint256)`
+- `function transfer(address recipient, uint256 amount) external returns (bool)`
 
 The following ERC-20 operations will not be directly supported
 
@@ -140,10 +207,38 @@ The following ERC-20 operations will not be directly supported
 - `function approve(address spender, uint256 amount) external returns (bool);`
 - `function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);`
 
-> TBD
+Standard Events will be emitted as appropriate.
 
-- Support ERC-721 methods for NFTs?
-- Support ERC-777 methods?
+#### Supported ERC-721 operations
+
+Tokens of type NON_FUNGIBLE_UNIQUE will support standard ERC-721 calls.
+
+The following ERC-721 operations will be supported:
+
+- From interface ERC721
+  - `function balanceOf(address _owner) external view returns (uint256)`
+  - `function ownerOf(uint256 _tokenId) external view returns (address)`
+  - `function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes data) external payable`
+  - `function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable`
+  - `function transferFrom(address _from, address _to, uint256 _tokenId) external payable`
+- From interface ERC721Metadata
+  - `function name() external view returns (string _name)`
+  - `function symbol() external view returns (string _symbol)`
+  - `function tokenURI(uint256 _tokenId) external view returns (string)`
+- From interface ERC721Enumerable
+  - `function totalSupply() external view returns (uint256)`
+  - `function tokenByIndex(uint256 _index) external view returns (uint256)`
+  - `function tokenOfOwnerByIndex(address _owner, uint256 _index) external view returns (uint256)`
+
+The following ERC-721 operations will not be directly supported
+
+- From interface ERC721
+  - `function approve(address _approved, uint256 _tokenId) external payable`
+  - `function setApprovalForAll(address _operator, bool _approved) external`
+  - `function getApproved(uint256 _tokenId) external view returns (address)`
+  - `function isApprovedForAll(address _owner, address _operator) external view returns (bool)`
+- All semantics of interface ERC721TokenReceiver.
+  - Existing Hedera token association rules will take the place of such checks.
 
 ## Backwards Compatibility
 
@@ -167,6 +262,16 @@ and audited sources, and only signing direct HTS calls while relying on a
 threshold scheme to allow contracts to also perform actions per smart contract
 rules.
 
+### Delegatable Contract Keys and `DELEGAGECALL`
+
+Care needs to be taken writing contracts that are expected to call the HTS
+precompile contracts via `DELEGATECALL` into libraries. It is possible to write
+libraries that can arbitrarily call external code via after-the-fact
+configuration. Before enabling this key administrators should ensure that only
+known contracts are called. In many cases these will be contracts authored by
+the same team, but extra special scrutiny should be given to calling third party
+contracts.
+
 ## How to Teach This
 
 //TBD
@@ -183,7 +288,7 @@ rules.
 
 ## References
 
-//TBD 
+//TBD
 
 - ERC-20
 
