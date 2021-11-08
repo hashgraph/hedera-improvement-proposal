@@ -3,7 +3,7 @@
 - author: Michael Tinker <michael.tinker@hedera.com>, Anirudh Ghanta <anirudh.ghanta@hedera.com>
 - type: Standards Track
 - category: Service
-- status: Draft
+- status: Review
 - created: 2021-10-18
 - discussions-to: <a href="https://github.com/hashgraph/hedera-improvement-proposal/discussions/172">Thread #172</a>
 - updated: 2021-10-18
