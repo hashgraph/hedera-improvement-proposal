@@ -11,19 +11,21 @@
 ## Abstract
 
 If a `ScheduleCreate` tries to re-create an existing scheduled transaction, the network rejects 
-it with `IDENTICAL_SCHEDULE_ALREADY_CREATED`. This is a reasonable---albeit conservative---default, 
-since there is always a chance that the involved parties _really_ wanted two separate transactions, 
-and only "collided" by accident.
+it with `IDENTICAL_SCHEDULE_ALREADY_CREATED`. (Recall that two scheduled transactions are 
+[_identical_](https://github.com/hashgraph/hedera-services/blob/master/docs/scheduled-transactions/revised-spec.md#duplicate-creations)
+if they match on three fields: The `scheduledTransactionBody`, the `memo` and the `adminKey`.)
 
-However, in some cases the scheduling parties can arrange to avoid any accidental 
-collisions. In this case, when two or more parties submit `ScheduleCreate`s with the same transaction, 
-the network can better serve their needs by "merging" all the provided signatures into the same 
-scheduled transaction.
+This behavior is a reasonable---albeit conservative---default, since there is always a chance that 
+the involved parties _really_ wanted two separate transactions, and only "collided" by accident.
 
-In this HIP we propose a single new protobuf field `ScheduleCreateTransactionBody#merge_with_identical_schedule`
+However, in some cases the scheduling parties can avoid accidental collisions. In such a case, when 
+two or more parties submit `ScheduleCreate`s with the same transaction, the network can better serve 
+their needs by "merging" all the provided signatures into the same scheduled transaction.
+
+In this HIP we propose a new protobuf field `ScheduleCreateTransactionBody#merge_with_identical_schedule`
 which, if set to `true`, switches the network's behavior to this more friendly "merged" scheduling. The only 
-exception is to be if the existing schedule has an explicit `payerAccountID` different than the `payerAccountID` 
-for the `ScheduleCreate`; then the network will fail the `ScheduleCreate` with
+exception is to be if the existing schedule has an explicit `payerAccountID` different than the effective
+`payerAccountID` for the `ScheduleCreate`; then the network will fail the `ScheduleCreate` with
 `IDENTICAL_SCHEDULE_ALREADY_EXISTS_WITH_DIFFERENT_PAYER`.
 
 ## Motivation
@@ -33,16 +35,14 @@ by a hash `He`, and should trigger the scheduling of a single related transactio
 of the validators' signatures to execute. 
 
 Suppose also that the validators all set `memo=He` when trying to schedule transaction `Xe`. Then by the 
-uniqueness of the memos, there is no risk that two identical `ScheduleCreate`s are 
-_actually_ intended for two different events. 
+uniqueness of the memos, there is no risk that two identical `ScheduleCreate`s are _actually_ intended for 
+two different events. 
 
-Nonetheless, with current network behavior, only the first 
-validator to submit the `ScheduleCreate` for event `e` will have a "normal" workflow. All the other 
-validators will receive `IDENTICAL_SCHEDULE_ALREADY_CREATED`, and need to submit a second `ScheduleSign` 
-transaction to attach their signature to the scheduled `Xe` transaction.
+Nonetheless, with current network behavior, only the first validator to submit the `ScheduleCreate` for 
+event `e` will have a "normal" workflow. All the other validators will receive `IDENTICAL_SCHEDULE_ALREADY_CREATED`, 
+and need to submit a second `ScheduleSign` transaction to attach their signature to the scheduled `Xe` transaction.
 
-This is at best inconvenient, as the network is enforcing protection the validator network simply does 
-not need.
+This is at best inconvenient, as the network is enforcing protection the validator network simply does not need.
 
 ## Rationale
 
