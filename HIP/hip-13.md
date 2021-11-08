@@ -3,9 +3,10 @@ hip: 13
 title: Hedera Name Service
 author: H. Bart <hbart.lit@gmail.com>
 type: Standards Track
-category: Service
-needs-council-approval: Yes
-status: Draft
+category: Application
+needs-council-approval: No
+status: Last Call
+last-call-date-time: 2021-11-23 07:00:00 UTC
 created: 2021-03-13
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/56
 updated: 2021-05-12
