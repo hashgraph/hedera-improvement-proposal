@@ -357,7 +357,7 @@ Editors don't pass judgement on the HIPs. We merely do the administrative & edit
 
 ## Style Guide
 
-When referring to a HIP by number, it should be written in the hyphenated form HIP-X where X i
+When referring to a HIP by number, it should be written in the hyphenated form HIP-X where X is the HIP number.
 
 ## History
 
