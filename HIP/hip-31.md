@@ -1,12 +1,15 @@
-- hip:31
-- title: Add Token Transfer Decimal Information
-- author: Chris Campbell chris@launchbadge.com
-- type: Standards Track
-- category: API
-- status: Draft
-- created: 2021-10-14
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/165
-- updated: 2021-10-25
+---
+hip: 31
+title: Add Token Transfer Decimal Information
+author: Chris Campbell <chris@launchbadge.com>
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Draft
+created: 2021-10-14
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/165
+updated: 2021-10-25
+---
 
 ## Abstract
 

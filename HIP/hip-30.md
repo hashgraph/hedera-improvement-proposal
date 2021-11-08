@@ -1,12 +1,15 @@
-- hip: 30
-- title: CAIP Identifiers for the Hedera Network
-- author: Danno Ferrin (danno.ferrin@hedera.com)
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 11 Oct 2021
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
-- updated: 15 Oct 2021 
+---
+hip: 30
+title: CAIP Identifiers for the Hedera Network
+author: Danno Ferrin <danno.ferrin@hedera.com>
+type: Standards Track
+category: Application
+needs-council-approval: No
+status: Draft
+created: 2021-10-11
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
+updated: 2021-10-15, 2021-10-26
+---
 
 ## Abstract
 
@@ -55,24 +58,32 @@ week.
 
 ### Account Identifier
 
-The account address is each of realm, shard, and account ID separated with a
-dash (`-`). The format of the realm, shard, and account ID are unsigned integer
-in decimal representation.
+The account address is the standard account identifier format. Each of realm,
+shard, and account ID separated with a dash (`.`). The format of the realm,
+shard, and account ID are unsigned integer in decimal representation.
+
+An optional checksum may be added after the account identifier delimited by a
+dash ('-'). It consists of up to 5 lowercase letters. The optional checksum may
+or may not be valid. Intermediaries may or may not validate the checksum, only
+Hedera Systems are guaranteed to reject an invalid checksum.
 
 Examples:
 
 ```
 # Treasury account
-hedera:mainnet:0-0-2
+hedera:mainnet:0.0.2
 
 # Funding account
-hedera:mainnet:0-0-98
+hedera:mainnet:0.0.98
 
 # Address Book Account
-hedera:mainnet:0-0-55
+hedera:mainnet:0.0.55
 
 # Account '9.8.765432'
-hedera:mainnet:9-8-765432
+hedera:mainnet:9.8.765432
+
+# Mainnet account with checksum
+hedera:mainnet:0.0.123-vfmkw
 ```
 
 ### Asset Identifier
@@ -88,21 +99,34 @@ be less than the use of the Hedera Token Service.
 #### `token`
 
 The asset reference of the token type is each of realm, shard, and token ID of
-the token separated with a dash (`-`). The format of the realm, shard, and token
+the token separated with a dash (`.`). The format of the realm, shard, and token
 ID are unsigned integer in decimal representation.
+
+An optional checksum may be added after the token identifier delimited by a
+dash ('-'). It consists of up to 5 lowercase letters. The optional checksum may
+or may not be valid. Intermediaries may or may not validate the checksum, only
+Hedera Systems are guaranteed to reject an invalid checksum.
 
 Examples:
 
 ```
 # Fictitious token in realm 0, shard 0, and token ID 720
-hedera:mainnet/token:0-0-720
+hedera:mainnet/token:0.0.720
+
+# Fictitious token in realm 0, shard 0, and token ID 123, with checksum
+hedera:mainnet/token:0.0.123-vfmkw
 ```
 
 #### `nft`
 
 The asset reference of the non-fungible token type is each of realm, shard, and
-token ID of the token separated with a dash (`-`). The format of the realm,
+token ID of the token separated with a dash (`.`). The format of the realm,
 shard, and token ID are unsigned integer in decimal representation.
+
+An optional checksum may be added after the token identifier delimited by a
+dash ('-'). It consists of up to 5 lowercase letters. The optional checksum may
+or may not be valid. Intermediaries may or may not validate the checksum, only
+Hedera Systems are guaranteed to reject an invalid checksum.
 
 The Token ID is the serial number. The format of the serial number is an
 unsigned integer in decimal representation.
@@ -111,7 +135,11 @@ Examples:
 
 ```
 # Fictitious token in realm 0, shard 0, token ID 721 serial number 3
-hedera:mainnet/nft:0-0-720/3
+hedera:mainnet/nft:0.0.720/3
+
+# Fictitious token in realm 0, shard 0, token ID 123, with checksum
+# serial number 3
+hedera:mainnet/nft:0.0.123-vfmkw/3
 ```
 
 ## Backwards Compatibility
@@ -149,6 +177,12 @@ prohibits dashes in account identifiers. The option of using letters to separate
 decimals did not read as well (`hedera:mainnet:r0s0a720`
 / `hedera:mainnet:0-0-720`). Updating the CAIP to support dashes was viewed as a
 more user-friendly option
+
+### Using dashes in identifiers instead of dots
+
+Instead of only using dashes to replace dots in identifiers we will instead join
+in the requests to expand account identifiers to include more punctuation as an
+option.
 
 ## Open Issues
 

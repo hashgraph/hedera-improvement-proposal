@@ -1,6 +1,15 @@
-| hip               | title              | author         | type            | status         | created       | discussions |
-| ----------- | -----------  | ----------- | ----------- |----------- | ----------- | ----------- |
-| hip-21            | Free network info query | Simi Hunjan (@SimiHunjan ) |Service| Draft | 2021-06-09   |   https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
+---
+hip: 21
+title: Free network info query              
+author: Simi Hunjan <@SimiHunjan>
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Draft
+created: 2021-06-09 
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
+updated: 2021-10-27
+---
 
 ## Abstract
 
@@ -8,7 +17,7 @@ The HIP proposes a free address book query.
 
 ## Motivation
 
-The address book files 0.0.101 and 0.0.102 collectively maintain information about the nodes in a given Hedera network (previewnet, testnet, mainnet). The two files contain the following [information](https://github.com/hashgraph/hedera-protobufs/blob/main/services/BasicTypes.proto#L356) for each node:
+The address book files `0.0.101` and `0.0.102` collectively maintain information about the nodes in a given Hedera network (previewnet, testnet, mainnet). The two files contain the following [information](https://github.com/hashgraph/hedera-protobufs/blob/main/services/BasicTypes.proto#L356) for each node:
 
 - IP address
 - Port number
