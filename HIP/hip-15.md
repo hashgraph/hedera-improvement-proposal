@@ -85,13 +85,7 @@ cp = (c * 1000003) % p5
 checksum = cp, written as 5 digits in base 26, using a-z
 ```
 
-The checksum is a function of the ledger ID, so that the same address will have different checksums if it is on different ledgers. Cryptographically secure ledger IDs will be implemented as part of state proofs. But for now, the following three ledgers will each have a ledger ID consisting of a single byte:
-
-```
-0 = Hedera mainnet
-1 = stable testnet
-2 = preview net
-```
+The checksum is a function of the ledger ID, so that the same address will have different checksums if it is on different ledgers. Cryptographically secure ledger IDs will be implemented as part of state proofs. Please reference [HIP-198](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-198.md) for the latest information regarding ledger IDs.
 
 The reference implementation is the Java code linked to in the Reference Implementation section. All implementations should match its outputs and behavior, including rejecting as invalid all the examples of invalid addresses above, and giving the the correct checksum in all of the following examples:
 
