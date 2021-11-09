@@ -1,7 +1,7 @@
 ---
 hip: 33
 title: Add Network ID Field to Info Responses
-author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds.com>
+author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds.com>, Leemon Baird <leemon@hedera.com, Mark Williamson <mark.williamson@hedera.com, Alex Popowycz <a@hedera.com>
 type: Standards
 category: Service
 needs-council-approval: Yes
@@ -19,14 +19,14 @@ Proposal to add a network ID field to info responses for all entities.
 
 In the Hedera Transaction Tool application, users will have the ability to request account infos for accounts on previewnet, testnet, mainnet or a custom network. 
 You can then take the response, write it to a file, and distribute that file for others to update that account's information.
-Since you can request account infos from multiple different networks you can't tell which network the response came from the file the response is stored in unless the user who requested it forwards that information to the other users. 
+Since you can request account infos from multiple different networks you can't tell which network the response came from the file the response is stored in unless the user who requested it forwards that information to the other users. This is true for all entity info responses from the network.
 
 ## **Rationale**
 
-To solve this issue, we think it would make sense for all enitity info responses to include a `ledger_id` field where `00`= represents mainnet, `01` represents testnet, and `02` represents previewnet. Custom networks will be represented by an integer that can be calculated from the node IPs.
+To solve this issue, we think it would make sense for all enitity info responses to include a `ledger_id` field. Please reference [HIP-198](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-198.md) for the latest information regarding ledger IDs.
 
 ## **User Stories**
-As a developer I want to know which network the info response came from when the response information is written to a file that is then shared with other users of the application.
+As a developer I want to know which network the entity info response came from when the response information is written to a file that is then shared with other users of the application.
 
 ## **Specification**
 
@@ -134,7 +134,7 @@ HAPI Changes
         int32 max_automatic_token_associations = 18;
         
 +       /**
-+        * The ledger ID the response was returned from (00=mainnet, 01=testnet, 02=previewnet)
++        * The ledger ID the response was returned from. Please reference HIP-198 for the ledger ID used for each network.
 +        */
 +       bytes ledger_id = 19;
 
@@ -275,7 +275,7 @@ message TokenInfo {
     repeated CustomFee custom_fees = 23;
     
 +   /**
-+    * The ledger ID the response was returned from (00=mainnet, 01=testnet, 02=previewnet)
++    * The ledger ID the response was returned from. Please reference HIP-198 for the ledger ID used for each network.
 +    */
 +   bytes ledger_id = 24;
     
@@ -339,7 +339,7 @@ message ConsensusTopicInfo {
     AccountID autoRenewAccount = 8;
     
 +  /**
-+   * The ledger ID the response was returned from (00=mainnet, 01=testnet, 02=previewnet)
++   * The ledger ID the response was returned from. Please reference HIP-198 for the ledger ID used for each network.
 +   */
 +  bytes ledger_id = 9;
 
@@ -381,7 +381,7 @@ message FileInfo {
         string memo = 6;
         
 +      /**
-+        * The ledger ID the response was returned from (00=mainnet, 01=testnet, 02=previewnet)
++        * The ledger ID the response was returned from. Please reference HIP-198 for the ledger ID used for each network.
 +        */
 +      bytes ledger_id = 7;
     }
@@ -456,7 +456,7 @@ message ContractInfo {
         repeated TokenRelationship tokenRelationships = 11;
         
 +      /**
-+       * The ledger ID the response was returned from (00=mainnet, 01=testnet, 02=previewnet)
++       * The ledger ID the response was returned from. Please reference HIP-198 for the ledger ID used for each network.
 +       */
 +      bytes ledger_id = 12;
     }
@@ -526,9 +526,9 @@ message ScheduleInfo {
   TransactionID scheduledTransactionID = 11;
   
 + /**
-+  * The ledger ID the response was returned from (00=mainnet, 01=testnet, 02=previewnet)
++  * The ledger ID the response was returned from. Please reference HIP-198 for the ledger ID used for each network.
 +  */
-+ bytes ledger_id = 9;
++ bytes ledger_id = 12;
 }  
 ```
 
