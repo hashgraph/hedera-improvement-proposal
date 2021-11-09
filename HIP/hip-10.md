@@ -5,9 +5,10 @@ author: Sam Wood <sam.wood@luthersystems.com>, Susan Chan <susan.chan@luthersyst
 type: Standards Track
 category: Application
 needs-council-approval: No
-status: Draft
+status: Last Call
+last-call-date-time: 2021-11-23T07:00:00Z
 created: 2021-02-18
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/40
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/50
 updated: 2021-05-12
 ---
 
