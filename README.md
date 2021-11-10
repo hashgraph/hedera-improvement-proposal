@@ -3,8 +3,6 @@
 [![](https://img.shields.io/discord/373889138199494658)](https://discord.com/channels/373889138199494658/813488589773471774)
 [![](https://img.shields.io/badge/view-published-blue)](https://hips.hedera.com)
 
-[![](https://img.shields.io/discord/373889138199494658)](https://discord.com/channels/373889138199494658/813488589773471774)
-
 ## What is a HIP?
 
 HIP stands for "Hedera Improvement Proposal". These improvement proposals can range from core protocol changes, to the applications, frameworks, and protocols built on top of the Hedera public network and used by the community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions, as well as tracking their HIP through the process outlined below.
