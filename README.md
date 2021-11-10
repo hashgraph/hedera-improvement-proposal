@@ -1,4 +1,4 @@
-![](https://www.hedera.com/logo-capital-hbar-wordmark.jpg)
+![](./assets/hedera_logo.png)
 
 [![](https://img.shields.io/discord/373889138199494658)](https://discord.com/channels/373889138199494658/813488589773471774)
 
