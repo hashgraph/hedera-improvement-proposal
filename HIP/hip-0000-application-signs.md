@@ -17,55 +17,57 @@ superseded-by: <HIP number(s)>
 
 ## Abstract
 
-Please provide a short (~200 word) description of the issue being addressed.
+Describes the concept of how transactions can be issued by one account, but paid for by another account.
 
 ## Motivation
 
-The motivation is critical for HIPs that want to change the Hedera codebase or ecosystem. It should clearly explain why the existing specification is inadequate to address the problem that the HIP solves. HIP submissions without sufficient motivation may be rejected outright.
+Oftentimes it is appropriate for the application to pay fees associated with a transation rather than the end user.
 
 ## Rationale
 
-The rationale fleshes out the specification by describing why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
-
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
+N/A
 
 ## User stories
 
-Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
+N/A
   
 ## Specification
 
-The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
+```
+Client client = Client.forTestnet();
+client.setOperator(OPERATOR_ID, OPERATOR_KEY);
 
-## Backwards Compatibility
+PrivateKey userKey = PrivateKey.generate();
 
-All HIPs that introduce backward incompatibilities must include a section describing these incompatibilities and their severity. The HIP must explain how the author proposes to deal with these incompatibilities. HIP submissions without a sufficient backward compatibility treatise may be rejected outright.
+AccountId userId = new AccountCreateTransaction()
+        .setKey(userKey.getPublicKey())
+        .setInitialBalance(new Hbar(5))
+        .execute(client).getReceipt(client).accountId;
 
-## Security Implications
+TransferTransaction transaction = new TransferTransaction()
+        .addHbarTransfer(userId, new Hbar(-1))
+        .addHbarTransfer(OPERATOR_ID, new Hbar(1))
+        .freezeWith(client)
+        .sign(OPERATOR_KEY);
 
-If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
+byte[] transBytes = transaction.toBytes();
+// The transaction bytes are sent to the client.
+// The client could sign the bytes and return the signature to the application
+// or the client could sign the bytes and submit them to the Hedera network.
 
-## How to Teach This
+Transaction<?> transaction1 = Transaction.fromBytes(transBytes);
+transaction1.sign(userKey);
+//these lines represent a given user (created above) signing a TransferTransaction
 
-For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
+Client client2 = Client.forTestnet();
+TransactionResponse response = transaction1.execute(client2);
+System.out.println("Getting receipt");
 
-## Reference Implementation
+TransactionReceipt receipt = response.getReceipt(client2);
+System.out.println("Transaction id " + receipt.status);
 
-The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
-
-## Rejected Ideas
-
-Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
-
-In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
-
-## Open Issues
-
-While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
-
-## References
-
-A collections of URLs used as references through the HIP.
+return userId;
+```
 
 ## Copyright/license
 
