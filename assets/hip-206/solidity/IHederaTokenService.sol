@@ -56,7 +56,7 @@ interface IHederaTokenService {
     /// Initiates a Token Transfer
     /// @param tokenTransfers the list of transfers to do
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function tokenTransfer(TokenTransferList[] calldata tokenTransfers) external returns (int responseCode);
+    function cryptoTransfer(TokenTransferList[] calldata tokenTransfers) external returns (int responseCode);
 
     /// Mints an amount of the token to the defined treasury account
     /// @param token The token for which to mint tokens. If token does not exist, transaction results in
@@ -67,7 +67,7 @@ interface IHederaTokenService {
     /// @param metadata Applicable to tokens of type NON_FUNGIBLE_UNIQUE. A list of metadata that are being created.
     ///                 Maximum allowed size of each metadata is 100 bytes
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function tokenMint(address token, uint64 amount, bytes calldata metadata) external returns (int responseCode);
+    function mintToken(address token, uint64 amount, bytes calldata metadata) external returns (int responseCode);
 
     /// Burns an amount fo teh token from the define treasury account
     /// @param token The token for which to burn tokens. If token does not exist, transaction results in
@@ -77,7 +77,7 @@ interface IHederaTokenService {
     ///                account (0; balance], represented in the lowest denomination.
     /// @param serialNumbers Applicable to tokens of type NON_FUNGIBLE_UNIQUE. The list of serial numbers to be burned.
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function tokenBurn(address token, uint64 amount, int64[] calldata serialNumbers) external returns (int responseCode);
+    function burnToken(address token, uint64 amount, int64[] calldata serialNumbers) external returns (int responseCode);
 
     ///  Associates the provided account with the provided tokens. Must be signed by the provided
     ///  Account's key or called from the accounts contract key
@@ -98,6 +98,10 @@ interface IHederaTokenService {
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
     function associateTokens(address account, address[] calldata tokens) external returns (int responseCode);
 
+    /// Single-token variant of associateTokens. Will be mapped to a single entry array call of associateTokens
+    /// @param account The account to be associated with the provided token
+    /// @param token The token to be associated with the provided account
+    function associateToken(address account, address token) external returns (int responseCode);
 
     /// Dissociates the provided account with the provided tokens. Must be signed by the provided
     /// Account's key.
@@ -119,6 +123,11 @@ interface IHederaTokenService {
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
     function dissociateTokens(address account, address[] calldata tokens) external returns (int responseCode);
 
+    /// Single-token variant of dissociateTokens. Will be mapped to a single entry array call of dissociateTokens
+    /// @param account The account to be associated with the provided token
+    /// @param token The token to be associated with the provided account
+    function dissociateToken(address account, address token) external returns (int responseCode);
+
     /**********************
      * ABIV1 calls        *
      **********************/
@@ -127,14 +136,14 @@ interface IHederaTokenService {
     /// @param token The ID of the token as a solidity address
     /// @param accountId account to do a transfer to/from
     /// @param amount The amount from the accountId at the same index
-    function tokenTransferBulk(address token, address[] calldata accountId, int64[] calldata amount) external returns (int responseCode);
+    function transferTokens(address token, address[] calldata accountId, int64[] calldata amount) external returns (int responseCode);
 
     /// Initiates a Non-Fungable Token Transfer
     /// @param token The ID of the token as a solidity address
     /// @param sender the sender of an nft
     /// @param receiver the receiver of the nft sent by the same index at sender
     /// @param serialNumber the serial number of the nft sent by the same index at sender
-    function tokenTransferBulkNFT(address token, address[] calldata sender, address[] calldata receiver, int64[] calldata serialNumber) external returns (int responseCode);
+    function transferNFTs(address token, address[] calldata sender, address[] calldata receiver, int64[] calldata serialNumber) external returns (int responseCode);
 
     /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
     /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
@@ -143,7 +152,7 @@ interface IHederaTokenService {
     /// @param sender The sender for the transaction
     /// @param recipient The receiver of the transaction
     /// @param amount Non-negative value to send. a negative value will result in a failure.
-    function tokenTransferSingle(address token, address sender, address recipient, int64 amount) external returns (int responseCode);
+    function transferToken(address token, address sender, address recipient, int64 amount) external returns (int responseCode);
 
     /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
     /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
@@ -152,11 +161,5 @@ interface IHederaTokenService {
     /// @param sender The sender for the transaction
     /// @param recipient The receiver of the transaction
     /// @param serialNum The serial number of the NFT to transfer.
-    function tokenTransferNFT(address token,  address sender, address recipient, int64 serialNum) external returns (int responseCode);
-
-    /**********************
-     * ERC-20 redirect    *
-     **********************/
-    /// redirect method from contract calls.  All calls must be DELEGATE_CALLs from token accounts.
-    function redirectForToken(address token, bytes calldata) external returns (int responseCode);
+    function transferNFT(address token,  address sender, address recipient, int64 serialNum) external returns (int responseCode);
 }
