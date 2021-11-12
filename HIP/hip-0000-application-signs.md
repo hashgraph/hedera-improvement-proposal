@@ -1,15 +1,13 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
-title: <HIP title>
-author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
-working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
+title: Application Signs for End User
+author: Justin Atwell, Greg Scullard
 type: Informational
 category: Application
-needs-council-approval: <Yes | No>
+needs-council-approval: No
 status: Draft
-created: <date created on>
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
+created: 11/12/2021
+updated: 11/11/2021, 11/12/2021
 requires: <HIP number(s)>
 replaces: <HIP number(s)>
 superseded-by: <HIP number(s)>
@@ -29,44 +27,52 @@ N/A
 
 ## User stories
 
-N/A
+As an end user that does not want to incur transaction fees on the network, I still want the ability to hold tokens on the Hedera network 
   
 ## Specification
 
 ```
+//Java
+
 Client client = Client.forTestnet();
 client.setOperator(OPERATOR_ID, OPERATOR_KEY);
 
+// Generate a new PrivateKey
 PrivateKey userKey = PrivateKey.generate();
 
+// Create the account with the userKey from above, set the balance to 5 HBAR,
+// and capture the userId as a variable
 AccountId userId = new AccountCreateTransaction()
         .setKey(userKey.getPublicKey())
         .setInitialBalance(new Hbar(5))
         .execute(client).getReceipt(client).accountId;
 
+// Initiate a TransferTransaction with a debit of 1 HBAR from the new User's Account
+// Sign the transaction with the OPERATOR_KEY (Fee paying account)
 TransferTransaction transaction = new TransferTransaction()
         .addHbarTransfer(userId, new Hbar(-1))
         .addHbarTransfer(OPERATOR_ID, new Hbar(1))
         .freezeWith(client)
         .sign(OPERATOR_KEY);
 
+// Convert the transaction to a byte array
 byte[] transBytes = transaction.toBytes();
-// The transaction bytes are sent to the client.
-// The client could sign the bytes and return the signature to the application
-// or the client could sign the bytes and submit them to the Hedera network.
 
+// Simulate the client the converting the transaction back to a type from a byte array
 Transaction<?> transaction1 = Transaction.fromBytes(transBytes);
-transaction1.sign(userKey);
-//these lines represent a given user (created above) signing a TransferTransaction
 
+// Have the client sign the transaction
+transaction1.sign(userKey);
+
+// Create a different client
 Client client2 = Client.forTestnet();
+
+// Execute the signed transaction
 TransactionResponse response = transaction1.execute(client2);
 System.out.println("Getting receipt");
 
 TransactionReceipt receipt = response.getReceipt(client2);
 System.out.println("Transaction id " + receipt.status);
-
-return userId;
 ```
 
 ## Copyright/license
