@@ -9,7 +9,7 @@ status: Last Call
 last-call-date-time: 2021-11-23T07:00:00Z
 created: 2021-10-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/169
-updated: 2021-10-15, 2021-10-26
+updated: 2021-10-15, 2021-10-26, 2021-11-11
 ---
 
 ## Abstract
@@ -136,11 +136,59 @@ Examples:
 
 ```
 # Fictitious token in realm 0, shard 0, token ID 721 serial number 3
-hedera:mainnet/nft:0.0.720/3
+hedera:mainnet/nft:0.0.721/3
 
 # Fictitious token in realm 0, shard 0, token ID 123, with checksum
 # serial number 3
 hedera:mainnet/nft:0.0.123-vfmkw/3
+```
+
+### `file`
+
+A topic is used by the Hedera File Service. While not an ownable asset
+applications will want to identify it in a chain agnostic manner.
+
+The asset reference of the file type is each of realm, shard, and topic ID of
+the file separated with a dash (`.`). The format of the realm, shard, and file
+ID are unsigned integer in decimal representation.
+
+An optional checksum may be added after the file identifier delimited by a
+dash ('-'). It consists of up to 5 lowercase letters. The optional checksum may
+or may not be valid. Intermediaries may or may not validate the checksum, only
+Hedera Systems are guaranteed to reject an invalid checksum.
+
+```
+# Fictitious topic in realm 0, shard 0, token ID 723
+hedera:mainnet/file:0.0.723
+
+# Fictitious topic in realm 0, shard 0, token ID 123, with checksum
+hedera:mainnet/file:0.0.123-vfmkw
+```
+
+### `topic`
+
+A topic is used by the Hedera Consensus Service to relay consensus messages.
+While not an ownable asset applications will want to identify it in a chain
+agnostic manner.
+
+This asset only refers to the topic as a whole and does not refer to specific
+messages in the topic.
+
+The asset reference of the topic type is each of realm, shard, and topic ID of
+the topic separated with a dash (`.`). The format of the realm, shard, and topic
+ID are unsigned integer in decimal representation.
+
+An optional checksum may be added after the topic identifier delimited by a
+dash ('-'). It consists of up to 5 lowercase letters. The optional checksum may
+or may not be valid. Intermediaries may or may not validate the checksum, only
+Hedera Systems are guaranteed to reject an invalid checksum.
+
+```
+# Fictitious topic in realm 0, shard 0, token ID 722
+hedera:mainnet/topic:0.0.722
+
+# Fictitious topic in realm 0, shard 0, token ID 123, with checksum
+hedera:mainnet/topic:0.0.123-vfmkw
 ```
 
 ## Backwards Compatibility
