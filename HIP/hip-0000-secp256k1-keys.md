@@ -80,7 +80,7 @@ Then the hex-encoded bytes of the `Key.ECDSA_secp256k1` field should be,
 0x02b5ffadf88d625cd9074fa01e5280b773a60ed2de55b0d6f94460c0b5a001a258
 ```
 
-When a user is providing an ECDSA(secp256k1) signature in a `SignaturePair. ECDSA_secp256k1` field, it should be the full result of signing the [`SignedTransaction.bodyBytes`](https://hashgraph.github.io/hedera-protobufs/#proto.SignedTransaction) from the top-level `Transaction` with the relevant ECDSA(secp256k1) private key. 
+When a user is providing an ECDSA(secp256k1) signature in a `SignaturePair.ECDSA_secp256k1` field, it should be the full result of signing the [`SignedTransaction.bodyBytes`](https://hashgraph.github.io/hedera-protobufs/#proto.SignedTransaction) from the top-level `Transaction` with the relevant ECDSA(secp256k1) private key. 
 
 ## Backwards Compatibility
 
