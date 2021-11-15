@@ -1,12 +1,15 @@
-- hip: 16
-- title: Entity Auto-Renewal
-- author: Leemon Baird (@lbaird), Nosh Mody (@noshmody), Quan Nguyen (@qnswirlds)
-- type: Standards Track
-- category: Service
-- status: Draft
-- created: 2021-03-29
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/64
-- updated: 2021-05-12
+---
+hip: 16
+title: Entity Auto-Renewal
+author: Leemon Baird (@lbaird), Nosh Mody (@noshmody), Quan Nguyen (@qnswirlds)
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Final
+created: 2021-03-29
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/64
+updated: 2021-05-12
+---
 
 ## Abstract
 
@@ -125,6 +128,8 @@ The proposed pricing is as follows (assumes maxDuration as of April 6, 2020 and 
 https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#autorenewal-record
 
 https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#entity-removal-record
+
+> **Note: This Entity Auto-Renewal feature has been implemented in Hedera Services via [PR #1376](https://github.com/hashgraph/hedera-services/pull/1376).**
 
 ## Rejected Ideas
 

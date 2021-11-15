@@ -1,12 +1,15 @@
-- hip: 17
-- title: Non-Fungible Tokens
-- author: Daniel Ivanov (@Daniel-K-Ivanov)
-- type: Standards Track
-- category: Service
-- status: Draft
-- created: 2021-04-22
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
-- updated: 2021-05-12
+---
+hip: 17
+title: Non-Fungible Tokens
+author: Daniel Ivanov (@Daniel-K-Ivanov)
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Final
+created: 2021-04-22
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
+updated: 2021-10-27
+---
 
 ## Abstract
 
@@ -18,49 +21,48 @@ The growing demand and use-cases for tokenization point out that the current HTS
 
 ## Rationale
 
-The following proposal is building on top of the current HTS API instead of creating a brand new NFT service. There are 2 major reasons for that:
+The following proposal is building on top of the current HTS API instead of creating a brand-new service. There are 2 major reasons for that:
 - Developers desire the tokenization APIs to look similar for both fungible and non-fungible tokens
 - Though fungible and non-fungible tokens are different, there are a lot of commonalities - admin keys, KYC, supply, mint and burn behaviours
 
 ## Specification
 
-Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework) we can define the following combinations of fungible and non-fungible tokens:
+Based on the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework) we can define the following subset of token combinations:
 
 ```
  HTS
 │
-└─── Fungible
-│   └─── Fractional ---> Currently supported by HTS
-│   └─── Whole ---> Currently supported by HTS   
-└─── Non-Fungible
-    └─── Whole ---> Supported with the current proposal             
-    └─── Fractional ---> Not supported by the proposal, though can be supported by HIP standards
-    └─── Singleton ---> Supported with the current proposal
+└─── Fungible Common     ---> Currently supported by HTS
+└─── Fungible Unique     ---> Currently not addressed in this Proposal  
+└─── Non-Fungible Common ---> Currently not addressed in this Proposal            
+└─── Non-Fungible Unique ---> Addressed in this proposal
 ```
 
-### Fungible
+### Fungible Common
 
 Tokens that have interchangeable value with one another, where any quantity of them has the same value as another equal quantity if they are in the same class or series.
+Common tokens share a single set of properties, are not distinct from one another, and their only representation is via a balance or quantity,
+attributed to an owner (Hedera Account).
 
 #### Fractional
-Describes a token that can be divided into smaller fractions, represented as decimals. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals != 0`. 
+Describes a token that can be divided into smaller fractions, represented as decimals. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals != 0`.
 
 #### Whole
 Describes a token that cannot be divided into smaller fractions. Meaning subdivision is not allowed - just whole number quantities. The current version of HTS supports these types of tokens. They can be implicitly defined and created by setting `decimals=0`.
 
-### Non-fungible
-The NFT type is not interchangeable with other tokens of the same type as they typically have different values. 
+### Non-fungible Unique
+The NFT type is not interchangeable with other tokens of the same type as they typically have different values.
+Unique tokens have their own identities and can be individually traced. Each unique token can carry unique properties that cannot be changed in one place.
 
 #### Whole
-Each instance of a token in the class can share some property values with other tokens in the class and have distinctly unique values between them. They cannot be divided into smaller fractions, represented as decimals. Whole NFTs can be created by defining the `tokenType` as `NON_FUNGIBLE` and executing `Mint` operation on the Token.
+Each instance of a token in the class can share some property values with other tokens in the class and have distinctly unique values between them. They cannot be divided into smaller fractions, represented as decimals. Whole NFTs can be created by defining the `tokenType` as `NON_FUNGIBLE_UNIQUE` and executing `Mint` operation on the Token.
 
 #### Fractional
 Similar to `Whole`, in terms that each instance of a token in the class can share some property values with other tokens in the class and have distinctly unique values between them, but unlike `Whole`, they CAN be divided into smaller fractions.
-
 The proposed specification does not support Fractional NFTs natively. They can be supported using the [Hybrid](#Hybrid-Tokens) approach.
 
 #### Singleton
-There can only be one instance in the deployed token class and that instance is indivisible. Useful when there is an asset or object to be tokenized that shares no properties or values with any other object. Singleton NFTs can be created by defining the `tokenType` as `NON_FUNGIBLE`, setting `maxSupply=1` and executing `Mint` operation on the token.
+There can only be one instance in the deployed token class and that instance is indivisible. Useful when there is an asset or object to be tokenized that shares no properties or values with any other object. Singleton NFTs can be created by defining the `tokenType` as `NON_FUNGIBLE_UNIQUE`, setting `maxSupply=1` and executing `Mint` operation on the token.
 
 ### Hybrid Tokens
 
@@ -70,39 +72,35 @@ TODO
 There are 2 approaches available when it comes to the HTS API and the configuration of the Token. 
 1. **Explicit**
 
-	The [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework)  uses an explicit approach when it comes to defining the different types of tokens. This can be seen by the `Token Type (Fungible/Non-Fungible)`, `Token Unit(Fractional, Whole or Singleton)`, `Value  Type(Intrinsic or Reference)` or `Supply(Fixed, Capped-Variable, Gated or Infinite)` categories.
+	The [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework)  uses an explicit approach when it comes to defining the different types of tokens. This can be seen by the `Token Type (Fungible/Non-Fungible)`, `Token Unit(Fractional, Whole or Singleton)`, `Value Type(Intrinsic or Reference)`, `Representation Type(Common or Unique)` or `Supply(Fixed, Capped-Variable, Gated or Infinite)` categories.
 2. **Implicit**
 
-	It is fair to say that some described properties above are not necessary to be explicitly defined, f.e instead for HAPI to request both `Supply` and `maxSupply` to be set, HAPI can implicitly derive the types of the supported tokens based on the arguments passed.
+	It is fair to say that some described properties above are not necessary to be explicitly defined, f.e instead for HAPI to request a separate `enum` for `WHOLE/FRACTIONAL` to be set, it can implicitly derive the types of the token based on the `decimals` property that is passed.
 
-The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as enums (example `Token Type`), and the rest of the configuration is derived implicitly from the provided variables.
+The proposed solution uses a hybrid approach, meaning that only the required properties categorising the Tokens are added as one enum (a mixture of `TokenType` and `TokenRepresentationType`), and the rest of the configuration is derived implicitly from the provided variables (deriving `Fractional/Whole` from `decimals`)
 
 The following matrix provides information on the mapping between token types/properties and the corresponding configuration:
 
-
-
-**Fungible Token Matrix**
+**Fungible Common Token Matrix**
 
 |                     	| Fractional, Fixed             	| Fractional, Capped-Variable              	| Fractional, Infinite                     	| Whole, Fixed                  	| Whole, Capped-Variable                   	| Whole, Infinite                          	|
 |---------------------	|-------------------------------	|------------------------------------------	|------------------------------------------	|-------------------------------	|------------------------------------------	|------------------------------------------	|
-| **tokenType**           	| FUNGIBLE                      	| FUNGIBLE                                 	| FUNGIBLE                                 	| FUNGIBLE                      	| FUNGIBLE                                 	| FUNGIBLE                                 	|
 | **decimals**            	| decimals != 0                 	| decimals != 0                            	| decimals != 0                            	| 0                  	| 0                             	| 0                             	|
 | **maxSupply**           	| N                   	| N                              	| INT64_MAX_VALUE               	| N                   	| N                              	| INT64_MAX_VALUE               	|
 | **initialSupply**       	| N               	| x, where x <= N 	| x, where x <= N 	| N               	| x, where x <= N 	| x, where x <= N 	|
 | **supplyKey & wipeKey** 	| supplyKey=null & wipeKey=null 	| supplyKey=* & wipeKey=*                  	| supplyKey=* & wipeKey=*                  	| supplyKey=null & wipeKey=null 	| supplyKey=* & wipeKey=*                  	| supplyKey=* & wipeKey=*                  	|
 
 
-**Non-fungible Token Matrix****
+**Non-fungible Unique Token Matrix**
 
 |                     	| Whole, Fixed* 	| Whole, Capped-Variable      	| Whole, Infinite             	| Singleton**                 	|
 |---------------------	|---------------	|-----------------------------	|-----------------------------	|-----------------------------	|
-| **tokenType**           	| NON_FUNGIBLE  	| NON_FUNGIBLE                	| NON_FUNGIBLE                	| NON_FUNGIBLE                	|
 | **decimals**            	| N/A           	| 0                           	| 0                           	| 0                           	|
 | **maxSupply**           	| N/A           	| n                           	| INT64_MAX_VALUE            	| 1                           	|
 | **initialSupply**       	| N/A           	| 0                           	| 0                           	| 0                           	|
 | **supplyKey & wipeKey** 	| N/A           	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	| supplyKey!=null & wipeKey=* 	|
 
-*Non-fungible tokens cannot have `Fixed` supply since the creation of  `N` number of NFTs will not be supported in version 1. `initialSupply` must always be `0` for tokens of type `NON_FUNGIBLE`.
+*Non-fungible tokens cannot have `Fixed` supply since the creation of  `N` number of NFTs will not be supported in version 1. `initialSupply` must always be `0` for tokens of type `NON_FUNGIBLE_UNIQUE`.
 
 **Fixed/Capped-Variable or Infinite are invalid properties for NFT of type Singleton.
 
@@ -148,47 +146,73 @@ service TokenService {
    rpc associateTokens (Transaction) returns (TransactionResponse);
    // Dissociates tokens from an account
    rpc dissociateTokens (Transaction) returns (TransactionResponse);
+
    // Retrieves the metadata of a token
    rpc getTokenInfo (Query) returns (Response);
-+  // gets info on a NFT by TokenID (of type NON_FUNGIBLE) and serial number
-+  rpc getNftInfo (Query) returns (Response);
-+  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
-+  rpc getTokenNftInfo (Query) returns (Response);
 +  // Gets info on NFTs N through M on the list of NFTs associated with a given account
 +  rpc getAccountNftInfo (Query) returns (Response);
++  // Retrieves the metadata of an NFT by TokenID and serial number
++  rpc getTokenNftInfo (Query) returns (Response);
++  // Gets info on NFTs N through M on the list of NFTs associated with a given Token of type NON_FUNGIBLE
++  rpc getTokenNftInfos (Query) returns (Response);
 }
+```
+
+### BaseTypes
+```diff
++/**
++ * Possible Token Types (IWA Compatibility).
++ * Apart from fungible and non-fungible, Tokens can have either a common or unique representation. This distinction might seem subtle, but it is important when considering
++ * how tokens can be traced and if they can have isolated and unique properties.
++ */
++enum TokenType {
++    /**
++     * Interchangeable value with one another, where any quantity of them has the same value as another equal quantity if they are in the same class.
++     * Share a single set of properties, not distinct from one another. Simply represented as a balance or quantity to a given Hedera account.
++     */
++    FUNGIBLE_COMMON = 0;
++    /**
++     * Unique, not interchangeable with other tokens of the same type as they typically have different values.
++     * Individually traced and can carry unique properties (e.g. serial number).
++     */
++    NON_FUNGIBLE_UNIQUE = 1;
++}
+
++/**
++ * Possible Token Supply Types (IWA Compatibility).
++ * Indicates how many tokens can have during its lifetime.
++ */
++enum TokenSupplyType {
++    INFINITE = 0; // Indicates that tokens of that type have an upper bound of Long.MAX_VALUE.
++    FINITE = 1; // Indicates that tokens of that type have an upper bound of maxSupply, provided on token creation.
++}
 ```
 
 ### TokenCreateTransactionBody
 
-- By default, already existing tokens will be of type `FUNGIBLE` (backwards compatible)
-- By default, if `maxSupply` is not provided, the token will be defined as having `Infinite` supply. (backwards compatible)
+- By default, already existing tokens will be of type `FUNGIBLE_COMMON` (backwards compatible)
+- By default, if `maxSupply` is not provided, the token will be defined as having `INFINITE` supply. (backwards compatible)
 
 ```diff
-+//Fungible or Non-Fungible Token Base. Cannot be updated using admin key
-+enum TokenType {
-+	FUNGIBLE = 0;
-+	NON_FUNGIBLE = 1;
-+}
-
 message TokenCreateTransactionBody {
-+	TokenType tokenType = 1; // IWA compatibility. Specifies fungible or not
-	string name = 2; // The publicly visible name of the token, limited to a UTF-8 encoding of length <tt>tokens.maxSymbolUtf8Bytes</tt>.
-   	string symbol = 3; // The publicly visible token symbol, limited to a UTF-8 encoding of length <tt>tokens.maxTokenNameUtf8Bytes</tt>
-!	uint32 decimals = 4; // For tokens of type FUNGIBLE - the number of decimal places a token is divisible by. For tokens of type NON_FUNGIBLE - value must be 0. 
-+	int64 maxSupply = 5; // IWA Compatibility. For tokens of type FUNGIBLE - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
-!	uint64 initialSupply = 6; // Specifies the initial supply of tokens to be put in circulation. The initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible. In the case for NON_FUNGIBLE Type the value must be 0
-!       AccountID treasury = 7; // The account which will act as a treasury for the token. This account will receive the specified initial supply or the newly minted NFTs in the case for NON_FUNGIBLE Type
-	Key adminKey = 8; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
-   	Key kycKey = 9; // The key which can grant or revoke KYC of an account for the token's transactions. If empty, KYC is not required, and KYC grant or revoke operations are not possible.
-   	Key freezeKey = 10; // The key which can sign to freeze or unfreeze an account for token transactions. If empty, freezing is not possible
-   	Key wipeKey = 11; // The key which can wipe the token balance of an account. If empty, wipe is not possible
-   	Key supplyKey = 12; // The key which can change the supply of a token. The key is used to sign Token Mint/Burn operations
-   	bool freezeDefault = 13; // The default Freeze status (frozen or unfrozen) of Hedera accounts relative to this token. If true, an account must be unfrozen before it can receive the token
-	Timestamp expiry = 14; // The epoch second at which the token should expire; if an auto-renew account and period are specified, this is coerced to the current epoch second plus the autoRenewPeriod
-   	AccountID autoRenewAccount = 15; // An account which will be automatically charged to renew the token's expiration, at autoRenewPeriod interval
-   	Duration autoRenewPeriod = 16; // The interval at which the auto-renew account will be charged to extend the token's expiry
-   	string memo = 17; // The memo associated with the token (UTF-8 encoding max 100 bytes)
+    string name = 1; // The publicly visible name of the token, limited to a UTF-8 encoding of length <tt>tokens.maxSymbolUtf8Bytes</tt>.
+    string symbol = 2; // The publicly visible token symbol, limited to a UTF-8 encoding of length <tt>tokens.maxTokenNameUtf8Bytes</tt>.
+!   uint32 decimals = 3; // For tokens of type FUNGIBLE_COMMON - the number of decimal places a token is divisible by. For tokens of type NON_FUNGIBLE_UNIQUE - value must be 0
+!   uint64 initialSupply = 4; // Specifies the initial supply of tokens to be put in circulation. The initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible. In the case for NON_FUNGIBLE_UNIQUE Type the value must be 0
+!   AccountID treasury = 5; // The account which will act as a treasury for the token. This account will receive the specified initial supply or the newly minted NFTs in the case for NON_FUNGIBLE_UNIQUE Type
+    Key adminKey = 6; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
+    Key kycKey = 7; // The key which can grant or revoke KYC of an account for the token's transactions. If empty, KYC is not required, and KYC grant or revoke operations are not possible.
+    Key freezeKey = 8; // The key which can sign to freeze or unfreeze an account for token transactions. If empty, freezing is not possible
+    Key wipeKey = 9; // The key which can wipe the token balance of an account. If empty, wipe is not possible
+    Key supplyKey = 10; // The key which can change the supply of a token. The key is used to sign Token Mint/Burn operations
+    bool freezeDefault = 11; // The default Freeze status (frozen or unfrozen) of Hedera accounts relative to this token. If true, an account must be unfrozen before it can receive the token
+    Timestamp expiry = 13; // The epoch second at which the token should expire; if an auto-renew account and period are specified, this is coerced to the current epoch second plus the autoRenewPeriod
+    AccountID autoRenewAccount = 14; // An account which will be automatically charged to renew the token's expiration, at autoRenewPeriod interval
+    Duration autoRenewPeriod = 15; // The interval at which the auto-renew account will be charged to extend the token's expiry
+    string memo = 16; // The memo associated with the token (UTF-8 encoding max 100 bytes)
++   TokenType tokenType = 17; // IWA compatibility. Specifies the token type. Defaults to FUNGIBLE_COMMON
++   TokenSupplyType supplyType = 18; // IWA compatibility. Specified the token supply type. Defaults to INFINITE
++   int64 maxSupply = 19; // IWA Compatibility. Depends on TokenSupplyType. For tokens of type FUNGIBLE_COMMON - the maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE_UNIQUE - the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
 }
 ```
 
@@ -202,27 +226,15 @@ message TokenAssociateTransactionBody {
 ```
 ### TokenMintTransactionBody
 
-The property `amount` is to be deprecated and instead a new message `AmountOrMemo` to be used.
-
-**Pros**
-- Explicit definition - using the `oneof` structure, clients can explicitly differentiate between the 2 types of minting operations
-
-**Cons**
- - Breaking change
+The property `amount` is now used only for tokens of type `FUNGIBLE_COMMON`.
+Property `metadata` is introduced for tokens of type `NON_FUNGIBLE_UNIQUE`.
 
 Once created, an NFT instance cannot be updated, only transferred/wiped or burned.
 ```diff
-+message AmountOrMemo {
-+	oneof {
-+           int64 amount = 1; // Applicable to tokens of type FUNGIBLE. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63
-+   	    string memo = 2; // Applicable to tokens of type NON_FUNGIBLE. The metadata for the given NFT instance that is being created. Maximum allowed size is 100 bytes
-+	}
-+}
-
 message TokenMintTransactionBody {
     TokenID token = 1; // The token for which to mint tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
-!   uint64 amount = 2; [deprecated=true] // The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63.
-+   AmountOrMemo amountOrMemo = 3;
+!   uint64 amount = 2; // Applicable to tokens of type FUNGIBLE_COMMON. The amount to mint to the Treasury Account. Amount must be a positive non-zero number represented in the lowest denomination of the token. The new supply must be lower than 2^63.
++   repeated bytes metadata = 3; // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. A list of metadata that are being created. Maximum allowed size of each metadata is 100 bytes
 }
 
 ```
@@ -258,81 +270,66 @@ message TransactionReceipt {
     ScheduleID scheduleID = 12;
     // In the receipt of a ScheduleCreate or ScheduleSign that resolves to SUCCESS, the TransactionID that should be used to query for the receipt or record of the relevant scheduled transaction
     TransactionID scheduledTransactionID = 13;
-+   // In the receipt of a TokenMintTransactionBody, the serial number of the newly created NFT
-+   int64 serialNumber = 14;     
++
++   // In the receipt of a TokenMint for tokens of type NON_FUNGIBLE_UNIQUE, the serial numbers of the newly created NFTs
++   repeated int64 serialNumbers = 14;
 }
 ```
 
 ### TokenBurnTransactionBody
-The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used.
-
-**Pros**
-- Explicit definition - using the `oneof` structure, clients can explicitly differentiate between the 2 types of burn operations
-
-**Cons**
- - Breaking change
+The property `amount` is now used only for tokens of type `FUNGIBLE_COMMON`.
+A repeated list of serial numbers called `serialNumbers` is introduced for tokens of type `NON_FUNGIBLE_UNIQUE`.
 
 All serial numbers specified must be owned by the Treasury account in order for them to be burned successfully.
 ```diff
-+message AmountOrSerialNumbers {
-+	oneof {
-+		int64 amount = 1; //Applicable to tokens of type FUNGIBLE. Amount of fungible tokens to burn/wipe
-+		repeated int64 serialNumbers = 2; //Applicable to tokens of type NON_FUNGIBLE. The list of serial numbers to be burned/wiped.
-+	}
-+}
-
 message TokenBurnTransactionBody {
 	TokenID token = 1; // The token for which to burn tokens. If token does not exist, transaction results in INVALID_TOKEN_ID
-!	uint64 amount = 2; [deprecated=true] // The amount to burn from the Treasury Account. Amount must be a positive non-zero number, not bigger than the token balance of the treasury account (0; balance], represented in the lowest denomination.
-+	AmountOrSerialNumbers amountOrSerialNumbers= 3; // Defines the amount or list of serial numbers to be burned
+!	uint64 amount = 2; // Applicable to tokens of type FUNGIBLE_COMMON. The amount to burn from the Treasury Account. Amount must be a positive non-zero number, not bigger than the token balance of the treasury account (0; balance], represented in the lowest denomination
++	repeated int64 serialNumbers = 3; // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. The list of serial numbers to be burned.
 }
 ```
 
 ### TokenWipeAccountTransactionBody
-The property `amount` is to be deprecated and instead a new message `AmountOrSerialNumbers` to be used. 
-
-**Pros**
-- Explicit definition - using the `oneof` structure, clients can explicitly differentiate between the 2 types of wipe operations
-
-**Cons**
- - It is a breaking change
+The property `amount` is now used only for tokens of type `FUNGIBLE_COMMON`.
+A repeated list of serial numbers called `serialNumbers` is introduced for tokens of type `NON_FUNGIBLE_UNIQUE`.
 
 All serial numbers specified must NOT be owned by the Treasury account in order for them to be wiped successfully.
 ```diff
 message TokenWipeAccountTransactionBody {
 	TokenID token = 1; // The token for which the account will be wiped. If token does not exist, transaction results in INVALID_TOKEN_ID
 	AccountID account = 2; // The account to be wiped
-!	uint64 amount = 3; [deprecated=true] // The amount of tokens to wipe from the specified account. Amount must be a positive non-zero number in the lowest denomination possible, not bigger than the token balance of the account (0; balance]
-+	AmountOrSerialNumbers amountOrSerialNumbers= 3; // Defines the amount or list of serial numbers to be wiped
+!	uint64 amount = 3; // Applicable to tokens of type FUNGIBLE_COMMON. The amount of tokens to wipe from the specified account. Amount must be a positive non-zero number in the lowest denomination possible, not bigger than the token balance of the account (0; balance]
++	repeated int64 serialNumbers = 4; // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. The list of serial numbers to be wiped
 }
 
 ```
 
-### TokenInfo
+### TokenGetInfo
 New `tokenType` and `maxSupply` fields to be added in the `TokenInfo` query. 
 
 ```diff
 message TokenInfo {
-+  TokenType tokenType = 1; // IWA compatibility. Specifies fungible or not
-   TokenID tokenId = 2; // ID of the token instance
-   string name = 3; // The name of the token. It is a string of ASCII only characters
-   string symbol = 4; // The symbol of the token. It is a UTF-8 capitalized alphabetical string
-!  uint32 decimals = 5; // The number of decimal places a token is divisible by. Always 0 for tokens of type NON_FUNGIBLE. This field can never be changed! 
-+  int64 maxSupply = 6; // For tokens of type FUNGIBLE - The Maximum number of fungible tokens that can be in circulation. For tokens of type NON_FUNGIBLE - the maximum number of NFTs (serial numbers) that can be in circulation. This field can never be changed! 
-!  uint64 totalSupply = 7; // For tokens of type FUNGIBLE - the total supply of tokens that are currently in circulation. For tokens of type NON_FUNGIBLE - the number of NFTs created of this token instance
-   AccountID treasury = 8; // The ID of the account which is set as Treasury
-   Key adminKey = 9; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
-   Key kycKey = 10; // The key which can grant or revoke KYC of an account for the token's transactions. If empty, KYC is not required, and KYC grant or revoke operations are not possible.
-   Key freezeKey = 11; // The key which can freeze or unfreeze an account for token transactions. If empty, freezing is not possible
-   Key wipeKey = 12; // The key which can wipe the token balance of an account. If empty, wipe is not possible
-   Key supplyKey = 13; // The key which can change the supply of a token. The key is used to sign Token Mint/Burn operations
-   TokenFreezeStatus defaultFreezeStatus = 14; // The default Freeze status (not applicable, frozen or unfrozen) of Hedera accounts relative to this token. FreezeNotApplicable is returned if Token Freeze Key is empty. Frozen is returned if Token Freeze Key is set and defaultFreeze is set to true. Unfrozen is returned if Token Freeze Key is set and defaultFreeze is set to false
-   TokenKycStatus defaultKycStatus = 15; // The default KYC status (KycNotApplicable or Revoked) of Hedera accounts relative to this token. KycNotApplicable is returned if KYC key is not set, otherwise Revoked
-   bool deleted = 16; // Specifies whether the token was deleted or not
-   AccountID autoRenewAccount = 17; // An account which will be automatically charged to renew the token's expiration, at autoRenewPeriod interval
-   Duration autoRenewPeriod = 18; // The interval at which the auto-renew account will be charged to extend the token's expiry
-   Timestamp expiry = 19; // The epoch second at which the token will expire
-   string memo = 20; // The memo associated with the token
+   	TokenID tokenId = 1; // ID of the token instance
+   	string name = 2; // The name of the token. It is a string of ASCII only characters
+   	string symbol = 3; // The symbol of the token. It is a UTF-8 capitalized alphabetical string
+!  	uint32 decimals = 4; // The number of decimal places a token is divisible by. Always 0 for tokens of type NON_FUNGIBLE_UNIQUE 
+!  	uint64 totalSupply = 5; // For tokens of type FUNGIBLE_COMMON - the total supply of tokens that are currently in circulation. For tokens of type NON_FUNGIBLE_UNIQUE - the number of NFTs created of this token instance
+  	AccountID treasury = 6; // The ID of the account which is set as Treasury
+   	Key adminKey = 7; // The key which can perform update/delete operations on the token. If empty, the token can be perceived as immutable (not being able to be updated/deleted)
+   	Key kycKey = 8; // The key which can grant or revoke KYC of an account for the token's transactions. If empty, KYC is not required, and KYC grant or revoke operations are not possible.
+   	Key freezeKey = 9; // The key which can freeze or unfreeze an account for token transactions. If empty, freezing is not possible
+   	Key wipeKey = 10; // The key which can wipe the token balance of an account. If empty, wipe is not possible
+   	Key supplyKey = 11; // The key which can change the supply of a token. The key is used to sign Token Mint/Burn operations
+   	TokenFreezeStatus defaultFreezeStatus = 12; // The default Freeze status (not applicable, frozen or unfrozen) of Hedera accounts relative to this token. FreezeNotApplicable is returned if Token Freeze Key is empty. Frozen is returned if Token Freeze Key is set and defaultFreeze is set to true. Unfrozen is returned if Token Freeze Key is set and defaultFreeze is set to false
+   	TokenKycStatus defaultKycStatus = 13; // The default KYC status (KycNotApplicable or Revoked) of Hedera accounts relative to this token. KycNotApplicable is returned if KYC key is not set, otherwise Revoked
+   	bool deleted = 14; // Specifies whether the token was deleted or not
+   	AccountID autoRenewAccount = 15; // An account which will be automatically charged to renew the token's expiration, at autoRenewPeriod interval
+   	Duration autoRenewPeriod = 16; // The interval at which the auto-renew account will be charged to extend the token's expiry
+   	Timestamp expiry = 17; // The epoch second at which the token will expire
+   	string memo = 18; // The memo associated with the token
++	TokenType tokenType = 19; // The token type
++	TokenSupplyType supplyType = 20; // The token supply type
++	int64 maxSupply = 21; // For tokens of type FUNGIBLE_COMMON - The Maximum number of fungible tokens that can be in circulation. For tokens of type NON_FUNGIBLE_UNIQUE - the maximum number of NFTs (serial numbers) that can be in circulation
 }
 
 ```
@@ -341,11 +338,9 @@ message TokenInfo {
 
 **Rationale**
 
-With the current proposal, HTS API is being extended to support `NON_FUNGIBLE` types of tokens. All the changes to the HAPI are being contained under the HTS service. Transfers in the HAPI are unified, meaning there is only 1 `CryptoTransferTransactionBody` that is used to represent both `hbar` and HTS token transfers. The proposed solution keeps the consistency of containing the changes under the HTS specific API by extending the `TokenTransferList` with new type of transfer - Non fungible token transfer.
+With the current proposal, HTS API is being extended to support `NON_FUNGIBLE_UNIQUE` types of tokens. All the changes to the HAPI are being contained under the HTS service. Transfers in the HAPI are unified, meaning there is only 1 `CryptoTransferTransactionBody` that is used to represent both `hbar` and HTS token transfers. The proposed solution keeps the consistency of containing the changes under the HTS specific API by extending the `TokenTransferList` with a new type of transfer - Non fungible token transfer.
 
-The change is backwards compatible due to the usage of `oneof`.
-
-The major difference between `FUNGIBLE` and `NON_FUNGIBLE` transfers is the representation type.  As per the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md#representation-type), we can distinguish 2 types of representations - `common` and `unique`. `AccountAmount` message type uses the `common` representation type and `NftTransfer` uses the `unique` representation type.
+The major difference between `FUNGIBLE_COMMON` and `NON_FUNGIBLE_UNIQUE` transfers is the representation type. As per the [IWA specification](https://github.com/InterWorkAlliance/TokenTaxonomyFramework/blob/main/token-taxonomy.md#representation-type), we can distinguish 2 types of representations - `common` and `unique`. `AccountAmount` message type uses the `common` representation type and `NftTransfer` uses the `unique` representation type.
 
 ```diff
 message CryptoTransferTransactionBody {
@@ -353,6 +348,7 @@ message CryptoTransferTransactionBody {
    repeated TokenTransferList tokenTransfers = 2;
 }
 
++ /* A sender account, a receiver account, and the serial number of an NFT of a Token with NON_FUNGIBLE_UNIQUE type. */
 +message NftTransfer {  
 +   AccountID senderAccountID = 1;  // Sending account
 +   AccountID receiverAccountID = 2;  // Receiving account
@@ -362,10 +358,8 @@ message CryptoTransferTransactionBody {
 /* A list of token IDs and amounts representing the transferred out (negative) or into (positive) amounts, represented in the lowest denomination of the token */
 message TokenTransferList {
     TokenID token = 1; // The ID of the token
-+   oneof {
-!	    repeated AccountAmount transfers = 2; // Applicable to tokens of type FUNGIBLE. Multiple list of AccountAmounts, each of which has an account and amount
-+	    repeated NftTransfer nftTransfers = 3; // Applicable to tokens of type NON_FUNGIBLE
-+   }
+!   repeated AccountAmount transfers = 2; // Applicable to tokens of type FUNGIBLE_COMMON. Multiple list of AccountAmounts, each of which has an account and amount
++   repeated NftTransfer nftTransfers = 3; // Applicable to tokens of type NON_FUNGIBLE_UNIQUE. Multiple list of NftTransfers, each of which has a sender and receiver account, including the serial number of the NFT
 }
 ```
 
@@ -393,7 +387,7 @@ message CryptoGetInfoResponse {
         repeated LiveHash liveHashes = 14; // All of the livehashes attached to the account (each of which is a hash along with the keys that authorized it and can delete it)
         repeated TokenRelationship tokenRelationships = 15; // All tokens related to this account
         string memo = 16; // The memo associated with the account
-+       int64 ownedNFTs = 17; // The number of NFTs that are owned by this account
++       int64 ownedNfts = 17; // The number of NFTs owned by this account
     }
     AccountInfo accountInfo = 2; // Info about the account (a state proof can be generated for this)
 }
@@ -406,10 +400,19 @@ message CryptoGetInfoResponse {
 message TokenRelationship {
     TokenID tokenId = 1; // The ID of the token
     string symbol = 2; // The Symbol of the token
-!   uint64 balance = 3; // For token of type FUNGIBLE - the balance that the Account holds in the smallest denomination. For token of type NON_FUNGIBLE - the number of NFTs held by the account
+!   uint64 balance = 3; // For token of type FUNGIBLE_COMMON - the balance that the Account holds in the smallest denomination. For token of type NON_FUNGIBLE_UNIQUE - the number of NFTs held by the account
     TokenKycStatus kycStatus = 4; // The KYC status of the account (KycNotApplicable, Granted or Revoked). If the token does not have KYC key, KycNotApplicable is returned
     TokenFreezeStatus freezeStatus = 5; // The Freeze status of the account (FreezeNotApplicable, Frozen or Unfrozen). If the token does not have Freeze key, FreezeNotApplicable is returned
-!   uint32 decimals = 6; // The number of decimal places a token is divisible by. Always 0 for tokens of type NON_FUNGIBLE
+!   uint32 decimals = 6; // The number of decimal places a token is divisible by. Always 0 for tokens of type NON_FUNGIBLE_UNIQUE
+}
+```
+
+### AccountBalanceFile
+
+```diff
+message TokenUnitBalance {
+    TokenID tokenId = 1; // A unique token id
+!	uint64 balance = 2; // Number of transferable units of the identified token. For token of type FUNGIBLE_COMMON - balance in the smallest denomination. For token of type NON_FUNGIBLE_UNIQUE - the number of NFTs held by the account
 }
 ```
 
@@ -423,94 +426,99 @@ The transferable unit of a token is its smallest denomination, as given by the t
 Transferable units are not directly comparable across different tokens. */
 message TokenBalance {
      TokenID tokenId = 1; // A unique token id
-!    uint64 balance = 2; // Number of transferable units of the identified token. For token of type FUNGIBLE - balance in the smallest denomination. For token of type NON_FUNGBILE - the number of NFTs held by the account 
-!    uint32 decimals = 3; // Tokens divide into <tt>10<sup>decimals</sup></tt> pieces. Always 0 for tokens of type NON_FUNGIBLE
+!    uint64 balance = 2; // Number of transferable units of the identified token. For token of type FUNGIBLE_COMMON - balance in the smallest denomination. For token of type NON_FUNGIBLE_UNIQUE - the number of NFTs held by the account
+!    uint32 decimals = 3; // Tokens divide into <tt>10<sup>decimals</sup></tt> pieces. Always 0 for tokens of type NON_FUNGIBLE_UNIQUE
 }
 ```
 
-### GetNftInfo
-The following messages must be added in order to support the new `GetNftInfo` rpc call added to `HTS`.
+### TokenGetNftInfo
+The following messages must be added in order to support the new `TokenGetNftInfo` rpc call added to `HTS`.
 
 ```diff
-+/* Represents a NFT on the ledger */
-+message NftId {
-+	TokenID tokenId = 1; // The (non-fungible) token of which this NFT is an instance  
-+	int64 serialNumber = 2; // The unique identifier of this instance
++/* Represents an NFT on the Ledger */
++message NftID {
++    TokenID tokenID = 1; // The (non-fungible) token of which this NFT is an instance
++    int64 serialNumber = 2; // The unique identifier of this instance
 +}
-
-+/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on a NFT for a given TokenID (of type NON_FUNGIBLE) and serial number */
-+message GetNftInfoQuery {
++
++/* Applicable only to tokens of type NON_FUNGIBLE_UNIQUE. Gets info on a NFT for a given TokenID (of type NON_FUNGIBLE_UNIQUE) and serial number */
++message TokenGetNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+    NftId nftId = 2; // The NFT of interest
++    NftID nftID = 2; // The ID of the NFT
 +}
-
-+message NftInfo {
-+    NftId nftId = 1; // The ID of the NFT instance
-+    AccountID owner = 2; // The current owner of the NFT
++
++message TokenNftInfo {
++    NftID nftID = 1; // The ID of the NFT
++    AccountID accountID = 2; // The current owner of the NFT
 +    Timestamp creationTime = 3; // The effective consensus timestamp at which the NFT was minted
-+    string memo = 4; // Represents the unique metadata for a given NFT instance
++    bytes metadata = 4; // Represents the unique metadata of the NFT
 +}
-
-+message GetNftInfoResponse {
++
++message TokenGetNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    NftInfo nft = 2; // The NFT that his record is for
++    TokenNftInfo nft = 2; // The information about this NFT
 +}
 ```
 
-### GetTokenNftInfo
-The following messages must be added in order to support the new `GetTokenNftInfo` rpc call added to `HTS`.
+### TokenGetNftInfos
+
+:warning: :x: This functionality has been deprecated on Hedera Network and isn't available on the Mainnet, Testnet or Previewnet networks.
+
+The following messages must be added in order to support the new `TokenGetNftInfos` rpc call added to `HTS`.
 
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
 
 ```diff
-+/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE Token.
-+ * Example: If there are 10 NFTs issued, having start=0 and end=5 will query for the first 5 NFTs. Querying +all 10 NFTs will require start=0 and end=10 
++/* Applicable only to tokens of type NON_FUNGIBLE_UNIQUE. Gets info on NFTs N through M on the list of NFTs associated with a given NON_FUNGIBLE_UNIQUE Token.
++ * Example: If there are 10 NFTs issued, having start=0 and end=5 will query for the first 5 NFTs. Querying +all 10 NFTs will require start=0 and end=10
 + */
-+message GetTokenNftInfoQuery {
++message TokenGetNftInfosQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+    TokenID tokenId = 2; // The ID of the token for which information is requested
++    TokenID tokenID = 2; // The ID of the token for which information is requested
 +    int64 start = 3; // Specifies the start index (inclusive) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
 +    int64 end = 4; // Specifies the end index (exclusive) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
-
-+message GetTokenNftInfoResponse {
++
++message TokenGetNftInfosResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    TokenID tokenId = 2; // The Token with type NON_FUNGIBLE that this record is for
-+    repeated NftInfo nfts = 3; // List of NFTs associated to the specified token
++    TokenID tokenID = 2; // The Token with type NON_FUNGIBLE that this record is for
++    repeated TokenNftInfo nfts = 3; // List of NFTs associated to the specified token
 +}
 ```
 
-### GetAccountNftInfo
-The following messages must be added in order to support the new `GetAccountNftInfo` rpc call added to `HTS`.
+### TokenGetAccountNftInfo
+
+:warning: :x: This functionality has been deprecated on Hedera Network and isn't available on the Mainnet, Testnet or Previewnet networks.
+
+The following messages must be added in order to support the new `TokenGetAccountNftInfo` rpc call added to `HTS`.
 
 Global dynamic variable must be added in the node configuring the maximum value of `maxQueryRange`. Requests must meet the following requirement: `end-start<=maxQueryRange`
 
 `ownedNFTs` is the number of NFTs that the specified account owns. The value can be retrieved from the `CryptoGetInfo` query.
 
 ```diff
-+/* Applicable only to tokens of type NON_FUNGIBLE. Gets info on NFTs N through M owned by the specified accountId.
++/* Applicable only to tokens of type NON_FUNGIBLE_UNIQUE. Gets info on NFTs N through M owned by the specified accountId.
 + * Example: If Account A owns 5 NFTs (might be of different Token Entity), having start=0 and end=5 will return all of the NFTs
 + */
-+message GetAccountNftInfoQuery {
++message TokenGetAccountNftInfoQuery {
 +    QueryHeader header = 1; // Standard info sent from client to node, including the signed payment, and what kind of response is requested (cost, state proof, both, or neither).
-+    AccountID accountId = 2; // The Account for which information is requested
++    AccountID accountID = 2; // The Account for which information is requested
 +    int64 start = 3; // Specifies the start index (inclusive) of the range of NFTs to query for. Value must be in the range [0; ownedNFTs-1]
 +    int64 end = 4; // Specifies the end index (exclusive) of the range of NFTs to query for. Value must be in the range (start; ownedNFTs]
 +}
-
-+message GetAccountNftInfoResponse {
++
++message TokenGetAccountNftInfoResponse {
 +    ResponseHeader header = 1; // Standard response from node to client, including the requested fields: cost, or state proof, or both, or neither
-+    AccountID accountId = 2; // The Account that this record is for
-+    repeated NftInfo nfts = 3; // List of NFTs associated to the account
++    repeated TokenNftInfo nfts = 2; // List of NFTs associated to the account
 +}
 ```
 
 ## Example
 
-The following operations must be performed in order to create new `NON_FUNGIBLE` token, issue NFTs and transfer them:
-1. Creating `NON_FUNGIBLE` Token - Execute `TokenCreate` operation setting the `tokenType` to `NON_FUNGIBLE`. There must be a `supplyKey` set in order to create new NFT instances.
+The following operations must be performed in order to create new `NON_FUNGIBLE_UNIQUE` token, issue NFTs and transfer them:
+1. Creating `NON_FUNGIBLE_UNIQUE` Token - Execute `TokenCreate` operation setting the `tokenType` to `NON_FUNGIBLE_UNIQUE`. There must be a `supplyKey` set in order to create new NFT instances.
 2. Create new `NFT` instance - Execute `TokenMint` operation. The `memo` field is used for storing the metadata of the `NFT`. Once executed, the newly created `NFT` will have `serialNumber` set as part of the transaction receipt. The newly minted `NFT`s are owned by the treasury account specified on Token create operation.
-3. Associate `NON_FUNGIBLE` Token - Similarly to fungible token transfers, non-fungible transfers require the receiver of the account to be associated to the specified `Token` first. In order for an account to receive `NFT` instances, he must execute `TokenAssociate` operation. 
+3. Associate `NON_FUNGIBLE_UNIQUE` Token - Similarly to fungible token transfers, non-fungible transfers require the receiver of the account to be associated to the specified `Token` first. In order for an account to receive `NFT` instances, he must execute `TokenAssociate` operation. 
 4. Transferring `NFT` instances -  Execute `CryptoTransfer` transaction, populating the `TokenTransfer` list with a `nftTransfer` entry. Example:
 ```
 cryptoTransferTransactionBody = {
@@ -542,11 +550,11 @@ There are several implications for already existing HTS integrations. Due to the
 
 ### Fees
 
-The existing fee schedule must be updated to support two separate fee schedule definitions for the same operation depending on the type of the Token. The current fee schedule for the HTS operations will be preserved for tokens of type `FUNGIBLE` and new fee schedule will be added for tokens of type `NON_FUNGIBLE` that will define the costs for executing operations on `NON_FUNGIBLE` token types.
+The existing fee schedule must be updated to support two separate fee schedule definitions for the same operation depending on the type of the Token. The current fee schedule for the HTS operations will be preserved for tokens of type `FUNGIBLE_COMMON` and new fee schedule will be added for tokens of type `NON_FUNGIBLE_UNIQUE` that will define the costs for executing operations on `NON_FUNGIBLE_UNIQUE` token types.
 
 ### Throttling
 
-One trade off that must be clarified is that by extending HTS with `NON_FUNGIBLE` support its impossible to throttle the operations separately. All HTS related operations (independent on the token type) will be using one throttling configuration and it will be applied for both token types.
+One trade off that must be clarified is that by extending HTS with `NON_FUNGIBLE_UNIQUE` support its impossible to throttle the operations separately. All HTS related operations (independent on the token type) will be using one throttling configuration and it will be applied for both token types.
 
 ## How to Teach This
 
@@ -562,26 +570,15 @@ No rejected ideas so far
 
 ## Open Issues
 
-### 1. Flatten vs one-of structure
+### 1. Populating Redundant information on Queries
 
-`TokenMintTransactionBody` has a `one-of` field. Some concerns against using the `one-of` approach:
--  It’s a breaking change to clients, and it requires both services and mirror node to always look at both fields for information. Mirror nodes indefinitely whether removed from proto or not.
--  It’s not a good logical grouping which is indicated by its name just being the concatenation of other fields within it.
--  It doesn't support future expandability. If in the future we also need an additional field that only applies to NFTs it can’t be put into this oneof.
--  It differs from how some other transactions handle fields that only apply to only NFT or FTs. For example, `TokenCreateTransactionBody` has `initialSupply` and `decimals` that only apply to fungible.
--  It would be simpler and less breaking to simply flatten the list of fields and indicate in the comments which apply to FT vs NFT
+The `NftInfo` message contains the information related to a given `NFT` instance. In the case of `TokenGetNftInfo` query, there are no redundant properties populated, however, the message is used in `TokenGetNftInfos`, as well as in `TokenGetAccountNftInfo`. Depending on the query, some properties will be redundant. For example:
+- When querying for `TokenGetNftInfos`, the `NFT`s returned will populate the `tokenId` property inside `NftID` message even though it will be redundant
+- When querying for `TokenGetAccountNftInfo`, the `NFT`s returned will populate the `owner` property inside `NftInfo` message even though it will be redundant.
 
-The same question is applicable to `amountOrSerialNumbers` used in `TokenBurnTransactionBody` and `TokenWipeTransactionBody`
+Initially the plan was to **NOT** populate `tokenId` on `TokenGetNftInfos` and `owner` on `TokenGetAccountNftInfo`, however with the introduction of the `NftID` message it does not seem consistent to populate only the `serialNumber` property of the `NftID` message on `GetTokenInfoQueries`.
 
-### 2. Populating Redundant information on Queries
-
-The `NftInfo` message contains the information related to a given `NFT` instance. In the case of `GetNftInfo` query, there are no redundant properties populated, however, the message is used in `GetTokenNftInfo` as-well as in `GetAccountNftInfo`. Depending on the query, some properties will be redundant. For example:
-- When querying for `GetTokenNftInfo`, the `NFT`s returned will populate the `tokenId` property inside `NftId` message even though it will be redundant
-- When querying for `GetAccountNftInfo`, the `NFT`s returned will populate the `owner` property inside `NftInfo` message even though it will be redundant.
-
-Initially the plan was to **NOT** populate `tokenId` on `GetTokenNftInfo` and `owner` on `GetAccountNftInfo`, however with the introduction of the `NftId` message it does not seem consistent to populate only the `serialNumber` property of the `NftId` message on `GetTokenInfoQueries`.
-
-When it comes to `GetAccountNftInfo` query, the `NFT`s returned **could** not populate the `owner` property of the `NftInfo` message, however this will introduce inconsistencies since in one of the queries redundant properties are populated (`GetTokenNftInfo`), but in others, they are skipped (`GetAccountNftInfo`) 
+When it comes to `TokenGetAccountNftInfo` query, the `NFT`s returned **could** not populate the `owner` property of the `TokenNftInfo` message, however this will introduce inconsistencies since in one of the queries redundant properties are populated (`TokenGetNftInfos`), but in others, they are skipped (`TokenGetAccountNftInfo`). 
 
 ## References
 
