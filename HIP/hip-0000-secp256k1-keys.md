@@ -5,7 +5,7 @@ author: Michael Tinker <michael.tinker@hedera.com>
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2021-11-15
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/221
 ---
