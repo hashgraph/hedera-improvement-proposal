@@ -12,7 +12,7 @@ discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discuss
 
 ## Abstract
 
-The only kind of public key that may presently appear in a Hedera key structure is an [Ed25519](https://ed25519.cr.yp.to/) public key. It follows that users can only secure their transactions using Ed25519 signatures.
+The only kind of public key that may currently appear in a Hedera key structure is a [Ed25519](https://ed25519.cr.yp.to/) public key. It follows that users can only secure their transactions using Ed25519 signatures.
 
 We propose to enable support for ECDSA(secp256k1) cryptography by,
 1. Extending the Hedera API protobufs with new fields for ECDSA(secp256k1) keys and signatures.
@@ -77,7 +77,7 @@ While if the key pair has,
 ```
 Then the hex-encoded bytes of the `Key.ECDSA_secp256k1` field should be,
 ```
-02b5ffadf88d625cd9074fa01e5280b773a60ed2de55b0d6f94460c0b5a001a258
+0x02b5ffadf88d625cd9074fa01e5280b773a60ed2de55b0d6f94460c0b5a001a258
 ```
 
 When a user is providing an ECDSA(secp256k1) signature in a `SignaturePair. ECDSA_secp256k1` field, it should be the full result of signing the [`SignedTransaction.bodyBytes`](https://hashgraph.github.io/hedera-protobufs/#proto.SignedTransaction) from the top-level `Transaction` with the relevant ECDSA(secp256k1) private key. 
