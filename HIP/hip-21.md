@@ -38,9 +38,7 @@ The proposal is to create a rest API query to return network information. As we 
 
 REST API
 
-GET `api/v1/{network}/addressbook`
-
-`{network}` would be one of previewnet/testnet/mainnet
+GET `api/v1/addressbooks`
 
 Response:
 
@@ -68,7 +66,8 @@ Response:
 
 ```
 
-
+Example with all params:
+api/v1/addressbooks/timestamp=gte:1566562500.040961001&timestamp=lt:1576562500.040961001&file.id=0.0.102&limit=5&order=asc
 
 
 
