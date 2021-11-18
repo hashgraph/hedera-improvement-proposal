@@ -135,7 +135,45 @@ Custom EVM APIs at `api/v1/evm/transactions` were rejected, as they provided add
 ## Open Issues
 
 - How will EVM internal transactions be surfaced to the Mirror Node in the record stream?
+  One potential format is as follows
+  ```json
+    "evm_internal_transactions": [
+      {
+        "from": "0.0.1002",
+        "to": "0.0.1003",
+        "type": "call_0",
+        "value": "20"
+      }
+    ]
+  ```
 - How will Hedera child transactions be surfaced aswell as correlated with the parent transaction in the record stream?
+  Two potential formats are as follows
+  ```json
+  "links": {
+    "hedera_child_transactions": [
+      "api/v1/transactions/0.0.11943-1637100159-861284000",
+      "api/v1/transactions/0.0.10459-1637099842-891982153"
+    ]
+  }
+  ```
+  or
+  ```json
+  "links": {
+    "related": {
+      "hedera_child_transactions": [
+        {
+          "timestamp": "1637100159.961284000",
+          "endpoint": "api/v1/transactions/0.0.11943-1637100159-861284000"
+        },
+        {
+          "timestamp": "1637099842.991982153",
+          "endpoint": "api/v1/transactions/0.0.10459-1637099842-891982153"
+        }
+      ]
+    }
+  }
+  ```
+- Should EVM and Hedera internal/child transactions be presented together or kept separate?
 
 ## References
 
