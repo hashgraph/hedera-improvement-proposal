@@ -5,7 +5,7 @@ author: Leemon Baird <leemon@hedera.com>
 type: Standards 
 category: Service
 needs-council-approval: Yes
-status: Last Call
+status: Council Review
 last-call-date-time: 2021-11-22T07:00:00Z
 created: 2021-11-01
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/187
