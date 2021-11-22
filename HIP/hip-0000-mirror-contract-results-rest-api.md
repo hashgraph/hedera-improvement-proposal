@@ -70,7 +70,7 @@ The following JSON represents a typical response result from either of these cal
     "0.0.1003"
   ],
   "error_message": "",
-  "from": "0.0.1001",
+  "from": "0x0000000000000000000000000000000000001001",
   "function_parameters": "0xbb9f02dc6f0e3289f57a1f33b71c73aa8548ab8b",
   "gas_limit": 2500,
   "gas_used": 1000,
@@ -112,7 +112,7 @@ The following JSON represents a typical response result from either of these cal
     }
   ],
   "timestamp": "12345.10001",
-  "to": "0.0.1002"
+  "to": "0x0000000000000000000000000000000000001002"
 }
 ```
 
@@ -139,8 +139,8 @@ Custom EVM APIs at `api/v1/evm/transactions` were rejected, as they provided add
   ```json
     "evm_internal_transactions": [
       {
-        "from": "0.0.1002",
-        "to": "0.0.1003",
+        "from": "0x0000000000000000000000000000000000001002",
+        "to": "0x0000000000000000000000000000000000001003",
         "type": "call_0",
         "value": "20"
       }
