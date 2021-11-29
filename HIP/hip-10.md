@@ -72,7 +72,7 @@ This is the "Token Metadata JSON Schema" referenced above:
         },
         "image": {
             "type": "string",
-            "description": "A URI pointing to a resource with mime type image/* representing the asset to which this token represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive."
+            "description": "A URI pointing to a resource with mime type image/* representing the asset to which this token represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 0.7:1 inclusive."
         },
         "properties": {
             "type": "object",
@@ -103,6 +103,8 @@ This is the "Token Metadata JSON Schema" referenced above:
 The "version" field is a [semvar](https://semver.org/) version of the metadata JSON format. If omitted then the version MUST be interpreted as "0.0.1".
 
 If the "decimals" field is supplied in the token metadata, then it MUST match that specified for the token on HTS.
+
+The suggested aspect ratio for the image was chosen to include common sizes for NFT images, and trading cards.
 
 ### Localization
 
