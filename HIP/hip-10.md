@@ -42,8 +42,8 @@ The inclusion of the localization standard is to encourage global adoption.
 
 The exact method for implementing different token types and NFTs on HTS is outside the scope of this specificaiton. See [3] for an example.
 
-Tokens optionally specify a URI in the token "memo" attribute.
-This URI MAY link to data on the Hedera File Service, IPFS, a DID, AWS, or any other URI the issuer specifies.
+Tokens optionally specify a URI in the token "memo" attribute or token "metadata" attribute (for token type `NON_FUNGIBLE_UNIQUE`).
+This URI MAY link to data on the Hedera File Service or Hedera Consensus Service (see HIP-30), IPFS, a DID, AWS, or any other URI the issuer specifies.
 This URI references token metadata that MUST conform to the "Token Metadata JSON Schema".
 This allows your tokens to be interrogated for its details about the assets which your tokens represent.
 
@@ -54,6 +54,10 @@ This is the "Token Metadata JSON Schema" referenced above:
     "title": "Token Metadata",
     "type": "object",
     "properties": {
+        "version": {
+            "type": "string",
+            "description": "Semantic version for the metadata JSON format."
+        },
         "name": {
             "type": "string",
             "description": "Identifies the asset to which this token represents."
@@ -68,7 +72,7 @@ This is the "Token Metadata JSON Schema" referenced above:
         },
         "image": {
             "type": "string",
-            "description": "A URI pointing to a resource with mime type image/* representing the asset to which this token represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive."
+            "description": "A URI pointing to a resource with mime type image/* representing the asset to which this token represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 0.7:1 inclusive."
         },
         "properties": {
             "type": "object",
@@ -96,7 +100,11 @@ This is the "Token Metadata JSON Schema" referenced above:
 }
 ```
 
+The "version" field is a [semvar](https://semver.org/) version of the metadata JSON format. If omitted then the version MUST be interpreted as "0.0.1".
+
 If the "decimals" field is supplied in the token metadata, then it MUST match that specified for the token on HTS.
+
+The suggested aspect ratio for the image was chosen to include common sizes for NFT images, and trading cards.
 
 ### Localization
 
