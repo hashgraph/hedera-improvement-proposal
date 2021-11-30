@@ -5,9 +5,10 @@ author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds
 type: Standards
 category: Service
 needs-council-approval: Yes
-status: Last Call
+status: Council Review
 last-call-date-time: 2021-11-30T07:00:00Z
 created: 2021-10-19
+updated: 2021-11-30
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/159
 ---
 
