@@ -7,7 +7,7 @@ import "./IHederaTokenService.sol";
 
 contract HederaTokenService {
 
-    address constant precompileAddress = address(0x127);
+    address constant precompileAddress = address(0x167);
 
     /// Initiates a Token Transfer
     /// @param tokenTransfers the list of transfers to do
@@ -34,7 +34,7 @@ contract HederaTokenService {
         responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
     }
 
-    /// Burns an amount fo teh token from the define treasury account
+    /// Burns an amount of the token from the defined treasury account
     /// @param token The token for which to burn tokens. If token does not exist, transaction results in
     ///              INVALID_TOKEN_ID
     /// @param amount  Applicable to tokens of type FUNGIBLE_COMMON. The amount to burn from the Treasury Account.
