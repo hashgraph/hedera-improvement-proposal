@@ -65,6 +65,7 @@ The following JSON represents a typical response result from either of these cal
   "block_number": 50,
   "bloom": "0x549358c4c2e573e02410ef7b5a5ffa5f36dd7398",
   "call_result": "0x2b048531b38d2882e86044bc972e940ee0a01938",
+  "contract_id": "0.0.1002",
   "child_transactions": 0,
   "created_contract_ids": [
     "0.0.1003"
@@ -123,7 +124,7 @@ These additional API endpoints do not alter exsiting REST API functionality.
 ## How to Teach This
 
 - Hedera Mirror Node design document
-- Description and code examples of queries added to Heedera REST API documentation section
+- Description and code examples of queries added to Hedera REST API documentation section
 - The OpenAPI spec at `api/v1/docs` should be updated to reflect the new endpoints and allow users to test out the calls.
 - Reviewed in Engineeing Insights
 
