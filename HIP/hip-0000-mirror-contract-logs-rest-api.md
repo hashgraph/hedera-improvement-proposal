@@ -86,7 +86,7 @@ This additional API endpoint does not alter exsiting REST API functionality.
 ## How to Teach This
 
 - Hedera Mirror Node design document
-- Description and code examples of queries added to Heedera REST API documentation section
+- Description and code examples of queries added to Hedera REST API documentation section
 - The OpenAPI spec at `api/v1/docs` should be updated to reflect the new endpoints and allow users to test out the calls.
 - Reviewed in Engineeing Insights
 
