@@ -4,7 +4,7 @@ title: Mirror Node Search Contract Execution Log REST API
 author: Nana Essilfie-Conduah (@Nana-EC)
 type: Standards Track
 category: Mirror
-status: Draft
+status: Review
 created: 11/18/21
 discussions-to: <a URL pointing to the official discussion thread>
 updated: <comma separated list of dates>
