@@ -5,7 +5,7 @@ author: waylon.jepsen@hedera.com
 type: Standards Track
 category: Application
 needs-council-approval: No
-status: Draft
+status: Review
 created: 2021-12-01
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/180
 updated: 2021-12-01
