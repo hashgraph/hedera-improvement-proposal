@@ -1,0 +1,183 @@
+---
+hip: 226
+title: Mirror Node Contract Execution Results REST API
+author: Nana Essilfie-Conduah (@Nana-EC)
+type: Standards Track
+category: Mirror
+needs-council-approval: true
+status: Last Call
+last-call-date-time: 2021-12-17T07:00:00Z
+created: 2021-11-18
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/263
+---
+
+## Abstract
+
+Additional Mirror Node REST API endpoints are described which would allow users to retrieve the details of a contracts method execution.
+
+## Motivation
+
+The current Mirror Node supports the ingestion of contract information and contract executions results.
+It supports the retrieval of top level contract information, however, it does not support the retrieval of contract execution results.
+When methods in a contract are run users currently have to rely on network calls and transaction success or failure to determine execution details.
+Retrieving transaction execution details is common practice in the EVM space and the Mirror Node should provide endpoints on its existing API to support new and existing users.
+
+## Rationale
+
+The proposal seeks to expand Mirror Node Smart Contract Service 2.0 support by exposing contract execution results as is standard in many full archive nodes.
+These new endpoints would provide insight into function method details, gas details and internal contract execution metadata.
+
+## User stories
+
+- As a user, I want to view the results of a smart contracts method execution so that I can verify the expected behavior and method metadata.
+- As a user, I want to view the results of a smart contracts method execution so that I can view the emitted events as logs.
+- As a user, I want to view the results of a smart contracts method execution so that I can view any applicable access lists.
+- As a user, I want to view the results of a smart contracts method execution so that I can view any applicable state changes.
+
+## Specification
+
+Two new endpoints under the existing `/api/v1/contracts/` path will be added to supports users with different contract execution identifiers.
+
+- ContractId and Timestamp based retrieval via `GET /api/v1/contracts/{id}/results/{timestamp}`
+- TransactionId  based retrieval via `GET /api/v1/contracts/results/{transactionId}`
+
+The following JSON represents a typical response result from either of these calls
+```json
+{
+  "amount": 10,
+  "access_list": [
+    {
+      "address": "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae",
+      "storage_keys": [
+        "0x0000000000000000000000000000000000000000000000000000000000000003"
+      ]
+    },
+    {
+      "address": "0xbb9bc244d798123fde783fcc1c72d3bb8c189413",
+      "storage_keys": [
+        "0x0000000000000000000000000000000000000000000000000000000000000007"
+      ]
+    }
+  ],
+  "block_hash": "0x410ef7b5a5f",
+  "block_number": 50,
+  "bloom": "0x549358c4c2e573e02410ef7b5a5ffa5f36dd7398",
+  "call_result": "0x2b048531b38d2882e86044bc972e940ee0a01938",
+  "contract_id": "0.0.1002",
+  "child_transactions": 0,
+  "created_contract_ids": [
+    "0.0.1003"
+  ],
+  "error_message": "",
+  "from": "0x0000000000000000000000000000000000001001",
+  "function_parameters": "0xbb9f02dc6f0e3289f57a1f33b71c73aa8548ab8b",
+  "gas_limit": 2500,
+  "gas_used": 1000,
+  "hash": "0x5b2e3c1a49352f1ca9fb5dfe74b7ffbbb6d70e23a12693444e26058d8a8e6296",
+  "logs": [
+    {
+      "address": "0x0000000000000000000000000000000000001f41",
+      "bloom": "0x1513001083c899b1996ec7fa33621e2c340203f0",
+      "data": "0x8f705727c88764031b98fc32c314f8f9e463fb62",
+      "topics": [
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        "0x59d088293f09d5119d5b55858b989ffce4d398dc"
+      ]
+    },
+    {
+      "address": "0x0000000000000000000000000000000000001f42",
+      "bloom": "0x8f705727c88764031b98fc32c314f8f9e463fb62",
+      "data": "0x1513001083c899b1996ec7fa33621e2c340203f0",
+      "topics": [
+        "0xaf846d22986843e3d25981b94ce181adc556b334ccfdd8225762d7f709841df0",
+        "0x0000000000000000000000000000000000000000000000000000000000000765"
+      ]
+    }
+  ],
+  "state_changes": [
+    {
+      "after": "0xaf846d22986843e3d25981b94ce181adc556b334ccfdd8225762d7f709841df0",
+      "before": "0x000000000000000000000000000000000000000000c2a8c408d0e29d623347c5",
+      "address": "0x0000000000000000000000000000000000001f41",
+      "slot": "0x0000000000000000000000000000000000000000000000000000000000000002",
+      "timestamp": "12345.10001"
+    },
+    {
+      "after": "0x000000000000000000000000000000000000000000000001eafa3aaed1d27246",
+      "before": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "address": "0x0000000000000000000000000000000000001f42",
+      "slot": "0xe1b094dec1b7d360498fa8130bf1944104b7b5d8a48f9ca88c3fc0f96c2d7225",
+      "timestamp": "12345.10001"
+    }
+  ],
+  "timestamp": "12345.10001",
+  "to": "0x0000000000000000000000000000000000001002"
+}
+```
+
+## Backwards Compatibility
+
+These additional API endpoints do not alter exsiting REST API functionality.
+
+## How to Teach This
+
+- Hedera Mirror Node design document
+- Description and code examples of queries added to Hedera REST API documentation section
+- The OpenAPI spec at `api/v1/docs` should be updated to reflect the new endpoints and allow users to test out the calls.
+- Reviewed in Engineeing Insights
+
+
+## Rejected Ideas
+
+Custom EVM APIs at `api/v1/evm/transactions` were rejected, as they provided additional overhead and new endpoints unknown to users or libraries.
+
+## Open Issues
+
+- How will EVM internal transactions be surfaced to the Mirror Node in the record stream?
+  One potential format is as follows
+  ```json
+    "evm_internal_transactions": [
+      {
+        "from": "0x0000000000000000000000000000000000001002",
+        "to": "0x0000000000000000000000000000000000001003",
+        "type": "call_0",
+        "value": "20"
+      }
+    ]
+  ```
+- How will Hedera child transactions be surfaced aswell as correlated with the parent transaction in the record stream?
+  Two potential formats are as follows
+  ```json
+  "links": {
+    "hedera_child_transactions": [
+      "api/v1/transactions/0.0.11943-1637100159-861284000",
+      "api/v1/transactions/0.0.10459-1637099842-891982153"
+    ]
+  }
+  ```
+  or
+  ```json
+  "links": {
+    "related": {
+      "hedera_child_transactions": [
+        {
+          "timestamp": "1637100159.961284000",
+          "endpoint": "api/v1/transactions/0.0.11943-1637100159-861284000"
+        },
+        {
+          "timestamp": "1637099842.991982153",
+          "endpoint": "api/v1/transactions/0.0.10459-1637099842-891982153"
+        }
+      ]
+    }
+  }
+  ```
+- Should EVM and Hedera internal/child transactions be presented together or kept separate?
+
+## References
+
+- https://github.com/hashgraph/hedera-protobufs/blob/main/services/contract_call_local.proto
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)

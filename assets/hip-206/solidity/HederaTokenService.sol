@@ -5,9 +5,9 @@ pragma experimental ABIEncoderV2;
 import "./HederaResponseCodes.sol";
 import "./IHederaTokenService.sol";
 
-contract HederaTokenService {
+abstract contract HederaTokenService is HederaResponseCodes {
 
-    address constant precompileAddress = address(0x127);
+    address constant precompileAddress = address(0x167);
 
     /// Initiates a Token Transfer
     /// @param tokenTransfers the list of transfers to do
@@ -168,5 +168,3 @@ contract HederaTokenService {
         responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
     }
 }
-
-

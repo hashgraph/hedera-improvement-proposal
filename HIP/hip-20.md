@@ -5,7 +5,8 @@ author: Khoa Luong <khoa.luong@luthersystems.com>, Sam Wood <sam.wood@luthersyst
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Replaced
+superseded-by: 30
 created: 2021-06-29
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/110
 ---
