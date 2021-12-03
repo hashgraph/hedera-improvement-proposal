@@ -1,16 +1,14 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 226
 title: Mirror Node Contract Execution Results REST API
 author: Nana Essilfie-Conduah (@Nana-EC)
 type: Standards Track
 category: Mirror
-status: Review
-created: 11/18/21
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
+needs-council-approval: true
+status: Last Call
+last-call-date-time: 2021-12-17T07:00:00Z
+created: 2021-11-18
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/263
 ---
 
 ## Abstract
