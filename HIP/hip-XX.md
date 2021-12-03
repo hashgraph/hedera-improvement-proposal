@@ -65,7 +65,6 @@ None.
 [Draft of HIP, Hedera Swift SDK](https://github.com/hashgraph/hedera-improvement-proposal/pull/254)
 [Eth-brownie](https://eth-brownie.readthedocs.io/en/stable/)
 [Discussion](https://github.com/hashgraph/hedera-improvement-proposal/discussions/180)
-
 ## Copyright/license
 
 This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
