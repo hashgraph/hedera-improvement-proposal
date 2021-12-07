@@ -33,9 +33,14 @@ Today, applications have to use the File Service and submit two file contents qu
 
 ## Rationale 
 
-The proposal is to create a rest API query to return network information. As we continue to grow the network and transition into a permissionless model, the number of times the local address book will be required to update will increase. The transaction fee associated with the current file query hinders the ability to update the address book as frequently as it might be needed for applications to ensure their address book is always up to date. This information should be free. 
+The proposal is to create a rest API and gRPC query to return network information. As we continue to grow the network and transition into a permissionless model, the number of times the local address book will be required to update will increase. The transaction fee associated with the current file query hinders the ability to update the address book as frequently as it might be needed for applications to ensure their address book is always up to date. This information should be free. 
 
 ## Specification 
+
+gRPC
+
+`rpc getNetworkInfo () returns (NodeAddressBook); //Retrieves network information`
+
 
 REST API
 
