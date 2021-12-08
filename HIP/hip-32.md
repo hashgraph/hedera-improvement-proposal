@@ -29,7 +29,9 @@ The Hedera API (HAPI) can be modified very slightly, so that HBAR transfers can 
 
 ### Wallets
   
-Wallet software can allow the user to create an "account" instantly, for free, even without an internet connection. In this case, it will not create an actual account on Hedera. Instead, it will simply create a public/private key pair for the user. The software will then display this as an "account" with a zero balance, with a "long account ID", which doesn't look like 0.0.123, but instead is an alias consisting of "0.0." (or appropaiate shard/realm) followed by a base-64 string encoding the public key.
+Wallet software can allow the user to create an "account" instantly, for free, even without an internet connection. In this case, it will not create an actual account on Hedera. Instead, it will simply create a public/private key pair for the user. The software will then display this as an "account" with a zero balance, with a "long account ID". This long form doesn't look like `0.0.123`, but instead is an alias consisting of `<shard>.<realm>.<bytes>`, where the `bytes` is a [base64url](https://datatracker.ietf.org/doc/html/rfc4648#section-5) representation of the bytes, with the trailing `=` padding characters removed.  For example, `0.0.EiDXWpgBgrEKt9VL_tPJZAc6DuFy89qmIyWvAhpo9wdRGg` is the alias address of realm 0 shard 0 for the ed25519 public key `0xd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a`. So a long-form address will always match the following regex:
+
+`\d+\.\d+\.[-0-9a-zA-Z_]+`
 
 The user can then buy HBAR on an exchange, or receive HBAR sent from a friend, or receive HBAR paid by a customer. In all those cases, they will tell the other party that their "account ID" is that long-form account ID. And the transfer will actually create an actual Hedera account, deducting the creation fee from the amount transferred.
 
