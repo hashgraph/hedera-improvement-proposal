@@ -81,6 +81,7 @@ From the user's point of view, these virtual "accounts" should be indistinguisha
 * This is backwards compatible
 * Existing accounts have no alias, and cannot be accessed by an alias
 * New accounts that are auto-created will have an alias, and can be queried and transferred to using that alias.
+* Checksums from [HIP-15](https://hips.hedera.com/hip/hip-15) apply to long-form IDs unchanged, except that capital letters are allowed, and are represented by their ASCII value in the `d[]` array.
   
 ## Security Implications
 
