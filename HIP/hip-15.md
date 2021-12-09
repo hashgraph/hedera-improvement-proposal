@@ -9,7 +9,7 @@ status: Final
 created: 2021-03-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/47
 requires: 32
-updated: 2021-05-14, 2021-05-23
+updated: 2021-05-14, 2021-05-23, 2021-12-09
 ---
 
 ## Abstract
