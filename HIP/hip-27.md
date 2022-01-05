@@ -5,10 +5,11 @@ author: Jo Vercammen <jo.vercammen@meeco.me>
 type: Standards Track
 category: Application
 needs-council-approval: No
-status: Draft
+status: Last Call
+last-call-date-time: 2022-01-19T07:00:00Z
 created: 2021-06-06
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/103
-updated: 
+updated: 2022-01-05
 ---
 
 ## Abstract
