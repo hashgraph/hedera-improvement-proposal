@@ -5,7 +5,7 @@ author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds
 type: Standards
 category: Service
 needs-council-approval: Yes
-status: Council Review
+status: Accepted
 last-call-date-time: 2021-11-30T07:00:00Z
 created: 2021-10-19
 updated: 2021-11-30
