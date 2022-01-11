@@ -8,7 +8,7 @@ category: Application
 needs-council-approval: No
 status: Draft
 created: 2021-12-09
-discussions-to:
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/325
 updated:
 requires: NA
 replaces: NA
