@@ -1,5 +1,5 @@
 ---
-hip: TBD
+hip: 323
 title: C SDK
 author: Greg Scullard (gregscullard@hedera.com), Romain Menetrier (rm@emblock.co)
 working-group: Greg Scullard (gregscullard@hedera.com), Romain Menetrier (rm@emblock.co)
@@ -8,8 +8,8 @@ category: Application
 needs-council-approval: No
 status: Draft
 created: 2021-12-09
-discussions-to: 
-updated: 
+discussions-to:
+updated:
 requires: NA
 replaces: NA
 superseded-by: NA
@@ -17,17 +17,17 @@ superseded-by: NA
 
 ## Abstract
 
-This HIP concerns the creation of a C SDK which is currently missing from the family of Hedera SDKs. There is a .NET SDK which supports C#, however in the context of IOT, a native C implementation is often a requirement. 
+This HIP concerns the creation of a C SDK which is currently missing from the family of Hedera SDKs. There is a .NET SDK which supports C#, however in the context of IOT, a native C implementation is often a requirement.
 
 ## Motivation
 
-As IOT projects take hold, particularly in the field of sustainability, an SDK which is easy to use in IOT development environments is highly desirable. A C SDK would also be preferred by many gaming solutions. 
+As IOT projects take hold, particularly in the field of sustainability, an SDK which is easy to use in IOT development environments is highly desirable. A C SDK would also be preferred by many gaming solutions.
 
 ## Rationale
 
 While the initial impetus behind a C SDK was borne from an IOT mind set, the SDK should be usable in all contexts and not limited to a particular desktop or IOT chipset.
 
-A .NET SDK exists which enables development in C#, however in the context of IOT or non-microsoft platforms, this requires the use of abstraction layers which may not always be fully compatible with the target platform and may result in heavier/more complex binaries. 
+A .NET SDK exists which enables development in C#, however in the context of IOT or non-microsoft platforms, this requires the use of abstraction layers which may not always be fully compatible with the target platform and may result in heavier/more complex binaries.
 
 ## User stories
 
