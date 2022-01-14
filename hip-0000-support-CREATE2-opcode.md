@@ -53,9 +53,9 @@ to Services code and protobuf messages. Our reasoning is that:
 
 ## Specification
 
-- Implement the `CREATE2` EVM opcode `0xF5` in Services by linking the EIP-1014 address to its 
-underlying `0.0.X` id and updating the EVM address lookup to be alias-aware. 
-- Externalize this address-to-`0.0.X` link to mirror nodes via new `ContractCreate` child transactions.
+- Implement the `CREATE2` EVM opcode `0xF5` in Services by linking the EIP-1014 address to the new 
+  contract's underlying `0.0.X` id as an alias, and updating the EVM address lookup to be alias-aware. 
+- Externalize this address-to-`0.0.X` link to mirror nodes via new `ContractCreate` child records.
 - Update HAPI to include a new `bytes solidity_address` field in the `TransactionRecord` message,
 to be populated in these child transactions. 
 - Similarly, add a new `bytes solidity_address` field in the `ContractCallTransactionBody` and 
