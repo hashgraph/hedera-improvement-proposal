@@ -5,9 +5,9 @@ pragma experimental ABIEncoderV2;
 import "./HederaResponseCodes.sol";
 import "./IHederaTokenService.sol";
 
-contract HederaTokenService {
+abstract contract HederaTokenService is HederaResponseCodes {
 
-    address constant precompileAddress = address(0x127);
+    address constant precompileAddress = address(0x167);
 
     /// Initiates a Token Transfer
     /// @param tokenTransfers the list of transfers to do
@@ -27,11 +27,18 @@ contract HederaTokenService {
     /// @param metadata Applicable to tokens of type NON_FUNGIBLE_UNIQUE. A list of metadata that are being created.
     ///                 Maximum allowed size of each metadata is 100 bytes
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function mintToken(address token, uint64 amount, bytes memory metadata) internal returns (int responseCode) {
+    /// @return newTotalSupply The new supply of tokens. For NFTs it is the total count of NFTs
+    /// @return serialNumbers If the token is an NFT the newly generate serial numbers, otherwise empty.
+    function mintToken(address token, uint64 amount, bytes[] calldata metadata) internal
+        returns (int responseCode, uint64 newTotalSupply, int[] memory serialNumbers)
+    {
         (bool success, bytes memory result) = precompileAddress.delegatecall(
             abi.encodeWithSelector(IHederaTokenService.mintToken.selector,
             token, amount, metadata));
-        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+        (responseCode, newTotalSupply, serialNumbers) =
+            success
+                ? abi.decode(result, (int32, uint64, int[]))
+                : (HederaResponseCodes.UNKNOWN, 0, new int[](0));
     }
 
     /// Burns an amount fo teh token from the define treasury account
@@ -42,11 +49,17 @@ contract HederaTokenService {
     ///                account (0; balance], represented in the lowest denomination.
     /// @param serialNumbers Applicable to tokens of type NON_FUNGIBLE_UNIQUE. The list of serial numbers to be burned.
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
-    function burnToken(address token, uint64 amount, int64[] memory serialNumbers) internal returns (int responseCode) {
+    /// @return newTotalSupply The new supply of tokens. For NFTs it is the total count of NFTs
+    function burnToken(address token, uint64 amount, int64[] calldata serialNumbers) internal
+        returns (int responseCode, uint64 newTotalSupply)
+    {
         (bool success, bytes memory result) = precompileAddress.delegatecall(
             abi.encodeWithSelector(IHederaTokenService.burnToken.selector,
             token, amount, serialNumbers));
-        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+        (responseCode, newTotalSupply) =
+            success
+                ? abi.decode(result, (int32, uint64))
+                : (HederaResponseCodes.UNKNOWN, 0);
     }
 
     ///  Associates the provided account with the provided tokens. Must be signed by the provided
@@ -168,5 +181,3 @@ contract HederaTokenService {
         responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
     }
 }
-
-
