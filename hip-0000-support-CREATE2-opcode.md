@@ -13,11 +13,11 @@ discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discuss
 ## Abstract
 
 [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014) introduced the `CREATE2` opcode to let a 
-contract be deployed to a predictable address. 
+contract be deployed to a predictable address on the Ethereum blockchain. 
 
 Because each Hedera entity must have a unique `0.0.X` id, and the Solidity address of a 
-Hedera contract is currently _determined_ by its `0.0.X` id, there has not been a natural 
-way to implement `CREATE2` up to now.
+Hedera contract is currently _determined_ by its `0.0.X` id, there has not, historically, 
+been a natural way to implement `CREATE2` on our ledger.
 
 But after [HIP-32](https://hips.hedera.com/hip/hip-32), there is now a mechanism in the code 
 that provides a level of indirection between a `ByteString` "alias" and a `0.0.X` id. We propose
