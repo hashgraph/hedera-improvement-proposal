@@ -13,9 +13,11 @@ discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discuss
 ## Abstract
 
 [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014) introduced the `CREATE2` opcode to let a 
-contract be deployed to a predictable address.  Because each Hedera entity must have a unique 
-`0.0.X` id, and the Solidity address of a Hedera contract is _determined_ by its `0.0.X` id, 
-there is currently no way to guarantee what a new contract's address will be. 
+contract be deployed to a predictable address. 
+
+Because each Hedera entity must have a unique `0.0.X` id, and the Solidity address of a 
+Hedera contract is currently _determined_ by its `0.0.X` id, there has not been a natural 
+way to implement `CREATE2` up to now.
 
 But after [HIP-32](https://hips.hedera.com/hip/hip-32), there is now a mechanism in the code 
 that provides a level of indirection between a `ByteString` "alias" and a `0.0.X` id. We propose
@@ -39,8 +41,8 @@ to let such applications to be deployed on Hedera.
 The business value of this HIP is self-evident, so the only decision points are in the changes
 to Services code and protobuf messages. Our reasoning is that:
   1. Re-use of the alias mechanism reduces risk and complexity in the codebase.
-  2. Externalizing created `0.0.X`-to-address links via the `alias` field in the record follows
-     the same pattern used in auto-account creation.
+  2. Externalizing created `0.0.X`-to-address links via a new `solidity_address` field in the 
+     record follows the same pattern used in auto-account creation.
   3. Although the `GetBySolidityIDQuery` _can_ be used to look up the `ContractID` for any 
      Solidity address, this is not a free query and clients may prefer to pre-compute the 
      `CREATE2` address and use it directly.
