@@ -1,0 +1,147 @@
+---
+hip: <HIP number (this is determined by the HIP editor)>
+title: Mirror REST NFT info balance endpoint
+author: May Chan (@rocketmay)
+working-group: 
+type: Standards Track
+category: Mirror
+needs-council-approval: no
+status: Draft
+created: January 13, 2022
+discussions-to: https://github.com/hashgraph/hedera-mirror-node/issues/3081
+updated: <comma separated list of dates>
+requires: n/a
+replaces: n/a
+superseded-by: n/a
+---
+
+## Abstract
+
+This HIP proposes a new mirror node endpoint to simplify account queries for NFT tokens. The new REST endpoint would return a list of tokens, complete with token id's and serial numbers for a given account.
+
+## Motivation
+
+ For NFT apps being able to obtain a list of all the NFTs in an account is one of the basic calls. Currently the /balance?account.id= endpoint only returns the token ids of an account, but not the serial numbers. There is also the tokens/:tokenId/nfts?account.id=:accountId endpoint which returns all the serial numbers of a token, filtered by a specific account. Currently the only way to get a list of all the token id's in an account with serial numbers is to call the /balance endpoint, followed by a call to the /nfts endpoint for each token in the account. This is inefficient and results in up to N+1 calls made to the mirror node, where N is the number of tokens in the account.
+
+ The new REST endpoint would provide a similar functionality to the /balance endpoint, but also include serial numbers and other information useful to NFT's. The goal with this endpoint is to minimize the queries required to retrieve complete NFT information for tokens owned by an account.
+
+## Rationale
+
+The scalability of this endpoint is a chief consideration. Discussions with @xin-hedera and @steven-sheehy have informed the exact endpoint which will be used and the data that will be returned.
+
+Pagination is important to implement as there are accounts that hold large numbers of NFT's, making a non-paginated response impractical. It has been noted that a paging mechanism will need some consideration as the response requires multi-column pagination.
+
+token.id and serial.number should be listed as separate parameters to simplify parsing and sorting.
+
+## User stories
+
+As an NFT gallery, I want to be able to run a query for all the tokens held by an account, with serial numbers and metadata, so that I can obtain complete information with the fewest number of api calls.
+
+As a wallet, I want to run a query to capture all the tokens owned by an account and their balances, including fungible and non-fungible tokens, as well as tokens which are associated but have zero balance, so that I can obtain complete token information about an account.
+  
+## Specification
+
+The new endpoint will be located at: /api/v1/accounts/:accountId/nfts
+
+One proposal was to provide the exact same response as the currently existing: /api/v1/tokens/:id/nfts
+
+The response will be paginated similar to other queries.
+
+Example response (modified for this example from the /api/v1/tokens/:id/nfts response):
+
+{ 
+    "nfts":[
+        {
+            "account_id": "0.0.350852",
+            "created_timestamp": "timestamp",
+            "deleted": false, 
+            "metadata": "Base64 encoded metadata",
+            "modified_timestamp": "timestamp",
+            "serial_number": 1, 
+            "token_id": "0.0.111111"
+        },
+        {
+            "account_id": "0.0.350852",
+            "created_timestamp": "timestamp",
+            "deleted": false, 
+            "metadata": "Base64 encoded metadata",
+            "modified_timestamp": "timestamp",
+            "serial_number": 2, 
+            "token_id": "0.0.111111"
+        },
+        {
+            "account_id": "0.0.350852",
+            "created_timestamp": "timestamp",
+            "deleted": false, 
+            "metadata": "Base64 encoded metadata",
+            "modified_timestamp": "timestamp",
+            "serial_number": 1, 
+            "token_id": "0.0.222222"
+        }
+    ],
+    "links": {"next":"/api/v1/accounts/accountId/<link to next page>"}
+}
+
+## Alternative Specification
+
+The following alternative specification is provided for review and consideration. This response is designed to provide most of the data which an NFT Gallery or wallet would query for.
+
+It is understood that due to performance, data structure and scaling issues that this specification may not be practical.
+
+Notable design decisions: 
+
+Tokens is returned as an array and captures both fungible or non-fungible tokens. Balance can be 0 to indicate association with no tokens held.
+Serials is provided as an optional array for non-fungible tokens.
+The metadata for each serial number is the critical piece of information.
+
+{
+    Tokens: [
+        {
+            token_id: "0.0.12345"
+            symbol: "string"
+            type: (ie. NON-FUNGIBLE UNIQUE, COMMON FUNGIBLE)
+            memo: "string"
+            balance: number
+            serials: [ // optional array for NON-FUNGIBLE
+                {
+                    serial_number: "123"
+                    metadata: "string typically used for metadata uri"
+                },
+                ... // multiple
+            ]
+        },
+        ... // multiple
+    ]
+}
+
+## Backwards Compatibility
+
+This HIP implements a new endpoint and does not affect existing endpoint responses.
+
+## Security Implications
+
+This HIP does not propose any new functionality that would create security implications.
+
+## How to Teach This
+
+The endpoint should be added to the Mirror Node REST API documentation.
+
+## Reference Implementation
+
+TBD
+
+## Rejected Ideas
+
+The idea to provide the nft.id as a token-serial (for example 0.0.12345-100) was rejected, to keep the separation between token and serial parameters.
+
+## Open Issues
+
+TBD
+
+## References
+
+None
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
