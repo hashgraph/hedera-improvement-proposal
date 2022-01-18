@@ -1,0 +1,103 @@
+---
+hip: 329
+title: Support CREATE2 opcode
+author: Michael Tinker <michael.tinker@hedera.com>
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Last Call
+last-call-date-time: 2022-02-01T07:00:00Z
+created: 2022-01-14
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/328
+---
+
+## Abstract
+
+[EIP-1014](https://eips.ethereum.org/EIPS/eip-1014) introduced the `CREATE2` opcode to let a 
+contract be deployed to a predictable address on the Ethereum blockchain. 
+
+Because each Hedera entity must have a unique `0.0.X` id, and the Solidity address of a 
+Hedera contract is currently _determined_ by its `0.0.X` id, there has not, historically, 
+been a natural way to implement `CREATE2` on our ledger.
+
+But after [HIP-32](https://hips.hedera.com/hip/hip-32), there is now a mechanism in the code 
+that provides a level of indirection between a `ByteString` "alias" and a `0.0.X` id. We propose
+in this HIP to implement `CREATE2` by re-using the alias mechanism to link the deterministic 
+address specified in EIP-1014 to a new contract's `0.0.X` id.
+
+To externalize this `0.0.X`-to-address link to mirror nodes in the record stream, we propose to 
+re-use the "internal" transaction records introduced in [HIP-206](https://hips.hedera.com/hip/hip-206),
+only adding a new `bytes solidity_address` field to the record. To simplify client calls to 
+contracts created via `CREATE2`, we propose to extend the `ContractCallTransactionBody` with an 
+option to specify a `ByteString solidity_address`, instead of the `ContractID contractID`.
+
+## Motivation
+
+Standard implementations of a distributed exchange (DEX), for example, make heavy use of 
+the `CREATE2` opcode. This opcode can also improve user onboarding flows in dApps. We want 
+to let such applications to be deployed on Hedera.
+
+## Rationale
+
+The business value of this HIP is self-evident, so the only decision points are in the changes
+to Services code and protobuf messages. Our reasoning is that:
+  1. Re-use of the alias mechanism reduces risk and complexity in the codebase.
+  2. Externalizing created `0.0.X`-to-address links via a new `solidity_address` field in the 
+     record follows the same pattern used in auto-account creation.
+  3. Although the `GetBySolidityIDQuery` _can_ be used to look up the `ContractID` for any 
+     Solidity address, this is not a free query and clients may prefer to pre-compute the 
+     `CREATE2` address and use it directly.
+
+## User stories
+
+- As a Hedera DEX operator, I want to re-use standard Solidity contracts that use the `CREATE2` opcode.
+
+## Specification
+
+- Implement the `CREATE2` EVM opcode `0xF5` in Services by linking the EIP-1014 address to the new 
+  contract's underlying `0.0.X` id as an alias, and updating the EVM address lookup to be alias-aware. 
+- Externalize this address-to-`0.0.X` link to mirror nodes via new `ContractCreate` child records.
+- Update HAPI to include a new `bytes solidity_address` field in the `TransactionRecord` message,
+to be populated in these child transactions. 
+- Similarly, add a new `bytes solidity_address` field in the `ContractCallTransactionBody` and 
+`ContractCallLocalQuery` so that users can directly call a contract by its `CREATE2` address.
+- Deprecate the `createdContractIDs` field in the `ContractFunctionResult` message, since this 
+information will now be duplicated by the new child transactions.
+
+## Backwards Compatibility
+
+No existing contract should be affected by this HIP---unless it was failing due to use of 
+`CREATE2`, in which case it will become functional!
+
+## Security Implications
+
+The Ethereum community and others have now demonstrated patterns that allow safe use of `CREATE2`.
+As long as users follow the patterns in these contracts, there should not be security implications.
+
+## How to Teach This
+
+"Implement EIP-1014 on Hedera to allow creating contracts at pre-determined addresses."
+
+## Reference Implementation
+
+The user-facing changes to HAPI have been discussed in [this PR](https://github.com/hashgraph/hedera-protobufs/pull/138).
+
+## Rejected Ideas
+
+In principle, it may be possible to make `CREATE2` addresses globally unique across all shards. 
+But the extreme complexity of this task did not seem justified by the value provided.
+
+## Open Issues
+
+No blocking issues are known at this time.
+
+## References
+
+- [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014)
+- [HIP-32](https://hips.hedera.com/hip/hip-32)
+- [HIP-206](https://hips.hedera.com/hip/hip-206)
+- [Protobufs PR #138](https://github.com/hashgraph/hedera-protobufs/pull/138)
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
