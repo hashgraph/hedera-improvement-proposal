@@ -1,11 +1,12 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 329
 title: Support CREATE2 opcode
 author: Michael Tinker <michael.tinker@hedera.com>
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Review
+status: Last Call
+last-call-date-time: 2022-02-01T07:00:00Z
 created: 2022-01-14
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/328
 ---
