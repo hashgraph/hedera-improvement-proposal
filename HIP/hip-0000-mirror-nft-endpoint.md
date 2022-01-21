@@ -6,7 +6,7 @@ working-group:
 type: Standards Track
 category: Mirror
 needs-council-approval: no
-status: Draft
+status: Review
 created: January 13, 2022
 discussions-to: https://github.com/hashgraph/hedera-mirror-node/issues/3081
 updated: <comma separated list of dates>
