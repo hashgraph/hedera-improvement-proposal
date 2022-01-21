@@ -1,18 +1,14 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 331
 title: Mirror REST NFT info balance endpoint
 author: May Chan (@rocketmay)
-working-group: 
 type: Standards Track
 category: Mirror
-needs-council-approval: no
-status: Review
-created: January 13, 2022
+needs-council-approval: yes
+status: Last Call
+last-call-date-time: 2022-02-04T07:00:00Z
+created: 2021-01-21
 discussions-to: https://github.com/hashgraph/hedera-mirror-node/issues/3081
-updated: <comma separated list of dates>
-requires: n/a
-replaces: n/a
-superseded-by: n/a
 ---
 
 ## Abstract
