@@ -1,0 +1,102 @@
+---
+hip: TBD
+title: Streamline contract creation in SDKs
+author: Greg Scullard (@gregscullard), @wensheng
+type: Application
+category: SDK
+needs-council-approval: no
+status: Draft
+last-call-date-time:
+created: 2021-01-24
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/246
+---
+
+## Abstract
+
+This HIP proposes a simpler way of deploying smart contracts using the SDKs.
+
+## Motivation
+
+The current smart contract deployment flow calls for developers to first create a file on the Hedera network, optionally as a set of transactions to append data to the file if the contract's bytecode is large. Once the file is created, the developer can deploy the contract with another API call.
+
+It would be easier if all these steps were wrapped into a single SDK method.
+
+## Rationale
+
+Improving the developer experience with a more "natural" contract deployment flow that abstracts the steps required to do so.
+
+## User stories
+
+As a developer, I want to be able to deploy my smart contract from bytecode as a single SDK operation.
+
+As a developer, I want to be able to optionally set constructor parameters when deploying my contract as a single SDK operation.
+
+As a developer, I want to see an example of this deployment flow in the SDKs examples.
+
+As a developer, I want to be able to consult documentation on this new deployment flow.
+
+## Specification
+
+In Java
+
+```java
+public final class ContractCreateTransaction extends Transaction<ContractCreateTransaction> {
+  /**
+   * Sets the contract's bytecode
+   * <p>
+   * A file containing the bytecode will automatically be created
+   * and will be used during contract creation
+   * <p>
+   * The bytecode must be the ASCII hexadecimal representation of the smart contract bytecode.
+   *
+   * @param bytecode The Bytecode
+   * @return {@code this}
+   */
+  public ContractCreateTransaction setBytecode(String bytecode) {
+    Objects.requireNonNull(bytecode);
+    // throw exception if `bytecodeFileId` is already set (can't have both)
+    // add exception to setBytecodeFileId to do the opposite
+    requireNotFrozen();
+    this.bytecode = bytecode;
+    return this;
+  }
+}
+```
+
+The `.execute` method should
+* Create file (with admin key for append if necessary) from bytecode
+* Append n times to complete bytecode upload
+* Create the contract
+* Upon querying for a receipt or record for the operation, the contractId should be returned.
+
+## Backwards Compatibility
+
+This HIP implements new SDK methods and therefore has no backwards compatibility issues.
+
+## Security Implications
+
+This HIP does not propose any new functionality that would create security implications.
+
+## How to Teach This
+
+An SDK example and documentation updates
+
+## Reference Implementation
+
+TBD
+
+## Rejected Ideas
+
+Changing the Hedera Services layer to support larger file sizes (large bytecode support) or one step Hedera API to upload and deploy smart contracts.
+
+## Open Issues
+
+TBD
+
+## References
+
+None
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
