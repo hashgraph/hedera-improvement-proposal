@@ -39,7 +39,7 @@ The proposal is to create a rest API and gRPC query to return network informatio
 
 gRPC
 
-The gRPC API will use server streaming technology to deliver all of the `NodeAddress` entries contained within the latest address book. The stream will automatically complete when all entries are delivered, avoidng the complexity of client side paging.
+The gRPC API will use server streaming technology to deliver all of the `NodeAddress` entries contained within the latest address book. The stream will automatically complete when all entries are delivered, avoiding the complexity of client side paging.
 
 ```protobuf
 // Request object to query an address book for its list of nodes
