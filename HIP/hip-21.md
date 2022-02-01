@@ -39,8 +39,25 @@ The proposal is to create a rest API and gRPC query to return network informatio
 
 gRPC
 
-`rpc getNetworkInfo () returns (NodeAddressBook); //Retrieves network information`
+The gRPC API will use server streaming technology to deliver all of the `NodeAddress` entries contained within the latest address book. The stream will automatically complete when all entries are delivered, avoiding the complexity of client side paging.
 
+```protobuf
+// Request object to query an address book for its list of nodes
+message AddressBookQuery {
+    .proto.FileID file_id = 1; // The ID of the address book file on the network. Can be either 0.0.101 or 0.0.102.
+    int32 limit = 2;           // The maximum number of node addresses to receive before stopping. If not set or set to zero it will return all node addresses in the database.
+}
+
+// Provides cross network APIs like address book queries
+service NetworkService {
+
+    // Query for an address book and return its nodes. The nodes are returned in ascending order by node ID. The
+    // response is not guaranteed to be a byte-for-byte equivalent to the NodeAddress in the Hedera file on
+    // the network since it is reconstructed from a normalized database table.
+    rpc getNodes (AddressBookQuery) returns (stream .proto.NodeAddress);
+
+}
+```
 
 REST API
 
@@ -110,6 +127,12 @@ service NetworkService {
 +  rpc getNetworkInfo (Query) returns (Response); //Retrieves network information
    rpc uncheckedSubmit (Transaction) returns (TransactionResponse); // Submits a "wrapped" transaction to the network, skipping its standard prechecks. (Note that the "wrapper" <tt>UncheckedSubmit</tt> transaction is still subject to normal prechecks, including an authorization requirement that its payer be either the treasury or system admin account.)
 } 
+```
+
+The other idea was to have the mirror node return the full address book in a single response. This was rejected since the address book is large and only getting bigger. The current mainnet `0.0.102` address book is 25 KiB.
+
+```protobuf
+rpc getNetworkInfo () returns (NodeAddressBook); //Retrieves network information
 ```
 
 ## Open Issues
