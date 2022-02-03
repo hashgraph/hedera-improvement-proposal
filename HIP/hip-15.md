@@ -150,12 +150,12 @@ When calculating checksums for all accounts of the form `0.0.x` as `x` counts up
 ## Reference Implementation
 
 Example code can be downloaded for these languages (the reference implementation is the Java version):
-- Pseudocode: [HIP-15-pseudocode.md](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-pseudocode.md)
-- Java: [AddressChecksums.java](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/AddressChecksums.java)
-- Javascript: [HIP-15-javascript.html](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-javascript.html)
-- Spreadsheet: [HIP-15-spreadsheet.xlsx](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-spreadsheet.xlsx)
-- Mathematica: [HIP-15-mathematica.nb.txt](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-mathematica.nb.txt)
-- All of the above: [HIP-15-all.zip](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-all.zip)
+- Pseudocode: [HIP-15-pseudocode.md](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-pseudocode.md)
+- Java: [AddressChecksums.java](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/AddressChecksums.java)
+- Javascript: [HIP-15-javascript.html](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-javascript.html)
+- Spreadsheet: [HIP-15-spreadsheet.xlsx](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-spreadsheet.xlsx)
+- Mathematica: [HIP-15-mathematica.nb.txt](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-mathematica.nb.txt)
+- All of the above: [HIP-15-all.zip](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-all.zip)
 
 
 
