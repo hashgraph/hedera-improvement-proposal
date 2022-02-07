@@ -187,9 +187,8 @@ This opcode will operate as expected with no change from Ethereum Mainnet.
 
 #### `CHAINID`
 
-The `CHAINID` opcode will return `290` (hex `0x0127`) for mainnet, `291` (
-hex `0x0128`) for testnet, and `292` (
-hex `0x0129`) for previewnet.
+The `CHAINID` opcode will return `295` (hex `0x0127`) for mainnet, `296` (
+hex `0x0128`) for testnet, and `297` (hex `0x0129`) for previewnet.
 
 #### Blake2 compression function F precompile
 
