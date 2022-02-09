@@ -49,6 +49,168 @@ interface IHederaTokenService {
         NftTransfer[] nftTransfers;
     }
 
+    /// Basic properties of a Hedera Token - name, symbol, memo, tokenSupplyType, maxSupply, 
+    /// treasury, freezeDefault. These properties are related both to Fungible and NFT token types
+    struct HederaToken {
+        // The publicly visible name of the token. The token name is specified as a Unicode string. 
+        // Its UTF-8 encoding cannot exceed 100 bytes, and cannot contain the 0 byte (NUL).
+        string name;
+
+        // The publicly visible token symbol. The token symbol is specified as a Unicode string. 
+        // Its UTF-8 encoding cannot exceed 100 bytes, and cannot contain the 0 byte (NUL).
+        string symbol;
+
+        // The memo associated with the token (UTF-8 encoding max 100 bytes)
+        string memo;
+
+        // IWA compatibility. Specified the token supply type. Defaults to INFINITE
+        bool tokenSupplyType;
+
+        // IWA Compatibility. Depends on TokenSupplyType. For tokens of type FUNGIBLE_COMMON - the
+        // maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE_UNIQUE -
+        // the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
+        uint32 maxSupply;
+
+        // The ID of the account which will act as a treasury for the token as a solidity address.
+        // This account will receive the specified initial supply or the newly minted NFTs in
+        // the case for NON_FUNGIBLE_UNIQUE Type
+        address treasury;
+
+        // The default Freeze status (frozen or unfrozen) of Hedera accounts relative to this token. If
+        // true, an account must be unfrozen before it can receive the token
+        bool freezeDefault;
+    }
+
+    /// Expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
+    struct Expiry {
+        // The epoch second at which the token should expire; if an auto-renew account and period are
+        // specified, this is coerced to the current epoch second plus the autoRenewPeriod
+        uint32 second;
+
+        // ID of an account which will be automatically charged to renew the token's expiration, at
+        // autoRenewPeriod interval, expressed as a solidity address
+        address autoRenewAccount;
+
+        // The interval at which the auto-renew account will be charged to extend the token's expiry
+        uint32 autoRenewPeriod;
+    }
+
+    /// A fixed number of units (hbar or token) to assess as a fee during a transfer of
+    /// units of the token to which this fixed fee is attached.
+    struct FixedFee {
+        // The number of units to assess as a fee
+        uint32 amount;
+
+        // The denomination of the fee; taken as hbar if left unset and taken as the id
+        // of the newly created token if set to the sentinel value of 0x0
+        address tokenId;
+
+        // The ID of the account to receive the custom fee, expressed as a solidity address
+        address feeCollector;
+    }
+
+    /// A fraction of the transferred units of a token to assess as a fee. The amount assessed will never
+    /// be less than the given minimumAmount, and never greater than the given maximumAmount.  The
+    /// denomination is always units of the token to which this fractional fee is attached.
+    struct FractionalFee {
+        // A rational number's numerator, used to set the amount of a value transfer to collect as a custom fee
+        uint32 numerator;
+
+        // A rational number's denominator, used to set the amount of a value transfer to collect as a custom fee
+        uint32 denominator;
+
+        // The minimum amount to assess
+        uint32 minimumAmount;
+        
+        // The maximum amount to assess (zero implies no maximum)
+        uint32 maximumAmount;
+        bool netOfTransfers;
+
+        // The ID of the account to receive the custom fee, expressed as a solidity address
+        address feeCollector;
+    }
+
+    /// A fee to assess during a transfer that changes ownership of an NFT. Defines the fraction of
+    /// the fungible value exchanged for an NFT that the ledger should collect as a royalty. ("Fungible
+    /// value" includes both ℏ and units of fungible HTS tokens.) When the NFT sender does not receive
+    /// any fungible value, the ledger will assess the fallback fee, if present, to the new NFT owner.
+    /// Royalty fees can only be added to tokens of type type NON_FUNGIBLE_UNIQUE.
+    struct RoyaltyFee {
+        // A fraction's numerator of fungible value exchanged for an NFT to collect as royalty
+        uint32 numerator;
+
+        // A fraction's denominator of fungible value exchanged for an NFT to collect as royalty
+        uint32 denominator;
+
+        // If present, the fixed fee to assess to the NFT receiver when no fungible value is exchanged
+        // with the sender
+        FixedFee fixedFee;
+
+        // The ID of the account to receive the custom fee, expressed as a solidity address
+        address feeCollector;
+    }
+
+    /// A Key can be a public key from either the Ed25519 or ECDSA(secp256k1) signature schemes, where
+    /// in the ECDSA(secp256k1) case we require the 33-byte compressed form of the public key. We call
+    /// these public keys <b>primitive keys</b>.
+    /// A Key can also be the ID of a smart contract instance, which is then authorized to perform any 
+    /// precompiled contract action that requires this key to sign. 
+    /// Note that when a Key is a smart contract ID, it <i>doesn't</i> mean the contract with that ID 
+    /// will actually create a cryptographic signature. It only means that when the contract calls a 
+    /// precompiled contract, the resulting "child transaction" will be authorized to perform any action
+    /// controlled by the Key.
+    /// Exactly one of the possible values should be populated in order for the Key to be valid.
+    struct Key {
+        // smart contract instance that is authorized as if it had signed with a key
+        address contractId;
+
+        // Ed25519 public key bytes
+        bytes ed25519;
+
+        // Compressed ECDSA(secp256k1) public key bytes
+        bytes ECDSA_secp256k1;
+
+        // A smart contract that, if the recipient of the active message frame, should be treated
+        // as having signed. (Note this does not mean the <i>code being executed in the frame</i> 
+        // will belong to the given contract, since it could be running another contract's code via 
+        // <tt>delegatecall</tt>. So setting this key is a more permissive version of setting the
+        // contractID key, which also requires the code in the active message frame belong to the
+        // the contract with the given id.)
+        address delegatableContractId;
+    }
+
+    /// A convenience struct used to group different types of Keys we want to set to a Token during
+    /// token creation.
+    struct TokenKeys{
+        // The key which can perform update/delete operations on the token. If empty, the token can be
+        // perceived as immutable (not being able to be updated/deleted)
+        Key adminKey;
+
+        // The key which can grant or revoke KYC of an account for the token's transactions. If empty,
+        // KYC is not required, and KYC grant or revoke operations are not possible.
+        Key kycKey;
+
+        // The key which can sign to freeze or unfreeze an account for token transactions. If empty,
+        // freezing is not possible
+        Key freezeKey;
+
+        // The key which can wipe the token balance of an account. If empty, wipe is not possible
+        Key wipeKey;
+
+        // The key which can change the supply of a token. The key is used to sign Token Mint/Burn
+        // operations
+        Key supplyKey;
+
+        // The key which can change the token's custom fee schedule; must sign a TokenFeeScheduleUpdate
+        // transaction
+        Key feeScheduleKey;
+
+        // The Key which can pause and unpause the Token.
+        // If Empty the token pause status defaults to PauseNotApplicable, otherwise Unpaused.
+        Key pauseKey;
+    }
+
+
     /**********************
      * Direct HTS Calls   *
      **********************/
@@ -132,6 +294,33 @@ interface IHederaTokenService {
     /// @param account The account to be associated with the provided token
     /// @param token The token to be associated with the provided account
     function dissociateToken(address account, address token) external returns (int responseCode);
+
+    /// Creates a Fungible Token with the specified properties
+    /// @param token the basic properties of the token being created
+    /// @param initialTotalSupply Specifies the initial supply of tokens to be put in circulation. The
+    /// initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible.
+    /// @param decimals the number of decimal places a token is divisible by.
+    /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
+    /// @param fixedFees list of fixed fees to apply to the token
+    /// @param fractionalFees list of fractional fees to apply to the token
+    /// @param keys list of keys to set to the token
+    /// @return bool whether the create was successful
+    /// @return address the address of the created token
+    function createFungibleToken(HederaToken token, uint initialTotalSupply, uint decimals, 
+        Expiry expiry, FixedFee[] fixedFees, FractionalFee[] fractionalFees, TokenKeys keys) (bool, address)
+
+    /// Creates an Non Fungible Unique Token with the specified properties
+    /// @param token the basic properties of the token being created
+    /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
+    /// @param fixedFees list of fixed fees to apply to the token
+    /// @param fractionalFees list of fractional fees to apply to the token
+    /// @param royaltyFees list of royalty fees to apply to the token
+    /// @param keys list of keys to set to the token
+    /// @return bool bool whether the create was successful
+    /// @return address the address of the created token
+    function createNFT(HederaToken token, Expiry expiry, FixedFee[] fixedFees, FractionalFee[] fractionalFees, 
+        RoyaltyFee[] royaltyFees, TokenKeys keys) (bool, address)
+
 
     /**********************
      * ABIV1 calls        *
