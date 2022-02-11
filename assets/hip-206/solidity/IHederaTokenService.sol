@@ -162,7 +162,7 @@ interface IHederaTokenService {
     /// Exactly one of the possible values should be populated in order for the Key to be valid.
     struct Key {
         // bit field representing the key type - can be one or more of adminKey, kycKey, 
-        freezeKey, wipeKey, supplyKey, feeScheduleKey, pauseKey
+        // freezeKey, wipeKey, supplyKey, feeScheduleKey, pauseKey
         uint8 type;
 
         // smart contract instance that is authorized as if it had signed with a key
