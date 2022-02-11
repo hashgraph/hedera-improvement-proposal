@@ -293,7 +293,7 @@ interface IHederaTokenService {
         Expiry memory expiry, 
         FixedFee[] memory fixedFees, 
         FractionalFee[] memory fractionalFees, 
-        Key[] memory keys) external returns (bool, address);
+        Key[] memory keys) external returns (bool success, bytes tokenAddress);
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
@@ -310,7 +310,7 @@ interface IHederaTokenService {
         FixedFee[] memory fixedFees, 
         FractionalFee[] memory fractionalFees, 
         RoyaltyFee[] memory royaltyFees, 
-        Key[] memory keys) external returns (bool, address);
+        Key[] memory keys) external returns (bool success, bytes tokenAddress);
 
 
     /**********************

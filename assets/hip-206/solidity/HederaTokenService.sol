@@ -190,4 +190,49 @@ abstract contract HederaTokenService is HederaResponseCodes {
             token, sender, receiver, serialNumber));
         responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
     }
+
+    /// Creates a Fungible Token with the specified properties
+    /// @param token the basic properties of the token being created
+    /// @param initialTotalSupply Specifies the initial supply of tokens to be put in circulation. The
+    /// initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible.
+    /// @param decimals the number of decimal places a token is divisible by.
+    /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
+    /// @param fixedFees list of fixed fees to apply to the token
+    /// @param fractionalFees list of fractional fees to apply to the token
+    /// @param keys list of keys to set to the token
+    /// @return success whether the create was successful
+    /// @return result the address of the created token
+    function createFungibleToken(
+        IHederaTokenService.HederaToken memory token, 
+        uint initialTotalSupply, 
+        uint decimals, 
+        IHederaTokenService.Expiry memory expiry, 
+        IHederaTokenService.FixedFee[] memory fixedFees, 
+        IHederaTokenService.FractionalFee[] memory fractionalFees, 
+        IHederaTokenService.Key[] memory keys) internal returns (bool success, bytes memory result)     {
+        (success, result) = precompileAddress.call(
+            abi.encodeWithSelector(IHederaTokenService.createFungibleToken.selector,
+            token, initialTotalSupply, decimals, expiry, fixedFees, fractionalFees, keys));
+    }
+
+    /// Creates an Non Fungible Unique Token with the specified properties
+    /// @param token the basic properties of the token being created
+    /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
+    /// @param fixedFees list of fixed fees to apply to the token
+    /// @param fractionalFees list of fractional fees to apply to the token
+    /// @param royaltyFees list of royalty fees to apply to the token
+    /// @param keys list of keys to set to the token
+    /// @return success whether the create was successful
+    /// @return result the address of the created token
+    function createNFT(
+        IHederaTokenService.HederaToken memory token, 
+        IHederaTokenService.Expiry memory expiry, 
+        IHederaTokenService.FixedFee[] memory fixedFees, 
+        IHederaTokenService.FractionalFee[] memory fractionalFees, 
+        IHederaTokenService.RoyaltyFee[] memory royaltyFees, 
+        IHederaTokenService.Key[] memory keys) internal returns (bool success, bytes memory result)     {
+        (success, result) = precompileAddress.call(
+            abi.encodeWithSelector(IHederaTokenService.createNFT.selector,
+            token, expiry, fixedFees, fractionalFees, royaltyFees, keys));
+    }
 }
