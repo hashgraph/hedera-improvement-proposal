@@ -161,6 +161,10 @@ interface IHederaTokenService {
     /// controlled by the Key.
     /// Exactly one of the possible values should be populated in order for the Key to be valid.
     struct Key {
+        // bit field representing the key type - can be one or more of adminKey, kycKey, 
+        freezeKey, wipeKey, supplyKey, feeScheduleKey, pauseKey
+        uint8 type;
+
         // smart contract instance that is authorized as if it had signed with a key
         address contractId;
 
@@ -178,38 +182,6 @@ interface IHederaTokenService {
         // the contract with the given id.)
         address delegatableContractId;
     }
-
-    /// A convenience struct used to group different types of Keys we want to set to a Token during
-    /// token creation.
-    struct TokenKeys{
-        // The key which can perform update/delete operations on the token. If empty, the token can be
-        // perceived as immutable (not being able to be updated/deleted)
-        Key adminKey;
-
-        // The key which can grant or revoke KYC of an account for the token's transactions. If empty,
-        // KYC is not required, and KYC grant or revoke operations are not possible.
-        Key kycKey;
-
-        // The key which can sign to freeze or unfreeze an account for token transactions. If empty,
-        // freezing is not possible
-        Key freezeKey;
-
-        // The key which can wipe the token balance of an account. If empty, wipe is not possible
-        Key wipeKey;
-
-        // The key which can change the supply of a token. The key is used to sign Token Mint/Burn
-        // operations
-        Key supplyKey;
-
-        // The key which can change the token's custom fee schedule; must sign a TokenFeeScheduleUpdate
-        // transaction
-        Key feeScheduleKey;
-
-        // The Key which can pause and unpause the Token.
-        // If Empty the token pause status defaults to PauseNotApplicable, otherwise Unpaused.
-        Key pauseKey;
-    }
-
 
     /**********************
      * Direct HTS Calls   *
@@ -307,7 +279,7 @@ interface IHederaTokenService {
     /// @return bool whether the create was successful
     /// @return address the address of the created token
     function createFungibleToken(HederaToken token, uint initialTotalSupply, uint decimals, 
-        Expiry expiry, FixedFee[] fixedFees, FractionalFee[] fractionalFees, TokenKeys keys) (bool, address)
+        Expiry expiry, FixedFee[] fixedFees, FractionalFee[] fractionalFees, Key[] keys) (bool, address)
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
@@ -319,7 +291,7 @@ interface IHederaTokenService {
     /// @return bool bool whether the create was successful
     /// @return address the address of the created token
     function createNFT(HederaToken token, Expiry expiry, FixedFee[] fixedFees, FractionalFee[] fractionalFees, 
-        RoyaltyFee[] royaltyFees, TokenKeys keys) (bool, address)
+        RoyaltyFee[] royaltyFees, Key[] keys) (bool, address)
 
 
     /**********************
