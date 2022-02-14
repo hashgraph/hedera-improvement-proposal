@@ -171,7 +171,7 @@ interface IHederaTokenService {
         // 5th bit: feeScheduleKey
         // 6th bit: pauseKey
         // 7th bit: ignored
-        uint8 keyType;
+        uint keyType;
 
         // smart contract instance that is authorized as if it had signed with a key
         address contractId;
@@ -290,10 +290,10 @@ interface IHederaTokenService {
         HederaToken memory token, 
         uint initialTotalSupply, 
         uint decimals, 
+        Key[] memory keys,
         Expiry memory expiry, 
         FixedFee[] memory fixedFees, 
-        FractionalFee[] memory fractionalFees, 
-        Key[] memory keys) external returns (bool success, bytes tokenAddress);
+        FractionalFee[] memory fractionalFees) external returns (bool success, bytes tokenAddress);
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
@@ -306,11 +306,11 @@ interface IHederaTokenService {
     /// @return address the address of the created token
     function createNFT(
         HederaToken memory token, 
+        Key[] memory keys,
         Expiry memory expiry, 
         FixedFee[] memory fixedFees, 
         FractionalFee[] memory fractionalFees, 
-        RoyaltyFee[] memory royaltyFees, 
-        Key[] memory keys) external returns (bool success, bytes tokenAddress);
+        RoyaltyFee[] memory royaltyFees) external returns (bool success, bytes tokenAddress);
 
 
     /**********************

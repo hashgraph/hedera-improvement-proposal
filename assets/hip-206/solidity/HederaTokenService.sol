@@ -205,11 +205,11 @@ abstract contract HederaTokenService is HederaResponseCodes {
     function createFungibleToken(
         IHederaTokenService.HederaToken memory token, 
         uint initialTotalSupply, 
-        uint decimals, 
+        uint decimals,
+        IHederaTokenService.Key[] memory keys,
         IHederaTokenService.Expiry memory expiry, 
         IHederaTokenService.FixedFee[] memory fixedFees, 
-        IHederaTokenService.FractionalFee[] memory fractionalFees, 
-        IHederaTokenService.Key[] memory keys) internal returns (bool success, bytes memory result)     {
+        IHederaTokenService.FractionalFee[] memory fractionalFees) internal returns (bool success, bytes memory result)     {
         (success, result) = precompileAddress.call(
             abi.encodeWithSelector(IHederaTokenService.createFungibleToken.selector,
             token, initialTotalSupply, decimals, expiry, fixedFees, fractionalFees, keys));
@@ -225,12 +225,12 @@ abstract contract HederaTokenService is HederaResponseCodes {
     /// @return success whether the create was successful
     /// @return result the address of the created token
     function createNFT(
-        IHederaTokenService.HederaToken memory token, 
+        IHederaTokenService.HederaToken memory token,
+        IHederaTokenService.Key[] memory keys,
         IHederaTokenService.Expiry memory expiry, 
         IHederaTokenService.FixedFee[] memory fixedFees, 
         IHederaTokenService.FractionalFee[] memory fractionalFees, 
-        IHederaTokenService.RoyaltyFee[] memory royaltyFees, 
-        IHederaTokenService.Key[] memory keys) internal returns (bool success, bytes memory result)     {
+        IHederaTokenService.RoyaltyFee[] memory royaltyFees) internal returns (bool success, bytes memory result)     {
         (success, result) = precompileAddress.call(
             abi.encodeWithSelector(IHederaTokenService.createNFT.selector,
             token, expiry, fixedFees, fractionalFees, royaltyFees, keys));
