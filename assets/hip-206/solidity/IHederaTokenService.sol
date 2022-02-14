@@ -159,7 +159,7 @@ interface IHederaTokenService {
     /// will actually create a cryptographic signature. It only means that when the contract calls a 
     /// precompiled contract, the resulting "child transaction" will be authorized to perform any action
     /// controlled by the Key.
-    /// Exactly one of the possible values should be populated in order for the Key to be valid.
+    /// keyType and exactly one of the possible values should be populated in order for the Key to be valid.
     struct Key {
         // bit field representing the key type. Keys of all types that have corresponding bits set to 1
         // will be created for the token.
@@ -172,6 +172,9 @@ interface IHederaTokenService {
         // 6th bit: pauseKey
         // 7th bit: ignored
         uint keyType;
+
+        // if set to true, the key of the calling Hedera account will be inherited as the token key
+        bool inheritAccountKey;
 
         // smart contract instance that is authorized as if it had signed with a key
         address contractId;
