@@ -224,7 +224,7 @@ abstract contract HederaTokenService is HederaResponseCodes {
     /// @param keys list of keys to set to the token
     /// @return success whether the create was successful
     /// @return result the address of the created token
-    function createNFT(
+    function createNonFungibleToken(
         IHederaTokenService.HederaToken memory token,
         IHederaTokenService.Key[] memory keys,
         IHederaTokenService.Expiry memory expiry, 
@@ -232,7 +232,7 @@ abstract contract HederaTokenService is HederaResponseCodes {
         IHederaTokenService.FractionalFee[] memory fractionalFees, 
         IHederaTokenService.RoyaltyFee[] memory royaltyFees) internal returns (bool success, bytes memory result)     {
         (success, result) = precompileAddress.call(
-            abi.encodeWithSelector(IHederaTokenService.createNFT.selector,
+            abi.encodeWithSelector(IHederaTokenService.createNonFungibleToken.selector,
             token, expiry, fixedFees, fractionalFees, royaltyFees, keys));
     }
 }

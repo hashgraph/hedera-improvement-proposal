@@ -60,6 +60,11 @@ interface IHederaTokenService {
         // Its UTF-8 encoding cannot exceed 100 bytes, and cannot contain the 0 byte (NUL).
         string symbol;
 
+        // The ID of the account which will act as a treasury for the token as a solidity address.
+        // This account will receive the specified initial supply or the newly minted NFTs in
+        // the case for NON_FUNGIBLE_UNIQUE Type
+        address treasury;
+
         // The memo associated with the token (UTF-8 encoding max 100 bytes)
         string memo;
 
@@ -70,11 +75,6 @@ interface IHederaTokenService {
         // maximum number of tokens that can be in circulation. For tokens of type NON_FUNGIBLE_UNIQUE -
         // the maximum number of NFTs (serial numbers) that can be minted. This field can never be changed!
         uint32 maxSupply;
-
-        // The ID of the account which will act as a treasury for the token as a solidity address.
-        // This account will receive the specified initial supply or the newly minted NFTs in
-        // the case for NON_FUNGIBLE_UNIQUE Type
-        address treasury;
 
         // The default Freeze status (frozen or unfrozen) of Hedera accounts relative to this token. If
         // true, an account must be unfrozen before it can receive the token
@@ -289,7 +289,7 @@ interface IHederaTokenService {
     function createFungibleToken(
         HederaToken memory token, 
         uint initialTotalSupply, 
-        uint decimals, 
+        uint decimals,
         Key[] memory keys,
         Expiry memory expiry, 
         FixedFee[] memory fixedFees, 
@@ -304,7 +304,7 @@ interface IHederaTokenService {
     /// @param keys list of keys to set to the token
     /// @return bool bool whether the create was successful
     /// @return address the address of the created token
-    function createNFT(
+    function createNonFungibleToken(
         HederaToken memory token, 
         Key[] memory keys,
         Expiry memory expiry, 
