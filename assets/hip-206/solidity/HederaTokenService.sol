@@ -196,17 +196,17 @@ abstract contract HederaTokenService is HederaResponseCodes {
     /// @param initialTotalSupply Specifies the initial supply of tokens to be put in circulation. The
     /// initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible.
     /// @param decimals the number of decimal places a token is divisible by.
+    /// @param keys list of keys to set to the token
     /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
     /// @param fixedFees list of fixed fees to apply to the token
     /// @param fractionalFees list of fractional fees to apply to the token
-    /// @param keys list of keys to set to the token
     /// @return success whether the create was successful
-    /// @return result the address of the created token
+    /// @return result if successful the address of the created token, otherwise an error message
     function createFungibleToken(
         IHederaTokenService.HederaToken memory token, 
         uint initialTotalSupply, 
         uint decimals,
-        IHederaTokenService.Key[] memory keys,
+        IHederaTokenService.TokenKey[] memory keys,
         IHederaTokenService.Expiry memory expiry, 
         IHederaTokenService.FixedFee[] memory fixedFees, 
         IHederaTokenService.FractionalFee[] memory fractionalFees) internal returns (bool success, bytes memory result)     {
@@ -217,16 +217,16 @@ abstract contract HederaTokenService is HederaResponseCodes {
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
+    /// @param keys list of keys to set to the token
     /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
     /// @param fixedFees list of fixed fees to apply to the token
     /// @param fractionalFees list of fractional fees to apply to the token
     /// @param royaltyFees list of royalty fees to apply to the token
-    /// @param keys list of keys to set to the token
     /// @return success whether the create was successful
-    /// @return result the address of the created token
+    /// @return result if successful the address of the created token, otherwise an error message
     function createNonFungibleToken(
         IHederaTokenService.HederaToken memory token,
-        IHederaTokenService.Key[] memory keys,
+        IHederaTokenService.TokenKey[] memory keys,
         IHederaTokenService.Expiry memory expiry, 
         IHederaTokenService.FixedFee[] memory fixedFees, 
         IHederaTokenService.FractionalFee[] memory fractionalFees, 
@@ -235,4 +235,20 @@ abstract contract HederaTokenService is HederaResponseCodes {
             abi.encodeWithSelector(IHederaTokenService.createNonFungibleToken.selector,
             token, expiry, fixedFees, fractionalFees, royaltyFees, keys));
     }
+
+    /// Update a token with threshold keys. The transaction must be signed by the token admin key. 
+    /// For an immutable tokens (that is, a token without an admin key) updates on keys are not 
+    /// possible and the transaction will resolve to TOKEN_IS_IMMUTABLE
+    /// @param token the address of the token to update
+    /// @param tokenKeys a list of threshold keys to update the token with
+    /// @return success whether the update was successful
+    /// @return errorMessage any errors that occured during token update
+    function setTokenThresholdKeys (
+        address token, 
+        IHederaTokenService.TresholdTokenKey[] memory tokenKeys) internal returns (bool success, bytes memory errorMessage){
+            (success, errorMessage) = precompileAddress.call(
+            abi.encodeWithSelector(IHederaTokenService.setTokenThresholdKeys.selector,
+            token, tokenKeys));
+        }
+
 }

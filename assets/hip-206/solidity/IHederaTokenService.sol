@@ -159,19 +159,8 @@ interface IHederaTokenService {
     /// will actually create a cryptographic signature. It only means that when the contract calls a 
     /// precompiled contract, the resulting "child transaction" will be authorized to perform any action
     /// controlled by the Key.
-    /// keyType and exactly one of the possible values should be populated in order for the Key to be valid.
-    struct Key {
-        // bit field representing the key type. Keys of all types that have corresponding bits set to 1
-        // will be created for the token.
-        // 0th bit: adminKey
-        // 1st bit: kycKey
-        // 2nd bit: freezeKey
-        // 3rd bit: wipeKey
-        // 4th bit: supplyKey
-        // 5th bit: feeScheduleKey
-        // 6th bit: pauseKey
-        // 7th bit: ignored
-        uint keyType;
+    /// Exactly one of the possible values should be populated in order for the Key to be valid.
+    struct KeyValue {
 
         // if set to true, the key of the calling Hedera account will be inherited as the token key
         bool inheritAccountKey;
@@ -192,6 +181,48 @@ interface IHederaTokenService {
         // contractID key, which also requires the code in the active message frame belong to the
         // the contract with the given id.)
         address delegatableContractId;
+    }
+
+    /// A list of token key types the key should be applied to and the value of the key
+    struct TokenKey {
+
+        // bit field representing the key type. Keys of all types that have corresponding bits set to 1
+        // will be created for the token.
+        // 0th bit: adminKey
+        // 1st bit: kycKey
+        // 2nd bit: freezeKey
+        // 3rd bit: wipeKey
+        // 4th bit: supplyKey
+        // 5th bit: feeScheduleKey
+        // 6th bit: pauseKey
+        // 7th bit: ignored
+        uint keyType;
+
+        // the value that will be set to the key type
+        KeyValue key;
+    }
+
+    /// A set of public keys that are used together to form a threshold signature.  If the threshold is N
+    /// and there are M keys, then this is an N of M threshold signature.
+    struct TresholdTokenKey {
+
+        // bit field representing the key type. Keys of all types that have corresponding bits set to 1
+        // will be created for the token.
+        // 0th bit: adminKey
+        // 1st bit: kycKey
+        // 2nd bit: freezeKey
+        // 3rd bit: wipeKey
+        // 4th bit: supplyKey
+        // 5th bit: feeScheduleKey
+        // 6th bit: pauseKey
+        // 7th bit: ignored
+        uint keyType;
+
+        // A valid signature set must have at least this many signatures
+        uint32 threshold;
+
+        // List of all the keys that can sign
+        KeyValue[] keys;
     }
 
     /**********************
@@ -283,37 +314,48 @@ interface IHederaTokenService {
     /// @param initialTotalSupply Specifies the initial supply of tokens to be put in circulation. The
     /// initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible.
     /// @param decimals the number of decimal places a token is divisible by.
+    /// @param keys list of keys to set to the token
     /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
     /// @param fixedFees list of fixed fees to apply to the token
     /// @param fractionalFees list of fractional fees to apply to the token
-    /// @param keys list of keys to set to the token
-    /// @return bool whether the create was successful
-    /// @return address the address of the created token
+    /// @return success whether the create was successful
+    /// @return result if successful the address of the created token, otherwise an error message
     function createFungibleToken(
         HederaToken memory token, 
         uint initialTotalSupply, 
         uint decimals,
-        Key[] memory keys,
+        TokenKey[] memory keys,
         Expiry memory expiry, 
         FixedFee[] memory fixedFees, 
-        FractionalFee[] memory fractionalFees) external returns (bool success, bytes tokenAddress);
+        FractionalFee[] memory fractionalFees) external returns (bool success, bytes memory result);
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
+    /// @param keys list of keys to set to the token
     /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
     /// @param fixedFees list of fixed fees to apply to the token
     /// @param fractionalFees list of fractional fees to apply to the token
     /// @param royaltyFees list of royalty fees to apply to the token
-    /// @param keys list of keys to set to the token
-    /// @return bool bool whether the create was successful
-    /// @return address the address of the created token
+    /// @return success whether the create was successful
+    /// @return result if successful the address of the created token, otherwise an error message
     function createNonFungibleToken(
         HederaToken memory token, 
-        Key[] memory keys,
+        TokenKey[] memory keys,
         Expiry memory expiry, 
         FixedFee[] memory fixedFees, 
         FractionalFee[] memory fractionalFees, 
-        RoyaltyFee[] memory royaltyFees) external returns (bool success, bytes tokenAddress);
+        RoyaltyFee[] memory royaltyFees) external returns (bool success, bytes memory result);
+
+    /// Update a token with threshold keys. The transaction must be signed by the token admin key. 
+    /// For an immutable tokens (that is, a token without an admin key) updates on keys are not 
+    /// possible and the transaction will resolve to TOKEN_IS_IMMUTABLE
+    /// @param token the address of the token to update
+    /// @param tokenKeys a list of threshold keys to update the token with
+    /// @return success whether the update was successful
+    /// @return errorMessage any errors that occured during token update
+    function setTokenThresholdKeys (
+        address token, 
+        TresholdTokenKey[] memory tokenKeys) external returns (bool success, bytes memory errorMessage);
 
 
     /**********************
