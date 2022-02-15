@@ -195,45 +195,45 @@ abstract contract HederaTokenService is HederaResponseCodes {
     /// @param token the basic properties of the token being created
     /// @param initialTotalSupply Specifies the initial supply of tokens to be put in circulation. The
     /// initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible.
-    /// @param decimals the number of decimal places a token is divisible by.
-    /// @param keys list of keys to set to the token
-    /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
+    /// @param decimals the number of decimal places a token is divisible by
     /// @param fixedFees list of fixed fees to apply to the token
     /// @param fractionalFees list of fractional fees to apply to the token
     /// @return success whether the create was successful
-    /// @return result if successful the address of the created token, otherwise an error message
+    /// @return tokenAddress the created token's address
+    /// @return errorMessage an error message if any errors occurred
     function createFungibleToken(
         IHederaTokenService.HederaToken memory token, 
         uint initialTotalSupply, 
         uint decimals,
-        IHederaTokenService.TokenKey[] memory keys,
-        IHederaTokenService.Expiry memory expiry, 
         IHederaTokenService.FixedFee[] memory fixedFees, 
-        IHederaTokenService.FractionalFee[] memory fractionalFees) internal returns (bool success, bytes memory result)     {
-        (success, result) = precompileAddress.call(
-            abi.encodeWithSelector(IHederaTokenService.createFungibleToken.selector,
-            token, initialTotalSupply, decimals, expiry, fixedFees, fractionalFees, keys));
+        IHederaTokenService.FractionalFee[] memory fractionalFees) 
+        internal returns (bool success, address tokenAddress, bytes memory errorMessage) {
+            bytes memory result;
+            (success, result) = precompileAddress.call(
+                abi.encodeWithSelector(IHederaTokenService.createFungibleToken.selector,
+                token, initialTotalSupply, decimals, fixedFees, fractionalFees));
+            (tokenAddress, errorMessage) = abi.decode(result, (address, bytes));
     }
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
-    /// @param keys list of keys to set to the token
-    /// @param expiry expiry properties of a Hedera token - second, autoRenewAccount, autoRenewPeriod
     /// @param fixedFees list of fixed fees to apply to the token
     /// @param fractionalFees list of fractional fees to apply to the token
     /// @param royaltyFees list of royalty fees to apply to the token
     /// @return success whether the create was successful
-    /// @return result if successful the address of the created token, otherwise an error message
+    /// @return tokenAddress the created token's address
+    /// @return errorMessage an error message if any errors occurred
     function createNonFungibleToken(
         IHederaTokenService.HederaToken memory token,
-        IHederaTokenService.TokenKey[] memory keys,
-        IHederaTokenService.Expiry memory expiry, 
         IHederaTokenService.FixedFee[] memory fixedFees, 
         IHederaTokenService.FractionalFee[] memory fractionalFees, 
-        IHederaTokenService.RoyaltyFee[] memory royaltyFees) internal returns (bool success, bytes memory result)     {
-        (success, result) = precompileAddress.call(
+        IHederaTokenService.RoyaltyFee[] memory royaltyFees) 
+        internal returns (bool success, address tokenAddress, bytes memory errorMessage) {
+            bytes memory result;
+            (success, result) = precompileAddress.call(
             abi.encodeWithSelector(IHederaTokenService.createNonFungibleToken.selector,
-            token, expiry, fixedFees, fractionalFees, royaltyFees, keys));
+            token, fixedFees, fractionalFees, royaltyFees));
+            (tokenAddress, errorMessage) = abi.decode(result, (address, bytes));
     }
 
     /// Update a token with threshold keys. The transaction must be signed by the token admin key. 
