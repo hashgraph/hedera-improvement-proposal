@@ -5,7 +5,6 @@ pragma experimental ABIEncoderV2;
 import "./HederaTokenService.sol";
 import "./IHederaTokenService.sol";
 import "./HederaResponseCodes.sol";
-import {Bits} from "./Bits.sol";
 
 contract TokenCreateContract is HederaTokenService {
 
@@ -145,5 +144,16 @@ contract TokenCreateContract is HederaTokenService {
         if (!success){
             revert (abi.decode(errorMessage, (string)));
         }
+    }
+}
+
+library Bits {
+
+    uint constant internal ONE = uint(1);
+
+    // Sets the bit at the given 'index' in 'self' to '1'.
+    // Returns the modified value.
+    function setBit(uint self, uint8 index) internal pure returns (uint) {
+        return self | ONE << index;
     }
 }
