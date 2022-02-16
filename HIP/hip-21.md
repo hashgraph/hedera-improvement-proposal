@@ -5,7 +5,7 @@ author: Simi Hunjan (@SimiHunjan)
 type: Standards Track
 category: Mirror
 needs-council-approval: Yes
-status: Council Review
+status: Accepted
 last-call-date-time: 2021-11-30T07:00:00Z
 created: 2021-06-09 
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/82
@@ -33,9 +33,31 @@ Today, applications have to use the File Service and submit two file contents qu
 
 ## Rationale 
 
-The proposal is to create a rest API query to return network information. As we continue to grow the network and transition into a permissionless model, the number of times the local address book will be required to update will increase. The transaction fee associated with the current file query hinders the ability to update the address book as frequently as it might be needed for applications to ensure their address book is always up to date. This information should be free. 
+The proposal is to create a rest API and gRPC query to return network information. As we continue to grow the network and transition into a permissionless model, the number of times the local address book will be required to update will increase. The transaction fee associated with the current file query hinders the ability to update the address book as frequently as it might be needed for applications to ensure their address book is always up to date. This information should be free. 
 
 ## Specification 
+
+gRPC
+
+The gRPC API will use server streaming technology to deliver all of the `NodeAddress` entries contained within the latest address book. The stream will automatically complete when all entries are delivered, avoiding the complexity of client side paging.
+
+```protobuf
+// Request object to query an address book for its list of nodes
+message AddressBookQuery {
+    .proto.FileID file_id = 1; // The ID of the address book file on the network. Can be either 0.0.101 or 0.0.102.
+    int32 limit = 2;           // The maximum number of node addresses to receive before stopping. If not set or set to zero it will return all node addresses in the database.
+}
+
+// Provides cross network APIs like address book queries
+service NetworkService {
+
+    // Query for an address book and return its nodes. The nodes are returned in ascending order by node ID. The
+    // response is not guaranteed to be a byte-for-byte equivalent to the NodeAddress in the Hedera file on
+    // the network since it is reconstructed from a normalized database table.
+    rpc getNodes (AddressBookQuery) returns (stream .proto.NodeAddress);
+
+}
+```
 
 REST API
 
@@ -105,6 +127,12 @@ service NetworkService {
 +  rpc getNetworkInfo (Query) returns (Response); //Retrieves network information
    rpc uncheckedSubmit (Transaction) returns (TransactionResponse); // Submits a "wrapped" transaction to the network, skipping its standard prechecks. (Note that the "wrapper" <tt>UncheckedSubmit</tt> transaction is still subject to normal prechecks, including an authorization requirement that its payer be either the treasury or system admin account.)
 } 
+```
+
+The other idea was to have the mirror node return the full address book in a single response. This was rejected since the address book is large and only getting bigger. The current mainnet `0.0.102` address book is 25 KiB.
+
+```protobuf
+rpc getNetworkInfo () returns (NodeAddressBook); //Retrieves network information
 ```
 
 ## Open Issues

@@ -5,11 +5,12 @@ author: Leemon Baird <leemon@hedera.com>
 type: Standards 
 category: Service
 needs-council-approval: Yes
-status: Last Call
+status: Accepted
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/187
 last-call-date-time: 2021-12-03T07:00:00Z
 created: 2021-11-01
-updated: 2021-11-30
+updated: 2021-11-30, 2021-12-17
+requires: 15
 ---
 
 ## Abstract
@@ -29,7 +30,9 @@ The Hedera API (HAPI) can be modified very slightly, so that HBAR transfers can 
 
 ### Wallets
   
-Wallet software can allow the user to create an "account" instantly, for free, even without an internet connection. In this case, it will not create an actual account on Hedera. Instead, it will simply create a public/private key pair for the user. The software will then display this as an "account" with a zero balance, with a "long account ID", which doesn't look like 0.0.123, but instead is an alias consisting of "0.0." (or appropaiate shard/realm) followed by a base-64 string encoding the public key.
+Wallet software can allow the user to create an "account" instantly, for free, even without an internet connection. In this case, it will not create an actual account on Hedera. Instead, it will simply create a public/private key pair for the user. The software will then display this as an "account" with a zero balance, with a "long account ID". This long form doesn't look like `0.0.123`, but instead is an alias consisting of `<shard>.<realm>.<bytes>`, where the `bytes` is a [base32url](https://datatracker.ietf.org/doc/html/rfc4648#section-6) representation of the bytes of a serialized HAPI primitive `Key`, with the trailing `=` padding characters removed.  For example, `0.0.CIQNOWUYAGBLCCVX2VF75U6JMQDTUDXBOLZ5VJRDEWXQEGTI64DVCGQ` is the alias address of shard 0 realm 0 with a serialization of a HAPI `Key` for the ed25519 public key `0xd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a`. So a long-form account ID will always match the following regex:
+
+`\d+\.\d+\.[2-7A-Z]+`
 
 The user can then buy HBAR on an exchange, or receive HBAR sent from a friend, or receive HBAR paid by a customer. In all those cases, they will tell the other party that their "account ID" is that long-form account ID. And the transfer will actually create an actual Hedera account, deducting the creation fee from the amount transferred.
 
@@ -79,6 +82,7 @@ From the user's point of view, these virtual "accounts" should be indistinguisha
 * This is backwards compatible
 * Existing accounts have no alias, and cannot be accessed by an alias
 * New accounts that are auto-created will have an alias, and can be queried and transferred to using that alias.
+* Checksums from [HIP-15](https://hips.hedera.com/hip/hip-15) apply to long-form IDs unchanged, except that capital letters are allowed, and are represented by their ASCII value in the `d[]` array.
   
 ## Security Implications
 
