@@ -1,0 +1,56 @@
+---
+layout: page
+title: Statistics
+---
+
+{% assign hips = site.pages|where_exp:"item","item.status != nil" %}
+{% assign total_non_council = hips|where:"status","Last Call"|where:"needs-council-approval","false" %}
+{% assign total_council = hips|where:"status","Last Call"|where:"needs-council-approval","true" %}
+{% assign in_council_review = hips|where:"status","Council Review"|where:"needs-council-approval","true" %}
+
+<h2>Total HIPs created</h2>
+<p>Total: {{hips|size}}</p>
+
+<h2>In Last Call</h2>
+<p>Total: {{hips|where:"status","Last Call"|size}}</p>
+
+<p>Non-council-level: {{total_non_council|size}}</p>
+{% if total_non_council %}
+    <ul>
+    {% for page in total_non_council %}
+        <li><a href="{{page.url|relative_url}}" target="_blank">HIP-{{page.hip|xml_escape}}: {{page.title|xml_escape}}</a> ({{page.last-call-date-time | date_to_rfc822 }})</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+<p>Council-level: {{total_council|size}}</p>
+{% if total_council %}
+<ul>
+    {% for page in total_council %}
+    <li><a href="{{page.url|relative_url}}" target="_blank">HIP-{{page.hip|xml_escape}}: {{page.title|xml_escape}}</a> {{page.last-call-date-time | date_to_rfc822 }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h2>In Council Review</h2>
+<p>Total: {{in_council_review|size}}</p>
+{% if in_council_review %}
+<ul>
+    {% for page in in_council_review %}
+    <li><a href="{{page.url|relative_url}}" target="_blank">HIP-{{page.hip|xml_escape}}: {{page.title|xml_escape}}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Draft</h2>
+<p>Total: {{hips|where:"status","Draft"|size}}</p>
+
+<h2>Accepted</h2>
+<p>Total: {{hips|where:"status","Accepted"|size}}</p>
+<p>Council-level: {{hips|where:"status","Accepted"|where:"needs-council-approval","true"|size}}</p>
+
+<h2>Final</h2>
+<p>Total: {{hips|where:"status","Final"|size}}</p>
+
+<h2>Replaced</h2>
+<p>Total: {{hips|where:"status","Replaced"|size}}</p>

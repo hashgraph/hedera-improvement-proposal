@@ -2,7 +2,7 @@
 hip: 32
 title: Auto Account Creation
 author: Leemon Baird <leemon@hedera.com>
-type: Standards 
+type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Accepted

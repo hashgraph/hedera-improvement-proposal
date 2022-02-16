@@ -2,7 +2,7 @@
 hip: 33
 title: Add Network ID Field to Info Responses
 author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds.com>, Leemon Baird <leemon@hedera.com, Mark Williamson <mark.williamson@hedera.com, Alex Popowycz <a@hedera.com>
-type: Standards
+type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Accepted

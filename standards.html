@@ -1,0 +1,13 @@
+---
+layout: page
+title: Standards
+---
+
+<p> A Standards Track HIP describes a new feature or implementation for Hedera. It may also describe an interoperability
+    standard that will be supported outside of the official Hedera node software stack. The Standards Track HIP abstract
+    should include which part of the Hedera ecosystem it addresses.</p>
+
+<p>
+    {% assign hips=site.pages|where:"type","Standards Track" %}
+    {% include hipstable.html hips=hips %}
+</p>
