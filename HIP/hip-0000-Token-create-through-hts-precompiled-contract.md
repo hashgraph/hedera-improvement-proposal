@@ -1,5 +1,5 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 358
 title: Allow Token Create Through Hedera Token Service Precompiled Contract
 author: Stoyan Panayotov <stoyan.panayotov@limechain.tech>
 type: Standards Track
@@ -8,7 +8,7 @@ needs-council-approval: Yes
 status: Review
 created: 2022-02-09
 discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
+updated: 
 ---
 
 ## Abstract
@@ -41,7 +41,7 @@ The [Solidity file for development](../assets/hip-206/solidity/IHederaTokenServi
 is updated with new types and function signatures that the precompile will respond to. 
 It is included in this HIP by reference.
 
-#### Solidity Function Signatures 
+### Solidity Function Signatures 
 
 Two functions will be added for creating fungible and non-fungible tokens. A third 
 function will enable updating a token with threshold key values for Admin, KYC, 
@@ -69,7 +69,7 @@ The ABI signature and hashes for each call are as follows:
 |  | `createNonFungibleToken(HederaToken, uint, uint, FixedFee[], FractionalFee[], RoyaltyFee[])` | `(bool, addess, bytes)`  |
 |  | `setTokenThresholdKeys(address, TresholdTokenKey[])`                                         | `(bool, bytes)`          |
 
-#### Precompile Gas Costs
+### Precompile Gas Costs
 
 Gas will be priced so that it will be cheaper to do calls directly to HTS rather
 than through HSCS where such calls are possible.
