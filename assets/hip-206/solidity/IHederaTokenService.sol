@@ -319,18 +319,40 @@ interface IHederaTokenService {
     /// @param token the basic properties of the token being created
     /// @param initialTotalSupply Specifies the initial supply of tokens to be put in circulation. The
     /// initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible.
-    /// @param decimals the number of decimal places a token is divisible by.
-    /// @param fixedFees list of fixed fees to apply to the token
-    /// @param fractionalFees list of fractional fees to apply to the token
+    /// @param decimals the number of decimal places a token is divisible by
     /// @return success whether the create was successful
     /// @return tokenAddress the created token's address
     /// @return errorMessage an error message if any errors occurred
     function createFungibleToken(
         HederaToken memory token, 
         uint initialTotalSupply, 
+        uint decimals) 
+        external returns (bool success, address tokenAddress, bytes memory errorMessage);
+
+    /// Creates a Fungible Token with the specified properties
+    /// @param token the basic properties of the token being created
+    /// @param initialTotalSupply Specifies the initial supply of tokens to be put in circulation. The
+    /// initial supply is sent to the Treasury Account. The supply is in the lowest denomination possible.
+    /// @param decimals the number of decimal places a token is divisible by.
+    /// @param fixedFees list of fixed fees to apply to the token
+    /// @param fractionalFees list of fractional fees to apply to the token
+    /// @return success whether the create was successful
+    /// @return tokenAddress the created token's address
+    /// @return errorMessage an error message if any errors occurred
+    function createFungibleTokenWithCustomFees(
+        HederaToken memory token, 
+        uint initialTotalSupply, 
         uint decimals,
         FixedFee[] memory fixedFees, 
         FractionalFee[] memory fractionalFees) 
+        external returns (bool success, address tokenAddress, bytes memory errorMessage);
+
+    /// Creates an Non Fungible Unique Token with the specified properties
+    /// @param token the basic properties of the token being created
+    /// @return success whether the create was successful
+    /// @return tokenAddress the created token's address
+    /// @return errorMessage an error message if any errors occurred
+    function createNonFungibleToken(HederaToken memory token)
             external returns (bool success, address tokenAddress, bytes memory errorMessage);
 
     /// Creates an Non Fungible Unique Token with the specified properties
@@ -341,12 +363,12 @@ interface IHederaTokenService {
     /// @return success whether the create was successful
     /// @return tokenAddress the created token's address
     /// @return errorMessage an error message if any errors occurred
-    function createNonFungibleToken(
+    function createNonFungibleTokenWithCustomFees(
         HederaToken memory token, 
         FixedFee[] memory fixedFees, 
         FractionalFee[] memory fractionalFees, 
         RoyaltyFee[] memory royaltyFees)
-            external returns (bool success, address tokenAddress, bytes memory errorMessage);
+        external returns (bool success, address tokenAddress, bytes memory errorMessage);
 
     /// Update a token with threshold keys. The transaction must be signed by the token admin key. 
     /// For an immutable tokens (that is, a token without an admin key) updates on keys are not 

@@ -13,12 +13,8 @@ contract TokenCreateContract is HederaTokenService {
     // Create Fungible Token with no custom fees, with a user account as admin, contract as supply and pause key.
     function createFungible(address contractKey) external returns (address createdTokenAddress) {
 
-        // create TokenKey of type adminKey with value inherited from called account
-        uint adminKeyType;
+         // create TokenKey of type adminKey with value inherited from called account
         IHederaTokenService.KeyValue memory adminKeyValue;
-        // turn on bit corresponding to admin key type
-        adminKeyType = adminKeyType.setBit(0);
-        // set the value of the key to be inherited from the calling account
         adminKeyValue.inheritAccountKey = true;
         
         // create TokenKey of types supplyKey and pauseKey with value a contract address passed as function arg
@@ -32,7 +28,44 @@ contract TokenCreateContract is HederaTokenService {
 
         // instantiate the list of keys we'll use for token create
         IHederaTokenService.TokenKey[] memory keys;
-        keys[0] = IHederaTokenService.TokenKey (adminKeyType, adminKeyValue);
+        keys[0] = IHederaTokenService.TokenKey (HederaTokenService.ADMIN_KEY_TYPE, adminKeyValue);
+        keys[1] = IHederaTokenService.TokenKey (supplyPauseKeyType, supplyPauseKeyValue); 
+
+        IHederaTokenService.HederaToken memory myToken;
+        myToken.name = "MyToken";
+        myToken.symbol = "MTK";
+        myToken.treasury = address(this);
+        myToken.tokenKeys = keys;
+
+        (bool success, address token, bytes memory errorMessage) = 
+            HederaTokenService.createFungibleToken(myToken, 200, 8);
+
+        if (!success) {
+            revert (abi.decode(errorMessage, (string)));
+        }
+
+        createdTokenAddress = token;
+    }
+
+    // Create Fungible Token with custom fees, with a user account as admin, contract as supply and pause key.
+    function createFungibleWithFees(address contractKey) external returns (address createdTokenAddress) {
+
+        // create TokenKey of type adminKey with value inherited from called account
+        IHederaTokenService.KeyValue memory adminKeyValue;
+        adminKeyValue.inheritAccountKey = true;
+        
+        // create TokenKey of types supplyKey and pauseKey with value a contract address passed as function arg
+        uint supplyPauseKeyType;
+        IHederaTokenService.KeyValue memory supplyPauseKeyValue;
+        // turn on bits corresponding to supply and pause key types
+        supplyPauseKeyType = supplyPauseKeyType.setBit(4);
+        supplyPauseKeyType = supplyPauseKeyType.setBit(6);
+        // set the value of the key to the contract address passed as function arg
+        supplyPauseKeyValue.contractId = contractKey;
+
+        // instantiate the list of keys we'll use for token create
+        IHederaTokenService.TokenKey[] memory keys;
+        keys[0] = IHederaTokenService.TokenKey (HederaTokenService.ADMIN_KEY_TYPE, adminKeyValue);
         keys[1] = IHederaTokenService.TokenKey (supplyPauseKeyType, supplyPauseKeyValue); 
 
         // declare fee fields
@@ -46,7 +79,7 @@ contract TokenCreateContract is HederaTokenService {
         myToken.tokenKeys = keys;
 
         (bool success, address token, bytes memory errorMessage) = 
-            HederaTokenService.createFungibleToken(myToken, 200, 8, fixedFees, fractionalFees);
+            HederaTokenService.createFungibleTokenWithCustomFees(myToken, 200, 8, fixedFees, fractionalFees);
 
         if (!success) {
             revert (abi.decode(errorMessage, (string)));
@@ -90,7 +123,7 @@ contract TokenCreateContract is HederaTokenService {
 
         // create the token through HTS with default expiry and royalty fees;
         (bool success, address token, bytes memory errorMessage) = 
-            HederaTokenService.createNonFungibleToken(myToken, fixedFees, fractionalFees, royaltyFees);
+            HederaTokenService.createNonFungibleTokenWithCustomFees(myToken, fixedFees, fractionalFees, royaltyFees);
 
         if (!success) {
             revert (abi.decode(errorMessage, (string)));
