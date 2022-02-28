@@ -66,10 +66,10 @@ interface IHederaTokenService {
     /// A Key can be a public key from either the Ed25519 or ECDSA(secp256k1) signature schemes, where
     /// in the ECDSA(secp256k1) case we require the 33-byte compressed form of the public key. We call
     /// these public keys <b>primitive keys</b>.
-    /// A Key can also be the ID of a smart contract instance, which is then authorized to perform any 
-    /// precompiled contract action that requires this key to sign. 
-    /// Note that when a Key is a smart contract ID, it <i>doesn't</i> mean the contract with that ID 
-    /// will actually create a cryptographic signature. It only means that when the contract calls a 
+    /// A Key can also be the ID of a smart contract instance, which is then authorized to perform any
+    /// precompiled contract action that requires this key to sign.
+    /// Note that when a Key is a smart contract ID, it <i>doesn't</i> mean the contract with that ID
+    /// will actually create a cryptographic signature. It only means that when the contract calls a
     /// precompiled contract, the resulting "child transaction" will be authorized to perform any action
     /// controlled by the Key.
     /// Exactly one of the possible values should be populated in order for the Key to be valid.
@@ -88,8 +88,8 @@ interface IHederaTokenService {
         bytes ECDSA_secp256k1;
 
         // A smart contract that, if the recipient of the active message frame, should be treated
-        // as having signed. (Note this does not mean the <i>code being executed in the frame</i> 
-        // will belong to the given contract, since it could be running another contract's code via 
+        // as having signed. (Note this does not mean the <i>code being executed in the frame</i>
+        // will belong to the given contract, since it could be running another contract's code via
         // <tt>delegatecall</tt>. So setting this key is a more permissive version of setting the
         // contractID key, which also requires the code in the active message frame belong to the
         // the contract with the given id.)
@@ -138,14 +138,14 @@ interface IHederaTokenService {
         KeyValue[] keys;
     }
 
-    /// Basic properties of a Hedera Token - name, symbol, memo, tokenSupplyType, maxSupply, 
+    /// Basic properties of a Hedera Token - name, symbol, memo, tokenSupplyType, maxSupply,
     /// treasury, freezeDefault. These properties are related both to Fungible and NFT token types
     struct HederaToken {
-        // The publicly visible name of the token. The token name is specified as a Unicode string. 
+        // The publicly visible name of the token. The token name is specified as a Unicode string.
         // Its UTF-8 encoding cannot exceed 100 bytes, and cannot contain the 0 byte (NUL).
         string name;
 
-        // The publicly visible token symbol. The token symbol is specified as a Unicode string. 
+        // The publicly visible token symbol. The token symbol is specified as a Unicode string.
         // Its UTF-8 encoding cannot exceed 100 bytes, and cannot contain the 0 byte (NUL).
         string symbol;
 
@@ -202,7 +202,7 @@ interface IHederaTokenService {
 
         // The minimum amount to assess
         uint32 minimumAmount;
-        
+
         // The maximum amount to assess (zero implies no maximum)
         uint32 maximumAmount;
         bool netOfTransfers;
@@ -252,7 +252,7 @@ interface IHederaTokenService {
     /// @return newTotalSupply The new supply of tokens. For NFTs it is the total count of NFTs
     /// @return serialNumbers If the token is an NFT the newly generate serial numbers, othersise empty.
     function mintToken(address token, uint64 amount, bytes[] memory metadata) external
-        returns (int responseCode, uint64 newTotalSupply, int64[] memory serialNumbers);
+    returns (int responseCode, uint64 newTotalSupply, int64[] memory serialNumbers);
 
     /// Burns an amount of the token from the defined treasury account
     /// @param token The token for which to burn tokens. If token does not exist, transaction results in
@@ -264,7 +264,7 @@ interface IHederaTokenService {
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
     /// @return newTotalSupply The new supply of tokens. For NFTs it is the total count of NFTs
     function burnToken(address token, uint64 amount, int64[] memory serialNumbers) external
-        returns (int responseCode, uint64 newTotalSupply);
+    returns (int responseCode, uint64 newTotalSupply);
 
     ///  Associates the provided account with the provided tokens. Must be signed by the provided
     ///  Account's key or called from the accounts contract key
@@ -324,10 +324,10 @@ interface IHederaTokenService {
     /// @return tokenAddress the created token's address
     /// @return errorMessage an error message if any errors occurred
     function createFungibleToken(
-        HederaToken memory token, 
-        uint initialTotalSupply, 
-        uint decimals) 
-        external returns (bool success, address tokenAddress, bytes memory errorMessage);
+        HederaToken memory token,
+        uint initialTotalSupply,
+        uint decimals)
+    external returns (bool success, address tokenAddress, bytes memory errorMessage);
 
     /// Creates a Fungible Token with the specified properties
     /// @param token the basic properties of the token being created
@@ -340,12 +340,12 @@ interface IHederaTokenService {
     /// @return tokenAddress the created token's address
     /// @return errorMessage an error message if any errors occurred
     function createFungibleTokenWithCustomFees(
-        HederaToken memory token, 
-        uint initialTotalSupply, 
+        HederaToken memory token,
+        uint initialTotalSupply,
         uint decimals,
-        FixedFee[] memory fixedFees, 
-        FractionalFee[] memory fractionalFees) 
-        external returns (bool success, address tokenAddress, bytes memory errorMessage);
+        FixedFee[] memory fixedFees,
+        FractionalFee[] memory fractionalFees)
+    external returns (bool success, address tokenAddress, bytes memory errorMessage);
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
@@ -353,7 +353,7 @@ interface IHederaTokenService {
     /// @return tokenAddress the created token's address
     /// @return errorMessage an error message if any errors occurred
     function createNonFungibleToken(HederaToken memory token)
-            external returns (bool success, address tokenAddress, bytes memory errorMessage);
+    external returns (bool success, address tokenAddress, bytes memory errorMessage);
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
@@ -364,21 +364,21 @@ interface IHederaTokenService {
     /// @return tokenAddress the created token's address
     /// @return errorMessage an error message if any errors occurred
     function createNonFungibleTokenWithCustomFees(
-        HederaToken memory token, 
-        FixedFee[] memory fixedFees, 
-        FractionalFee[] memory fractionalFees, 
+        HederaToken memory token,
+        FixedFee[] memory fixedFees,
+        FractionalFee[] memory fractionalFees,
         RoyaltyFee[] memory royaltyFees)
-        external returns (bool success, address tokenAddress, bytes memory errorMessage);
+    external returns (bool success, address tokenAddress, bytes memory errorMessage);
 
-    /// Update a token with threshold keys. The transaction must be signed by the token admin key. 
-    /// For an immutable tokens (that is, a token without an admin key) updates on keys are not 
+    /// Update a token with threshold keys. The transaction must be signed by the token admin key.
+    /// For an immutable tokens (that is, a token without an admin key) updates on keys are not
     /// possible and the transaction will resolve to TOKEN_IS_IMMUTABLE
     /// @param token the address of the token to update
     /// @param tokenKeys a list of threshold keys to update the token with
     /// @return success whether the update was successful
     /// @return errorMessage any errors that occured during token update
     function setTokenThresholdKeys (
-        address token, 
+        address token,
         TresholdTokenKey[] memory tokenKeys) external returns (bool success, bytes memory errorMessage);
 
 
@@ -391,7 +391,7 @@ interface IHederaTokenService {
     /// @param accountId account to do a transfer to/from
     /// @param amount The amount from the accountId at the same index
     function transferTokens(address token, address[] memory accountId, int64[] memory amount) external
-        returns (int responseCode);
+    returns (int responseCode);
 
     /// Initiates a Non-Fungable Token Transfer
     /// @param token The ID of the token as a solidity address
@@ -399,7 +399,7 @@ interface IHederaTokenService {
     /// @param receiver the receiver of the nft sent by the same index at sender
     /// @param serialNumber the serial number of the nft sent by the same index at sender
     function transferNFTs(address token, address[] memory sender, address[] memory receiver, int64[] memory serialNumber)
-        external returns (int responseCode);
+    external returns (int responseCode);
 
     /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
     /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
@@ -409,7 +409,7 @@ interface IHederaTokenService {
     /// @param recipient The receiver of the transaction
     /// @param amount Non-negative value to send. a negative value will result in a failure.
     function transferToken(address token, address sender, address recipient, int64 amount) external
-        returns (int responseCode);
+    returns (int responseCode);
 
     /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
     /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
@@ -419,5 +419,5 @@ interface IHederaTokenService {
     /// @param recipient The receiver of the transaction
     /// @param serialNumber The serial number of the NFT to transfer.
     function transferNFT(address token,  address sender, address recipient, int64 serialNumber) external
-        returns (int responseCode);
+    returns (int responseCode);
 }
