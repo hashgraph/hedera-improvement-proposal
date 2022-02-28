@@ -27,9 +27,9 @@ contract TokenCreateContract is HederaTokenService {
         supplyPauseKeyValue.contractId = contractKey;
 
         // instantiate the list of keys we'll use for token create
-        IHederaTokenService.TokenKey[] memory keys;
+        IHederaTokenService.TokenKey[] memory keys = new IHederaTokenService.TokenKey[](2);
         keys[0] = IHederaTokenService.TokenKey (HederaTokenService.ADMIN_KEY_TYPE, adminKeyValue);
-        keys[1] = IHederaTokenService.TokenKey (supplyPauseKeyType, supplyPauseKeyValue); 
+        keys[1] = IHederaTokenService.TokenKey (supplyPauseKeyType, supplyPauseKeyValue);
 
         IHederaTokenService.HederaToken memory myToken;
         myToken.name = "MyToken";
@@ -64,7 +64,7 @@ contract TokenCreateContract is HederaTokenService {
         supplyPauseKeyValue.contractId = contractKey;
 
         // instantiate the list of keys we'll use for token create
-        IHederaTokenService.TokenKey[] memory keys;
+        IHederaTokenService.TokenKey[] memory keys = new IHederaTokenService.TokenKey[](2);
         keys[0] = IHederaTokenService.TokenKey (HederaTokenService.ADMIN_KEY_TYPE, adminKeyValue);
         keys[1] = IHederaTokenService.TokenKey (supplyPauseKeyType, supplyPauseKeyValue); 
 
@@ -99,7 +99,7 @@ contract TokenCreateContract is HederaTokenService {
         adminSupplyKeyValue.contractId = address(this);
 
         // instantiate the list of keys we'll use for token create
-        IHederaTokenService.TokenKey[] memory keys;
+        IHederaTokenService.TokenKey[] memory keys = new IHederaTokenService.TokenKey[](1);
         keys[0] = IHederaTokenService.TokenKey (adminSupplyKeyType, adminSupplyKeyValue);
 
         // declare fee fields
@@ -136,7 +136,7 @@ contract TokenCreateContract is HederaTokenService {
     function updateTokenWithThresholdKeys(address token, bytes memory ed25519, bytes memory ECDSA_secp256k1) external {
 
         // create all possible values for the threshold key
-        IHederaTokenService.KeyValue[] memory possibleKeyValues;
+        IHederaTokenService.KeyValue[] memory possibleKeyValues = new IHederaTokenService.KeyValue[](5);
 
         IHederaTokenService.KeyValue memory value1;
         value1.contractId = address(this);
@@ -169,7 +169,7 @@ contract TokenCreateContract is HederaTokenService {
         thresholdKey.threshold = 3;
         thresholdKey.keys = possibleKeyValues;
 
-        IHederaTokenService.TresholdTokenKey[] memory thresholdKeysList;
+        IHederaTokenService.TresholdTokenKey[] memory thresholdKeysList = new IHederaTokenService.TresholdTokenKey[](1);
         thresholdKeysList[0] = thresholdKey;
 
         (bool success, bytes memory errorMessage) = HederaTokenService.setTokenThresholdKeys(token, thresholdKeysList);
