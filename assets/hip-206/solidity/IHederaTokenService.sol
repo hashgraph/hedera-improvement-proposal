@@ -115,31 +115,8 @@ interface IHederaTokenService {
         KeyValue key;
     }
 
-    /// A set of public keys that are used together to form a threshold signature.  If the threshold is N
-    /// and there are M keys, then this is an N of M threshold signature.
-    struct TresholdTokenKey {
-
-        // bit field representing the key type. Keys of all types that have corresponding bits set to 1
-        // will be created for the token.
-        // 0th bit: adminKey
-        // 1st bit: kycKey
-        // 2nd bit: freezeKey
-        // 3rd bit: wipeKey
-        // 4th bit: supplyKey
-        // 5th bit: feeScheduleKey
-        // 6th bit: pauseKey
-        // 7th bit: ignored
-        uint keyType;
-
-        // A valid signature set must have at least this many signatures
-        uint32 threshold;
-
-        // List of all the keys that can sign
-        KeyValue[] keys;
-    }
-
     /// Basic properties of a Hedera Token - name, symbol, memo, tokenSupplyType, maxSupply,
-    /// treasury, freezeDefault. These properties are related both to Fungible and NFT token types
+    /// treasury, freezeDefault. These properties are related both to Fungible and NFT token types.
     struct HederaToken {
         // The publicly visible name of the token. The token name is specified as a Unicode string.
         // Its UTF-8 encoding cannot exceed 100 bytes, and cannot contain the 0 byte (NUL).
@@ -369,17 +346,6 @@ interface IHederaTokenService {
         FractionalFee[] memory fractionalFees,
         RoyaltyFee[] memory royaltyFees)
     external returns (bool success, address tokenAddress, bytes memory errorMessage);
-
-    /// Update a token with threshold keys. The transaction must be signed by the token admin key.
-    /// For an immutable tokens (that is, a token without an admin key) updates on keys are not
-    /// possible and the transaction will resolve to TOKEN_IS_IMMUTABLE
-    /// @param token the address of the token to update
-    /// @param tokenKeys a list of threshold keys to update the token with
-    /// @return success whether the update was successful
-    /// @return errorMessage any errors that occured during token update
-    function setTokenThresholdKeys (
-        address token,
-        TresholdTokenKey[] memory tokenKeys) external returns (bool success, bytes memory errorMessage);
 
 
     /**********************
