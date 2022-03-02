@@ -6,6 +6,9 @@ import "./HederaTokenService.sol";
 import "./IHederaTokenService.sol";
 import "./HederaResponseCodes.sol";
 
+
+/// This is a notional example of how the functions in HIP-358 could be used.
+/// It is non-normative.
 contract TokenCreateContract is HederaTokenService {
 
     using Bits for uint;
