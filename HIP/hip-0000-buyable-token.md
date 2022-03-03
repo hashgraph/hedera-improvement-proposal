@@ -1,37 +1,78 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
 title: Buyable Tokens
-author: author: Justin Atwell <justin.atwell@hedera.com>, Matt (Dogecoin Hero) Smithies <matt.s@dovu.io>
+author: author: Justin Atwell <justin.atwell@hedera.com>, The Matt Smithies <matt.s@dovu.io>, Sergey Metelin <sergey.metelin@hedera.com, Andrew Gastwirth <andrew.gastwirth@dlapiper.com>, Brian Johnson <johnsonb@objectcomputing.com>, 
 working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
 type: Service
 category: Service
 needs-council-approval: No
 status: Draft
-created: 2022-01-05
+created: 2022-03-03
 discussions-to: <a URL pointing to the official discussion thread>
 ---
 
 ## Abstract
 
-Please provide a short (~200 word) description of the issue being addressed.
+Proposes the addition of a boolean field to enable a token transaction without an additional signature.
 
 ## Motivation
 
-The motivation is critical for HIPs that want to change the Hedera codebase or ecosystem. It should clearly explain why the existing specification is inadequate to address the problem that the HIP solves. HIP submissions without sufficient motivation may be rejected outright.
+Currently there is no token type that enables tokens to be purchased without the owner initiating the transaction. The current HTS structure requires signatures for every token transfer .
 
 ## Rationale
 
-The rationale fleshes out the specification by describing why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
+For tokens that have been programmatically minted, such as in supply chain scenarios or generative NFTs, the need to have a signature when transferring is simply not needed. The seller just requires an amount of HBAR (or token) be transferred to their account.
 
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
+In the enterprise scenario, requiring an additional signature is just an additional cost. Therefore as a one time event upon minting, we introduce the boolean field “is_buyable_token”. When this field is selected, the token will transfer to the account that sent the required HBAR (or token).
+
+In the DEFI scenario, it might be appropriate to programmatically purchase every NFT created by a certain artist, or a series of carbon offsets with particular attributes. This HIP would allow you to purchase NFTs without the facilitation of a third party marketplace. In more decentralized scenarios, where multi-attribute matching is a requirement, but supply from a single source is not sufficient, this allows for tokens with attributes to be purchased at scale across a variety of sources, directly from the source with no intermediary. This can also enable mechanisms such as a smart contract using machine learning models to infer attributes of certain tokens and buy them at scale from accounts on the network without an exchange intermediary.
 
 ## User stories
 
-Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
+As a software program I want to be able to purchase “buyable tokens” without a signature. I just want to buy it for the listed price, vacuum up the token and move on.
+
+As a person who wants a particular amount of HBAR (or token) for the buyable tokens listed but does not care about anything else, I want to check a button to make that happen.
+
   
 ## Specification
 
-The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
+```message TokenCreateTransactionBody {
+
+    string name = 1;
+    string symbol = 2;
+    uint32 decimals = 3;
+    uint64 initialSupply = 4;
+    AccountID treasury = 5;
+    Key adminKey = 6;
+    Key kycKey = 7;
+    Key freezeKey = 8;
+    Key wipeKey = 9;
+    Key supplyKey = 10;
+    bool freezeDefault = 11;
+    Timestamp expiry = 13;
+    AccountID autoRenewAccount = 14;
+    Duration autoRenewPeriod = 15;
+    string memo = 16;
+    TokenType tokenType = 17;
+    TokenSupplyType supplyType = 18;
+    int64 maxSupply = 19;
+    Key fee_schedule_key = 20;
+    repeated CustomFee custom_fees = 21;
+
+    //new field
+    Bool is_buyable_token = 22;
+}
+
+//new messages
+Message buyableTokenProperties {
+   Uint64 amount = 1;
+   //need to add blacklisted accounts?
+   Uint64 accountLimit = 1;
+   Timestamp buyable_at;
+   Timestamp expire_at;
+   string expected_token_id;
+}
+```
 
 ## Backwards Compatibility
 
