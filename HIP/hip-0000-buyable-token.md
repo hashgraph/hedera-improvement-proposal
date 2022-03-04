@@ -1,7 +1,7 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
 title: Buyable Tokens
-author: author: Justin Atwell <justin.atwell@hedera.com>, The Matt Smithies <matt.s@dovu.io>, Sergey Metelin <sergey.metelin@hedera.com, Andrew Gastwirth <andrew.gastwirth@dlapiper.com>, Brian Johnson <johnsonb@objectcomputing.com>, 
+author: author: Justin Atwell <justin.atwell@hedera.com>, The Matt Smithies <matt.s@dovu.io>, Sergey Metelin <sergey.metelin@hedera.com, Wes Geisenberger <wes@hbar.fund>, Brian Johnson <johnsonb@objectcomputing.com>, 
 working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
 type: Service
 category: Service
