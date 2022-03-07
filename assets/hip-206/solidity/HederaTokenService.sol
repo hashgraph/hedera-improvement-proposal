@@ -135,70 +135,6 @@ abstract contract HederaTokenService is HederaResponseCodes {
         responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
     }
 
-
-    /**********************
-     * ABI v1 calls       *
-     **********************/
-
-    /// Initiates a Fungible Token Transfer
-    /// @param token The ID of the token as a solidity address
-    /// @param accountIds account to do a transfer to/from
-    /// @param amounts The amount from the accountId at the same index
-    function transferTokens(address token, address[] memory accountIds, int64[] memory amounts) internal
-    returns (int responseCode)
-    {
-        (bool success, bytes memory result) = precompileAddress.call(
-            abi.encodeWithSelector(IHederaTokenService.transferTokens.selector,
-            token, accountIds, amounts));
-        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
-    }
-
-    /// Initiates a Non-Fungable Token Transfer
-    /// @param token The ID of the token as a solidity address
-    /// @param sender the sender of an nft
-    /// @param receiver the receiver of the nft sent by the same index at sender
-    /// @param serialNumber the serial number of the nft sent by the same index at sender
-    function transferNFTs(address token, address[] memory sender, address[] memory receiver, int64[] memory serialNumber)
-    internal returns (int responseCode)
-    {
-        (bool success, bytes memory result) = precompileAddress.call(
-            abi.encodeWithSelector(IHederaTokenService.transferNFTs.selector,
-            token, sender, receiver, serialNumber));
-        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
-    }
-
-    /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
-    /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
-    /// (positive amount) or receiving (negative amount)
-    /// @param token The token to transfer to/from
-    /// @param sender The sender for the transaction
-    /// @param receiver The receiver of the transaction
-    /// @param amount Non-negative value to send. a negative value will result in a failure.
-    function transferToken(address token, address sender, address receiver, int64 amount) internal
-    returns (int responseCode)
-    {
-        (bool success, bytes memory result) = precompileAddress.call(
-            abi.encodeWithSelector(IHederaTokenService.transferToken.selector,
-            token, sender, receiver, amount));
-        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
-    }
-
-    /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
-    /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
-    /// (positive amount) or receiving (negative amount)
-    /// @param token The token to transfer to/from
-    /// @param sender The sender for the transaction
-    /// @param receiver The receiver of the transaction
-    /// @param serialNumber The serial number of the NFT to transfer.
-    function transferNFT(address token, address sender, address receiver, int64 serialNumber) internal
-    returns (int responseCode)
-    {
-        (bool success, bytes memory result) = precompileAddress.call(
-            abi.encodeWithSelector(IHederaTokenService.transferNFT.selector,
-            token, sender, receiver, serialNumber));
-        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
-    }
-
     /// Creates a Fungible Token with the specified properties
     /// @param token the basic properties of the token being created
     /// @param initialTotalSupply Specifies the initial supply of tokens to be put in circulation. The
@@ -273,6 +209,69 @@ abstract contract HederaTokenService is HederaResponseCodes {
             abi.encodeWithSelector(IHederaTokenService.createNonFungibleTokenWithCustomFees.selector,
             token, fixedFees, royaltyFees));
         (tokenAddress, errorMessage) = abi.decode(result, (address, bytes));
+    }
+
+    /**********************
+     * ABI v1 calls       *
+     **********************/
+
+    /// Initiates a Fungible Token Transfer
+    /// @param token The ID of the token as a solidity address
+    /// @param accountIds account to do a transfer to/from
+    /// @param amounts The amount from the accountId at the same index
+    function transferTokens(address token, address[] memory accountIds, int64[] memory amounts) internal
+    returns (int responseCode)
+    {
+        (bool success, bytes memory result) = precompileAddress.call(
+            abi.encodeWithSelector(IHederaTokenService.transferTokens.selector,
+            token, accountIds, amounts));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
+
+    /// Initiates a Non-Fungable Token Transfer
+    /// @param token The ID of the token as a solidity address
+    /// @param sender the sender of an nft
+    /// @param receiver the receiver of the nft sent by the same index at sender
+    /// @param serialNumber the serial number of the nft sent by the same index at sender
+    function transferNFTs(address token, address[] memory sender, address[] memory receiver, int64[] memory serialNumber)
+    internal returns (int responseCode)
+    {
+        (bool success, bytes memory result) = precompileAddress.call(
+            abi.encodeWithSelector(IHederaTokenService.transferNFTs.selector,
+            token, sender, receiver, serialNumber));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
+
+    /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
+    /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
+    /// (positive amount) or receiving (negative amount)
+    /// @param token The token to transfer to/from
+    /// @param sender The sender for the transaction
+    /// @param receiver The receiver of the transaction
+    /// @param amount Non-negative value to send. a negative value will result in a failure.
+    function transferToken(address token, address sender, address receiver, int64 amount) internal
+    returns (int responseCode)
+    {
+        (bool success, bytes memory result) = precompileAddress.call(
+            abi.encodeWithSelector(IHederaTokenService.transferToken.selector,
+            token, sender, receiver, amount));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
+    }
+
+    /// Transfers tokens where the calling account/contract is implicitly the first entry in the token transfer list,
+    /// where the amount is the value needed to zero balance the transfers. Regular signing rules apply for sending
+    /// (positive amount) or receiving (negative amount)
+    /// @param token The token to transfer to/from
+    /// @param sender The sender for the transaction
+    /// @param receiver The receiver of the transaction
+    /// @param serialNumber The serial number of the NFT to transfer.
+    function transferNFT(address token, address sender, address receiver, int64 serialNumber) internal
+    returns (int responseCode)
+    {
+        (bool success, bytes memory result) = precompileAddress.call(
+            abi.encodeWithSelector(IHederaTokenService.transferNFT.selector,
+            token, sender, receiver, serialNumber));
+        responseCode = success ? abi.decode(result, (int32)) : HederaResponseCodes.UNKNOWN;
     }
 
 }
