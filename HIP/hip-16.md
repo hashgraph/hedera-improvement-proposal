@@ -125,6 +125,8 @@ The proposed pricing is as follows (assumes maxDuration as of April 6, 2020 and 
 - "ContractAutoRenew": $0.064
 - "FileAutoRenew": $0.0014
 
+The above cost is the base price for entity renewal fees. The renewal fees take the state size and duration into consideration. 
+
 https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#autorenewal-record
 
 https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#entity-removal-record
