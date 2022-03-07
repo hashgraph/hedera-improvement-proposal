@@ -335,7 +335,6 @@ interface IHederaTokenService {
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
     /// @param fixedFees list of fixed fees to apply to the token
-    /// @param fractionalFees list of fractional fees to apply to the token
     /// @param royaltyFees list of royalty fees to apply to the token
     /// @return success whether the create was successful
     /// @return tokenAddress the created token's address
@@ -343,7 +342,6 @@ interface IHederaTokenService {
     function createNonFungibleTokenWithCustomFees(
         HederaToken memory token,
         FixedFee[] memory fixedFees,
-        FractionalFee[] memory fractionalFees,
         RoyaltyFee[] memory royaltyFees)
     external returns (bool success, address tokenAddress, bytes memory errorMessage);
 

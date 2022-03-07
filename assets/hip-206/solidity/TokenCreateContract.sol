@@ -124,7 +124,6 @@ contract TokenCreateContract is HederaTokenService {
 
         // declare fee fields
         IHederaTokenService.FixedFee[] memory fixedFees;
-        IHederaTokenService.FractionalFee[] memory fractionalFees;
         IHederaTokenService.RoyaltyFee[] memory royaltyFees = new IHederaTokenService.RoyaltyFee[](1);
 
         // create a royaltyFee for this NFT
@@ -143,7 +142,7 @@ contract TokenCreateContract is HederaTokenService {
 
         // create the token through HTS with default expiry and royalty fees;
         (bool success, address token, bytes memory errorMessage) =
-        HederaTokenService.createNonFungibleTokenWithCustomFees(myToken, fixedFees, fractionalFees, royaltyFees);
+        HederaTokenService.createNonFungibleTokenWithCustomFees(myToken, fixedFees, royaltyFees);
 
         if (!success) {
             revert (abi.decode(errorMessage, (string)));

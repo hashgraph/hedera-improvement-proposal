@@ -259,7 +259,6 @@ abstract contract HederaTokenService is HederaResponseCodes {
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
     /// @param fixedFees list of fixed fees to apply to the token
-    /// @param fractionalFees list of fractional fees to apply to the token
     /// @param royaltyFees list of royalty fees to apply to the token
     /// @return success whether the create was successful
     /// @return tokenAddress the created token's address
@@ -267,13 +266,12 @@ abstract contract HederaTokenService is HederaResponseCodes {
     function createNonFungibleTokenWithCustomFees(
         IHederaTokenService.HederaToken memory token,
         IHederaTokenService.FixedFee[] memory fixedFees,
-        IHederaTokenService.FractionalFee[] memory fractionalFees,
         IHederaTokenService.RoyaltyFee[] memory royaltyFees)
     internal returns (bool success, address tokenAddress, bytes memory errorMessage) {
         bytes memory result;
         (success, result) = precompileAddress.call(
             abi.encodeWithSelector(IHederaTokenService.createNonFungibleTokenWithCustomFees.selector,
-            token, fixedFees, fractionalFees, royaltyFees));
+            token, fixedFees, royaltyFees));
         (tokenAddress, errorMessage) = abi.decode(result, (address, bytes));
     }
 
