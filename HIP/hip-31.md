@@ -28,45 +28,17 @@ The below change to token transfer protobuf messages is formulated to incur a mi
 
 ## Specification
 
-There are (at least) two ways that token decimal information can be specified for token transfers. 
-
-For token transfers, allow:
-
-Either:
 ```
-message DecimalAccountAmount {
-  AccountId accountID = 1;
-  uint64 wholePart = 2;
-  uint64 fractionalPart = 3;
-}
-
 message TokenTransferList {
-  TokenID token = 1;
-  // transfer = 2;
-  // nftTransfers = 3;
-  // ...
-  repeated DecimalAccountAmount decimalTransfers = 4;
+    // [...]
+    
+    /**
+     * If present, the number of decimals this fungible token type is expected to have. The transfer
+     * will fail with UNEXPECTED_TOKEN_DECIMALS if the actual decimals differ.
+     */
+    UInt32Value expected_decimals = 4;
 }
 ```
-
-Or:
-```
-message DecimalAccountAmount {
-    AccountId accountID = 1;
-    sint64 amount = 2;
-    uint64 decimals = 3;
-}
-
-message TokenTransferList {
-    TokenID token = 1;
-    // transfers = 2;
-    // nftTransfers = 3;
-    // ...
-    repeated DecimalAccountAmount decimalTransfers = 4;
-}
-```
-
-Of these two, the first seems more convenient for edge case tokens that set their decimal values extremely high.
 
 ## Backwards Compatibility
 
