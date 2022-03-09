@@ -160,8 +160,12 @@ interface IHederaTokenService {
         uint32 amount;
 
         // The denomination of the fee; taken as hbar if left unset and taken as the id
-        // of the newly created token if set to the sentinel value of 0x0
+        // of the newly created token if set to the sentinel value of 0x0 (since there
+        // is no notion of unset or null value in Solidity and the default value of an
+        // address variable is 0x0, the `isTokenIdSet` variable is used to distinguish
+        // between the two cases)
         address tokenId;
+        bool isTokenIdSet;
 
         // The ID of the account to receive the custom fee, expressed as a solidity address
         address feeCollector;
