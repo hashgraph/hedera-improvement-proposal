@@ -154,18 +154,21 @@ interface IHederaTokenService {
     }
 
     /// A fixed number of units (hbar or token) to assess as a fee during a transfer of
-    /// units of the token to which this fixed fee is attached.
+    /// units of the token to which this fixed fee is attached. The denomination of
+    /// the fee depends on the values of tokenId, useHbarsForPayment and
+    /// useCurrentTokenForPayment. Exactly one of the values should be set.
     struct FixedFee {
-        // The number of units to assess as a fee
+
         uint32 amount;
 
-        // The denomination of the fee; taken as hbar if left unset and taken as the id
-        // of the newly created token if set to the sentinel value of 0x0 (since there
-        // is no notion of unset or null value in Solidity and the default value of an
-        // address variable is 0x0, the `isTokenIdSet` variable is used to distinguish
-        // between the two cases)
+        // Specifies ID of token that should be used for fixed fee denomination
         address tokenId;
-        bool isTokenIdSet;
+
+        // Specifies this fixed fee should be denominated in Hbar
+        bool useHbarsForPayment;
+
+        // Specifies this fixed fee should be denominated in the Token currently being created
+        bool useCurrentTokenForPayment;
 
         // The ID of the account to receive the custom fee, expressed as a solidity address
         address feeCollector;
