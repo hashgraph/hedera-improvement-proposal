@@ -40,11 +40,11 @@ contract TokenCreateContract is HederaTokenService {
         myToken.treasury = address(this);
         myToken.tokenKeys = keys;
 
-        (bool success, address token, bytes memory errorMessage) =
+        (int responseCode, address token) =
         HederaTokenService.createFungibleToken(myToken, 200, 8);
 
-        if (!success) {
-            revert (abi.decode(errorMessage, (string)));
+        if (responseCode != 22) {
+            revert ();
         }
 
         createdTokenAddress = token;
@@ -81,11 +81,11 @@ contract TokenCreateContract is HederaTokenService {
         myToken.treasury = address(this);
         myToken.tokenKeys = keys;
 
-        (bool success, address token, bytes memory errorMessage) =
+        (int responseCode, address token) =
         HederaTokenService.createFungibleTokenWithCustomFees(myToken, 200, 8, fixedFees, fractionalFees);
 
-        if (!success) {
-            revert (abi.decode(errorMessage, (string)));
+        if (responseCode != 22) {
+            revert ();
         }
 
         createdTokenAddress = token;
@@ -98,11 +98,11 @@ contract TokenCreateContract is HederaTokenService {
         myToken.treasury = address(this);
 
         // create the token through HTS with default expiry and royalty fees;
-        (bool success, address token, bytes memory errorMessage) =
+        (int responseCode, address token) =
         HederaTokenService.createNonFungibleToken(myToken);
 
-        if (!success) {
-            revert (abi.decode(errorMessage, (string)));
+        if (responseCode != 22) {
+            revert ();
         }
 
         createdTokenAddress = token;
@@ -141,11 +141,11 @@ contract TokenCreateContract is HederaTokenService {
         myToken.tokenKeys = keys;
 
         // create the token through HTS with default expiry and royalty fees;
-        (bool success, address token, bytes memory errorMessage) =
+        (int responseCode, address token) =
         HederaTokenService.createNonFungibleTokenWithCustomFees(myToken, fixedFees, royaltyFees);
 
-        if (!success) {
-            revert (abi.decode(errorMessage, (string)));
+        if (responseCode != 22) {
+            revert ();
         }
 
         createdTokenAddress = token;
