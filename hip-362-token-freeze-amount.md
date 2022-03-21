@@ -19,13 +19,15 @@ When "locking" or "freezing" liquidity related to an associated Account Id, Ther
 
 When "locking" or "freezing" liquidity related to an associated Account Id, There is no way to freeze a specific amount of tokens. This could be potentially detrimental in regards of DeFi, if the same token offers many use-cases. As it stands now, Users would have to set different accounts in order to use the same Network.
 
+
 ## Rationale
+When Alice participates to a round 1 token pre-sale, she buys 1000 tokens. According to the terms and conditions of the round 1 pre-sale, she should have those tokens frozen and unable to move them from the wallet until the term expires. However Alice would also like to buy more tokens at round 2 which are supposed to be Unfrozen tokens. Unfortunately Hedera only allows to freeze the whole token amount of the account, while it would be much more beneficial to implement a child function .setTokenAmount(Amount) to the parent TokenFreezeTransaction().
+
+This implementation allows Alice to interact with the token if she holds more than the frozen amount. for many use cases, without limiting her whole account by keeping the whole token amount frozen. This way, she can buy another 1000 tokens on round 2, having a total balance of 2000. And she is able to use unfrozen 1000 tokens from round 2 to interact with the network
 
 ## User Stories
 
-- Funds may be frozen according to various amounts, without limiting the User experience if they wanted to leverage the same account with many different use-cases. 
-- It would eliminate the need of trusting third party pools.
-
+- As dApp, I would like to allow users to stake their tokens by freezing a partial amount of TokenX in the user wallet for a pre-determined duration
 ## Specification
 ## Backwards Compatibility
 ## Security Implications
