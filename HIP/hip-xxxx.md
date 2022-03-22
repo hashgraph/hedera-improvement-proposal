@@ -21,7 +21,7 @@ Metadata is typically associated with non-fungible tokens (NFTs), for which meta
 
 As is the case for NFTs, it may be useful to provide information about a fungible token (FT) beyond that which is stored on-ledger. This specification follows the HIP-10 model to allow a fungible HTS token to point to a (possibly off-ledger) JSON file carrying that additional information. The key difference between this proposal and HIP-10 is that this specification defines a JSON schema specifically optimized for fungible tokens rather than NFTs. 
 
-While this specification follows the HIP-10 model, the current reality is that mechanism by which a token points to a JSON metadata file is different for an NFT than an FT. NFTs can have a `metadata` field for this pointer, while FTs do not (as of the time of the proposal). Consequently, FTs must leverage the more generic `memo` field on the token. It is expected that, in the future, this incongruity can and likely will be resolved so that the model is symmetrical across token types on HTS, resulting in FTs also having a more clearly defined `metadata` field. In which case this is resolved in the future, we'd expect that field point to a JSON object adhering to the schema specified here. 
+While this specification follows the HIP-10 model, the current reality is that mechanism by which a token points to a JSON metadata file is different for an NFT than for a FT. NFTs have a `metadata` field for this pointer, while FTs do not (as of the time of this proposal). Consequently, FTs must leverage the more generic `memo` field on the token. It is expected that, in the future, this incongruity can and likely will be resolved so that the model is symmetrical across token types on HTS, providing FTs the purpose built  `metadata`field. When this is resolved in the future, we'd expect that field will point to a JSON object adhering to the schema specified here. 
 
 ## Rationale
 
@@ -29,8 +29,7 @@ This design is expected to
 
 - Stay consistent with HIP-10 model for NFT metadata
 - Provide sufficient flexibility on which JSON metadata parameters are required and which optional
-- Acknowledge the current reality of the`metadata` field on HTS tokens being limited to NFTs 
-- Not mandate a particular storage location for either the JSON or any media it point to, i.e. IPFS, HFS, or a web server.
+- Not mandate a particular storage location for either the JSON or any media it points to, i.e. IPFS, HFS, or a web server.
 - Avoid duplication or conflict with the on-ledger token attributes 
 
 ## User Stories
@@ -51,7 +50,7 @@ The JSON for a fungible token includes the following information
 - smallestDenom - the name of the smallest denomination of these 
 - Creator - the entity that created the token 
 - Creator DID - the decentralized identifier of the creator
-- Admin - if the token has an admin key(s), the entity(s) that manage those keys
+- Admin - if the token has an admin key, the entity that manages that key
 - Logo - the logo for the token
 - Type - if the logo is included, its mime type
 - Website adddress -the address at which additional information on the token or corresponding project
@@ -76,10 +75,6 @@ Below is the human-readable schema
 }
 ```
 
-
-Note that the URI that references the JSON metadata must fit within the token memo size restrictions. 
-
-Note that the intent of the JSON metadata is to NOT recreate token name and symbol as both those attributes are on the token itself.
 
 ### Formatting Notes
 
@@ -171,7 +166,6 @@ Wallet and token explorer implementations interrogate HTS tokens using this stan
 
 [6] https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
-[7] https://json-schema.org/
 
 ## Copyright/license
 
