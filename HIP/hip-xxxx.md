@@ -1,10 +1,10 @@
 ---
-hip: 400
+hip: xxx
 title: Fungible Token Metadata JSON Schema
 author: Paul Madsen, <paul@calaxy.com>, Cooper Kunz, <cooper@calaxy.com>
 needs-council-approval: No
 status: Active
-created: 2022-03-16
+created: 2022-03-22
 ---
 
 ## Abstract
