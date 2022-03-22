@@ -53,7 +53,7 @@ The JSON for a fungible token includes the following information
 - Admin - if the token has an admin key, the entity that manages that key
 - Logo - the logo for the token
 - Type - if the logo is included, its mime type
-- Website adddress -the address at which additional information on the token or corresponding project
+- Website address -the address at which additional information on the token or corresponding project
 - Chat/discord address - the address at which the project's community holds discussion
 - Whitepaper address - the address at which the project's whitepaper can be found
 
