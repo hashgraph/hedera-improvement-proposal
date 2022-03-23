@@ -207,9 +207,14 @@ interface IHederaTokenService {
         // A fraction's denominator of fungible value exchanged for an NFT to collect as royalty
         uint32 denominator;
 
-        // If present, the fixed fee to assess to the NFT receiver when no fungible value is exchanged
-        // with the sender
-        FixedFee fixedFee;
+        // If present, the fee to assess to the NFT receiver when no fungible value
+        // is exchanged with the sender. Consists of:
+        // amount: the amount to charge for the fee
+        // tokenId: Specifies ID of token that should be used for fixed fee denomination
+        // useHbarsForPayment: Specifies this fee should be denominated in Hbar
+        uint32 amount;
+        address tokenId;
+        bool useHbarsForPayment;
 
         // The ID of the account to receive the custom fee, expressed as a solidity address
         address feeCollector;
