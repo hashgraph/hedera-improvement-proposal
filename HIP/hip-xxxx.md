@@ -46,35 +46,50 @@ The HTS token schema allows for the name and symbol for a fungible token to be c
 
 The JSON for a fungible token includes the following information
 
-- Description - human readable description of the token and corresponding project
-- smallestDenom - the name of the smallest denomination of these 
-- Creator - the entity that created the token 
+- description - human readable description of the token and corresponding project
+- smallestDenom - the name of the smallest denomination
+- creator - the entity that created the token 
 - Creator DID - the decentralized identifier of the creator
-- Admin - if the token has an admin key, the entity that manages that key
-- Logo - the logo for the token
-- Type - if the logo is included, its mime type
-- Website address -the address at which additional information on the token or corresponding project
-- Chat/discord address - the address at which the project's community holds discussion
-- Whitepaper address - the address at which the project's whitepaper can be found
+- admin - if the token has an admin key, the entity that manages that key
+- logo - the logo for the token
+- type - if the logo is included, its mime type
+- website address -the address at which additional information on the token or corresponding project
+- chat/discord address - the address at which the project's community holds discussion
+- whitepaper address - the address at which the project's whitepaper can be found
+- properties - container for arbitrary token attributes not specifically listed above
 
 Below is the human-readable schema 
 
 ```
 {
-    "description": "description - RECOMMENDED - max. of 500 characters",
-    "smallestDenom" : "how to refer to the smallest denomination of these tokens - OPTIONAL",
+    "description": "description of token - RECOMMENDED - max. of 500 characters",
+    "smallestDenom" : "the name of the smallest denomination of these tokens, if the name exists - OPTIONAL",
     "creator": "creator(s) - RECOMMENDED",
     "creatorDID": "DID  - OPTIONAL ",
     "admin": "admin(s) - OPTIONAL",
     "logo": "IPFS CID or path to the token's logo file - RECOMMENDED",
     "altLogo": "IPFS CID or path to the token's alternative logo file - OPTIONAL",
-    "type": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL "
+    "type": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
     "website": "link to website -  OPTIONAL", 
     "discussion": "link to discussion/discord -  OPTIONAL", 
     "whitepaper": "link to whitepaper -  OPTIONAL",
+    "properties": "arbitrary additional data relevant to the token - OPTIONAL"
 }
 ```
 
+Below is a representative sample 
+
+```
+{
+    "description": "Calaxy Tokens ($CLXY) act as gas powering The Creator's Galaxy personal monetization ecosystem, in addition to providing verifiable, decentralized governance.",
+    "smallestDenom": "Myro", 
+    "creator": "The Creator's Galaxy Foundation",
+    "logo": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
+    "type": "image/svg",
+    "website": "www.creatorsgalaxy.com",
+    "whitepaper": "www.creatorsgalaxy.com/whitepaper.pdf"
+}
+```
 
 ### Formatting Notes
 
