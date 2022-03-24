@@ -48,7 +48,7 @@ The JSON for a fungible token includes the following information
 
 - description - human readable description of the token and corresponding project
 - smallestUnitName - the name of the smallest unit of the token
-- smallerUnitSymbol - the symbol of the smallest unit of the token
+- smallestUnitSymbol - the symbol of the smallest unit of the token
 - creator - the entity that created the token 
 - Creator DID - the decentralized identifier of the creator
 - admin - if the token has an admin key, the entity that manages that key
