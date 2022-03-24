@@ -52,9 +52,9 @@ The JSON for a fungible token includes the following information
 - creator - the entity that created the token 
 - Creator DID - the decentralized identifier of the creator
 - admin - if the token has an admin key, the entity that manages that key
-- lightLogo  - a logo for the token designed for light backgrounds
+- lightLogo  - a logo for the token designed for light backgrounds. svg is recommended.
 - lightLogoType - if the lightLogo  is specified, its mime type
-- darkLogo  - a logo for the token designed for dark backgrounds
+- darkLogo  - a logo for the token designed for dark backgrounds. svg is recommended.
 - darkLogoType - if the darkLogo  is specified, its mime type
 - website address -the address at which additional information on the token or corresponding project
 - chat/discord address - the address at which the project's community holds discussion
