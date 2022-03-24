@@ -47,12 +47,15 @@ The HTS token schema allows for the name and symbol for a fungible token to be c
 The JSON for a fungible token includes the following information
 
 - description - human readable description of the token and corresponding project
-- smallestDenom - the name of the smallest denomination
+- smallestUnitName - the name of the smallest unit of the token
+- smallerUnitSymbol - the symbol of the smallest unit of the token
 - creator - the entity that created the token 
 - Creator DID - the decentralized identifier of the creator
 - admin - if the token has an admin key, the entity that manages that key
-- logo - the logo for the token
-- type - if the logo is included, its mime type
+- lightLogo  - a logo for the token designed for light backgrounds
+- lightLogoType - if the lightLogo  is specified, its mime type
+- darkLogo  - a logo for the token designed for dark backgrounds
+- darkLogoType - if the darkLogo  is specified, its mime type
 - website address -the address at which additional information on the token or corresponding project
 - chat/discord address - the address at which the project's community holds discussion
 - whitepaper address - the address at which the project's whitepaper can be found
@@ -67,9 +70,10 @@ Below is the human-readable schema
     "creator": "creator(s) - RECOMMENDED",
     "creatorDID": "DID  - OPTIONAL ",
     "admin": "admin(s) - OPTIONAL",
-    "logo": "IPFS CID or path to the token's logo file - RECOMMENDED",
-    "altLogo": "IPFS CID or path to the token's alternative logo file - OPTIONAL",
-    "type": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
+    "lightLogo": "IPFS CID or path to the token's light background logo file - RECOMMENDED",
+    "lightLogotype": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
+    "darkLogo": "IPFS CID or path to the token's dark background logo file - RECOMMENDED",
+    "darkLogotype": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
     "website": "link to website -  OPTIONAL", 
     "discussion": "link to discussion/discord -  OPTIONAL", 
     "whitepaper": "link to whitepaper -  OPTIONAL",
@@ -114,8 +118,8 @@ This is an example of a basic JSON metadata file for a fungible token as describ
     providing verifiable, decentralized governance.",
     "smallestDenom": "Myro", 
     “creator”: “The Creator's Galaxy Foundation”,
-    "logo": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
-    "type": “image/svg”,
+    "lightLogo": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
+    "lightLogoType": “image/svg”,
     “website”: “www.creatorsgalaxy.com”,
     "whitepaper": "www.creatorsgalaxy.com/whitepaper.pdf"
 }
