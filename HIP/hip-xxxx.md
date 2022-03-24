@@ -110,7 +110,8 @@ Note that mime types for directories are not uniformly defined. Some IPFS CIDs p
 This is an example of a basic JSON metadata file for a fungible token as described by this schema.
 ```
 {
-    "description": "Calaxy Tokens ($CLXY) act as gas powering The Creator’s Galaxy personal monetization ecosystem, in addition to<br/> providing verifiable, decentralized governance.",
+    "description": "Calaxy Tokens ($CLXY) act as gas powering The Creator’s Galaxy personal monetization ecosystem, in addition to
+    providing verifiable, decentralized governance.",
     "smallestDenom": "Myro", 
     “creator”: “The Creator's Galaxy Foundation”,
     "logo": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
