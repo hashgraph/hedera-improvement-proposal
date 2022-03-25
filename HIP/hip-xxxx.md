@@ -50,7 +50,7 @@ The JSON for a fungible token includes the following information
 - smallestUnitName - the name of the smallest unit of the token
 - smallestUnitSymbol - the symbol of the smallest unit of the token
 - creator - the entity that created the token 
-- Creator DID - the decentralized identifier of the creator
+- creatorDID - the decentralized identifier of the creator
 - admin - if the token has an admin key, the entity that manages that key
 - lightLogo  - a logo for the token designed for light backgrounds. svg is recommended.
 - lightLogoType - if the lightLogo  is specified, its mime type
@@ -66,7 +66,8 @@ Below is the human-readable schema
 ```
 {
     "description": "description of token - RECOMMENDED - max. of 500 characters",
-    "smallestDenom" : "the name of the smallest denomination of these tokens, if the name exists - OPTIONAL",
+    "smallestUnitName" : "the name of the smallest denomination of these tokens, if the name exists - OPTIONAL",
+    "smallestUnitSymbol" : "the nsymbol of the smallest denomination of these tokens, if the symbol exists - OPTIONAL",
     "creator": "creator(s) - RECOMMENDED",
     "creatorDID": "DID  - OPTIONAL ",
     "admin": "admin(s) - OPTIONAL",
@@ -116,7 +117,7 @@ This is an example of a basic JSON metadata file for a fungible token as describ
 {
     "description": "Calaxy Tokens ($CLXY) act as gas powering The Creator’s Galaxy personal monetization ecosystem, in addition to
     providing verifiable, decentralized governance.",
-    "smallestDenom": "Myro", 
+    "smallestUnitName": "Myro", 
     “creator”: “The Creator's Galaxy Foundation”,
     "lightLogo": "ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce",
     "lightLogoType": “image/svg”,
