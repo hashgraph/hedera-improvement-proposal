@@ -315,7 +315,7 @@ interface IHederaTokenService {
         HederaToken memory token,
         uint initialTotalSupply,
         uint decimals)
-    external returns (int responseCode, address tokenAddress);
+    external payable returns (int responseCode, address tokenAddress);
 
     /// Creates a Fungible Token with the specified properties
     /// @param token the basic properties of the token being created
@@ -332,14 +332,14 @@ interface IHederaTokenService {
         uint decimals,
         FixedFee[] memory fixedFees,
         FractionalFee[] memory fractionalFees)
-    external returns (int responseCode, address tokenAddress);
+    external payable returns (int responseCode, address tokenAddress);
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
     /// @return tokenAddress the created token's address
     function createNonFungibleToken(HederaToken memory token)
-    external returns (int responseCode, address tokenAddress);
+    external payable returns (int responseCode, address tokenAddress);
 
     /// Creates an Non Fungible Unique Token with the specified properties
     /// @param token the basic properties of the token being created
@@ -351,7 +351,7 @@ interface IHederaTokenService {
         HederaToken memory token,
         FixedFee[] memory fixedFees,
         RoyaltyFee[] memory royaltyFees)
-    external returns (int responseCode, address tokenAddress);
+    external payable returns (int responseCode, address tokenAddress);
 
 
     /**********************

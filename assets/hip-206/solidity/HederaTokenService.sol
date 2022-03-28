@@ -145,9 +145,9 @@ abstract contract HederaTokenService is HederaResponseCodes {
     function createFungibleToken(
         IHederaTokenService.HederaToken memory token,
         uint initialTotalSupply,
-        uint decimals) internal returns (int responseCode, address tokenAddress) {
+        uint decimals) public payable returns (int responseCode, address tokenAddress) {
 
-        (bool success, bytes memory result) = precompileAddress.call(
+        (bool success, bytes memory result) = precompileAddress.call{value: msg.value}(
             abi.encodeWithSelector(IHederaTokenService.createFungibleToken.selector,
             token, initialTotalSupply, decimals));
         
@@ -170,9 +170,9 @@ abstract contract HederaTokenService is HederaResponseCodes {
         uint decimals,
         IHederaTokenService.FixedFee[] memory fixedFees,
         IHederaTokenService.FractionalFee[] memory fractionalFees)
-    internal returns (int responseCode, address tokenAddress) {
+    public payable returns (int responseCode, address tokenAddress) {
         
-        (bool success, bytes memory result) = precompileAddress.call(
+        (bool success, bytes memory result) = precompileAddress.call{value: msg.value}(
             abi.encodeWithSelector(IHederaTokenService.createFungibleTokenWithCustomFees.selector,
             token, initialTotalSupply, decimals, fixedFees, fractionalFees));
         (responseCode, tokenAddress) = success ? abi.decode(result, (int32, address)) : (HederaResponseCodes.UNKNOWN, address(0));
@@ -183,9 +183,9 @@ abstract contract HederaTokenService is HederaResponseCodes {
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
     /// @return tokenAddress the created token's address
     function createNonFungibleToken(IHederaTokenService.HederaToken memory token)
-    internal returns (int responseCode, address tokenAddress) {
+    public payable returns (int responseCode, address tokenAddress) {
 
-        (bool success, bytes memory result) = precompileAddress.call(
+        (bool success, bytes memory result) = precompileAddress.call{value: msg.value}(
             abi.encodeWithSelector(IHederaTokenService.createNonFungibleToken.selector, token));
         (responseCode, tokenAddress) = success ? abi.decode(result, (int32, address)) : (HederaResponseCodes.UNKNOWN, address(0));
     }
@@ -200,9 +200,9 @@ abstract contract HederaTokenService is HederaResponseCodes {
         IHederaTokenService.HederaToken memory token,
         IHederaTokenService.FixedFee[] memory fixedFees,
         IHederaTokenService.RoyaltyFee[] memory royaltyFees)
-    internal returns (int responseCode, address tokenAddress) {
+    public payable returns (int responseCode, address tokenAddress) {
         
-        (bool success, bytes memory result) = precompileAddress.call(
+        (bool success, bytes memory result) = precompileAddress.call{value: msg.value}(
             abi.encodeWithSelector(IHederaTokenService.createNonFungibleTokenWithCustomFees.selector,
             token, fixedFees, royaltyFees));
         (responseCode, tokenAddress) = success ? abi.decode(result, (int32, address)) : (HederaResponseCodes.UNKNOWN, address(0));
