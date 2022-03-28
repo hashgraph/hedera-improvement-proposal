@@ -1,0 +1,352 @@
+---
+hip: // TODO 
+title: Wrapping Ethereum Transaction Bytes in a Hedera Transaction 
+author: Danno Ferrin <danno.ferrin@swirlds.com>
+type: Standards Track 
+category: Core 
+needs-council-approval: Yes 
+status: Draft
+created: 2022-03-28 
+discussions-to: //TODO 
+updated: <comma separated list of dates>
+---
+
+## Abstract
+
+Add a new transaction type that will hold signed Ethereum transactions and
+execute them as Hedera Transactions in a prescribed manner.
+
+## Motivation
+
+The Ethereum Ecosystem has a large and growing collection of tools and libraries
+that is becoming a de facto standard and development stack. While there are some
+logical mappings to the concepts used in the tooling that custom software can
+provide to these tools, the “signed ethereum transaction” is a critical
+cornerstone that Hedera does not directly have. This HIP describes how the
+Ethereum transaction bodies can be integrated into Hedera in a direct or
+meta-transactional way.
+
+## Rationale
+
+### Embedding Ethereum Transaction Directly
+
+The signature in the ethereum transaction is the most critical piece of data,
+and must be validated on the exact bytes passed into the signing software.
+Attempting to re-constitute the signed bytes or “vouch” for a signature (such as
+custodial bridges) introduce categories of software that diminish the value of a
+decentralized system.
+
+### A Single Transaction Type
+
+Adding ethereum data to supported transactions adds more complexity to
+transactions that need to track multiple modes. Similarly, a parallel series of
+transactions increases the API surface in ways that will be hard to maintain.
+
+### A Wrapped “Meta” Transaction
+
+There are critical concepts in Hedera transaction processing, such as paying the
+node that posted the transaction and transaction validity windows, that have no
+equivalent in ethereum and cannot easily be added to the transaction. Hence,
+simply storing the “raw” ethereum transaction would not provide enough
+information to process the transaction.
+
+By wrapping the Ethereum transaction in a Hedera transaction those values can be
+added as appropriate to the ethereum transaction at the discretion of the
+transaction signer. Signing the transaction is also needed to seal in the
+choices and ensure they are not mutable.
+
+### Not Repeating Explicit and Implied Values
+
+In order to save transaction space no data that can be read directly from the
+RLP (such as the nonce) or that is implied (such as the public key of the
+signature) will be stored elsewhere in the Hedera transaction.
+
+## User Stories
+
+As a user I want a way to submit transactions to hedera in the ethereum format
+so that end users can use exiting tooling from the Ethereum ecosystem.
+
+## Specification
+
+### Protobuf changes
+
+#### Ethereum Transaction
+
+A new transaction body `EthereumTransaction` will be introduced that hold the
+ethereum transaction data.
+
+```protobuf
+message EthereumTransactionBody {
+
+    // required 
+    bytes ethereumData = 1;
+
+    // optional 
+    FileID callData = 2; 
+
+}
+```
+
+The ethereum transaction data will be converted into a `ByteString`. If the
+transaction is small enough it will be the entire unadjusted transaction.
+
+To support larger transactions that won’t fit in the Hedera transaction size
+limitations (such as contract create transactions) we will allow the `data`
+section of the transaction (also referred to as callData or inputData) to be
+stored as a Hedera file. In these instances the transaction body contains an
+edited version of the Transaction, replacing a zero length string for the `data`
+field in the RLP set in the `ethereumData` message field and storing the call
+data in a Hedera File ?? as a hex string ?? as a binary blob ??. When the
+transaction is executed and before the signatures are extracted
+
+To support this transaction there will also need to be some changes in other
+messages that would be customary for a new transaction body.
+
+```protobuf
+// basic_types.proto 
+enum HederaFunctionality { 
+    //... 
+    EthereumTransaction = 83; // enum number may be difference once finalized 
+}
+
+// smart_contract_service.proto 
+service SmartContractService { 
+    //... 
+    rpc contractCallEthereum (Transaction) returns (TransactionResponse); 
+}
+
+// transaction_body.proto 
+message TransactionBody { 
+    //... 
+    oneof data { 
+        //...
+        EthereumTransactionBody ethereumTransaction = 50; // field number may change
+        //... 
+    } 
+    //... 
+}
+```
+
+#### ContractCreateTransaction
+
+In cases where the created contract is small it may fit in a Hedera Transaction.
+Ordinarily contract creates always require the creation of a Hedera file. To
+simplify this case a new field `initcodeBytes` is added to
+the `ContractCreateTransactionBody` as an alternative to `fileID`.
+
+```protobuf
+message ContractCreateTransactionBody {
+    oneof initcodeSource {
+        FileID fileID =    1; 
+        bytes initcodeBytes = 7; // field number may change in final draft 
+      } 
+      // ... 
+}
+```
+
+### Value of gas price and value fields
+
+For Ethereum Transactions we introduce the concept of “WeiBars”, which are 1 to
+10^18th the value of a hBar. This is to maximize compatibility with third party
+tools that expect ether units to be operated on in fractions of 10^18, also
+known as a Wei. Thus, 1 tinyBar is 10^10 weiBars or 10 gWei. When calculating
+gas prices and transferred value the fractional parts below a tiny bar are
+dropped when converted to tinyBars.
+
+### Ethereum Requirements
+
+The replay protection specified in EIP-155 will be required for Legacy
+transactions. The Type 1 / EIP-2930 and Type 2 / EIP-1559 transactions also
+require a chainId field. Non-restricted chainIDs (where chainID is less than or
+equal to zero) are not supported.
+
+For all transaction types the chainID specified must match the chainID of the
+network as specified in HIP-26 (0x127 for mainnet, 0x128 for testnet, 0x129 for
+devnet, and 0x12a for local networks). Future evolution in the Ledger ID may
+impact this.
+
+### Transaction Signing Requirements
+
+The sender of an ethereum transaction body will be the account with an account
+alias that is an ECDSA(secp256K1) public key. To identify the account the public
+key will be recovered from the ethereum transaction, and converted to an
+ethereum address. The transaction sender will then be set to the account whose
+ethereum address of the alias key has the same ethereum address.
+
+For the purposes of authentication signing the ethereum transaction will provide
+the same authorization as though the key signed the entire Hedera transaction.
+
+### Paying for the Transaction
+
+In addition to the account signing the Ethereum transaction (the sender account)
+each Hedera transaction containing the Ethereum transaction will also need to be
+signed by a hedera account (the relayer account). These may be the same account
+or different accounts.
+
+If the relayer and sender account are the same account there are no limitations
+on hbar transfers.
+
+When the relayer and sender account is different the following restrictions
+apply to hbar transfers.
+
+- The effective gas cost is either the gasUsed field (if a contract call or
+  contract create transaction) or the gas that a system contract would charge
+  for the operation
+- The gas price is either the `gasPrice` field for legacy and type 1 (EIP-2930)
+  transactions or the `max_fee_per_gas` field for type 2 (EIP1339 transactions).
+  This value is expressed in weibars.
+- The sender will be debited hbar equal or less than the gas price multiplied by
+  the effective gas cost (the sender portion).
+- If the sender portion is greater than the total fees the relayer will receive
+  the excess or the sender portion should be reduced. If the sender portion is
+  less than the total fees the sender will pay the difference.
+- If there is a `max_priority_fee_per_gas` specified then the relayers account
+  cannot receive more than the effective gas cost times
+  the `max_priority_fee_per_gas` (in weibars). The sender portion should be
+  reduced until the transfers balance out. The relayer may still spend any
+  amount needed to balance out the transfers.
+
+Finally, if an ethereum transaction reaches consensus and is invalid and cannot
+be processed (for critical failures such as a bad ECDSA signature, an account
+not matching the sender, an invalid ethereum transaction, an incorrect nonce, or
+any other such error) the relayer is responsible for all fees relating to
+bringing the transaction to consensus.
+
+### Account Nonce
+
+Ethereum transactions have a different deconfliction and transaction enablement
+mechanism than Hedera, but it is an inseparable part of ethereum toolchains. To
+that end we will support transaction sequence numbers as an additional
+transaction validity check.
+
+Each Hedera account will track a new value `ethereumNonce`, defaulting to zero.
+
+When an `EthereumTransaction` is validated at consensus time the transaction
+will fail if the account's `ethereumNonce` is not equal to the nonce in the
+ethereum transaction bytes.
+
+If the transaction passes all validations and EVM execution (or equivalent
+processing) starts then the `ethereumNonce` in the user account is incremented
+by one. If the transaction fails for any reason prior to EVM execution the nonce
+is not incremented.
+
+### Executing the Transaction
+
+Ethereum transactions can have a number of possible handling routes. All of them
+are driven by the `to` field in the ethereum transaction.
+
+If the `to` field is empty, zero length, or all zeros it will be converted into
+a `ContractCreate` transaction. If the transaction has a `callData` value in the
+transaction it will be places din the `ContractCreate`s `fileID` field,
+otherwise the data goes in the `initcodeBytes` field.
+
+For non-zero non-empty `to` fields the address will first be decoded as a
+standard solidity mapping (bytes 1-4 are shard, bytes 5-12 are realm, bytes
+13-20 are id, big endian encoded). If this does not map to an exiting entity
+then the `to` address will be processed as an alias, which currently can map to
+Crypto Accounts and Smart Contract Accounts. 
+
+If the `to` field still does not map to an entity the transaction fails with a
+hedera error. Intrinsic gas will be charged to the sender account.
+
+If the `to` address points to a Contract account the body of the ethereum
+transaction will be converted into a `ContractCall` and executed.
+
+If the `to` address corresponds to a Token ID the call will initially be handled
+as an EVM, and converted into a `ContractCall`. In future updates it will be
+handled directly via the HTS Precompile code skipping the EVM step.
+
+If the `to` address points to a Topic ID or File ID the call will be handled as
+an EVM, and converted into a `ContractCall`. If precompile support for the
+consensus and file service is developed then there may be similar handling as
+token calls.
+
+## Backwards Compatibility
+
+This HIP introduces a new transaction type, and does not directly impact other
+transactions. This HIP does increase the amount of call paths that depend on
+particular behavior of the smart contract and HTS precompile, however the impact
+is expected to increase the fidelity and consistency of actions. Part of this
+will be ensured by reusing all the transition logic from dependant transactions.
+
+## Security Implications
+
+The Ethereum Transaction will change some validation logic for authorization of
+actions. Instead of requiring signatures just at the hedera transaction level
+the body of the Ethereum transaction will contain a signature that will
+authorize actions within the scope of the transaction (value transfer and
+contract/precompile calls). Security logic will need to be altered to also check
+ethereum transaction data for authorization. Because security logic in hedera is
+to default to Deny any implementation errors will be expected to prevent
+legitimate actions and not enable illegitimate actions.
+
+## How to Teach This
+
+This is not a transaction dApps and integration software will typically use
+unless they specifically need Ethereum style transactions. Typical apps using
+this would be apps bridging JSON-RPC calls or apps integrating with other
+ethereum tooling as a downstream consumer.
+
+The documentation for this transaction should emphasize that normal HAPI APIs
+provide greater control and functionality than the functionality exposed via
+Ethereum transactions. If the application has control over the key signing
+functionality this transaction should be avoided.
+
+## Reference Implementation
+
+An incomplete prototype implementation is
+at [https://github.com/hashgraph/hedera-services/tree/rlp](https://github.com/hashgraph/hedera-services/tree/rlp)
+. A production version will follow.
+
+## Rejected Ideas
+
+### Foreign Transaction Data
+
+An internal prototype piloted the idea of adding foreign transaction data to all
+possible transactions, and then populating a normal hedera transaction with the
+data from the foreign bytes. Transition logic would need to be updated to either
+validate the data matches the foreign bytes or to reject any transaction with
+foreign data.
+
+This was rejected because it introduced a large amount of data duplication.
+Parsing of RLP data is very quick in comparison to other cryptographic
+validations and the weight on the record stream was deemed too much.
+
+### Enhanced Transaction Types
+
+An idea that was workshoped was to create separate 'Ethereum' variants of each
+of the transaction types, populating each with the ethereum transaction and
+doing similar field copying semantics.
+
+This idea was rejected because the explosion in number of transaction types was
+deemed a risk to software maintenance.
+
+### Storing just the Ethereum Transaction
+
+There was brief discussion on the idea of storing the Ethereum transaction
+without any Hedera wrappers, and having the transaction execution logic detect
+the transaction and handle it directly.
+
+This was rejected because of the inability to deconflict and deduplicate
+transactions in the manner that is required for the Hedera network structure.
+The node also was unable to be identified for proper credit in bringing the
+transaction to consensus.
+
+## Open Issues
+
+none at the moment
+
+## References
+
+- [EIP-155](https://eips.ethereum.org/EIPS/eip-155) - Simple replay attack protection
+- [EIP-2930](https://eips.ethereum.org/EIPS/eip-2930) - Optional access lists
+- [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559) - Fee market change for ETH 1.0 chain
+- [Ethereum Yellow Paper](https://ethereum.github.io/yellowpaper/paper.pdf)
+- [HIP-26](https://hips.hedera.com/hip/hip-26) - Migrate Smart Contract Service EVM to Hyperledger Besu EVM
+- [HIP-32](https://hips.hedera.com/hip/hip-21) - Auto Account Creation
+- [HIP-206](https://hips.hedera.com/hip/hip-206) - Hedera Token Service Precompiled Contract for Hedera SmartContract Service
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 --
+see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
