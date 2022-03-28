@@ -145,7 +145,8 @@ abstract contract HederaTokenService is HederaResponseCodes {
     function createFungibleToken(
         IHederaTokenService.HederaToken memory token,
         uint initialTotalSupply,
-        uint decimals) public payable returns (int responseCode, address tokenAddress) {
+        uint decimals) 
+    internal returns (int responseCode, address tokenAddress) {
 
         (bool success, bytes memory result) = precompileAddress.call{value: msg.value}(
             abi.encodeWithSelector(IHederaTokenService.createFungibleToken.selector,
@@ -170,7 +171,7 @@ abstract contract HederaTokenService is HederaResponseCodes {
         uint decimals,
         IHederaTokenService.FixedFee[] memory fixedFees,
         IHederaTokenService.FractionalFee[] memory fractionalFees)
-    public payable returns (int responseCode, address tokenAddress) {
+    internal returns (int responseCode, address tokenAddress) {
         
         (bool success, bytes memory result) = precompileAddress.call{value: msg.value}(
             abi.encodeWithSelector(IHederaTokenService.createFungibleTokenWithCustomFees.selector,
@@ -183,7 +184,7 @@ abstract contract HederaTokenService is HederaResponseCodes {
     /// @return responseCode The response code for the status of the request. SUCCESS is 22.
     /// @return tokenAddress the created token's address
     function createNonFungibleToken(IHederaTokenService.HederaToken memory token)
-    public payable returns (int responseCode, address tokenAddress) {
+    internal returns (int responseCode, address tokenAddress) {
 
         (bool success, bytes memory result) = precompileAddress.call{value: msg.value}(
             abi.encodeWithSelector(IHederaTokenService.createNonFungibleToken.selector, token));
@@ -200,7 +201,7 @@ abstract contract HederaTokenService is HederaResponseCodes {
         IHederaTokenService.HederaToken memory token,
         IHederaTokenService.FixedFee[] memory fixedFees,
         IHederaTokenService.RoyaltyFee[] memory royaltyFees)
-    public payable returns (int responseCode, address tokenAddress) {
+    internal returns (int responseCode, address tokenAddress) {
         
         (bool success, bytes memory result) = precompileAddress.call{value: msg.value}(
             abi.encodeWithSelector(IHederaTokenService.createNonFungibleTokenWithCustomFees.selector,
