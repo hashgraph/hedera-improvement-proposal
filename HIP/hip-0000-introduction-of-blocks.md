@@ -1,0 +1,199 @@
+# Introduction of Blocks
+
+---
+hip: 0000 
+title: Introduction of Blocks
+author: Daniel Ivanov <daniel-k-ivanov95@gmail.tech>, Ivan Kavaldzhiev <ivan.kavaldzhiev@limechain.tech>
+type: Standards Track 
+category: Core 
+needs-council-approval: Yes 
+status: Draft
+created: 2022-04-03 
+discussions-to: //TODO 
+updated: 
+---
+
+## Abstract
+
+Specifies how to introduce and formalize the concepts of Blocks in Hedera Hashgraph so that it can be used as a foundation on which further interoperability with existing DLT networks and infrastructure can be built.
+
+## Motivation
+
+The concept of blocks is a vital part of the existing Ethereum infrastructure as such, the introduction of blocks in Hedera can be considered a foundational step towards greater interoperability with EVM based tooling, explorers, exchanges and wallet providers.
+
+## Rationale
+
+Hedera must have a single consistent answer to what a block number is, the hash and which transactions are included in that block number. This is required for two reasons:
+
+1. The Smart Contracts Service to have the context of a `number` and the `hash` of the current block while running the EVM bytecode.
+2. Mirror Nodes to have the information in order to implement standard JSON RPC endpoints and be able to answer queries such as:
+    1. Getting current block number
+    2. Getting block by hash/number
+    3. Getting a list of transactions for a block by number/hash
+    4. Getting logs based on block number filtering
+
+**Design Goal #1 Minimize Changes**
+
+The Block concept should fit naturally into the existing processes, mechanisms and state updates. It must keep the same responsibilities between consensus, services and mirror nodes.
+
+**Design Goal #2 Lightweight**
+
+The Block concept must not add a lot of complexity and performance overhead to the processing of transactions. It must have minimal impact on the TPS of the network.
+
+Based on the described design goals above, the outlined specification defines that block properties are to be computed and populated at different points in time and by different components of the network, based on their responsibility.
+
+## Specification
+
+**Definitions**
+
+- `block` → `Record file` containing all `Record Stream Objects` grouped in a 2-second time frame.
+- `block number` → consecutive number of the `Record file` that is being incremented by `1` for every new `Record file`. This value can be initially bootstrapped through `Mirror Nodes` and after that maintained by services nodes.
+- `block hash` → The `32 byte keccak256 running hash` of the `Record file`. That is the running hash of the last `Record Stream Object` from the previous `Record file`.
+- `block timestamp` → Instant of consensus timestamp of the first `transaction`/`Record Stream Object` in the `Record file`.
+
+### Platform
+
+Adapt `TimestampStreamFileWriter` to include `blockNumber` in the `Record File`. Introduce a new field `firstConsensusTimeInCurrentFile` to be used as a marker when to start a new Record file. Use the field `lastConsensusTimestamp` to keep track of the last-seen consensus timestamp that was processed. In this way, we can ensure that we have at least `1000ns`  difference between the last processed transaction before a new file is created. In this way if we have a `parent transaction` with at least one `child precompile transaction` they all will be included in the same `block`/`Record file`. Otherwise, we might have a corner case where a `parent transaction` is included in one block, and its `child precompile transaction` falls into the next block since it will increase the `consensus timestamp` with `1ns`. Therefore, the algorithm for checking whether to start a new file would be the following:
+
+A new `Record Stream Object` enters `addObject(T object)` in `TimestampStreamFileWriter`. It has a consensus timestamp `T`. We create a new file only if both (1) and (2) conditions are met:
+
+1. `T - lastConsensusTime > 1000ns`
+2. `T - firstConsensusTimeInCurrentFile > 2s`
+
+or
+
+if `lastConsensusTime` or `firstConsensusTimeInCurrentFile` is `null`
+
+### Services
+
+Services is to update the processing logic of transactions so that it supports logic for determining new 2-second periods, increment `block` number and keep `block` relevant data.
+The proposed solution specifies a `long` field to be used for the block number counter, incremented every 2 seconds.
+
+**Pseudo-code of the record streaming algorithm**
+
+```markdown
+Properties in State:
+- blockHashes `map(number -> keccak256(RunningHash))` - stores the hashes of the last 256 blocks
+- blockNumber `long` - stores the current block number
+- blockTimestamp - `Instant` - stores the timestamp of the block
+
+handleTransaction() {
+	...
+	bool `newBlock` = shouldCreateNewBlock() {
+			if (`currentTS` - `lastConsensusTime` > `1000ns` && `currentTS` - `blockTimestamp` > `2s`) return `true`; else `false`
+	}
+	if (`newBlock`) {
+			`blockHashes[blockNumber] = keccak256(runningHash)` // `runningHash` is stored in `RecordStreaming`. It is a running hash of the last processed RSO
+			delete `blockHashes[blockNumber - 256]`
+			`blockNumber++`
+			`blockTimestamp = currentTS`
+	}
+	processTransaction(tx)
+	...
+}
+
+Migration:
+`blockNumber = bootstrapLastBlockNumber`, where `bootstrapLastBlockNumber` is a system property added on startup.
+`blockTimestamp = bootstrapLastBlockTimestamp`, where `bootstrapLastBlockTimestamp` is a system property added on startup.
+```
+
+`number`, `timestamp` and `hash` (map of the 256 most recent blocks) must be available during transaction execution since the following opcodes are to be supported as per the EVM specification:
+
+- `BLOCKHASH` → Accepts the block `NUMBER` for which to return the `hash`. Valid range is the last `256` blocks (not including the current one)
+- `NUMBER` → Returns the current block number
+- `TIMESTAMP` → Returns the unix timestamp of the current block
+
+**Record File**
+
+Record files are to be updated with a new property appended at the end of the `version 5` record files. The property will be encoded after the `End Object Running Hash` and will be `long` `blockNumber`. It is required for `services` to propagate this property to `mirror nodes` since there are `partial mirror nodes`, that don’t keep the full history from the `first record file`. Due to that, they are unable to calculate the `block number`, thus all other `block properties`.
+Block `hash` and `timestamp` will not be included in the record files, since `block hash` is the `keccak256(End Object Running Hash)` and `timestamp` is `1st Record Stream Object`'s consensus `timestamp`.
+
+With the introduction of the new version of `Record Stream Object`s, the respective libraries for state proofs must be updated:
+
+- [https://github.com/hashgraph/hedera-mirror-node/tree/main/hedera-mirror-rest/check-state-proof](https://github.com/hashgraph/hedera-mirror-node/tree/main/hedera-mirror-rest/check-state-proof)
+- [https://github.com/hashgraph/hedera-state-proof-verifier-go](https://github.com/hashgraph/hedera-state-proof-verifier-go)
+
+### Mirror Nodes
+
+Based on the updates specified above, the record stream objects will pass all the necessary information for Mirror Nodes to build `Record files`/`blocks` and store enough data about them to be able to answer all block related queries outlined above. To do this they will need to collect the `number`, `hash` and `timestamp` specified in the `Record file`. For old record files, they will be derived through a migration process as specified below.
+
+**Historical State**
+
+`Record files` prior to the introduction of the block properties will not expose the required information. In order to be able to answer historical queries, `mirror nodes` will need to iterate over the existing/already imported record files since genesis, assign the corresponding `block number`, `hash` and migrate their DB collections such that they are able to answer queries of type:
+
+- Getting block by hash/number
+- Getting a list of transactions for a block by number/hash
+- Getting logs based on block number filtering
+
+### Block Properties
+
+The following table specifies all `block` properties and at which point they will be computed. Mirror nodes must `hex` encode all properties prior to exposing them through their APIs. This table defines the properties that must be returned through APIs from Mirror Nodes.
+
+| Property | Computed By | Description  |
+| --- | --- | --- |
+| number | Services | Stored in services state (only the current number) and exported in the record stream. It is the consecutive number of the record file that is being incremented by 1 for every new record file. The number will be initially set in services through the bootstrapping process. It is exposed to the 1) EVM during Transaction Execution through the NUMBER opcode; 2) as a new property in the record file and ingested by mirror nodes. |
+| timestamp | Services | Stored in services state (only the last block timestamp) and computed by services. It is the consensusTimestamp of the first transaction in the record file. It is exposed to the 1) EVM during Transaction Execution through the TIMESTAMP opcode; 2) implicitly exported in the record file through the TS of the first transaction in the record file. |
+| hash | Services | Stored in services (last 256 blocks). It is the keccak256(runningHash) of the previous record file. That is the running hash of the last record stream object from the previous record file. It is exposed to the 1) EVM during Transaction Execution through the BLOCKHASH opcode; 2) In the record file as the End Object Running Hash |
+| baseFeePerGas (??) | Mirror Node | Computed by Mirror Node(s). It is a hex encoded value of the gas pricing based in the FeeSchedule file. |
+  | difficulty | Mirror Node | Hardcoded by Mirror Node(s) to hex encoded 0 |
+  | extraData | Mirror Node | Hardcoded by Mirror Nodes(s) to 0x |
+  | gasLimit | Mirror Node |  Computed by Mirror Node(s). The sum of the gasLimit values for all ContractLocalCall, ContractCall and ContractCreate transactions within the block. |
+  | gasUsed | Mirror Node | Computed by Mirror Node(s). The sum of the gasUsed value for all ContractLocalCall, ContractCall and ContractCreate transactions within the block. |
+  | logsBloom | Mirror Node | (???) |
+  | miner | Mirror Node | Hardcoded by the Mirror Nodes to the 0.0.98 address in the long zero prefix format.  |
+  | mixHash | Mirror Node | Hardcoded by Mirror Node(s) to 0x |
+  | nonce | Mirror Node | Hardcoded by Mirror Node(s) to hex-encoded 0 |
+  | parentHash | Mirror Node | Computed by Mirror Node(s). The hash of the parent block. |
+  | receiptsRoot | Mirror Node | (???) |
+  | sha3Uncles | Mirror Node | Hardcoded by Mirror Node(s) to the SHA3 computation of empty array (0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347) |
+  | size | Mirror Node | Computed by Mirror Node(s). The sum of the bytes of all transaction(s) of type ContractLocalCall, ContractCall and ContractCreate within the block. transaction is the transaction specified in the RecordStreamObject and not the Transaction Record |
+  | stateRoot | Mirror Node | (???) |
+  | totalDifficulty | Mirror Node | Hardcoded by Mirror Nodes(s) to hex-encoded 0 |
+  | transactions | Mirror Node | Computed by Mirror Node(s) by ingesting the record stream and aggregating RecordStreamObjects of type ContractLocalCall, ContractCall and ContractCreate within the block. |
+  | transactionsRoot | Mirror Node | (???) |
+  | uncles | Mirror Node | Hardcoded by Mirror Node(s) to empty array [] |
+
+## Backwards Compatibility
+
+The following breaking changes will be introduced with the implementation of the HIP:
+
+- `BLOCKHASH` will no longer return an empty `hash` but the actual `hash` of the block as per the EVM specification.
+- `NUMBER` will no longer return the `timestamp` of the `block`, but rather the proper `block` number as specified in the HIP.
+
+## Security Implications
+
+- The specification does not have any security implications.
+
+## How to Teach this
+
+- Respective documentation will be added.
+
+## Reference Implementation
+
+Initial POC in `services`:
+
+- [https://github.com/hashgraph/hedera-services/commit/04501de76f3e649b3f741dd2453c05e2631e7393#diff-1ca5738f0fe42a25f91d641aea2104dd51bec20398ce6c2aa18afde3d5a590d9R417](https://github.com/hashgraph/hedera-services/commit/04501de76f3e649b3f741dd2453c05e2631e7393#diff-1ca5738f0fe42a25f91d641aea2104dd51bec20398ce6c2aa18afde3d5a590d9R417)
+
+## Rejected Ideas
+
+Two iterations were conducted prior to settling on this approach.
+
+1. Rounds as blocks - the first iteration was proposing that each block is the `consensus round`. It became clear that this approach is not suitable as it implied that multiple blocks are to be issued per second. That would add additional load to infrastructure providers when clients are iterating and going through blocks to query for data.
+- Events - the second iteration suggested that `consensus events` are to be defined as `blocks`. The proposal had a much higher cognitive load (1 block = 1 record file is easier to grasp) and it required more changes to the `platform` in order to be implemented. To add on top of that, the same drawback as the `high frequency` blocks was present as well.
+
+## Open Issues
+
+- What will be the considered `baseFeePerGas` property for blocks? There are different pricing for `Create`, `Call` and `LocalCall` transactions.
+
+## References
+
+- [Record stream objects](https://github.com/hashgraph/hedera-services/blob/master/docs/Record_Event_Stream_File_Formats.docx)
+- [Events](https://github.com/hashgraph/hedera-docs/blob/master/core-concepts/hashgraph-consensus-algorithms/gossip-about-gossip.md)
+- [Running hash](https://hedera.com/hh-consensus-service-whitepaper.pdf)
+- [EVM opcodes](https://www.evm.codes/)
+- [Ethereum Yellow Paper](https://ethereum.github.io/yellowpaper/paper.pdf)
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 --
+see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
