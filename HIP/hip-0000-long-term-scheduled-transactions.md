@@ -345,7 +345,7 @@ As expected, if I submit the required signature before expiration then the trans
 
 ### Mirror Node Change
 
-- Add `waitForExpiry` to the mirror node schedule api.
+- Add `wait_for_expiry` and `expiration_time` to the mirror node schedule api.
 
 ### Documentation Updates
 
