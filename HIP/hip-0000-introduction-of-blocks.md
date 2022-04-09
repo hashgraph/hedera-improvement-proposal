@@ -75,8 +75,9 @@ if `lastConsensusTime` or `firstConsensusTimeInCurrentFile` is `null`
 Services is to update the processing logic of transactions so that it supports logic for determining new record file 
 periods, increment `block` number and keep `block` relevant data. The proposed solution specifies a `long` field to be
 used for the block number counter, incremented every `hedera.recordStream.logPeriod` seconds. Using a signed 32-bit int
-would result in the block number rolling over in 140 years for the initial 2 second length. Sub-second block lengths
-would exhaust that number well within the operational lifetime of typical networks. A signed 64 bit integer provides a much longer timeframe.
+would result in the block number rolling over in 140 years (if current 2-second length is kept). Sub-second block 
+lengths would exhaust that number well within the operational lifetime of typical networks. A signed 64 bit integer
+provides a much longer timeframe.
 
 **Pseudo-code of the record streaming algorithm**
 
