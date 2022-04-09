@@ -19,7 +19,8 @@ Specifies how to introduce and formalize the concepts of Blocks in Hedera Hashgr
 
 ## Motivation
 
-The concept of blocks is a vital part of the existing Ethereum infrastructure as such, the introduction of blocks in Hedera can be considered a foundational step towards greater interoperability with EVM based tooling, explorers, exchanges and wallet providers.
+The concept of blocks is a vital part of the existing Ethereum infrastructure and, as such, the introduction of blocks 
+in Hedera can be considered a foundational step towards greater interoperability with EVM based tooling, explorers, exchanges and wallet providers.
 
 ## Rationale
 
@@ -48,7 +49,8 @@ Based on the described design goals above, the outlined specification defines th
 
 - `block` → `Record file` containing all `Record Stream Objects` grouped in a 2-second time frame.
 - `block number` → consecutive number of the `Record file` that is being incremented by `1` for every new `Record file`. This value can be initially bootstrapped through `Mirror Nodes` and after that maintained by services nodes.
-- `block hash` → The `32 byte keccak256 running hash` of the `Record file`. That is the running hash of the last `Record Stream Object` from the previous `Record file`.
+- `block hash` → `32 byte` prefix (out of `48 bytes`) of the running hash of the last `Record Stream Object` from 
+  the previous `Record File`
 - `block timestamp` → Instant of consensus timestamp of the first `transaction`/`Record Stream Object` in the `Record file`.
 
 ### Platform
@@ -134,11 +136,11 @@ The following table specifies all `block` properties and at which point they wil
 | number | Services | Stored in services state (only the current number) and exported in the record stream. It is the consecutive number of the record file that is being incremented by 1 for every new record file. The number will be initially set in services through the bootstrapping process. It is exposed to the 1) EVM during Transaction Execution through the NUMBER opcode; 2) as a new property in the record file and ingested by mirror nodes. |
 | timestamp | Services | Stored in services state (only the last block timestamp) and computed by services. It is the consensusTimestamp of the first transaction in the record file. It is exposed to the 1) EVM during Transaction Execution through the TIMESTAMP opcode; 2) implicitly exported in the record file through the TS of the first transaction in the record file. |
 | hash | Services | Stored in services (last 256 blocks). It is the keccak256(runningHash) of the previous record file. That is the running hash of the last record stream object from the previous record file. It is exposed to the 1) EVM during Transaction Execution through the BLOCKHASH opcode; 2) In the record file as the End Object Running Hash |
-| baseFeePerGas (??) | Mirror Node | Computed by Mirror Node(s). It is a hex encoded value of the gas pricing based in the FeeSchedule file. |
+| baseFeePerGas | Mirror Node | Always zero, since there is no EIP-1559 style floating block capacity fees in Hedera. |
   | difficulty | Mirror Node | Hardcoded by Mirror Node(s) to hex encoded 0 |
   | extraData | Mirror Node | Hardcoded by Mirror Nodes(s) to 0x |
-  | gasLimit | Mirror Node |  Computed by Mirror Node(s). The sum of the gasLimit values for all ContractLocalCall, ContractCall and ContractCreate transactions within the block. |
-  | gasUsed | Mirror Node | Computed by Mirror Node(s). The sum of the gasUsed value for all ContractLocalCall, ContractCall and ContractCreate transactions within the block. |
+  | gasLimit | Mirror Node |  Computed by Mirror Node(s). The sum of the gasLimit values for all ContractCall and ContractCreate transactions within the block. |
+  | gasUsed | Mirror Node | Computed by Mirror Node(s). The sum of the gasUsed value for all ContractCall and ContractCreate transactions within the block. |
   | logsBloom | Mirror Node | (???) |
   | miner | Mirror Node | Hardcoded by the Mirror Nodes to the 0.0.98 address in the long zero prefix format.  |
   | mixHash | Mirror Node | Hardcoded by Mirror Node(s) to 0x |
@@ -146,10 +148,10 @@ The following table specifies all `block` properties and at which point they wil
   | parentHash | Mirror Node | Computed by Mirror Node(s). The hash of the parent block. |
   | receiptsRoot | Mirror Node | (???) |
   | sha3Uncles | Mirror Node | Hardcoded by Mirror Node(s) to the SHA3 computation of empty array (0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347) |
-  | size | Mirror Node | Computed by Mirror Node(s). The sum of the bytes of all transaction(s) of type ContractLocalCall, ContractCall and ContractCreate within the block. transaction is the transaction specified in the RecordStreamObject and not the Transaction Record |
+  | size | Mirror Node | Computed by Mirror Node(s). The sum of the bytes of all transaction(s) of type ContractCall and ContractCreate within the block. transaction is the transaction specified in the RecordStreamObject and not the Transaction Record |
   | stateRoot | Mirror Node | (???) |
   | totalDifficulty | Mirror Node | Hardcoded by Mirror Nodes(s) to hex-encoded 0 |
-  | transactions | Mirror Node | Computed by Mirror Node(s) by ingesting the record stream and aggregating RecordStreamObjects of type ContractLocalCall, ContractCall and ContractCreate within the block. |
+  | transactions | Mirror Node | Computed by Mirror Node(s) by ingesting the record stream and aggregating RecordStreamObjects of type ContractCall and ContractCreate within the block. |
   | transactionsRoot | Mirror Node | (???) |
   | uncles | Mirror Node | Hardcoded by Mirror Node(s) to empty array [] |
 
