@@ -47,8 +47,12 @@ Based on the described design goals above, the outlined specification defines th
 
 **Definitions**
 
-- `block` → `Record file` containing all `Record Stream Objects` grouped in a 2-second time frame.
-- `block number` → consecutive number of the `Record file` that is being incremented by `1` for every new `Record file`. This value can be initially bootstrapped through `Mirror Nodes` and after that maintained by services nodes.
+- `block` → `Record file` containing all `Record Stream Objects` for a given time frame. Block times are to be 
+  at least `hedera.recordStream.logPeriod` seconds. The genesis block and therefore number (`blockNumber=0`) is 
+  considered the stream start date with the first RCD file exported from `services` nodes.
+- `block number` → consecutive number of the `Record file` that is being incremented by `1` for every new `Record 
+  file`. For already existing networks, this value will be initially bootstrapped through `Mirror Nodes` and after that 
+  maintained by services nodes.
 - `block hash` → `32 byte` prefix (out of `48 bytes`) of the running hash of the last `Record Stream Object` from 
   the previous `Record File`
 - `block timestamp` → Instant of consensus timestamp of the first `transaction`/`Record Stream Object` in the `Record file`.
@@ -68,8 +72,10 @@ if `lastConsensusTime` or `firstConsensusTimeInCurrentFile` is `null`
 
 ### Services
 
-Services is to update the processing logic of transactions so that it supports logic for determining new 2-second periods, increment `block` number and keep `block` relevant data.
-The proposed solution specifies a `long` field to be used for the block number counter, incremented every 2 seconds.
+Services is to update the processing logic of transactions so that it supports logic for determining new record file 
+periods, increment `block` number and keep `block` relevant data. The proposed solution specifies a `long` field to be
+used for the block number counter, incremented every `hedera.recordStream.logPeriod` seconds. The usage of `int 
+(2^31 bytes)` can be considered insufficient in use-cases in which `hedera.recordStream.logPeriod` is sub 1 second.
 
 **Pseudo-code of the record streaming algorithm**
 
@@ -82,7 +88,7 @@ Properties in State:
 handleTransaction() {
 	...
 	bool `newBlock` = shouldCreateNewBlock() {
-			if (`currentTS` - `lastConsensusTime` > `1000ns` && `currentTS` - `blockTimestamp` > `2s`) return `true`; else `false`
+			if (`currentTS` - `lastConsensusTime` > `1000ns` && `currentTS` - `blockTimestamp` > `hedera.recordStream.logPeriod`) return `true`; else `false`
 	}
 	if (`newBlock`) {
 			`blockHashes[blockNumber] = keccak256(runningHash)` // `runningHash` is stored in `RecordStreaming`. It is a running hash of the last processed RSO
