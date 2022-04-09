@@ -170,7 +170,7 @@ The following table specifies all `block` properties and at which point they wil
   | receiptsRoot | N/A | Hardcoded by Mirror Node(s) to the SHA3 computation of empty array 
 (`0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347`). It is expected to be used and populated in the future once traceability work is finalised.  |
   | sha3Uncles | Mirror Node | Hardcoded by Mirror Node(s) to the SHA3 computation of empty array (`0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347`) |
-  | size | Mirror Node | Computed by Mirror Node(s). The sum of the bytes of all transaction(s) of type ContractCall and ContractCreate within the block. transaction is the transaction specified in the RecordStreamObject and not the Transaction Record |
+  | size | Mirror Node | Computed by Mirror Node(s). The size of the record file. |
   | stateRoot | Mirror Node | Hardcoded by Mirror Node(s) to the SHA3 computation of empty array (`0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347`) |
   | totalDifficulty | Mirror Node | Hardcoded by Mirror Nodes(s) to hex-encoded 0 |
   | transactions | Mirror Node | Computed by Mirror Node(s) by ingesting the record stream and aggregating RecordStreamObjects of type ContractCall and ContractCreate within the block. |
