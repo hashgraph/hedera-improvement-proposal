@@ -116,19 +116,20 @@ _The transaction ID of the child can be found deterministically at `ScheduleCrea
 
 _Users can also use the `executed_timestamp` in the mirror node schedule API to find child transactions via the mirror node transactions API._
 
-### Corner cases
+### Transactions Change Over Time 
 
+A Scheduled Transaction being ready to execute, or even *not ready to execute*, at the time a `ScheduleCreate` or `ScheduleSign` comes in does not guarantee it will stay that way. Any number of things can happen over time that impact the transaction.
+Examples -
 - An account changes keys after it has signed a Scheduled Transaction. 
   - Scheduled Transactions will need to be re-signed with the new keys for them to succeed in this case.
 - Account deletion.
   - If an account that is part of a Scheduled Transaction is deleted, the transaction will fail.
+- Account balance changes.
+  - If account balances change such that there is insufficient balances to allow the transaction to go through, it will fail.
+- Signature requirements for Scheduled Transactions can change (e.g. via `CryptoUpdate`) such that existing signatures become sufficient to allow the transaction to go through.
+  - In this case the transaction will execute at `expirationTime` unless a `ScheduleSign` comes in to push it through.
 
-_Both of the above cases are already handled in the existing system._
-
-
-- Signature requirements for Scheduled Transactions can change over time (e.g. via `CryptoUpdate`) such that existing signatures become sufficient to allow the transaction to go through.
-
-_In all cases, transactions must be evaluated for execution at expiration time. We must also be careful to document this case thoroughly._
+_In all cases, transactions must be evaluated for execution at expiration time. We should document particularly thorny corner cases thoroughly._
 
 
 ## User stories
@@ -275,7 +276,7 @@ As expected, if I submit the required signature before expiration then the trans
     - This setting should initially be set to 100.
   - A `scheduleThrottles` shall be calculated by scaling existing throttles such that the total per second allowed is the same as `scheduling.maxTxnPerSecond`.
     - The algorithm for this shall be defined by the following pseudo java code:
-        ```
+        ```java
         int maxTps = getSetting('scheduling.maxTxnPerSecond');
         var scheduleThrottles = existingThrottles.copy();
       
