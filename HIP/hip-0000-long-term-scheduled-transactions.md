@@ -6,7 +6,7 @@ working-group:
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2022-04-08
 discussions-to: TBD
 updated: 2022-04-08
