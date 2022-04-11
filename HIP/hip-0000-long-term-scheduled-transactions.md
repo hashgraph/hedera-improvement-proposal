@@ -308,7 +308,7 @@ As expected, if I submit the required signature before expiration then the trans
       
         ```
   - The `contracts.scheduleThrottleMaxGasLimit` setting shall define the max gas that Scheduled Transactions can use in any given second in the future.
-    - This setting should initially be set to 5000.
+    - This setting should initially be set to 50000.
   - Evaluating if a `ScheduleCreate` transaction exceeds throttling shall be defined as follows -
     - Get all the transactions already scheduled for the second that the `expirationTime` falls in.
     - Send all the transactions plus the new transaction through `scheduleThrottles`
