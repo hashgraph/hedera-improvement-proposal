@@ -277,7 +277,7 @@ As expected, if I submit the required signature before expiration then the trans
   - A `scheduleThrottles` shall be calculated by scaling existing throttles such that the total per second allowed is the same as `scheduling.maxTxnPerSecond`.
     - The algorithm for this shall be defined by the following pseudo java code:
         ```java
-        int maxTps = getSetting('scheduling.maxTxnPerSecond');
+        int maxTps = getSetting("scheduling.maxTxnPerSecond");
         var scheduleThrottles = existingThrottles.copy();
       
         // if it's imposible to scale the throttles, throw exception
