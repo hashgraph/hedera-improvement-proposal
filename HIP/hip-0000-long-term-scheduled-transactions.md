@@ -243,8 +243,10 @@ As expected, if I submit the required signature before expiration then the trans
 ### Protobuf changes
 
 - Add an optional `expirationTime` `Timestamp` field to the `ScheduleCreate` protobuf. This field shall specify the "consensus time" when the transaction should attempt to execute and then expire.
-   - If not specified, this shall default to 30 minutes in the future.
+   - If not specified, this shall default to 30 minutes after the consensus time that the `ScheduleCreate` is processed.
    - Initially the max value of this should be 2 months in the future. This may expand as stability is confirmed.
+     - A new `SCHEDULE_EXPIRATION_TIME_TOO_FAR_IN_FUTURE` error shall be created for this validation.
+   - If the `expirationTime` is less than or equal to the current consensus time when the `ScheduleCreate` is processed then the new `SCHEDULE_EXPIRATION_TIME_MUST_BE_HIGHER_THAN_CONSENSUS_TIME` error shall be returned.
 - Add an optional `waitForExpiry` `bool` field to the `ScheduleCreate` and `ScheduleInfo` protobuf.  This field shall specify that the transaction will wait till `expirationTime` to attempt to execute.
   - if not specified, this shall default to `false`.
   - Setting this to `false` does not necessarily mean that the transaction will never execute at `expirationTime`. 
