@@ -29,6 +29,7 @@ This implementation allows Alice to interact with the token if she holds more th
 
 - As dApp, I would like to allow users to stake their tokens by freezing a partial amount of TokenX in the user wallet for a pre-determined duration
 ## Specification
+<img width="846" alt="Screen Shot 2022-04-12 at 5 38 09 PM" src="https://user-images.githubusercontent.com/96840872/163058963-50aef31d-875e-4e1f-970e-60cf1e96430c.png">
 ## Backwards Compatibility
 ## Security Implications
 ## How to Teach This
