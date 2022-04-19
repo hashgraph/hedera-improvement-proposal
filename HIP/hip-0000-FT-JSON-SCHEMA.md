@@ -102,7 +102,7 @@ A more complete list of URI’s can be found here: https://en.wikipedia.org/wiki
 
 ### Mime Formatting
 
-Mime formatting shall follow the following format: type/subtype
+Mime formatting shall follow the following format: `type/subtype`
 
 As a rule, mime types are all lower case. However apps should be programmed to accept any case for robustness.
 
