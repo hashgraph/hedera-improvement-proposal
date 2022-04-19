@@ -132,7 +132,7 @@ This HIP is entirely opt-in, and does not break any existing functionality. It s
 
 ## Security Implications
 
-Mutability of the metadata for a token will depend on a) whether or not the token itself has an admin key (and so the link to metadata via the `'memo' can be changed to another different JSON metadata file and b) whether the storage location of the JSON metadata file guarantees immutability (e.g. IPFS of HFS), and c) whether the storage location of any media the JSON references guarantees immutability. 
+Mutability of the metadata for a token will depend on a) whether or not the token itself has an admin key (and so the link to metadata via the `memo` can be changed to another different JSON metadata file and b) whether the storage location of the JSON metadata file guarantees immutability (e.g. IPFS of HFS), and c) whether the storage location of any media the JSON references guarantees immutability. 
 
 This dependence is represented below
 
