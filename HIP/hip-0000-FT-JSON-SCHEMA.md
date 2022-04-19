@@ -106,7 +106,7 @@ As a rule, mime types are all lower case. However apps should be programmed to a
 
 A list of common mime types can be found here: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
-Note that mime types for directories are not uniformly defined. Some IPFS CIDs point to directories rather than files, so this type is useful. This standard shall define it using the format: text/directory 
+Note that mime types for directories are not uniformly defined. Some IPFS CIDs point to directories rather than files, so this type is useful. This standard shall define it using the format: `text/directory` 
 
 ## Reference Implementation
 
