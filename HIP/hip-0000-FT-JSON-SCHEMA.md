@@ -4,7 +4,7 @@ title: Fungible Token Metadata JSON Schema
 author: Paul Madsen <paul@calaxy.com>, Cooper Kunz <cooper@calaxy.com>
 type: Informational
 needs-council-approval: No
-status: Active
+status: Last Call
 last-call-date-time: 2022-04-21T07:00:00Z
 created: 2022-03-22
 ---
