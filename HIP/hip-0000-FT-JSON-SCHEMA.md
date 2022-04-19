@@ -95,7 +95,7 @@ URI’s shall follow the following format: `protocol://resource_location`
 
 For resources that are on the world wide web, the standard `http` and `https` protocols are acceptable. Ie. `http://www.example.org/image/file.jpg`
 
-For resources that are on IPFS, the protocol must be ipfs:// and the resource location must be the cid of the file. I.e. ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce
+For resources that are on IPFS, the protocol must be `ipfs://` and the resource location must be the cid of the file. I.e. `ipfs://bafkreibwci24bt2xtqi23g35gfx63wj555u77lwl2t55ajbfjqomgefxce`
 
 For resources that stored are on the hedera file service, the protocol is `hedera:mainnet//0.0.123456`
 
