@@ -66,7 +66,7 @@ The JSON for a fungible token includes the following information
 
 Below is the human-readable schema 
 
-```
+```json
 {
     "description": "description of token - RECOMMENDED - max. of 500 characters",
     "smallestUnitName" : "the name of the smallest denomination of these tokens, if the name exists - OPTIONAL",
