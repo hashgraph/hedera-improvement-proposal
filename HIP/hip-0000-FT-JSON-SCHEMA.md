@@ -91,7 +91,7 @@ Below is the human-readable schema
 
 #### URI Formatting
 
-URI’s shall follow the following format: protocol://resource_location
+URI’s shall follow the following format: `protocol://resource_location`
 
 For resources that are on the world wide web, the standard http and https protocols are acceptable. Ie. http://www.example.org/image/file.jpg
 
