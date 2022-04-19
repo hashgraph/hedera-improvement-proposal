@@ -1,7 +1,7 @@
 ---
 hip: 405
 title: Fungible Token Metadata JSON Schema
-author: Paul Madsen, <paul@calaxy.com>, Cooper Kunz, <cooper@calaxy.com>
+author: Paul Madsen <paul@calaxy.com>, Cooper Kunz <cooper@calaxy.com>
 type: Informational
 needs-council-approval: No
 status: Active
