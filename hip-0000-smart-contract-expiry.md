@@ -5,7 +5,7 @@ author: Michael Tinker (@tinker-michaelj), Steven Sheehy (@steven-sheehy)
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft 
+status: Review 
 created: 2022-04-19
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/446
 replaces: Some details of HIP-16
