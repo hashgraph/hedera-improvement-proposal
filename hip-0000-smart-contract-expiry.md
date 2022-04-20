@@ -14,16 +14,17 @@ replaces: Some details of HIP-16
 ## Abstract
 
 [HIP-16](https://hips.hedera.com/hip/hip-16) defined the lifecycle of expiring Hedera 
-entities. But it did not fully specify the `(TransactionBody, TransactionRecord)` 
+entities. But it did not fully specify the `(Transaction, TransactionRecord)` 
 pairs the ledger will use to externalize lifecycle events to mirror nodes via the 
 record stream.
 
 In this HIP we use examples to specify how the record stream will externalize state 
 changes for smart contract expiration. These state changes include:
-1. Auto-renewal of a contract
-2. Treasury return of an expired contract's non-deleted NFTs
-3. Treasury return of an expired contract's non-deleted fungible token balances
-4. Auto-removal of a contract
+  1. Auto-renewal of a contract
+  2. Treasury return of an expired contract's non-deleted NFTs
+  3. Treasury return of an expired contract's non-deleted fungible token balances
+  4. Bookkeeping of an expired contract's deleted token balances
+  5. Auto-removal of a contract
 
 ## Motivation
 
@@ -55,7 +56,449 @@ the ledger makes when auto-renewing or auto-removing a smart contract.
   
 ## Specification
 
-_TODO_
+This section lists examples of `(Transaction, TransactionRecord)` pairs that 
+externalize the following state changes:
+  1. Auto-renewal of a contract
+  2. Treasury return of an expired contract's non-deleted NFTs
+  3. Treasury return of an expired contract's non-deleted fungible token balances
+  4. Bookkeeping of an expired contract's deleted token balances
+  5. Auto-removal of a contract
+
+### Auto-renewal of a contract without a funded auto-renew account
+
+In this example, the last user record created in `handleTransaction()` had a 
+`TransactionID` of:
+```
+transactionValidStart {
+  seconds: 1650466736
+  nanos: 120
+}
+accountID {
+  accountNum: 1234
+}
+nonce: 3
+```
+The consensus timestamp of the record was:
+```
+consensusTimestamp {
+  seconds: 1650466737
+  nanos: 400
+}
+```
+
+After handling this user transaction, the ledger determines contract `0.0.8888`
+has expired at consensus second `1650466735`; and that its renewal fee for the next 
+90 days is 1ℏ. This contract has an auto-renew account, but the account has zero
+balance. Luckily, the contract itself has a balance of 0.5ℏ, meaning it can 
+self-fund a 45 day renewal. The resulting `(Transaction, TransactionRecord)` 
+pair in the record stream has a `ContractUpdateTransactionBody`:
+```
+transactionID {
+  transactionValidStart {
+    seconds: 1650466736
+    nanos: 120
+  }
+  accountID {
+    accountNum: 1234
+  }
+  nonce: 4
+}
+contractUpdateInstance {
+  contractID {
+    contractNum: 8888
+  }
+  expirationTime {
+    seconds: 1654354735
+  }
+}
+```
+The `SignatureMap` for this `Transaction` is **empty**. (An empty `SignatureMap` is 
+the universal identifying characteristic of a system-generated transaction, since
+every user transaction must include at least a payer signature.)
+
+The corresponding `TransactionRecord` is:
+```
+consensusTimestamp {
+  seconds: 1650466737
+  nanos: 401
+}
+transactionID {
+  transactionValidStart {
+    seconds: 1650466736
+    nanos: 120
+  }
+  accountID {
+    accountNum: 1234
+  }
+  nonce: 4
+}
+memo: "Contract 0.0.8888 was automatically renewed. New expiration time: 1654354735."
+transactionFee: 50000000
+transactionHash: "<SHA-384 hash of above body encoded in signedTransactionBytes>"
+transferList {
+  accountAmounts {
+    accountID {
+      accountNum: 98
+    }
+    amount: 50000000
+  }
+  accountAmounts {
+    accountID {
+      accountNum: 8888
+    }
+    amount: -50000000
+  }
+}
+```
+**Important:** Unlike HIP-16, we do not repeat the `ContractID` in the 
+`TransactionReceipt`.  In particular, the consensus timestamp of the auto-renewal 
+record is one nanosecond later than the last-handled user transaction. The hash in 
+the record is of the `signedTransactionBytes` in the paired `Transaction`.
+
+### Auto-renewal of a contract with a funded auto-renew account
+
+In this example, the last user record created in `handleTransaction()` had a 
+`TransactionID` of:
+```
+transactionValidStart {
+  seconds: 1650466736
+  nanos: 120
+}
+accountID {
+  accountNum: 1234
+}
+scheduled: true
+```
+The consensus timestamp of the record was:
+```
+consensusTimestamp {
+  seconds: 1650466737
+  nanos: 400
+}
+```
+
+After handling this user transaction, the ledger determines contract `0.0.9999`
+has expired at consensus second `1650466735`; and that its renewal fee for the next 
+90 days is 1ℏ. This contract has an auto-renew account `0.0.4321`, although the
+balance of the account is only 1 tinybar. Because the ledger rounds partial 
+renewals up to the nearest hour, this is still enough to renew the contract for 
+a single hour. The resulting `(Transaction, TransactionRecord)` pair in the record 
+stream has a `ContractUpdateTransactionBody`:
+
+```
+transactionID {
+  transactionValidStart {
+    seconds: 1650466736
+    nanos: 120
+  }
+  accountID {
+    accountNum: 1234
+  }
+  nonce: 1
+}
+contractUpdateInstance {
+  contractID {
+    contractNum: 9999
+  }
+  expirationTime {
+    seconds: 1650470335
+  }
+}
+```
+
+In particular, the `scheduled=true` field of the user `TransactionID` is taken 
+as a sort of "half-`nonce`", and the synthetic `TransactionID` still begins at
+`nonce=1`.
+
+The corresponding `TransactionRecord` is:
+```
+consensusTimestamp {
+  seconds: 1650466737
+  nanos: 401
+}
+transactionID {
+  transactionValidStart {
+    seconds: 1650466736
+    nanos: 120
+  }
+  accountID {
+    accountNum: 1234
+  }
+  nonce: 1
+}
+memo: "Contract 0.0.9999 was automatically renewed. New expiration time: 1650470335."
+transactionFee: 1
+transactionHash: "<SHA-384 hash of above body encoded in signedTransactionBytes>"
+transferList {
+  accountAmounts {
+    accountID {
+      accountNum: 98
+    }
+    amount: 1
+  }
+  accountAmounts {
+    accountID {
+      accountNum: 4321
+    }
+    amount: -1
+  }
+}
+```
+
+### Treasury return of non-deleted NFTs
+
+In this example, the last user record created in `handleTransaction()` had a 
+`TransactionID` of:
+```
+transactionValidStart {
+  seconds: 1650466736
+  nanos: 120
+}
+accountID {
+  accountNum: 1234
+}
+```
+The consensus timestamp of the record was:
+```
+consensusTimestamp {
+  seconds: 1650466737
+  nanos: 400
+}
+```
+
+After handling this user transaction, the ledger determines contract `0.0.7777`
+expired at consensus second `1649861935` without any auto-renewal funds. Now its 
+week-long grace period has ended, and this contract should be permanently removed 
+from the ledger state. _However_, contract `0.0.7777` still owns 3 NFTs of the
+non-deleted token type `0.0.111111`---serial numbers 1, 2, and 3. The ledger needs 
+to return these NFTs to the token treasury `0.0.1111` before permanently erasing 
+all record of the contract.  But it can only return 2 NFTs to the treasury per 
+call to `handleTransaction`, because the ledger does not want to delay the 
+processing of user transactions.
+
+The resulting `(Transaction, TransactionRecord)` pair in the record stream has 
+a `CryptoTransferTransactionBody` that shows the first two serial numbers being
+returned to their treasury:
+```
+transactionID {
+  transactionValidStart {
+    seconds: 1650466736
+    nanos: 120
+  }
+  accountID {
+    accountNum: 1234
+  }
+  nonce: 1
+}
+cryptoTransfer {
+  tokenTransfers {
+    token {
+      tokenNum: 111111
+    }
+    nftTransfers {
+      senderAccountID {
+        accountNum: 7777
+      }
+      receiverAccountID {
+        accountNum: 1111
+      }
+      serialNumber: 1
+    }
+    nftTransfers {
+      senderAccountID {
+        accountNum: 7777
+      }
+      receiverAccountID {
+        accountNum: 1111
+      }
+      serialNumber: 2
+    }
+  }
+}
+```
+
+The corresponding `TransactionRecord` is:
+```
+consensusTimestamp {
+  seconds: 1650466737
+  nanos: 401
+}
+transactionID {
+  transactionValidStart {
+    seconds: 1650466736
+    nanos: 120
+  }
+  accountID {
+    accountNum: 1234
+  }
+  nonce: 1
+}
+memo: "NFT treasury return(s) for pending auto-removal of contract 0.0.7777"
+transactionHash: "<SHA-384 hash of above body encoded in signedTransactionBytes>"
+tokenTransferLists {
+  token {
+    tokenNum: 111111
+  }
+  nftTransfers {
+    senderAccountID {
+      accountNum: 7777
+    }
+    receiverAccountID {
+      accountNum: 1111
+    }
+    serialNumber: 1
+  }
+  nftTransfers {
+    senderAccountID {
+      accountNum: 7777
+    }
+    receiverAccountID {
+      accountNum: 1111
+    }
+    serialNumber: 2
+  }
+}
+```
+Note there is no `transactionFee` for the NFT treasury return. Also, if token type
+`0.0.111111` had been deleted, no treasury return would have been possible; the 
+ledger would have only externalized a bookkeeping record to prompt mirror nodes to 
+"zero out" the removed contract's balance of the deleted token. 
+
+This occurs in our final example.
+
+### Auto-removal of a contract with deleted and non-deleted token balances
+
+As above, the last user record created in `handleTransaction()` had a 
+`TransactionID` of:
+```
+transactionValidStart {
+  seconds: 1650466736
+  nanos: 120
+}
+accountID {
+  accountNum: 1234
+}
+```
+And as above, the consensus timestamp of the record was:
+```
+consensusTimestamp {
+  seconds: 1650466737
+  nanos: 400
+}
+```
+
+After handling this user transaction, the ledger determines contract `0.0.6666`
+expired at consensus second `1649861935` without any auto-renewal funds. Now its 
+week-long grace period has ended, and this contract should be permanently removed 
+from the ledger state. The contract owns a single NFT, serial number 3, of the 
+non-deleted token type `0.0.111111`. It also owns 100 units of the non-deleted
+fungible token type `0.0.222222`. Finally, contract `0.0.6666` still has 5 NFTs 
+of the deleted token type `0.0.333333`, and 1000 units of the deleted fungible
+token type `0.0.444444`. 
+
+In this case the ledger does need any preparatory NFT treasury returns. It can
+can return the single non-deleted NFT and the `0.0.222222` balance to their 
+respective treasuries in a single step with the permanent removal of the contract
+itself.
+
+The resulting `(Transaction, TransactionRecord)` pair in the record stream has 
+a `ContractDeleteTransactionBody` with `permanent_removal=true`.
+```
+transactionID {
+  transactionValidStart {
+    seconds: 1650466736
+    nanos: 120
+  }
+  accountID {
+    accountNum: 1234
+  }
+  nonce: 1
+}
+contractDeleteInstance {
+  contractID {
+    contractNum: 6666
+  }
+  permanent_removal: true 
+}
+```
+
+The corresponding `TransactionRecord` is:
+```
+consensusTimestamp {
+  seconds: 1650466737
+  nanos: 401
+}
+transactionID {
+  transactionValidStart {
+    seconds: 1650466736
+    nanos: 120
+  }
+  accountID {
+    accountNum: 1234
+  }
+  nonce: 1
+}
+memo: "Auto-removal of contract 0.0.6666"
+transactionHash: "<SHA-384 hash of above body encoded in signedTransactionBytes>"
+tokenTransferLists {
+  token {
+    tokenNum: 111111
+  }
+  nftTransfers {
+    senderAccountID {
+      accountNum: 6666
+    }
+    receiverAccountID {
+      accountNum: 1111
+    }
+    serialNumber: 3
+  }
+}
+tokenTransferLists {
+  token {
+    tokenNum: 222222
+  }
+  transfers {
+    accountID {
+      accountNum: 2222
+    }
+    amount: 100
+  }
+  transfers {
+    accountID {
+      accountNum: 6666
+    }
+    amount: -100
+  }
+}
+tokenTransferLists {
+  token {
+    tokenNum: 333333
+  }
+  transfers {
+    accountID {
+      accountNum: 6666
+    }
+    amount: -5
+  }
+}
+tokenTransferLists {
+  token {
+    tokenNum: 444444
+  }
+  transfers {
+    accountID {
+      accountNum: 6666
+    }
+    amount: -1000
+  }
+}
+```
+
+Note that for deleted token types, it does not matter whether the type is fungible
+or non-fungible. No treasury return occurs, and the record only includes a bookkeeping
+entry that "zeros out" the expired contract's balance of the token---either number of
+NFTs owned, or fungible units held.
 
 ## Backwards Compatibility
 
@@ -83,7 +526,7 @@ the [`com.hedera.services.state.expiry`](https://github.com/hashgraph/hedera-ser
 ## Rejected Ideas
 
 We briefly considered a new type of record stream entry that consists of just a
-`TransactionRecord` instead of a `(TransactionBody, TransactionRecord)`, but the 
+`TransactionRecord` instead of a `(Transaction, TransactionRecord)`, but the 
 increased complexity of mirror node support made it an unattractive option.
 
 ## Open Issues
