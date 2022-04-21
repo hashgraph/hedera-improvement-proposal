@@ -1,10 +1,13 @@
 ---
+search: exclude
 ---
 [
   {% for page in site.pages %}
+  {% unless page.search == "exclude" %}
     {
       "title"    : "{{ page.title }}",
       "url"      : "{{ site.baseurl }}{{ page.url }}"
-    } {% unless forloop.last %},{% endunless %}
+    }{% unless forloop.last %},{% endunless %}
+  {% endunless %}
   {% endfor %}
 ]
