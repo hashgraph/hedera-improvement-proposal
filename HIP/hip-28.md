@@ -350,11 +350,15 @@ The following is the set of terms and definitions used to define Policy Actions 
 |`children`|Defines a list of Blocks that are grouped into a Policy Workflow|List of Blocks, see also example given below|
 | `defaultActive` | Determines if Policy Workflow or a Policy Action can be executed | `true`                                           |
 | `permissions`   | Security Policy associated with a specific role                 | `ROOT_AUTHORITY`                                 |
+| `Roles`   | Available roles from which the user can choose             | `Installer`                                 |
 | `blockType`     | Specifies the type of Policy Workflow or Policy Action          | `interfaceContainerBlock` (policy workflow name) |
 |`uiMetaData`|Specifies the data of the policy workflow and/or Policy Action to be displayed|`type: header___` `fields:___________` `name: document.issuer` `title: Owner_____` `type: text`|
 |`tag`|Specifies the ID of a policy action which can be referenced in other blocks as a dependency|`Request`|
 |`schema`|Defines the data schema for a block|`Installer`|
+|`Entity Type`|Gives the document a label in the DB. Needed for filtering.|`Installer`|
 |`dataType`|Specifies the Type of data used in the Block|`source`|
+|`Data Source`|Specifies a source to where to send Data|`Database / Hedera`|
+|`Topic`|Topic to send a document if 'dataSource' = 'Hedera'|`topic`|
 |`dependencies`|Specifies on which blocks `tag` or state transition rules `stateMutation`|See `tag` and `stateMutation` for examples|
 |`onlyOwnDocuments`|Specifies whether a block applies to only those documents owned by the role specified in `permissions`|`true` or `false`|
 
@@ -490,11 +494,11 @@ Permissions are defined in Policy Workflow Workgroups.
 
 ## How to Teach This
 
-There will be a open-source reposity with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications.
+There is an open-source [repository](https://github.com/hashgraph/guardian) with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications.
 
 ## Reference Implementation
 
-There will be a open-source repository with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications. This reference implementation is designed with modularity so that different components may be swapped out based on various implementation requirements. Please see the open-source Guardian's architecture diagram below:
+There is an open-source [repository](https://github.com/hashgraph/guardian) with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications. This reference implementation is designed with modularity so that different components may be swapped out based on various implementation requirements. Please see the open-source Guardian's architecture diagram below:
 
 ![Open Source Guardian Architecture](https://user-images.githubusercontent.com/40637665/137015939-135e2f50-6123-4abf-936d-5c1c2516926d.png)
 
