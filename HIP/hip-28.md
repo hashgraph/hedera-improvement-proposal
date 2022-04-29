@@ -46,7 +46,7 @@ There are a number of elements that are required:
 
 - A project owner that has been created and is linked to a new Ecological Project (EP).
 - A link between HTS (to issue tokenized carbon offsets) and HCS (to log the evidence supporting the issuance of tokenized carbon offsets), a common format.
-- A genesis message that would reference the initial asset in terms of a Core Carbon Principals (CCP) token.
+- A genesis message that would the initial asset in terms of a Core Carbon Principals (CCP) token.
 - State changes of the CCP representation, with versions and updates including additionally and leakage.
 - Continued messages, with a common schema that can be used as a mechanism to upload evidence.
 - I expect that this work will continue to evolve and adjust over time.
@@ -500,7 +500,8 @@ There is an open-source [repository](https://github.com/hashgraph/guardian) with
 
 There is an open-source [repository](https://github.com/hashgraph/guardian) with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications. This reference implementation is designed with modularity so that different components may be swapped out based on various implementation requirements. Please see the open-source Guardian's architecture diagram below:
 
-![Open Source Guardian Architecture](https://user-images.githubusercontent.com/40637665/137015939-135e2f50-6123-4abf-936d-5c1c2516926d.png)
+![Open Source Guardian Architecture](https://github.com/EnvisionBlockchain/hedera-improvement-proposal/blob/e9e16334cc29141fbcba4f9394ab7c467734b1b4/assets/hip-28/Detailed%20Architecture.png)
+
 
 ## Rejected Ideas
 
