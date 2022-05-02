@@ -1,6 +1,6 @@
 - hip: 28
 - title: Guardian Type Solution
-- author(s): Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
+- author(s): Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, Daniel Norkin <daniel.norkin@envisionblockchain.com>, Prernaa Agarwal <prernaa.agarwal@envisionblockchain.com>
 - type: Standards Track
 - category: Application
 - status: Draft
@@ -494,7 +494,8 @@ Permissions are defined in Policy Workflow Workgroups.
 
 ## How to Teach This
 
-There is an open-source [repository](https://github.com/hashgraph/guardian) with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications.
+There is an open-source [repository](https://github.com/hashgraph/guardian) with a reference implementation of the Guardian Type Solution to learn how to use the components for various applications.
+Please look at our [Gitbook Documentation](https://docs.hedera.com/guardian)
 
 ## Reference Implementation
 
