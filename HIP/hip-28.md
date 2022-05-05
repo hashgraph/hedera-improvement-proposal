@@ -243,7 +243,6 @@ If a PWW has more than one administrator, there must be a policy defined consens
 
 Finally, a PWW may be attached to one or more policy action instances, and a policy workgroup attached to a policy workflow must be also attached to each policy action in the policy workflow.
 
-Every participant within a Policy Workflow Workgroup must have an associated Hedera Consensus Service Topic to log the activities performed such as policy configuration, interaction with Policy Workflow Actions, authorizations, etc. 
 
 #### Policy Workflow State Objects
 This document has been defining and discussing policy workflow state objects (PWSOs) in the context of a PWE, hence, it needs to define stateful object processing. This necessitates a state or account-based model for policy workflow state objects. This is analogous to the Ethereum model using accounts and state object for smart contracts.
@@ -327,7 +326,8 @@ The following requirements are addressing the operating scenario where a PWE con
 
 Finally, PARs, and PWSO data and their histories must be stored as partially persistent data.
 
-Each Policy Workflow Transaction is sent to Hedera Consensus Service Topics for the purposes for immutability and public auditability. The data contained within the Policy Workflow Transactions can be used to mint tokens using Hedera Token Service, create verifiable crendentials, create verifiable presentations, etc. 
+Each Policy Workflow Transaction effects production or modification of a persistent artefact. The data contained within the Policy Workflow Transactions can be used to mint tokens using Hedera Token Service, create verifiable crendentials, create verifiable presentations, etc. On the completion of the PWT a message is sent to Hedera Consensus Service Topics for the purposes for immutability, public auditability and discoverability. See more details on mapping and the structure of the messages in the "**Policy Workflow Transaction Discoverability**" section below.
+
 
 #### Policy Workflow and Policy Action Execution Framework
 
@@ -483,6 +483,97 @@ In this example, the service is defined as a service class for the `RequestVcDoc
 * variables required for the service such as `private users: Users;` where data visbility is either defined as `public` or `private`
 * a constructor which loads the configuration schemas into the VSM
 * functions such as `async getData(user: IAuthUser)` which define the process steps to facilitate the state -- get data for the VSM, set the PWSO for the VSM and update the PWSO
+
+#### Policy Workflow Transaction Discoverability
+
+For discoverability, Policy Workflow Transaction messages sent to Hedera Consensus Service (HCS) are generated and formatted to enable full traceability (in other words "forward/back navigation") across Topics and messages, exactly mapping the execution of the policy workflow. Policy Workflow Actions are always performed in the context of an HCS Topic. The topics form a 'linked-list' like structure, the very first (root) Topic for the Policy Worlflow when a new Policy is first created by 'publishing a policy', which is 'external' for the Policy Engine. This ensures that there always is **at least a single** HCS Topic mapped to any active Policy Workflow, which recieves Policy Workflow Transaction messages.
+
+There are separate types of messages that denote different Policy Workflow Actions. All messages share common structure presented below (in the format of typescript for convinience):
+
+```
+export interface MessageBody {
+    id: string;
+    status: MessageStatus;
+    type: MessageType;
+    action: MessageAction;
+}
+```
+The following types of messages are currently available:
+
+| Message type     | Mappted Policy Workflow Action                               | 
+| --------------- |:--------------------------------------------------------------|
+| DID | Creation of a DID | 
+| Policy | Creation of a Policy verstion |
+| Schema | Creation of a Schema |
+| VC | Creation of a VC |
+| VP | Creation of a VP |
+| Topic | Creation of a new Topic|
+
+
+Policy Engine executing the Workflow can freely create HCS Topics as required to allocate for logical or any other groupping of the messages as deemed necessary (and as defined) by the Policy authors. To acheive traceability, whenever a new HCS Topic gets created by the Policy Engine two almost identical messages get posted into the 'current' and the newly created Topics to provide a link between them. The structure of these messages is presented below, they differ in the value of the `parentId` field which would be `null` for the message directed to 'current' topic, and contain the 'current' topic ID in the message posted into the newly created on.
+
+```
+export interface TopicMessageBody extends MessageBody {
+    name: string;
+    description: string;
+    owner: string;
+    messageType: string;
+    childId: string;
+    parentId: string;
+    rationale: string;
+}
+```
+
+Other types of messages have the followign content.
+
+```
+export interface PolicyMessageBody extends MessageBody {
+    uuid: string;
+    name: string;
+    description: string;
+    topicDescription: string;
+    version: string;
+    policyTag: string;
+    owner: string;
+    topicId: string;
+    instanceTopicId: string;
+    cid: string;
+    url: string;
+}
+
+export interface SchemaMessageBody extends MessageBody {
+    name: string;
+    description: string;
+    entity: string;
+    owner: string;
+    uuid: string;
+    version: string;
+    document_cid: string;
+    document_url: string;
+    context_cid: string;
+    context_url: string;
+}
+
+export interface VcMessageBody extends MessageBody {
+    issuer: string;
+    cid: string;
+    url: string;
+    relationships: string[];
+}
+
+export interface VpMessageBody extends MessageBody {
+    issuer: string;
+    cid: string;
+    url: string;
+    relationships: string[];
+}
+```
+
+To ensure global discoverability, all root HCS Topics for all Policis are linked with the rigidly defined higher-level Topics structure using the same 'linked-list' techniqnue as described before. This structure and its relationship with the Policy Workflow topics ('dynamic topics') is illustrated on the following diagram.
+
+![Guardian Topics Map](https://user-images.githubusercontent.com/32775532/167000421-645363f8-8a35-41ed-bff2-cb4ddd06b45c.png)
+
+The entry point into this structure is the root topic mapping to the 'Root Authority' (RA) actor, which is the author and the publisher of the policy. There are many RAs in the ecosystem, each can author multiple policies. Thus there are numerous entry points into the Policy-specific 'chains'. Top-level discovery of these is performed via RA 'hello worlds' messages posted into the predefined HCS Topic after the event of the creation of a new Root Authority.
 
 ## Backwards Compatibility
 
