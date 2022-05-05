@@ -510,7 +510,7 @@ The following types of messages are currently available:
 | Topic | Creation of a new Topic|
 
 
-Policy Engine executing the Workflow can freely create HCS Topics as required to allocate for logical or any other groupping of the messages as deemed necessary (and as defined) by the Policy authors. To acheive traceability, whenever a new HCS Topic gets created by the Policy Engine two almost identical messages get posted into the 'current' and the newly created Topics to provide a link between them. The structure of these messages is presented below, they differ in the value of the `parentId` field which would be `null` for the message directed to 'current' topic, and contain the 'current' topic ID in the message posted into the newly created on.
+Policy Engine executing the Workflow can freely create HCS Topics as required to allocate for logical or any other grouping of the messages as deemed necessary (and as defined) by the Policy authors. To acheive traceability, whenever a new HCS Topic gets created by the Policy Engine two almost identical messages get posted into the 'current' and the newly created Topics to provide a link between them. The structure of these messages is presented below. They differ in the value of the `parentId` field which would be `null` for the message directed to 'current' topic, and contain the 'current' topic ID in the message posted into the newly created one.
 
 ```
 export interface TopicMessageBody extends MessageBody {
@@ -524,7 +524,7 @@ export interface TopicMessageBody extends MessageBody {
 }
 ```
 
-Other types of messages have the followign content.
+Other types of messages have the following content.
 
 ```
 export interface PolicyMessageBody extends MessageBody {
@@ -569,11 +569,11 @@ export interface VpMessageBody extends MessageBody {
 }
 ```
 
-To ensure global discoverability, all root HCS Topics for all Policis are linked with the rigidly defined higher-level Topics structure using the same 'linked-list' techniqnue as described before. This structure and its relationship with the Policy Workflow topics ('dynamic topics') is illustrated on the following diagram.
+To ensure global discoverability, all root HCS Topics for all Policies are linked with the rigidly defined higher-level Topics structure using the same 'linked-list' techniqnue as described before. This structure and its relationship with the Policy Workflow topics ('dynamic topics') is illustrated on the following diagram.
 
 ![Guardian Topics Map](https://user-images.githubusercontent.com/32775532/167000421-645363f8-8a35-41ed-bff2-cb4ddd06b45c.png)
 
-The entry point into this structure is the root topic mapping to the 'Root Authority' (RA) actor, which is the author and the publisher of the policy. There are many RAs in the ecosystem, each can author multiple policies. Thus there are numerous entry points into the Policy-specific 'chains'. Top-level discovery of these is performed via RA 'hello worlds' messages posted into the predefined HCS Topic after the event of the creation of a new Root Authority.
+The entry point into this structure is the root topic mapping to the 'Root Authority' (RA) actor, which is the author and the publisher of the policy. There are many RAs in the ecosystem, each can author multiple policies. Thus, there are numerous entry points into the Policy-specific 'chains'. Top-level discovery of these is performed via RA 'hello worlds' messages posted into the predefined HCS Topic after the event of the creation of a new Root Authority.
 
 ## Backwards Compatibility
 
