@@ -1,11 +1,15 @@
-- hip: 29
-- title: JavaScript DID SDK
-- author(s): Daniel Norkin <daniel.norkin@envisionblockchain.com>
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 2021-10-11
-- updated: 2021-10-11
+---
+hip: 29
+title: JavaScript DID SDK
+author: Daniel Norkin <daniel.norkin@envisionblockchain.com>
+type: Standards Track
+category: Application
+needs-council-approval: No
+status: Final
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/166
+created: 2021-10-11
+updated: 2021-10-11
+---
 
 ## Abstract
 
@@ -41,7 +45,6 @@ TBA
 ### Identity Network
 ```
 const client = ... // Client
-
 const identityNetwork = new HcsIdentityNetworkBuilder()
   .setNetwork("testnet")
   .setAppnetName("MyIdentityAppnet")
@@ -72,7 +75,6 @@ or by directly constructing HcsDid object:
 ```
 const didRootKey = HcsDid.generateDidRootKey();
 const addressBookFileId = FileId.fromString("<hedera.address-book-file.id>");
-
 const hcsDid = new HcsDid(HederaNetwork.TESTNET, didRootKey.publicKey, addressBookFileId);
 ```
 Existing Hedera DID strings can be parsed into HcsDid object by calling fromString method:
@@ -85,12 +87,9 @@ const did = HcsDid.fromString(didString);
 ```
 const client = ...; //Client
 const identityNetwork = ...; //HcsIdentityNetwork
-
 const didRootKey = ...; //PrivateKey
 const hcsDid = ...; //HcsDid
-
 const didDocument = hcsDid.generateDidDocument().toJson();
-
 // Build and execute transaction
 await identityNetwork.createDidTransaction(DidMethodOperation.CREATE)
   // Provide DID document as JSON string

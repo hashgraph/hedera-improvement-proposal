@@ -1,0 +1,15 @@
+---
+layout: page
+title: Process
+---
+
+<p> Process HIPs describe processes surrounding Hedera, or propose changes to processes. Process HIPs are like
+    Standards Track HIPs but apply to areas other than the node and ecosystem software codebases. They may propose an
+    implementation, but not to Hedera's codebase; they often require community consensus; unlike Informational HIPs,
+    they are more than recommendations, and users are typically not free to ignore them. Examples include procedures,
+    guidelines, and changes to the decision-making process. Any meta-HIP is also considered a Process HIP.</p>
+
+<p>
+    {% assign hips=site.pages|where:"type","Process" %}
+    {% include hipstable.md hips=hips %}
+</p>

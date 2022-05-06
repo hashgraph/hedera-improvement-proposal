@@ -1,24 +1,37 @@
-- hip: 28
-- title: Guardian Type Solution
-- author(s): Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes@hbar.fund>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 2021-10-10
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/83
-- updated: 2021-10-10
+---
+hip: 28
+title: Guardian Type Solution
+author: Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
+type: Standards Track
+category: Application
+needs-council-approval: No
+status: Final
+created: 2021-10-10
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/83
+updated: 2021-10-27
+---
 
 ## Abstract
 
-The Guardian is a modular open-source solution that includes best-in-class identity management and decentralized ledger technology (DLT) libraries. At the heart of the Guardian is a Policy Workflow Engine (PWE) that enables applications to offer linked audit trails for tokenization use cases. 
+The Guardian is a modular open-source solution that includes best-in-class identity management and decentralized ledger technology (DLT) libraries. At the heart of the Guardian solution is a sophisticated Policy Workflow Engine (PWE) that enables the ability for applications to offer a requirements-based tokenization implementation. 
 
 This document formally specifies the Guardian with a specification on the Policy Workflow Engine.
 
 ## Motivation
 
-To incentivize good environmental stewardship, regulatory bodies have defined standards and business requirements to incentivize organizations to adopt Carbon Credits, Carbon Offsets, and other complimentary ESG/UN SDG Assets. These very specific standards and business requirements offer a good way to demonstrate how a PWE becomes a business-critical component for a requirements-based, trusted tokenization service.
+To incentivize good environmental stewardship, regulatory bodies have defined standards and business requirements to incentivize organizations to adopt Carbon Credits. These very specific standards and business requirements offer a good way to demonstrate how a PWE becomes a business-critical component for a requirements-based, trusted tokenization service.
 
-There are generally two types of carbon credits: 
+## Rationale
+
+With regards to ecological markets, business leaders will find themselves in these four phases:
+
+* Creating Verified Supply
+* Establishing Demand
+* Buying & Selling
+* Offsetting
+
+There are many rationales that can be applied here such as Greenhouse Gas Emission Profiles and Renewalable Energy Credits. For purposes of this rationale we will focus on two types of carbon credits: 
+
 * emission allowances and 
 * carbon offsets. 
 

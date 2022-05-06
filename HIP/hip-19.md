@@ -1,12 +1,15 @@
-- hip: 19
-- title: Decentralized Identifiers in Memo Fields
-- author: Nick White <nick@recdefi.com>, Jonathan Padilla <jonathan@recdefi.com>, Atticus Francken <atticus@recdefi.com>, Steve Frenkel <steve@recdefi.com>, Alex McComb <alex@recdefi.com>, Daniel Norkin <daniel.norkin@envisionblockchain.com>
-- type: Standards Track
-- category: Application
-- status: Draft
-- created: 2021-6-07
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/101 
-- updated: 2021-10-10
+---
+hip: 19
+title: Decentralized Identifiers in Memo Fields
+author: Nick White <nick@recdefi.com>, Jonathan Padilla <jonathan@recdefi.com>, Atticus Francken <atticus@recdefi.com>, Steve Frenkel <steve@recdefi.com>, Alex McComb <alex@recdefi.com>, Daniel Norkin <daniel.norkin@envisionblockchain.com>
+type: Standards Track
+category: Application
+needs-council-approval: No
+status: Final
+created: 2021-6-07
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/101 
+updated: 2021-10-10
+---
 
 ## Abstract
 
@@ -26,12 +29,9 @@ Alternatively, if a use case would require Verified Credentials (VC) or Verified
 
 We follow the definition of a [W3C Verifiable Credential](https://www.w3.org/TR/vc-data-model/#credentials)
 > A credential is a set of one or more claims made by the same entity. Credentials might also include an identifier and metadata to describe properties of the credential, such as the issuer, the expiry date and time, a representative image, a public key to use for verification purposes, the revocation mechanism, and so on. The metadata might be signed by the issuer. A verifiable credential is a set of tamper-evident claims and metadata that cryptographically prove who issued it.
-
 A verifiable presentation in the context of this document is used according to the [W3C Verifiable Credential Presentation Description](https://www.w3.org/TR/vc-data-model/#presentations) 
 > A verifiable presentation expresses data from one or more verifiable credentials, and is packaged in such a way that the authorship of the data is verifiable. If verifiable credentials are presented directly, they become verifiable presentations. Data formats derived from verifiable credentials that are cryptographically verifiable, but do not of themselves contain verifiable credentials, might also be verifiable presentations.
-
 > The data in a presentation is often about the same subject, but might have been issued by multiple issuers. The aggregation of this information typically expresses an aspect of a person, organization, or entity.
-
 A presentation of one or more credentials must follow the specification in [W3C Verifiable Credential Standard for a Verfiable Presentation](https://www.w3.org/TR/vc-data-model/#presentations-0) such that that the authorship of the data in the Verifiable Presentation is verifiable.
 
 Relative to other identifier formats, DIDs, VCs, and VPs have the advantages of being:

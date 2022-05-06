@@ -1,12 +1,16 @@
-- hip: 15
-- title: Address Checksum
-- author: Leemon Baird (@lbaird)
-- type: Standards Track
-- category: API
-- status: Final
-- created: 2021-03-11
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/47
-- updated: 2021-05-14
+---
+hip: 15
+title: Address Checksum
+author: Leemon Baird (@lbaird)
+type: Standards Track
+category: Application
+needs-council-approval: Yes
+status: Final
+created: 2021-03-11
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/47
+requires: 32
+updated: 2021-05-14, 2021-05-23, 2021-12-09
+---
 
 ## Abstract
 
@@ -82,13 +86,7 @@ cp = (c * 1000003) % p5
 checksum = cp, written as 5 digits in base 26, using a-z
 ```
 
-The checksum is a function of the ledger ID, so that the same address will have different checksums if it is on different ledgers. Cryptographically secure ledger IDs will be implemented as part of state proofs. But for now, the following three ledgers will each have a ledger ID consisting of a single byte:
-
-```
-0 = Hedera mainnet
-1 = stable testnet
-2 = preview net
-```
+The checksum is a function of the ledger ID, so that the same address will have different checksums if it is on different ledgers. Cryptographically secure ledger IDs will be implemented as part of state proofs. Please reference [HIP-198](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-198.md) for the latest information regarding ledger IDs.
 
 The reference implementation is the Java code linked to in the Reference Implementation section. All implementations should match its outputs and behavior, including rejecting as invalid all the examples of invalid addresses above, and giving the the correct checksum in all of the following examples:
 
@@ -152,12 +150,12 @@ When calculating checksums for all accounts of the form `0.0.x` as `x` counts up
 ## Reference Implementation
 
 Example code can be downloaded for these languages (the reference implementation is the Java version):
-- Pseudocode: [HIP-15-pseudocode.md](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-pseudocode.md)
-- Java: [AddressChecksums.java](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/AddressChecksums.java)
-- Javascript: [HIP-15-javascript.html](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-javascript.html)
-- Spreadsheet: [HIP-15-spreadsheet.xlsx](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-spreadsheet.xlsx)
-- Mathematica: [HIP-15-mathematica.nb.txt](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-mathematica.nb.txt)
-- All of the above: [HIP-15-all.zip](https://github.com/hashgraph/hedera-improvement-proposal/assets/hip-15/HIP-15-all.zip)
+- Pseudocode: [HIP-15-pseudocode.md](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-pseudocode.md)
+- Java: [AddressChecksums.java](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/AddressChecksums.java)
+- Javascript: [HIP-15-javascript.html](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-javascript.html)
+- Spreadsheet: [HIP-15-spreadsheet.xlsx](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-spreadsheet.xlsx)
+- Mathematica: [HIP-15-mathematica.nb.txt](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-mathematica.nb.txt)
+- All of the above: [HIP-15-all.zip](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/assets/hip-15/HIP-15-all.zip)
 
 
 
