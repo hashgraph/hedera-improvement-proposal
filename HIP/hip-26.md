@@ -1,16 +1,15 @@
-- hip: 26
-- title: Migrate Smart Contract Service EVM to Hyperledger Besu EVM
-- author: Daniel Ivanov (daniel@limechain.tech), Danno Ferrin (
-  danno.ferrin@hedera.com)
-- type: Standards
-- category: Services
-- status: Draft
-- created: 16 September 2021
-- discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/140
-- updated: 17 September 2021
-- requires:
-- replaces:
-- superseded-by:
+---
+hip: 26
+title: Migrate Smart Contract Service EVM to Hyperledger Besu EVM
+author: Daniel Ivanov <daniel@limechain.tech>, Danno Ferrin <danno.ferrin@hedera.com>
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Final
+created: 2021-09-16
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/140
+updated: 2021-10-27
+---
 
 ## Abstract
 
@@ -123,6 +122,44 @@ transaction `gasLimit` will be the lowest of the gas limit requested in the
 transaction or a global upper gas limit configured for all smart contracts. The
 current maximum configured gas limit per transaction is 300,000 gas.
 
+#### Enumerating created contracts in ContractCreateResult
+
+Previously in `ContractCreateResult` responses we would list sub-contracts
+created as a part of the `ContractCreate` operation in the `createdContractIDs`
+field, but not the contract that was directly created as part of the call. Now
+all contracts that are created as a consequence of the `ContractCreate` call are
+enumerated, including the primary new contract.
+
+#### Self Destruct during Contract Creation
+
+If a contract was being created and the new contract called `SELFDESTRUCT` in
+the initcode we would not mark the `MerkleAccount` `isDeleted` field as true. If
+the `SELFDESTRUCT` was called as part of a function call we would mark it as
+true.
+
+Now regardless of whether the call to `SELFDESTRUCT` occurred in initcode or in
+a function call the `isDeleted` field is set to true.
+
+#### Errors moving from PreCheck errors to Transaction Errors
+
+Code relating to validation errors has been cleaned up. Only errors detectable
+in GRPC objects will cause precheck errors and all other errors will be reported
+as part of the transaction.
+
+The following errors in contract creation are moving out of precheck errors and
+into transaction errors: `INVALID_RENEWAL_PERIOD`,
+`AUTORENEW_DURATION_NOT_IN_RANGE`, `CONTRACT_NEGATIVE_GAS`,
+`CONTRACT_NEGATIVE_VALUE`, `MEMO_TOO_LONG`, `INVALID_ZERO_BYTE_IN_STRING`.
+
+The following errors in contract call are moving out of precheck errors and into
+transaction errors: `CONTRACT_NEGATIVE_GAS`, `CONTRACT_NEGATIVE_VALUE`.
+
+#### Deprecated HAPI properties
+
+The `fileID` property in the `ContractUpdate` operation (found in the `ContractUpdateTransactionBody` protobuf) will be deprecated. The wording of the field implies it updates the contract code while the comments indicate that it the assertion of where the initcode originated from will be changed. Ethereum contracts are expected to be immutable once deployed and so neither variation is appropriate, hence the field will be deprecated.
+
+The `maxResultSize` property in the `ContractCallLocal` operation (found in the `ContractCallLocalQuery`) will be deprecated. In order to calculate the effective result size the entire operation needs to be executed, and then at the last moment an error is returned if the result is too large. The result is not stored in server ram nor is it stored in storage, so there is no fees associated with larger queries. Because of this any errors that setting it is hoping to avoid would still occur on the server and different errors would be returned instead. The limitations of Ethereum Gas already provide a reasonable limitation on unexpectedly large results. Hence this property will be ignored if specified and all results will be returned.
+
 ### Upgrade to "London" Hard Fork
 
 The smart contract platform will be upgraded to support the EVM visible changes
@@ -150,9 +187,8 @@ This opcode will operate as expected with no change from Ethereum Mainnet.
 
 #### `CHAINID`
 
-The `CHAINID` opcode will return `290` (hex `0x0127`) for mainnet, `291` (
-hex `0x0128`) for testnet, and `292` (
-hex `0x0129`) for previewnet.
+The `CHAINID` opcode will return `295` (hex `0x0127`) for mainnet, `296` (
+hex `0x0128`) for testnet, and `297` (hex `0x0129`) for previewnet.
 
 #### Blake2 compression function F precompile
 
@@ -182,6 +218,43 @@ In the London gas schedule the amount of gas that can be returned from storage
 access usage patterns has been significantly reduced. Account refunds
 from `SELFDESTRUCT` have been completely removed.
 
+#### Table of Gas Cost Changes
+
+| Operation                                           |                            Current Hedera |                      London Cost |                      HIP-26 Cost |
+| --------------------------------------------------- | ----------------------------------------: | -------------------------------: | -------------------------------: |
+| Code deposit                                        | Floating Hedera<br/>Storage Cost per byte |                      200 * bytes |      Max of London<br/>or Hedera |
+| BALANCE <br/>(cold account)                         |                                        20 |                             2600 |                             2600 |
+| BALANCE <br/>(warm account)                         |                                        20 |                              100 |                              100 |
+| EXP                                                 |                              10 + 10/byte |                     10 + 50/byte |                     10 + 50/byte |
+| EXTCODECOPY <br/>(cold account)                     |                                  20 + Mem |                       2600 + Mem |                       2600 + Mem |
+| EXTCODECOPY <br/>(warm account)                     |                                  20 + Mem |                        100 + Mem |                        100 + Mem |
+| EXTCODEHASH <br/>(cold account)                     |                                       400 |                             2600 |                             2600 |
+| EXTCODEHASH <br/>(warm account)                     |                                       400 |                              100 |                              100 |
+| EXTCODESIZE <br/>(cold account)                     |                                        20 |                             2600 |                             2600 |
+| EXTCODESIZE <br/>(warm account)                     |                                        20 |                              100 |                              100 |
+| LOG0, LOG1, LOG2,<br/> LOG3, LOG4                   |     Floating Hedera<br/>Ram Cost per byte |  375 + 375*topics<br/>+ data Mem |      Max of London<br/>or Hedera |
+| SLOAD <br/>(cold slot)                              |                                        50 |                             2100 |                             2100 |
+| SLOAD <br/>(warm slot)                              |                                        50 |                              100 |                              100 |
+| SSTORE <br/>(new slot)                              | Floating Hedera<br/>Storage Cost per byte |                           22,100 |      Max of London<br/>or Hedera |
+| SSTORE <br/>(existing slot, <br/>cold access)       |                                     5,000 |                            2,900 |                            2,900 |
+| SSTORE <br/>(existing slot, <br/>warm access)       |                                     5,000 |                              100 |                              100 |
+| SSTORE <br/>refund                                  |                  All new<br/>slot charges | Only transient<br/>storage slots | Only transient<br/>storage slots |
+| CALL <i>et al</i>.<br/> (cold recipient)            |                                        40 |                            2,600 |                            2,600 |
+| CALL <i>et al</i>.<br/> (warm recipient)            |                                        40 |                              100 |                              100 |
+| CALL <i>et al</i>.<br/> Hbar/Eth Transfer Surcharge |                                     9,000 |                            9,000 |                            9,000 |
+| CALL <i>et al</i>.<br/> New Account Surcharge       |                             <i>revert</i> |                           25,000 |                    <i>revert</i> |
+| SELFDESTRUCT <br/>(cold beneficiary)                |                                         0 |                             2600 |                             2600 |
+| SELFDESTRUCT <br/>(warm beneficiary)                |                                         0 |                                0 |                                0 |
+
+<!--| CREATE | | REVERT | | RETURNDATACOPY | | RETURNDATASIZE |-->
+
+The terms 'warm' and 'cold' in the above table correspond with whether the
+account or storage slot has been read or written to within the current smart
+contract transaction, even if within a child call frame.
+
+'CALL <i>et al.</i>' includes with limitation CALL, CALLCODE, DELEGATECALL, and
+STATICCALL
+
 ## Security Implications
 
 Between Besu and EthereumJ there is no material difference in the security
@@ -195,7 +268,8 @@ attack surfaces. The same specifications and Hedera integrations will exist.
 
 ## Reference Implementation
 
-To be done
+Hedera Services
+PR [#2208](https://github.com/hashgraph/hedera-services/pull/2208)
 
 ## Rejected Ideas
 
@@ -224,7 +298,7 @@ Service on the EVM provides the least amount of backwards compatibility issues.
 ### Eliminating Smart Contract Service Support
 
 Eliminating the EVM as a whole would foreclose future growth of the Hedera
-Platform in the "on-chain" smart contracts arena.
+Platform in the "on-chain" smart contract arena.
 
 ## Open Issues
 

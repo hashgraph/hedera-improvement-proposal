@@ -1,1 +1,16 @@
 .DS_Store
+
+## Intellij
+*.idea
+*.iml
+
+## Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+## Environment normalization
+/.bundle/
+/vendor/bundle
+.idea

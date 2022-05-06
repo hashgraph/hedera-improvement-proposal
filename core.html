@@ -1,0 +1,11 @@
+---
+layout: page
+title: Core
+---
+
+<p>HIPs in this category include proposals addressing the Hashgraph algorithm, peer-to-peer networking, etc. These types of features are implemented on Hedera consensus nodes.</p>
+
+<p>
+    {% assign hips=site.pages|where:"category","Core" %}
+    {% include hipstable.md hips=hips %}
+</p>
