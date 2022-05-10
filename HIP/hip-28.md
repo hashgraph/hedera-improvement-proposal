@@ -359,7 +359,7 @@ The following is the set of terms and definitions used to define Policy Actions 
 
 | Term            | Definition                                                      | Example                                          |
 | --------------- |:--------------------------------------------------------------- |:------------------------------------------------ |
-| Block           | Either a Policy Workflow or a Policy Action                      | MRVDataVerification (Policy Workflow)            |
+| `block`           | Either a Policy Workflow or a Policy Action                      | MRVDataVerification (Policy Workflow)            |
 |`children`|Defines a list of Blocks that are grouped into a Policy Workflow|List of Blocks, see also example given below|
 | `defaultActive` | Determines if Policy Workflow or a Policy Action can be executed | `true`                                           |
 | `permissions`   | Security Policy associated with a specific role                 | `ROOT_AUTHORITY`                                 |
