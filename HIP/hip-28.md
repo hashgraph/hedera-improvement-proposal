@@ -363,18 +363,17 @@ The following is the set of terms and definitions used to define Policy Actions 
 |`children`|Defines a list of Blocks that are grouped into a Policy Workflow|List of Blocks, see also example given below|
 | `defaultActive` | Determines if Policy Workflow or a Policy Action can be executed | `true`                                           |
 | `permissions`   | Security Policy associated with a specific role                 | `ROOT_AUTHORITY`                                 |
-| `Roles`   | Available roles from which the user can choose             | `Installer`                                 |
+| `roles`   | Available roles from which the user can choose             | `Installer`                                 |
 | `blockType`     | Specifies the type of Policy Workflow or Policy Action          | `interfaceContainerBlock` (policy workflow name) |
 |`uiMetaData`|Specifies the data of the policy workflow and/or Policy Action to be displayed|`type: header___` `fields:___________` `name: document.issuer` `title: Owner_____` `type: text`|
 |`tag`|Specifies the ID of a policy action which can be referenced in other blocks as a dependency|`Request`|
 |`schema`|Defines the data schema for a block|`Installer`|
-|`Entity Type`|Gives the document a label in the DB. Needed for filtering.|`Installer`|
+|`entityType`|Gives the document a label in the DB. Needed for filtering.|`Installer`|
 |`dataType`|Specifies the Type of data used in the Block|`source`|
-|`Data Source`|Specifies a source to where to send Data|`Database / Hedera`|
-|`Topic`|Topic to send a document if 'dataSource' = 'Hedera'|`topic`|
+|`dataSource`|Specifies a source to where to send Data|`Database / Hedera`|
+|`topic`|Topic to send a document if 'dataSource' = 'Hedera'|`topic`|
 |`dependencies`|Specifies on which blocks `tag` or state transition rules `stateMutation`|See `tag` and `stateMutation` for examples|
 |`onlyOwnDocuments`|Specifies whether a block applies to only those documents owned by the role specified in `permissions`|`true` or `false`|
-
 
 
 In this execution framework a policy workflow as a Block must be defined through a configuration schema based on for example yaml or JSON as the container for Policy Actions which too must be defined through configuration schemas as `children` of the policy workflow block. Parallel processing in this execution framework is possible by defining policy actions as children of a policy action that is defined in the same manner a policy workflow block would be defined, see Figure 3.
@@ -399,7 +398,7 @@ children:
         defaultActive: true
         permissions:
             - INSTALLER
-        blockType: requestVcDocument
+        blockType: requestVCDocument
         schema: Installer
 ```
 
@@ -408,13 +407,13 @@ The VSM machine acting on PWSOs is comprised on a per policy basis as a set of s
 An example of such a service in the Typescript language based on the workflow configuration example above can be defined as follows:
 ```
 @EventBlock({
-    blockType: 'requestVcDocument',
+    blockType: 'requestVCDocument',
     commonBlock: false,
 })
 ```
-where `'requestVcDocument'` is the policy action that was defined above and which can be expressed as follows as a service:
+where `'requestVCDocument'` is the policy action that was defined above and which can be expressed as follows as a service:
 ```
-export class RequestVcDocumentBlock {
+export class RequestVCDocumentBlock {
 
     @Inject()
     private guardians: Guardians;
