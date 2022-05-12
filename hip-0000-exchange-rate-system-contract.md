@@ -34,7 +34,7 @@ our main goal was to mirror the prior art that began in [HIP-206](https://hips.h
 selectors that determine whether the contract converts from tinycents to tinybars, or vice-versa, are computed as the
 function selectors of the Solidity interface in the below specification.
  
-# User stories
+## User stories
 
 - As the author of a "self-funding" contract, I want to require users to include enough `msg.value` to cover my contract's Hedera fees.
 - As the deployer of a contract that holds large hbar reserves, I want a `view` function that returns the approximate USD value held by my contract.
