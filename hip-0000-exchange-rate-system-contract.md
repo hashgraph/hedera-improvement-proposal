@@ -14,7 +14,7 @@ discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discuss
 ## Abstract
 
 We propose a new precompiled contract (or _system contract_) to convert between tinybars and tinycents at the network's 
-active exchange rate in system file `0.0.111`; that is, at the exchange rate the network is using to calculate fees. 
+active exchange rate in system file `0.0.112`; that is, at the exchange rate the network is using to calculate fees. 
 
 This precompile would **NOT** be a live price oracle appropriate to use in, for example, a DEX client contract.
 
