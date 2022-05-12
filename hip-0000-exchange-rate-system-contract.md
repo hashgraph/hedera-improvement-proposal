@@ -1,0 +1,128 @@
+---
+hip: <HIP number (this is determined by the HIP editor)>
+title: Exchange rate system contract
+author: Michael Tinker (@tinker-michaelj)
+working-group: Danno Ferrin (@shemnon)
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Draft
+created: 05-12-2022
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/474
+---
+
+## Abstract
+
+We propose a new precompiled contract (or _system contract_) to convert between tinybars and tinycents at the network's 
+active exchange rate in system file `0.0.111`; that is, at the exchange rate the network is using to calculate fees. 
+
+This precompile would **NOT** be a live price oracle appropriate to use in, for example, a DEX client contract.
+
+## Motivation
+
+Suppose a contract aspires to be "self-funding"---that is, it expects users to send enough msg.value with function calls 
+to cover the contract's Hedera fees.
+
+The problem is that, even though Hedera fees are fixed and predictable, they are denominated in tinycents (USD); but 
+`msg.value` is denominated in tinybars.  So the contract needs to convert from tinycents to tinybars, at the 
+_same exchange rate_ the network will use when charging fees.
+
+## Rationale
+
+There are not many degrees of freedom in the design of a component that performs one multiplication and one division; 
+our main goal was to mirror the prior art that began in [HIP-206](https://hips.hedera.com/hip/hip-206). Thus the function 
+selectors that determine whether the contract converts from tinycents to tinybars, or vice-versa, are computed as the
+function selectors of the Solidity interface in the below specification.
+ 
+# User stories
+
+- As the author of a "self-funding" contract, I want to require users to include enough `msg.value` to cover my contract's Hedera fees.
+- As the deployer of a contract that holds large hbar reserves, I want a `view` function that returns the approximate USD value held by my contract.
+  
+## Specification
+
+The contract is to reside at address `0x168` and implement the below interface,
+```
+interface IExchangeRate {
+    // Given a value in tinycents (1e-8 US cents or 1e-10 USD), returns the 
+    // equivalent value in tinybars (1e-8 HBAR) at the current exchange rate 
+    // stored in system file 0.0.112. 
+    // 
+    // This rate is a weighted median of the the recent" HBAR-USD exchange 
+    // rate on major exchanges, but should _not_ be treated as a live price 
+    // oracle! It is important primarily because the network will use it to 
+    // compute the tinybar fees for the active transaction. 
+    // 
+    // So a "self-funding" contract can use this rate to compute how much 
+    // tinybar its users must send to cover the Hedera fees for the transaction.
+    function tinycentsToTinybars(uint256 tinycents) external returns (uint256);
+
+    // Given a value in tinybars (1e-8 HBAR), returns the equivalent value in 
+    // tinycents (1e-8 US cents or 1e-10 USD) at the current exchange rate 
+    // stored in system file 0.0.112. 
+    // 
+    // This rate tracks the the HBAR-USD rate on public exchanges, but 
+    // should _not_ be treated as a live price oracle! This conversion is
+    // less likely to be needed than the above conversion from tinycent to
+    // tinybars, but we include it for completeness.
+    function tinybarsToTinycents(uint256 tinybars) external returns (uint256);
+}
+```
+
+## Backwards Compatibility
+
+There are no known sources of backward incompatibility.
+
+## Security Implications
+
+There are no obvious security implications. Even if the exchange rate in file `0.0.112` diverges from the USD-HBAR exchange 
+rate on major exchanges, this has no impact on the core use case of translating USD-denominated Hedera fees into tinybar 
+amounts.
+
+## How to Teach This
+
+Smart contracts can use a new system contract to convert from tinycents to tinybars, and vice-versa. A typical use case 
+that implements a `costsCents(x)` Solidity modifier might be,
+```
+import "./IExchangeRate.sol";
+
+abstract contract SelfFunding {
+    uint256 constant TINY_PARTS_PER_WHOLE = 100_000_000;
+    address constant PRECOMPILE_ADDRESS = address(0x168);
+
+    function tinycentsToTinybars(uint256 tinycents) internal returns (uint256 tinybars) {
+        (bool success, bytes memory result) = PRECOMPILE_ADDRESS.call(
+            abi.encodeWithSelector(IExchangeRate.tinycentsToTinybars.selector, tinycents));
+        require(success);
+        tinybars = abi.decode(result, (uint256));
+    }
+
+    modifier costsCents(uint256 cents) {
+        uint256 tinycents = cents * TINY_PARTS_PER_WHOLE;
+        uint256 requiredTinybars = tinycentsToTinybars(tinycents);
+        require(msg.value >= requiredTinybars);
+        _;
+    } 
+}
+```
+
+## Reference Implementation
+
+Please see [this PR](https://github.com/hashgraph/hedera-services/pull/3327).
+
+## Rejected Ideas
+
+An initial implementation used "magic numbers" instead of EVM function signatures to toggle the conversion direction.
+
+## Open Issues
+
+No know issues are outstanding.
+
+## References
+
+- [HIP-206](https://hips.hedera.com/hip/hip-206)
+- [Reference implementation](https://github.com/hashgraph/hedera-services/pull/3327)
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
