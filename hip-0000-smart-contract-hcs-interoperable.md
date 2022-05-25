@@ -2,42 +2,45 @@
 hip: <HIP number (this is determined by the HIP editor)>
 title: Interoperability Between Smart Contracts and the HCS
 author: John Conway (@scalemaildev)
-working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
 type: Standards Track
 category: Core
 needs-council-approval: <Yes | No>
 status: Draft
 created: 05-17-2022
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/479
+updated: 05-24-2022
+requires: N/A
+replaces: N/A
+superseded-by: N/A
 ---
 
 ## Abstract
 
-Enable the reading, writing, and creation of HCS topics via smart contracts.
+Enable smart contract interaction with the Hedera Consensus Service, by allowing contracts to create, read, and write to HCS topics.
 
 ## Motivation
 
-Interoperability between the HCS and Hedera's smart contracts would enable Solidity developers to leverage HCS-stored data.
+Interoperability between the HCS and smart contracts would enable developers to leverage HCS-stored data in their dApps.
 
 ## Rationale
 
-Enabling smart contracts to read/update/create HCS topics would enable record-based NFT minting. Currently, if we want to restrict the ability to mint an NFT based on a meta record, it has to be done in a centralized fashion. The server would first read the user's record HCS topic, check if the record has valid credit, mint the appropriate NFT, send that NFT to the user's wallet, and then update their HCS topic. However, this could all be done through a smart contract (without the need for a server) if smart contracts had CRUD access to HCS topics.
+1. By enabling smart contracts to interact with the HCS, this would allow the creation of HCS-based Oracles. For example, a smart contract could subscribe to a private or public topic in order to read its external data, such as the prices of crypto-assets.
+
+2. This would also enable topic-based NFT minting rights. A smart contract could ingest an HCS topic to calculate the user's available NFTs. Then, after minting the NFT and transferring it to the user, the smart contract could update that same HCS topic. Currently, this process is only achievable via a centralized, server-based chain of events (such as on [https://hashandslash.io](hashandslash.io)).
+
+3. Any other Oracle use case could be repurposed by the HCS.
 
 ## User stories
 
 As a developer, I want to be able to read HCS topics from my smart contracts.
 
-As a developer, I want to be able to send HCS topic messages from my smart contracts (needs a payer account).
+As a developer, I want to be able to send HCS topic messages from my smart contracts.
 
-As a developer, I want to be able to create HCS topics from my smart contracts (needs a payer account).
+As a developer, I want to be able to create HCS topics from my smart contracts.
   
 ## Specification
 
-The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
+Enabling smart contracts to interact with HCS topics would follow the same approach as the [https://hips.hedera.com/hip/hip-206](HTS pre-compiled contracts HIP).
 
 ## Backwards Compatibility
 
@@ -45,7 +48,10 @@ All HIPs that introduce backward incompatibilities must include a section descri
 
 ## Security Implications
 
-If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
+With regards to signing transactions from within a smart contract, the main concern is storing private keys in-state. So, some possible solutions are:
+
+1. Give a different kind of permission to deployed smart contracts for interacting with certain topics. This could function similarly to how AWS differentiates between key-based permissions and role-based permissions.
+2. Follow the same approach from the [https://hips.hedera.com/hip/hip-206](HTS pre-compiled contracts HIP) to signing transactions and interacting with topics.
 
 ## How to Teach This
 
@@ -68,6 +74,8 @@ While a HIP is in draft, ideas can come up which warrant further discussion. Tho
 ## References
 
 https://hedera.com/blog/use-cases-for-hcs-based-records-in-play-to-earn-nft-gaming
+
+https://hashandslash.io
 
 ## Copyright/license
 
