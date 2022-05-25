@@ -1,7 +1,7 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
 title: Interoperability Between Smart Contracts and the HCS
-author: John Conway (@scalemaildev)
+author: John Conway (@scalemaildev), Walter Hernandez (@walter-hernandez)
 type: Standards Track
 category: Core
 needs-council-approval: <Yes | No>
