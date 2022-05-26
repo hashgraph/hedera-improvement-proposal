@@ -25,7 +25,7 @@ contract TokenCreateContract is ExpiryHelper {
         IHederaTokenService.TokenKey[] memory keys = new IHederaTokenService.TokenKey[](2);
 
         // use the helper methods in KeyHelper to create basic keys
-        keys[0] = getSingleKey(HederaTokenService.ADMIN_KEY_TYPE, KeyHelper.INHERIT_ACCOUNT_KEY, "");
+        keys[0] = createSingleKey(HederaTokenService.ADMIN_KEY_TYPE, KeyHelper.INHERIT_ACCOUNT_KEY, "");
 
         // create TokenKey of types supplyKey and pauseKey with value a contract address passed as function arg
         uint supplyPauseKeyType;
@@ -43,7 +43,7 @@ contract TokenCreateContract is ExpiryHelper {
         myToken.treasury = address(this);
         myToken.tokenKeys = keys;
         // create the expiry schedule for the token using ExpiryHelper
-        myToken.expiry = getAutoRenewExpiry(autoRenewAccount, autoRenewPeriod);
+        myToken.expiry = createAutoRenewExpiry(autoRenewAccount, autoRenewPeriod);
 
         // call HTS precompiled contract, passing 200 as initial supply and 8 as decimals
         (int responseCode, address token) =
@@ -68,18 +68,18 @@ contract TokenCreateContract is ExpiryHelper {
 
         // create the admin key using KeyHelper method
         IHederaTokenService.TokenKey[] memory keys = new IHederaTokenService.TokenKey[](1);
-        keys[0] = getSingleKey(HederaTokenService.ADMIN_KEY_TYPE, KeyHelper.ECDSA_SECPK2561K1_KEY, ecdsaAdminKey);
+        keys[0] = createSingleKey(HederaTokenService.ADMIN_KEY_TYPE, KeyHelper.ECDSA_SECPK2561K1_KEY, ecdsaAdminKey);
 
         // declare custom fees
         IHederaTokenService.FixedFee[] memory fixedFees = new IHederaTokenService.FixedFee[](2);
         // create a fixed fee with hbar as payment using FeeHelper 
-        fixedFees[0] = createFixedFeeForHbars(5, feeCollector);
+        fixedFees[0] = createFixedHbarFee(5, feeCollector);
         // create a fixed fee with existing token as payment using FeeHelper 
-        fixedFees[1] = createFixedFeeForToken(5, existingTokenAddress, feeCollector);
+        fixedFees[1] = createFixedTokenFee(5, existingTokenAddress, feeCollector);
 
         IHederaTokenService.FractionalFee[] memory fractionalFees = new IHederaTokenService.FractionalFee[](1);
         // create a fractional fee without limits using FeeHelper
-        fractionalFees[0] = createFractionalFeeWithoutLimits(4, 5, true, feeCollector);
+        fractionalFees[0] = createFractionalFee(4, 5, true, feeCollector);
 
         IHederaTokenService.HederaToken memory myToken;
         myToken.name = "MyToken";
@@ -87,7 +87,7 @@ contract TokenCreateContract is ExpiryHelper {
         myToken.treasury = treasury;
         myToken.tokenKeys = keys;
         // create the expiry schedule for the token using ExpiryHelper
-        myToken.expiry = getAutoRenewExpiry(autoRenewAccount, autoRenewPeriod);
+        myToken.expiry = createAutoRenewExpiry(autoRenewAccount, autoRenewPeriod);
 
         (int responseCode, address token) =
                 HederaTokenService.createFungibleTokenWithCustomFees(myToken, 200, 8, fixedFees, fractionalFees);
@@ -109,7 +109,7 @@ contract TokenCreateContract is ExpiryHelper {
         // instantiate the list of keys we'll use for token create
         IHederaTokenService.TokenKey[] memory keys = new IHederaTokenService.TokenKey[](1);
         // use the helper methods in KeyHelper to create basic key
-        keys[0] = getSingleKey(HederaTokenService.FREEZE_KEY_TYPE, KeyHelper.CONTRACT_ID_KEY, contractFreezeKey);
+        keys[0] = createSingleKey(HederaTokenService.FREEZE_KEY_TYPE, KeyHelper.CONTRACT_ID_KEY, contractFreezeKey);
 
         IHederaTokenService.HederaToken memory myToken;
         myToken.name = "MyNFT";
@@ -120,7 +120,7 @@ contract TokenCreateContract is ExpiryHelper {
         myToken.maxSupply = 10;
         myToken.tokenKeys = keys;
         myToken.freezeDefault = true;
-        myToken.expiry = getAutoRenewExpiry(autoRenewAccount, autoRenewPeriod);
+        myToken.expiry = createAutoRenewExpiry(autoRenewAccount, autoRenewPeriod);
 
         (int responseCode, address token) =
                 HederaTokenService.createNonFungibleToken(myToken);
@@ -164,7 +164,7 @@ contract TokenCreateContract is ExpiryHelper {
         myToken.symbol = "MNFT";
         myToken.treasury = feeCollectorAndTreasury;
         myToken.tokenKeys = keys;
-        myToken.expiry = getAutoRenewExpiry(autoRenewAccount, autoRenewPeriod);
+        myToken.expiry = createAutoRenewExpiry(autoRenewAccount, autoRenewPeriod);
 
         // create the token through HTS with default expiry and royalty fees;
         (int responseCode, address token) =
@@ -179,6 +179,22 @@ contract TokenCreateContract is ExpiryHelper {
         }
 
         createdTokenAddress = token;
+    }
+
+     function createTokenWithDefaultExpiryAndEmptyKeys() public payable returns (address createdTokenAddress) {
+        IHederaTokenService.HederaToken memory token;
+        token.name = "name";
+        token.symbol = "symbol";
+        token.treasury = address(this);
+
+        (int responseCode, address tokenAddress) =
+        HederaTokenService.createFungibleToken(token, 200, 8);
+
+        if (responseCode != HederaResponseCodes.SUCCESS) {
+            revert ();
+        }
+
+        createdTokenAddress = tokenAddress;
     }
 }
 

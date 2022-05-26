@@ -7,7 +7,7 @@ import "./FeeHelper.sol";
 
 contract ExpiryHelper is FeeHelper {
 
-    function getAutoRenewExpiry(
+    function createAutoRenewExpiry(
         address autoRenewAccount,
         uint32 autoRenewPeriod
     ) internal view returns (IHederaTokenService.Expiry memory expiry) {
@@ -15,7 +15,7 @@ contract ExpiryHelper is FeeHelper {
         expiry.autoRenewPeriod = autoRenewPeriod;
     }
 
-    function getSecondExpiry(uint32 second) internal view returns (IHederaTokenService.Expiry memory expiry) {
+    function createSecondExpiry(uint32 second) internal view returns (IHederaTokenService.Expiry memory expiry) {
         expiry.second = second;
     }
 }

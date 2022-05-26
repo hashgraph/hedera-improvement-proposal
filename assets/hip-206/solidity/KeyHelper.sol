@@ -12,23 +12,23 @@ contract KeyHelper is HederaTokenService {
     uint constant ECDSA_SECPK2561K1_KEY = 4;
     uint constant DELEGATABLE_CONTRACT_ID_KEY = 5;
 
-    function getSingleKey(
+    function createSingleKey(
         uint keyType,
         uint keyValueType,
         bytes memory key
     ) internal view returns (IHederaTokenService.TokenKey memory tokenKey) {
-        tokenKey = IHederaTokenService.TokenKey(keyType, getKeyValueType(keyValueType, key, address(0)));
+        tokenKey = IHederaTokenService.TokenKey(keyType, createKeyValueType(keyValueType, key, address(0)));
     }
 
-    function getSingleKey(
+    function createSingleKey(
         uint keyType,
         uint keyValueType,
         address key
     ) internal view returns (IHederaTokenService.TokenKey memory tokenKey) {
-        tokenKey = IHederaTokenService.TokenKey(keyType, getKeyValueType(keyValueType, "", key));
+        tokenKey = IHederaTokenService.TokenKey(keyType, createKeyValueType(keyValueType, "", key));
     }
 
-    function getKeyValueType(
+    function createKeyValueType(
         uint keyValueType,
         bytes memory key,
         address keyAddress

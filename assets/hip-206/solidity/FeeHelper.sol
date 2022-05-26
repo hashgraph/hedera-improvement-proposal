@@ -9,7 +9,7 @@ import "./KeyHelper.sol";
 
 contract FeeHelper is KeyHelper {
 
-    function createFixedFeeForHbars(
+    function createFixedHbarFee(
         uint32 amount,
         address feeCollector
     ) internal pure returns (IHederaTokenService.FixedFee memory fixedFee) {
@@ -18,7 +18,7 @@ contract FeeHelper is KeyHelper {
         fixedFee.feeCollector = feeCollector;
     }
 
-    function createFixedFeeForToken(
+    function createFixedTokenFee(
         uint32 amount,
         address tokenId,
         address feeCollector
@@ -28,7 +28,7 @@ contract FeeHelper is KeyHelper {
         fixedFee.feeCollector = feeCollector;
     }
 
-    function createFixedFeeForCurrentToken(
+    function createFixedSelfDenominatedFee(
         uint32 amount,
         address feeCollector
     ) internal pure returns (IHederaTokenService.FixedFee memory fixedFee) {
@@ -37,7 +37,7 @@ contract FeeHelper is KeyHelper {
         fixedFee.feeCollector = feeCollector;
     }
 
-    function createFractionalFeeWithoutLimits(
+    function createFractionalFee(
         uint32 numerator,
         uint32 denominator,
         bool netOfTransfers,
@@ -49,7 +49,7 @@ contract FeeHelper is KeyHelper {
         fractionalFee.feeCollector = feeCollector;
     }
 
-    function createFractionalFeeWithLimits(
+    function createFractionalFeeWithMinAndMax(
         uint32 numerator,
         uint32 denominator,
         uint32 minimumAmount,
