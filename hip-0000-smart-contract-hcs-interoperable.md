@@ -42,34 +42,12 @@ As a developer, I want to be able to create HCS topics from my smart contracts.
 
 Enabling smart contracts to interact with HCS topics would follow the same approach as the [https://hips.hedera.com/hip/hip-206](HTS pre-compiled contracts HIP).
 
-## Backwards Compatibility
-
-All HIPs that introduce backward incompatibilities must include a section describing these incompatibilities and their severity. The HIP must explain how the author proposes to deal with these incompatibilities. HIP submissions without a sufficient backward compatibility treatise may be rejected outright.
-
 ## Security Implications
 
 With regards to signing transactions from within a smart contract, the main concern is storing private keys in-state. So, some possible solutions are:
 
 1. Give a different kind of permission to deployed smart contracts for interacting with certain topics. This could function similarly to how AWS differentiates between key-based permissions and role-based permissions.
 2. Follow the same approach from the [https://hips.hedera.com/hip/hip-206](HTS pre-compiled contracts HIP) to signing transactions and interacting with topics.
-
-## How to Teach This
-
-For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
-
-## Reference Implementation
-
-The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
-
-## Rejected Ideas
-
-Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
-
-In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
-
-## Open Issues
-
-While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
 
 ## References
 
