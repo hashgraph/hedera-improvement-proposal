@@ -1,7 +1,7 @@
 ---
 hip: 28
 title: Guardian Type Solution
-author: Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, and Daniel Norkin <daniel.norkin@envisionblockchain.com>
+author: Matthew Smithies <matt.s@dovu.io>, Wes Geisenberger <wes.geisenberger@hedera.com>, Serg Metelin <sergey.metelin@hedera.com>, Ken Anderson <ken@hedera.com>, Daniel Norkin <daniel.norkin@envisionblockchain.com>, Prernaa Agarwal <prernaa.agarwal@envisionblockchain.com>
 type: Standards Track
 category: Application
 needs-council-approval: No
@@ -48,10 +48,25 @@ This is where a Guardian type solution that leverages a PWE, is a sensible appro
 * W3C Decentralized Identifiers (DIDs)
 * W3C Verifiable Credentials (VCs)
 * W3C Verifiable Presentations (VPs)
-* Decentralized ledger technologies.
-* Policy workflow engines through fully configurable and human readable “logic blocks” accessible through either a user interface or an application programming interface (API). 
+* Public decentralized ledger technologies (DLTs).
+* Policy workflow engines through fully configurable and human readable “logic blocks” accessible through either a user interface or an application programming interface (API).
 
-Like mentioned at the beginning of this section, similar logic can be easily applied to other rationales. 
+## Rationale
+
+Soil is the greatest land store of carbon, and if correct agricultural processes aren't followed this can trigger a negative effect of carbon stores. Organizations such as DOVU believe that such projects should include incentivization structures by default including a layer of accountability so that the carbon capture abilities of soil are optimized.
+
+There are a number of elements that are required:
+
+- A project owner that has been created and is linked to a new Ecological Project (EP).
+- A link between HTS (to issue tokenized carbon offsets) and HCS (to log the evidence supporting the issuance of tokenized carbon offsets), a common format.
+- A genesis message that would the initial asset in terms of a Core Carbon Principals (CCP) token.
+- State changes of the CCP representation, with versions and updates including additionally and leakage.
+- Continued messages, with a common schema that can be used as a mechanism to upload evidence.
+- I expect that this work will continue to evolve and adjust over time.
+
+These elements listed above would require a dynamic Policy Workflow Engine.
+
+Listed above is just one rationale, however, a similar workflow will be required to fulfill various use cases / polices. 
 
 ## User stories
 
@@ -241,7 +256,6 @@ If a PWW has more than one administrator, there must be a policy defined consens
 
 Finally, a PWW may be attached to one or more policy action instances, and a policy workgroup attached to a policy workflow must be also attached to each policy action in the policy workflow.
 
-Every participant within a Policy Workflow Workgroup must have an associated Hedera Consensus Service Topic to log the activities performed such as policy configuration, interaction with Policy Workflow Actions, authorizations, etc. 
 
 #### Policy Workflow State Objects
 This document has been defining and discussing policy workflow state objects (PWSOs) in the context of a PWE, hence, it needs to define stateful object processing. This necessitates a state or account-based model for policy workflow state objects. This is analogous to the Ethereum model using accounts and state object for smart contracts.
@@ -325,7 +339,8 @@ The following requirements are addressing the operating scenario where a PWE con
 
 Finally, PARs, and PWSO data and their histories must be stored as partially persistent data.
 
-Each Policy Workflow Transaction is sent to Hedera Consensus Service Topics for the purposes for immutability and public auditability. The data contained within the Policy Workflow Transactions can be used to mint tokens using Hedera Token Service, create verifiable crendentials, create verifiable presentations, etc. 
+Each Policy Workflow Transaction effects production or modification of a persistent artefact. The data contained within the Policy Workflow Transactions can be used to mint tokens using Hedera Token Service, create verifiable crendentials, create verifiable presentations, etc. On the completion of the PWT a message is sent to Hedera Consensus Service Topics for the purposes for immutability, public auditability and discoverability. See more details on mapping and the structure of the messages in the "**Policy Workflow Transaction Discoverability**" section below.
+
 
 #### Policy Workflow and Policy Action Execution Framework
 
@@ -344,18 +359,21 @@ The following is the set of terms and definitions used to define Policy Actions 
 
 | Term            | Definition                                                      | Example                                          |
 | --------------- |:--------------------------------------------------------------- |:------------------------------------------------ |
-| Block           | Either a Policy Workflow or a Policy Action                      | MRVDataVerification (Policy Workflow)            |
+| `block`           | Either a Policy Workflow or a Policy Action                      | MRVDataVerification (Policy Workflow)            |
 |`children`|Defines a list of Blocks that are grouped into a Policy Workflow|List of Blocks, see also example given below|
 | `defaultActive` | Determines if Policy Workflow or a Policy Action can be executed | `true`                                           |
 | `permissions`   | Security Policy associated with a specific role                 | `ROOT_AUTHORITY`                                 |
+| `roles`   | Available roles from which the user can choose             | `Installer`                                 |
 | `blockType`     | Specifies the type of Policy Workflow or Policy Action          | `interfaceContainerBlock` (policy workflow name) |
 |`uiMetaData`|Specifies the data of the policy workflow and/or Policy Action to be displayed|`type: header___` `fields:___________` `name: document.issuer` `title: Owner_____` `type: text`|
 |`tag`|Specifies the ID of a policy action which can be referenced in other blocks as a dependency|`Request`|
 |`schema`|Defines the data schema for a block|`Installer`|
+|`entityType`|Gives the document a label in the DB. Needed for filtering.|`Installer`|
 |`dataType`|Specifies the Type of data used in the Block|`source`|
+|`dataSource`|Specifies a source to where to send Data|`Database / Hedera`|
+|`topic`|Topic to send a document if 'dataSource' = 'Hedera'|`topic`|
 |`dependencies`|Specifies on which blocks `tag` or state transition rules `stateMutation`|See `tag` and `stateMutation` for examples|
 |`onlyOwnDocuments`|Specifies whether a block applies to only those documents owned by the role specified in `permissions`|`true` or `false`|
-
 
 
 In this execution framework a policy workflow as a Block must be defined through a configuration schema based on for example yaml or JSON as the container for Policy Actions which too must be defined through configuration schemas as `children` of the policy workflow block. Parallel processing in this execution framework is possible by defining policy actions as children of a policy action that is defined in the same manner a policy workflow block would be defined, see Figure 3.
@@ -380,7 +398,7 @@ children:
         defaultActive: true
         permissions:
             - INSTALLER
-        blockType: requestVcDocument
+        blockType: requestVCDocument
         schema: Installer
 ```
 
@@ -389,13 +407,13 @@ The VSM machine acting on PWSOs is comprised on a per policy basis as a set of s
 An example of such a service in the Typescript language based on the workflow configuration example above can be defined as follows:
 ```
 @EventBlock({
-    blockType: 'requestVcDocument',
+    blockType: 'requestVCDocument',
     commonBlock: false,
 })
 ```
-where `'requestVcDocument'` is the policy action that was defined above and which can be expressed as follows as a service:
+where `'requestVCDocument'` is the policy action that was defined above and which can be expressed as follows as a service:
 ```
-export class RequestVcDocumentBlock {
+export class RequestVCDocumentBlock {
 
     @Inject()
     private guardians: Guardians;
@@ -478,6 +496,97 @@ In this example, the service is defined as a service class for the `RequestVcDoc
 * a constructor which loads the configuration schemas into the VSM
 * functions such as `async getData(user: IAuthUser)` which define the process steps to facilitate the state -- get data for the VSM, set the PWSO for the VSM and update the PWSO
 
+#### Policy Workflow Transaction Discoverability
+
+For discoverability, Policy Workflow Transaction messages sent to Hedera Consensus Service (HCS) are generated and formatted to enable full traceability (in other words "forward/back navigation") across Topics and messages, exactly mapping the execution of the policy workflow. Policy Workflow Actions are always performed in the context of an HCS Topic. The topics form a 'linked-list' like structure, the very first (root) Topic for the Policy Worlflow when a new Policy is first created by 'publishing a policy', which is 'external' for the Policy Engine. This ensures that there always is **at least a single** HCS Topic mapped to any active Policy Workflow, which recieves Policy Workflow Transaction messages.
+
+There are separate types of messages that denote different Policy Workflow Actions. All messages share common structure presented below (in the format of typescript for convinience):
+
+```
+export interface MessageBody {
+    id: string;
+    status: MessageStatus;
+    type: MessageType;
+    action: MessageAction;
+}
+```
+The following types of messages are currently available:
+
+| Message type     | Mappted Policy Workflow Action                               | 
+| --------------- |:--------------------------------------------------------------|
+| DID | Creation of a DID | 
+| Policy | Creation of a Policy verstion |
+| Schema | Creation of a Schema |
+| VC | Creation of a VC |
+| VP | Creation of a VP |
+| Topic | Creation of a new Topic|
+
+
+Policy Engine executing the Workflow can freely create HCS Topics as required to allocate for logical or any other grouping of the messages as deemed necessary (and as defined) by the Policy authors. To acheive traceability, whenever a new HCS Topic gets created by the Policy Engine two almost identical messages get posted into the 'current' and the newly created Topics to provide a link between them. The structure of these messages is presented below. They differ in the value of the `parentId` field which would be `null` for the message directed to 'current' topic, and contain the 'current' topic ID in the message posted into the newly created one.
+
+```
+export interface TopicMessageBody extends MessageBody {
+    name: string;
+    description: string;
+    owner: string;
+    messageType: string;
+    childId: string;
+    parentId: string;
+    rationale: string;
+}
+```
+
+Other types of messages have the following content.
+
+```
+export interface PolicyMessageBody extends MessageBody {
+    uuid: string;
+    name: string;
+    description: string;
+    topicDescription: string;
+    version: string;
+    policyTag: string;
+    owner: string;
+    topicId: string;
+    instanceTopicId: string;
+    cid: string;
+    url: string;
+}
+
+export interface SchemaMessageBody extends MessageBody {
+    name: string;
+    description: string;
+    entity: string;
+    owner: string;
+    uuid: string;
+    version: string;
+    document_cid: string;
+    document_url: string;
+    context_cid: string;
+    context_url: string;
+}
+
+export interface VcMessageBody extends MessageBody {
+    issuer: string;
+    cid: string;
+    url: string;
+    relationships: string[];
+}
+
+export interface VpMessageBody extends MessageBody {
+    issuer: string;
+    cid: string;
+    url: string;
+    relationships: string[];
+}
+```
+
+To ensure global discoverability, all root HCS Topics for all Policies are linked with the rigidly defined higher-level Topics structure using the same 'linked-list' techniqnue as described before. This structure and its relationship with the Policy Workflow topics ('dynamic topics') is illustrated on the following diagram.
+
+![Guardian Topics Map](https://user-images.githubusercontent.com/32775532/167000421-645363f8-8a35-41ed-bff2-cb4ddd06b45c.png)
+
+The entry point into this structure is the root topic mapping to the 'Root Authority' (RA) actor, which is the author and the publisher of the policy. There are many RAs in the ecosystem, each can author multiple policies. Thus, there are numerous entry points into the Policy-specific 'chains'. Top-level discovery of these is performed via RA 'hello worlds' messages posted into the predefined HCS Topic after the event of the creation of a new Root Authority.
+
 ## Backwards Compatibility
 
 No issues.
@@ -488,13 +597,15 @@ Permissions are defined in Policy Workflow Workgroups.
 
 ## How to Teach This
 
-There will be a open-source reposity with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications.
+There is an open-source [repository](https://github.com/hashgraph/guardian) with a reference implementation of the Guardian Type Solution to learn how to use the components for various applications.
+Please look at our [Gitbook Documentation](https://docs.hedera.com/guardian)
 
 ## Reference Implementation
 
-There will be a open-source repository with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications. This reference implementation is designed with modularity so that different components may be swapped out based on various implementation requirements. Please see the open-source Guardian's architecture diagram below:
+There is an open-source [repository](https://github.com/hashgraph/guardian) with a reference implementation of the Guardian Type Solution to learn how to use the componants for various applications. This reference implementation is designed with modularity so that different components may be swapped out based on various implementation requirements. Please see the open-source Guardian's architecture diagram below:
 
-![Open Source Guardian Architecture](https://user-images.githubusercontent.com/40637665/137015939-135e2f50-6123-4abf-936d-5c1c2516926d.png)
+![Open Source Guardian Architecture](https://github.com/EnvisionBlockchain/hedera-improvement-proposal/blob/e9e16334cc29141fbcba4f9394ab7c467734b1b4/assets/hip-28/Detailed%20Architecture.png)
+
 
 ## Rejected Ideas
 
