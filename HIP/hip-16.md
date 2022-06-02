@@ -115,15 +115,14 @@ Key partners operating mirror nodes, wallets, exchanges, etc. should notify user
 
 ## Reference Implementation
 
+```
 ledger.autoRenewPeriod.maxDuration=8000001 seconds // ~92 days
 ledger.autoRenewPeriod.minDuration=6999999 seconds // ~81 days
+```
 
-The proposed pricing is as follows (assumes maxDuration as of April 6, 2020 and the maxDuration):
-- "CryptoAccountAutoRenew": $0.0014
-- "ConsensusTopicAutoRenew": $0.0003
-- "TokenAutoRenew": $0.026
-- "ContractAutoRenew": $0.064
-- "FileAutoRenew": $0.0014
+For the most up-to-date pricing, please refer to https://docs.hedera.com/guides/mainnet/fees#transaction-and-query-fees 
+
+Please note that the renewal fees depend on the resources, such as state size for the Hedera Smart Contracts Service, file size for Hedera File Service, number of token associations for the Hedera Token Service and duration into consideration. 
 
 https://github.com/hashgraph/hedera-services/blob/master/docs/autorenew-feature.md#autorenewal-record
 
