@@ -145,7 +145,7 @@ Two functions are defined for creating fungible and non-fungible tokens each. On
 | ``        | `getTokenDefaultKycStatus(address)`               | `(bool)`                  |
 | ``        | `getFungibleTokenInfo(address)`                   | `(FungibleTokenInfo)`     |
 | ``        | `getTokenInfo(address)`                           | `(TokenInfo)`             |
-| ``        | `getTokenKey(address, uint32)`                    | `(KeyValue)`              |
+| ``        | `getTokenKey(address, uint)`                      | `(KeyValue)`              |
 | ``        | `getNonFungibleTokenInfo(address, uint32)`        | `(NonFungibleTokenInfo)`  |
 | ``        | `freezeToken(address, address)`                   | `(bool)`                  |
 | ``        | `unFreezeToken(address, address)`                 | `(bool)`                  |
@@ -157,7 +157,7 @@ Two functions are defined for creating fungible and non-fungible tokens each. On
 | ``        | `wipeTokenAccount(address, address, [uint64])`    | `([uint64])`              |
 | ``        | `updateTokenInfo(address, HederaToken)`           | `(HederaToken)`           |
 | ``        | `updateTokenAutoRenewInfo(address, uint32)`       | `(address, uint32)`       |
-| ``        | `updateTokenKeys(TokenKey[])`                     | `(TokenKey[])`            |
+| ``        | `updateTokenKeys(address, uint, KeyValue)`        | `(TokenKey[])`            |
 
 
 ### Gas Costing
@@ -166,28 +166,30 @@ The proposed token management functions will build upon the [Precomiled Gas Cost
 The cost of contract function calls will track closely to the canonical cost of its HTS call (see [Hedera Fees]( https://www.hedera.com/fees/)) converted to gas.
 The additonal smart contract cost will be based on the number of executed EVM instructions and the contract complexity.
 
-| Function                                         | Base Gas Cost      | Incremental Cost      |
-| -------------------------------------------------|--------------------|-----------------------|
-| `isFrozen(address)`                              | xx gas             | 0 gas                 |
-| `isKyc(address)`                                 | xx gas             | 0 gas                 |
-| `tokenDelete(address)`                           | xx gas             | 0 gas                 |
-| `tokenGetAutoRenew(address)`                     | xx gas             | 0 gas                 |
-| `tokenGetCustomFees(address)`                    | xx gas             | 0 gas                 |
-| `tokenGetDefaultStatus(address)`                 | xx gas             | 0 gas                 |
-| `tokenGetInfo(address)`                          | xx gas             | 0 gas                 |
-| `tokenGetKey(address, uint32)`                   | xx gas             | 0 gas                 |
-| `tokenGetNftInfo(address, uint32)`               | xx gas             | 0 gas                 |
-| `tokenFreeze(address, address)`                  | xx gas             | 0 gas                 |
-| `tokenUnFreeze(address, address)`                | xx gas             | 0 gas                 |
-| `tokenGrantKyc(address, address)`                | xx gas             | 0 gas                 |
-| `tokenRevokeKyc(address, address)`               | xx gas             | 0 gas                 |
-| `tokenPause(address)`                            | xx gas             | 0 gas                 |
-| `tokenUnPause(address)`                          | xx gas             | 0 gas                 |
-| `tokenWipeAccount(address, address, uint32)`     | xx gas             | 0 gas                 |
-| `tokenWipeAccount(address, address, [uint64])`   | xx gas             | xx gas / serial token |
-| `tokenUpdateInfo(address, HederaToken)`          | xx gas             | 0 gas                 |
-| `tokenUpdateAutoRenew(address, uint32)`          | xx gas             | 0 gas                 |
-| `tokenUpdateKeys(TokenKey[])`                    | xx gas             | xx gas / key          |
+| Function                                        | Base Gas Cost      | Incremental Cost      |
+| ------------------------------------------------|--------------------|-----------------------|
+| `isFrozen(address)`                             | xx gas             | 0 gas                 |
+| `isKyc(address)`                                | xx gas             | 0 gas                 |
+| `deleteToken(address)`                          | xx gas             | 0 gas                 |
+| `getTokenAutoRenewInfo(address)`                | xx gas             | 0 gas                 |
+| `getTokenCustomFees(address)`                   | xx gas             | 0 gas                 |
+| `getTokenDefaultFreezeStatus(address)`          | xx gas             | 0 gas                 |
+| `getTokenDefaultKycStatus(address)`             | xx gas             | 0 gas                 |
+| `getFungibleTokenInfo(address)`                 | xx gas             | 0 gas                 |
+| `getTokenInfo(address)`                         | xx gas             | 0 gas                 |
+| `getTokenKey(address, uint)`                    | xx gas             | 0 gas                 |
+| `getNonFungibleTokenInfo(address, uint32)`      | xx gas             | 0 gas                 |
+| `freezeToken(address, address)`                 | xx gas             | 0 gas                 |
+| `unFreezeToken(address, address)`               | xx gas             | 0 gas                 |
+| `grantTokenKyc(address, address)`               | xx gas             | 0 gas                 |
+| `revokeTokenKyc(address, address)`              | xx gas             | 0 gas                 |
+| `pauseToken(address)`                           | xx gas             | 0 gas                 |
+| `unPauseToken(address)`                         | xx gas             | 0 gas                 |
+| `wipeTokenAccount(address, address, uint32)`    | xx gas             | 0 gas                 |
+| `wipeTokenAccount(address, address, [uint64])`  | xx gas             | xx gas / serial token |
+| `updateTokenInfo(address, HederaToken)`         | xx gas             | 0 gas                 |
+| `updateTokenAutoRenewInfo(address, uint32)`     | xx gas             | 0 gas                 |
+| `updateTokenKeys(address, uint, KeyValue)`      | xx gas             | xx gas / key          |
 
 ## Backwards Compatibility
 
