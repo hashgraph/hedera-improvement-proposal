@@ -1,5 +1,5 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 514
 title: Hedera Token Service Precompiled Contract Token Management Functions
 author: Nana Essilfie-Conduah (@Nana-EC)
 working-group: Danno Ferrin (@shemnon)
@@ -8,16 +8,14 @@ category: Service
 needs-council-approval: Yes
 status: Draft
 created: 2022-06-22
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/516
+updated: 2022-06-28
+requires: 206
 ---
 
 ## Abstract
 
-The Hedera Smart Contract Service (HSCS) through the inital implemtation of [HIP 206](https://hips.hedera.com/hip/hip-206) allows contracts to create, transfer, mint, burn, associate, and dissociate tokens programmatically. However, following this there remains limited capability to interact with and manage tokens in more intricate scenarios.
+The Hedera Smart Contract Service (HSCS), through the initial implementation of [HIP 206](https://hips.hedera.com/hip/hip-206), allows contracts to create, transfer, mint, burn, associate, and dissociate tokens programmatically. However, following this, there remains limited capability to interact with and manage tokens in more intricate scenarios.
 
 ## Motivation
 
@@ -27,16 +25,16 @@ Allow smart contract developers on Hedera similar capabilities in token manageme
 
 The Hedera Smart Contract Service (HSCS) aims to provide developers with the ability to manage tokens via smart contracts.
 Currently, capability is limited to create, transfer, mint, burn, associate, and dissociate actions.
-Whereas, HTS provides additional capabilties including update, pause, kyc, freeze and info retrieval.
+Whereas, HTS provides additional capabilities including update, pause, kyc, freeze and info retrieval.
 This means smart contract developer cannot capitalize on valuable HTS supported scenarios and can therefore not expose these in their contracts and DApps.
 
-To allow for more rich smart contracts scenarios these limitations on the HSCS should be addressed by providing capability parity where possible with HTS.
+To allow for more rich smart contract scenarios, these limitations on the HSCS should be addressed by providing capability parity where possible with HTS.
 
 ## User stories
 
 As a smart contract developer, I would like to retreive fungible token metadata details through a precompile contract.
 
-As a smart contract developer, I would like to retreive non fungible token metadata details through a precompile contract.
+As a smart contract developer, I would like to retreive non-fungible token metadata details through a precompile contract.
 
 As a smart contract developer, I would like to modify a tokens entity properties through a precompile contract.
 
@@ -79,10 +77,10 @@ The following structs have been added to simplify the interface between Solidity
 | `FungibleTokenInfo`       | `(TokenInfo, uint32)`                                                 |
 | `NonFungibleTokenInfo`    | `(TokenInfo, uint64, address, uint32, bytes, bool, address, string)`  |
 
-The additional structs build upon existing structs and in most add network info (e.g. ledgerId) or differentiating token information (e.g. fungible vs non fungible).
+The additional structs build upon existing structs and in most add network info (e.g. ledgerId) or differentiating token information (e.g. fungible vs non-fungible).
 
 #### CustomFee
-`CustomFee` struct defines the fees collected and the collection account when transfering a Hedera Token:
+`CustomFee` struct defines the fees collected and the collection account when transferring a Hedera Token:
 
 | Field                             | Meaning                               |
 |-----------------------------------|---------------------------------------|
@@ -164,7 +162,7 @@ Two functions are defined for creating fungible and non-fungible tokens each. On
 
 The proposed token management functions will build upon the [Precomiled Gas Cost described in HIP 206](https://hips.hedera.com/hip/hip-206) 
 The cost of contract function calls will track closely to the canonical cost of its HTS call (see [Hedera Fees]( https://www.hedera.com/fees/)) converted to gas.
-The additonal smart contract cost will be based on the number of executed EVM instructions and the contract complexity.
+The additional smart contract cost will be based on the number of executed EVM instructions and the contract complexity.
 
 | Function                                        | Base Gas Cost      | Incremental Cost      |
 | ------------------------------------------------|--------------------|-----------------------|
@@ -194,13 +192,13 @@ The additonal smart contract cost will be based on the number of executed EVM in
 ## Backwards Compatibility
 
 This HIP builds upon existing Solidity structs and Protobuf messages.
-As such, it is in complicance with previosu iterations and should not impact compatability.
+As such, it is in compliance with previous iterations and should not impact compatibility.
 
 ## Security Implications
 
 The HIP provides exposure to existing HTS functionality.
-Fundamentaly security is still governed by the ledger security logic in combination with the EVM.
-As such there should be no security implications in decreased security or increased permissions.
+Fundamentally security is still governed by the ledger security logic in combination with the EVM.
+As such, there should be no security implications in decreased security or increased permissions.
 
 ## How to Teach This
 
@@ -213,7 +211,7 @@ As such there should be no security implications in decreased security or increa
 
 ## Rejected Ideas
 
-The option to create a new precompile solidity file was rejected as the additonal functions will benefit from the structure and logic of the current functions
+The option to create a new precompile solidity file was rejected as the additional functions will benefit from the structure and logic of the current functions
 
 ## Open Issues
 
