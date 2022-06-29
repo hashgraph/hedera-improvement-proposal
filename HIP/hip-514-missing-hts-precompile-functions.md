@@ -130,10 +130,16 @@ by the specific precompile function being called (see the functions below).
 
 ### Solidity Function Signatures
 
-Two functions are defined for creating fungible and non-fungible tokens each. One is a simple version with just the required fields and the other is a full version supporting custom fees. The ABI signature and hashes for each call are as follows:
+The ABI signature and hashes for token management functions are as follows:
 
 | hash      | effective signature                               | return                    |
 | ----------|---------------------------------------------------|---------------------------|
+| ``        | `allowance(address, address, address)`            | `(uint256)`               |
+| ``        | `approve(address, address, uint256)`              | `(uint256)`               |
+| ``        | `approveNft(address, address, uint256)`           | `(uint256)`               |
+| ``        | `isApproved(address, uint256)`                    | `(bool)`                  |
+| ``        | `isApprovedForAll(address, address, uint256)`     | `(bool)`                  |
+| ``        | `setApprovalForAll(address, address, bool)`       | `(bool)`                  |
 | ``        | `isFrozen(address)`                               | `(bool)`                  |
 | ``        | `isKyc(address)`                                  | `(bool)`                  |
 | ``        | `deleteToken(address)`                            | `(bool)`                  |
@@ -166,6 +172,12 @@ The additional smart contract cost will be based on the number of executed EVM i
 
 | Function                                        | Base Gas Cost      | Incremental Cost      |
 | ------------------------------------------------|--------------------|-----------------------|
+| `allowance(address, address, address)`          | xx gas             | 0 gas                 |
+| `approve(address, address, uint256)`            | xx gas             | 0 gas                 |
+| `approveNft(address, address, uint256)`         | xx gas             | 0 gas                 |
+| `isApproved(address, uint256)`                  | xx gas             | 0 gas                 |
+| `isApprovedForAll(address, address, uint256)`   | xx gas             | 0 gas                 |
+| `setApprovalForAll(address, address, bool)`     | xx gas             | 0 gas                 |
 | `isFrozen(address)`                             | xx gas             | 0 gas                 |
 | `isKyc(address)`                                | xx gas             | 0 gas                 |
 | `deleteToken(address)`                          | xx gas             | 0 gas                 |
@@ -204,6 +216,8 @@ As such, there should be no security implications in decreased security or incre
 
 - Additonal documentation on [IHederaTokenService.sol](https://github.com/hashgraph/hedera-smart-contracts/blob/main/hts-precompile/IHederaTokenService.sol) and [HederaTokenService.sol](https://github.com/hashgraph/hedera-smart-contracts/blob/main/hts-precompile/HederaTokenService.sol)
 - Client code will be provided with a `TokenManageContract.sol` under [hts-precompile](https://github.com/hashgraph/hedera-smart-contracts/tree/main/hts-precompile)
+- SDK examples should be written to highlight solidity token management function calls.
+- Doc site tutorials utilizing SDKs should be written to highlight solidity token management function calls.
 
 ## Reference Implementation
 
@@ -216,7 +230,7 @@ The option to create a new precompile solidity file was rejected as the addition
 ## Open Issues
 
 Regarding [### Solidity Function Signatures][#solidity-function-signatures]
-- Is the use of `CustomFee[]` acceptable on `tokenGetCustomFees()` or should a coordinated set of `FixedFee[]`, `FractionalFee[]` and `RoyaltyFee[]` be used instead for return
+- Is the `CustomFee[]` optimal on `getTokenCustomFees()` or should a coordinated set of `FixedFee[]`, `FractionalFee[]` and `RoyaltyFee[]` be used instead?
 
 ## References
 
