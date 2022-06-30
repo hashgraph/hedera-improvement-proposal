@@ -122,7 +122,7 @@ by the specific precompile function being called (see the functions below).
 |---------------------------|-----------------------------------------------------------------------------------------------|
 | `TokenInfo tokenInfo`     | The shared hedera token info                                                                  |
 | `uint64 serialNumber`     | The serial number of the nft                                                                  |
-| `address accountId`       | The account id specifying the owner of the non fungible token                                 |
+| `address ownerId`         | The account id specifying the owner of the non fungible token                                 |
 | `uint32 creationTime`     | The epoch second at which the token was created.                                              |
 | `bytes metadata`          | The unique metadata of the NFT                                                                |
 | `address spenderId`       | The account id specifying an account that has been granted spending permissions on this nft   |
@@ -136,10 +136,10 @@ The ABI signature and hashes for token management functions are as follows:
 | ----------|---------------------------------------------------|---------------------------|
 | ``        | `allowance(address, address, address)`            | `(uint256)`               |
 | ``        | `approve(address, address, uint256)`              | `(uint256)`               |
-| ``        | `approveNft(address, address, uint256)`           | `(uint256)`               |
-| ``        | `isApproved(address, uint256)`                    | `(bool)`                  |
-| ``        | `isApprovedForAll(address, address, uint256)`     | `(bool)`                  |
-| ``        | `setApprovalForAll(address, address, bool)`       | `(bool)`                  |
+| ``        | `approveNFT(address, address, uint256)`           | `(uint256)`               |
+| ``        | `getApproved(address, uint256)`                   | `(uint256, address)`      |
+| ``        | `isApprovedForAll(address, address, address)`     | `(uint256, bool)`         |
+| ``        | `setApprovalForAll(address, address, bool)`       | `(uint256)`               |
 | ``        | `isFrozen(address)`                               | `(bool)`                  |
 | ``        | `isKyc(address)`                                  | `(bool)`                  |
 | ``        | `deleteToken(address)`                            | `(bool)`                  |
@@ -174,9 +174,9 @@ The additional smart contract cost will be based on the number of executed EVM i
 | ------------------------------------------------|--------------------|-----------------------|
 | `allowance(address, address, address)`          | xx gas             | 0 gas                 |
 | `approve(address, address, uint256)`            | xx gas             | 0 gas                 |
-| `approveNft(address, address, uint256)`         | xx gas             | 0 gas                 |
-| `isApproved(address, uint256)`                  | xx gas             | 0 gas                 |
-| `isApprovedForAll(address, address, uint256)`   | xx gas             | 0 gas                 |
+| `approveNFT(address, address, uint256)`         | xx gas             | 0 gas                 |
+| `getApproved(address, uint256)`                 | xx gas             | 0 gas                 |
+| `isApprovedForAll(address, address, address)`   | xx gas             | 0 gas                 |
 | `setApprovalForAll(address, address, bool)`     | xx gas             | 0 gas                 |
 | `isFrozen(address)`                             | xx gas             | 0 gas                 |
 | `isKyc(address)`                                | xx gas             | 0 gas                 |
