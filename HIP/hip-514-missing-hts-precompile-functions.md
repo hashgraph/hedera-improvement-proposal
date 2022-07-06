@@ -132,36 +132,36 @@ by the specific precompile function being called (see the functions below).
 
 The ABI signature and hashes for token management functions are as follows:
 
-| hash        | effective signature                               | return                    |
-| ------------|---------------------------------------------------|---------------------------|
-| `927da105`  | `allowance(address, address, address)`            | `(uint256)`               |
-| `e1f21c67`  | `approve(address, address, uint256)`              | `(uint256)`               |
-| `7336aaf0`  | `approveNFT(address, address, uint256)`           | `(uint256)`               |
-| `098f2366`  | `getApproved(address, uint256)`                   | `(uint256, address)`      |
-| `f49f40db`  | `isApprovedForAll(address, address, address)`     | `(uint256, bool)`         |
-| `367605ca`  | `setApprovalForAll(address, address, bool)`       | `(uint256)`               |
-| `46de0fb1`  | `isFrozen(address, address)`                      | `(bool)`                  |
-| `f2c31ff4`  | `isKyc(address, address)`                         | `(bool)`                  |
-| `f069f712`  | `deleteToken(address)`                            | `(bool)`                  |
-| `15c981cb`  | `getTokenAutoRenewInfo(address)`                  | `(address, uint32)`       |
-| `ae7611a0`  | `getTokenCustomFees(address)`                     | `(CustomFee[])`           |
-| `a7daa18d`  | `getTokenDefaultFreezeStatus(address)`            | `(bool)`                  |
-| `335e04c1`  | `getTokenDefaultKycStatus(address)`               | `(bool)`                  |
-| `3f28a19b`  | `getFungibleTokenInfo(address)`                   | `(FungibleTokenInfo)`     |
-| `1f69565f`  | `getTokenInfo(address)`                           | `(TokenInfo)`             |
-| `8946344a`  | `getTokenKey(address, uint)`                      | `(KeyValue)`              |
-| `2c20dcd1`  | `getNonFungibleTokenInfo(address, uint32)`        | `(NonFungibleTokenInfo)`  |
-| `5b8f8584`  | `freezeToken(address, address)`                   | `(bool)`                  |
-| `a9b86b17`  | `unFreezeToken(address, address)`                 | `(bool)`                  |
-| `8f8d7f99`  | `grantTokenKyc(address, address)`                 | `(bool)`                  |
-| `af99c633`  | `revokeTokenKyc(address, address)`                | `(bool)`                  |
-| `7c41ad2c`  | `pauseToken(address)`                             | `(bool)`                  |
-| `3f8cc5c2`  | `unPauseToken(address)`                           | `(bool)`                  |
-| `9790686d`  | `wipeTokenAccount(address, address, uint32)`      | `(uint32)`                |
-| `1da62b01`  | `wipeTokenAccount(address, address, [uint64])`    | `([uint64])`              |
-| `2cccc36f`  | `updateTokenInfo(address, HederaToken)`           | `(HederaToken)`           |
-| `9acf3fb7`  | `updateTokenAutoRenewInfo(address, uint32)`       | `(address, uint32)`       |
-| `5a0b5654`  | `updateTokenKeys(address, uint, KeyValue)`        | `(TokenKey[])`            |
+| hash        | effective signature                               | return                      |
+| ------------|---------------------------------------------------|-----------------------------|
+| `927da105`  | `allowance(address, address, address)`            | `(int256)`                  |
+| `e1f21c67`  | `approve(address, address, uint256)`              | `(int256)`                  |
+| `7336aaf0`  | `approveNFT(address, address, uint256)`           | `(int256)`                  |
+| `098f2366`  | `getApproved(address, uint256)`                   | `(int256, address)`         |
+| `f49f40db`  | `isApprovedForAll(address, address, address)`     | `(int256, bool)`            |
+| `367605ca`  | `setApprovalForAll(address, address, bool)`       | `(int256)`                  |
+| `46de0fb1`  | `isFrozen(address, address)`                      | `(int256, bool)`            |
+| `f2c31ff4`  | `isKyc(address, address)`                         | `(int256, bool)`            |
+| `f069f712`  | `deleteToken(address)`                            | `(int256)`                  |
+| `ae7611a0`  | `getTokenCustomFees(address)`                     | `(CustomFee[])`             |
+| `a7daa18d`  | `getTokenDefaultFreezeStatus(address)`            | `(bool)`                    |
+| `335e04c1`  | `getTokenDefaultKycStatus(address)`               | `(bool)`                    |
+| `d614cdb8`  | `getTokenExpiryInfo(address)`                     | `(Expiry)`                  |
+| `3f28a19b`  | `getFungibleTokenInfo(address)`                   | `(FungibleTokenInfo)`       |
+| `1f69565f`  | `getTokenInfo(address)`                           | `(TokenInfo)`               |
+| `8946344a`  | `getTokenKey(address, uint)`                      | `(KeyValue)`                |
+| `2c20dcd1`  | `getNonFungibleTokenInfo(address, uint32)`        | `(NonFungibleTokenInfo)`    |
+| `5b8f8584`  | `freezeToken(address, address)`                   | `(int256)`                  |
+| `a9b86b17`  | `unFreezeToken(address, address)`                 | `(int256)`                  |
+| `8f8d7f99`  | `grantTokenKyc(address, address)`                 | `(int256)`                  |
+| `af99c633`  | `revokeTokenKyc(address, address)`                | `(int256)`                  |
+| `7c41ad2c`  | `pauseToken(address)`                             | `(int256)`                  |
+| `3f8cc5c2`  | `unPauseToken(address)`                           | `(int256)`                  |
+| `9790686d`  | `wipeTokenAccount(address, address, uint32)`      | `(int256, uint32)`          |
+| `1da62b01`  | `wipeTokenAccount(address, address, uint64[]])`   | `(int256, uint64[]])`       |
+| `2cccc36f`  | `updateTokenInfo(address, HederaToken)`           | `(int256, HederaToken)`     |
+| `c87bd0a3`  | `updateTokenExpiryInfo(Expiry)`                   | `(int256, Expiry)`          |
+| `5a0b5654`  | `updateTokenKeys(address, uint, KeyValue)`        | `(int256, TokenKey[])`      |
 
 
 ### Gas Costing
@@ -178,13 +178,13 @@ The additional smart contract cost will be based on the number of executed EVM i
 | `getApproved(address, uint256)`                 | xx gas             | 0 gas                 |
 | `isApprovedForAll(address, address, address)`   | xx gas             | 0 gas                 |
 | `setApprovalForAll(address, address, bool)`     | xx gas             | 0 gas                 |
-| `isFrozen(address)`                             | xx gas             | 0 gas                 |
-| `isKyc(address)`                                | xx gas             | 0 gas                 |
+| `isFrozen(address, address)`                    | xx gas             | 0 gas                 |
+| `isKyc(address, address)`                       | xx gas             | 0 gas                 |
 | `deleteToken(address)`                          | xx gas             | 0 gas                 |
-| `getTokenAutoRenewInfo(address)`                | xx gas             | 0 gas                 |
 | `getTokenCustomFees(address)`                   | xx gas             | 0 gas                 |
 | `getTokenDefaultFreezeStatus(address)`          | xx gas             | 0 gas                 |
 | `getTokenDefaultKycStatus(address)`             | xx gas             | 0 gas                 |
+| `getTokenExpiryInfo(address)`                   | xx gas             | 0 gas                 |
 | `getFungibleTokenInfo(address)`                 | xx gas             | 0 gas                 |
 | `getTokenInfo(address)`                         | xx gas             | 0 gas                 |
 | `getTokenKey(address, uint)`                    | xx gas             | 0 gas                 |
@@ -196,9 +196,9 @@ The additional smart contract cost will be based on the number of executed EVM i
 | `pauseToken(address)`                           | xx gas             | 0 gas                 |
 | `unPauseToken(address)`                         | xx gas             | 0 gas                 |
 | `wipeTokenAccount(address, address, uint32)`    | xx gas             | 0 gas                 |
-| `wipeTokenAccount(address, address, [uint64])`  | xx gas             | xx gas / serial token |
+| `wipeTokenAccount(address, address, uint64[])`  | xx gas             | xx gas / serial token |
+| `updateTokenExpiryInfo(Expiry)`                 | xx gas             | 0 gas                 |
 | `updateTokenInfo(address, HederaToken)`         | xx gas             | 0 gas                 |
-| `updateTokenAutoRenewInfo(address, uint32)`     | xx gas             | 0 gas                 |
 | `updateTokenKeys(address, uint, KeyValue)`      | xx gas             | xx gas / key          |
 
 ## Backwards Compatibility
