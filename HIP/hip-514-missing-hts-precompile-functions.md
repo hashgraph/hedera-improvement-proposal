@@ -132,36 +132,36 @@ by the specific precompile function being called (see the functions below).
 
 The ABI signature and hashes for token management functions are as follows:
 
-| hash      | effective signature                               | return                    |
-| ----------|---------------------------------------------------|---------------------------|
-| ``        | `allowance(address, address, address)`            | `(uint256)`               |
-| ``        | `approve(address, address, uint256)`              | `(uint256)`               |
-| ``        | `approveNFT(address, address, uint256)`           | `(uint256)`               |
-| ``        | `getApproved(address, uint256)`                   | `(uint256, address)`      |
-| ``        | `isApprovedForAll(address, address, address)`     | `(uint256, bool)`         |
-| ``        | `setApprovalForAll(address, address, bool)`       | `(uint256)`               |
-| ``        | `isFrozen(address)`                               | `(bool)`                  |
-| ``        | `isKyc(address)`                                  | `(bool)`                  |
-| ``        | `deleteToken(address)`                            | `(bool)`                  |
-| ``        | `getTokenAutoRenewInfo(address)`                  | `(address, uint32)`       |
-| ``        | `getTokenCustomFees(address)`                     | `(CustomFee[])`           |
-| ``        | `getTokenDefaultFreezeStatus(address)`            | `(bool)`                  |
-| ``        | `getTokenDefaultKycStatus(address)`               | `(bool)`                  |
-| ``        | `getFungibleTokenInfo(address)`                   | `(FungibleTokenInfo)`     |
-| ``        | `getTokenInfo(address)`                           | `(TokenInfo)`             |
-| ``        | `getTokenKey(address, uint)`                      | `(KeyValue)`              |
-| ``        | `getNonFungibleTokenInfo(address, uint32)`        | `(NonFungibleTokenInfo)`  |
-| ``        | `freezeToken(address, address)`                   | `(bool)`                  |
-| ``        | `unFreezeToken(address, address)`                 | `(bool)`                  |
-| ``        | `grantTokenKyc(address, address)`                 | `(bool)`                  |
-| ``        | `revokeTokenKyc(address, address)`                | `(bool)`                  |
-| ``        | `pauseToken(address)`                             | `(bool)`                  |
-| ``        | `unPauseToken(address)`                           | `(bool)`                  |
-| ``        | `wipeTokenAccount(address, address, uint32)`      | `(uint32)`                |
-| ``        | `wipeTokenAccount(address, address, [uint64])`    | `([uint64])`              |
-| ``        | `updateTokenInfo(address, HederaToken)`           | `(HederaToken)`           |
-| ``        | `updateTokenAutoRenewInfo(address, uint32)`       | `(address, uint32)`       |
-| ``        | `updateTokenKeys(address, uint, KeyValue)`        | `(TokenKey[])`            |
+| hash        | effective signature                               | return                    |
+| ------------|---------------------------------------------------|---------------------------|
+| `927da105`  | `allowance(address, address, address)`            | `(uint256)`               |
+| `e1f21c67`  | `approve(address, address, uint256)`              | `(uint256)`               |
+| `7336aaf0`  | `approveNFT(address, address, uint256)`           | `(uint256)`               |
+| `098f2366`  | `getApproved(address, uint256)`                   | `(uint256, address)`      |
+| `f49f40db`  | `isApprovedForAll(address, address, address)`     | `(uint256, bool)`         |
+| `367605ca`  | `setApprovalForAll(address, address, bool)`       | `(uint256)`               |
+| `46de0fb1`  | `isFrozen(address, address)`                      | `(bool)`                  |
+| `f2c31ff4`  | `isKyc(address, address)`                         | `(bool)`                  |
+| `f069f712`  | `deleteToken(address)`                            | `(bool)`                  |
+| `15c981cb`  | `getTokenAutoRenewInfo(address)`                  | `(address, uint32)`       |
+| `ae7611a0`  | `getTokenCustomFees(address)`                     | `(CustomFee[])`           |
+| `a7daa18d`  | `getTokenDefaultFreezeStatus(address)`            | `(bool)`                  |
+| `335e04c1`  | `getTokenDefaultKycStatus(address)`               | `(bool)`                  |
+| `3f28a19b`  | `getFungibleTokenInfo(address)`                   | `(FungibleTokenInfo)`     |
+| `1f69565f`  | `getTokenInfo(address)`                           | `(TokenInfo)`             |
+| `8946344a`  | `getTokenKey(address, uint)`                      | `(KeyValue)`              |
+| `2c20dcd1`  | `getNonFungibleTokenInfo(address, uint32)`        | `(NonFungibleTokenInfo)`  |
+| `5b8f8584`  | `freezeToken(address, address)`                   | `(bool)`                  |
+| `a9b86b17`  | `unFreezeToken(address, address)`                 | `(bool)`                  |
+| `8f8d7f99`  | `grantTokenKyc(address, address)`                 | `(bool)`                  |
+| `af99c633`  | `revokeTokenKyc(address, address)`                | `(bool)`                  |
+| `7c41ad2c`  | `pauseToken(address)`                             | `(bool)`                  |
+| `3f8cc5c2`  | `unPauseToken(address)`                           | `(bool)`                  |
+| `9790686d`  | `wipeTokenAccount(address, address, uint32)`      | `(uint32)`                |
+| `1da62b01`  | `wipeTokenAccount(address, address, [uint64])`    | `([uint64])`              |
+| `2cccc36f`  | `updateTokenInfo(address, HederaToken)`           | `(HederaToken)`           |
+| `9acf3fb7`  | `updateTokenAutoRenewInfo(address, uint32)`       | `(address, uint32)`       |
+| `5a0b5654`  | `updateTokenKeys(address, uint, KeyValue)`        | `(TokenKey[])`            |
 
 
 ### Gas Costing
