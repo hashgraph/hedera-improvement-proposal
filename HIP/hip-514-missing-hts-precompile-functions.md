@@ -134,7 +134,7 @@ The ABI signature and hashes for token management functions are as follows:
 | hash        | effective signature                               | return                            |
 | ------------|---------------------------------------------------|-----------------------------------|
 | `927da105`  | `allowance(address, address, address)`            | `(int256, uint256)`               |
-| `e1f21c67`  | `approve(address, address, uint256)`              | `(int256, bool)`                  |
+| `e1f21c67`  | `approve(address, address, uint256)`              | `(int256)`                        |
 | `7336aaf0`  | `approveNFT(address, address, uint256)`           | `(int256)`                        |
 | `098f2366`  | `getApproved(address, uint256)`                   | `(int256, address)`               |
 | `f49f40db`  | `isApprovedForAll(address, address, address)`     | `(int256, bool)`                  |
@@ -156,11 +156,11 @@ The ABI signature and hashes for token management functions are as follows:
 | `af99c633`  | `revokeTokenKyc(address, address)`                | `(int256)`                        |
 | `7c41ad2c`  | `pauseToken(address)`                             | `(int256)`                        |
 | `3f8cc5c2`  | `unPauseToken(address)`                           | `(int256)`                        |
-| `9790686d`  | `wipeTokenAccount(address, address, uint32)`      | `(int256, uint32)`                |
-| `1da62b01`  | `wipeTokenAccount(address, address, uint64[]])`   | `(int256, uint64[]])`             |
-| `2cccc36f`  | `updateTokenInfo(address, HederaToken)`           | `(int256, HederaToken)`           |
-| `593d6e82`  | `updateTokenExpiryInfo(address, Expiry)`          | `(int256, Expiry)`                |
-| `6fc3cbaf`  | `updateTokenKeys(address, uint, KeyValue)`        | `(int256, TokenKey[])`            |
+| `9790686d`  | `wipeTokenAccount(address, address, uint32)`      | `(int256)`                        |
+| `1da62b01`  | `wipeTokenAccount(address, address, uint64[]])`   | `(int256)`                        |
+| `2cccc36f`  | `updateTokenInfo(address, HederaToken)`           | `(int256)`                        |
+| `593d6e82`  | `updateTokenExpiryInfo(address, Expiry)`          | `(int256)`                        |
+| `6fc3cbaf`  | `updateTokenKeys(address, uint, KeyValue)`        | `(int256)`                        |
 
 
 ### Gas Costing
