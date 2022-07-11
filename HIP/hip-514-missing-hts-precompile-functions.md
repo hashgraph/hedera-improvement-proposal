@@ -32,27 +32,27 @@ To allow for more rich smart contract scenarios, these limitations on the HSCS s
 
 ## User stories
 
-As a smart contract developer, I would like to retreive fungible token metadata details through a precompile contract.
+As a smart contract developer, I would like to retrieve fungible token metadata details through a precompile contract.
 
-As a smart contract developer, I would like to retreive non-fungible token metadata details through a precompile contract.
+As a smart contract developer, I would like to retrieve non-fungible token metadata details through a precompile contract.
 
-As a smart contract developer, I would like to modify a tokens entity properties through a precompile contract.
+As a smart contract developer, I would like to modify token entity properties through a precompile contract.
 
-As a smart contract developer, I would like to modify a tokens KYC permissions through a precompile contract.
+As a smart contract developer, I would like to modify token KYC permissions through a precompile contract.
 
-As a smart contract developer, I would like to retreive a tokens KYC status through a precompile contract.
+As a smart contract developer, I would like to retrieve token KYC status through a precompile contract.
 
-As a smart contract developer, I would like to modify a tokens Freeze state through a precompile contract.
+As a smart contract developer, I would like to modify token Freeze state through a precompile contract.
 
-As a smart contract developer, I would like to retreive a tokens Freeze status through a precompile contract.
+As a smart contract developer, I would like to retrieve token Freeze status through a precompile contract.
 
-As a smart contract developer, I would like to modify a tokens Pause state through a precompile contract.
+As a smart contract developer, I would like to modify token Pause state through a precompile contract.
 
-As a smart contract developer, I would like to retreive a tokens Pause status through a precompile contract.
+As a smart contract developer, I would like to retrieve token Pause status through a precompile contract.
 
-As a smart contract developer, I would like to retrieve a tokens fee properties through a precompile contract.
+As a smart contract developer, I would like to retrieve token fee properties through a precompile contract.
 
-As a smart contract developer, I would like to retrieve a tokens key properties through a precompile contract.
+As a smart contract developer, I would like to retrieve token key properties through a precompile contract.
 
 As a smart contract developer, I would like to delete a token through a precompile contract.
 
@@ -72,10 +72,10 @@ The following structs have been added to simplify the interface between Solidity
 
 | Name                      | Definition                                                            |
 |---------------------------|-----------------------------------------------------------------------|
-| `CustomFee`               | `(FixedFee, FractionalFee, RoyaltyFee, address)`                      |
+| `CustomFee`               | `(FixedFee, FractionalFee, RoyaltyFee)`                               |
 | `TokenInfo`               | `(HederaToken, uint64, bool, bool, bool, CustomFee[], string)`        |
 | `FungibleTokenInfo`       | `(TokenInfo, uint32)`                                                 |
-| `NonFungibleTokenInfo`    | `(TokenInfo, uint64, address, uint32, bytes, bool, address, string)`  |
+| `NonFungibleTokenInfo`    | `(TokenInfo, int64, address, uint32, bytes, address)`                 |
 
 The additional structs build upon existing structs and in most add network info (e.g. ledgerId) or differentiating token information (e.g. fungible vs non-fungible).
 
@@ -120,12 +120,11 @@ by the specific precompile function being called (see the functions below).
 | Field                     | Meaning                                                                                       |
 |---------------------------|-----------------------------------------------------------------------------------------------|
 | `TokenInfo tokenInfo`     | The shared hedera token info                                                                  |
-| `uint64 serialNumber`     | The serial number of the nft                                                                  |
+| `int64 serialNumber`     | The serial number of the nft                                                                   |
 | `address ownerId`         | The account id specifying the owner of the non fungible token                                 |
 | `uint32 creationTime`     | The epoch second at which the token was created.                                              |
 | `bytes metadata`          | The unique metadata of the NFT                                                                |
 | `address spenderId`       | The account id specifying an account that has been granted spending permissions on this nft   |
-| `string ledgerId`         | The ID of the network ledger                                                                  |
 
 ### Solidity Function Signatures
 
@@ -135,7 +134,7 @@ The ABI signature and hashes for token management functions are as follows:
 | ------------|---------------------------------------------------|-----------------------------------|
 | `927da105`  | `allowance(address, address, address)`            | `(int256, uint256)`               |
 | `e1f21c67`  | `approve(address, address, uint256)`              | `(int256)`                        |
-| `7336aaf0`  | `approveNFT(address, address, uint256)`           | `(int256)`                        |
+| `10585c46`  | `approveNFT(address, address, uint256)`           | `(int256)`                        |
 | `098f2366`  | `getApproved(address, uint256)`                   | `(int256, address)`               |
 | `f49f40db`  | `isApprovedForAll(address, address, address)`     | `(int256, bool)`                  |
 | `367605ca`  | `setApprovalForAll(address, address, bool)`       | `(int256)`                        |
@@ -151,11 +150,11 @@ The ABI signature and hashes for token management functions are as follows:
 | `3c4dd32e`  | `getTokenKey(address, uint)`                      | `(int256, KeyValue)`              |
 | `2c20dcd1`  | `getNonFungibleTokenInfo(address, uint32)`        | `(int256, NonFungibleTokenInfo)`  |
 | `5b8f8584`  | `freezeToken(address, address)`                   | `(int256)`                        |
-| `a9b86b17`  | `unFreezeToken(address, address)`                 | `(int256)`                        |
+| `52f91387`  | `unfreezeToken(address, address)`                 | `(int256)`                        |
 | `8f8d7f99`  | `grantTokenKyc(address, address)`                 | `(int256)`                        |
 | `af99c633`  | `revokeTokenKyc(address, address)`                | `(int256)`                        |
 | `7c41ad2c`  | `pauseToken(address)`                             | `(int256)`                        |
-| `3f8cc5c2`  | `unPauseToken(address)`                           | `(int256)`                        |
+| `3b3bff0f`  | `unpauseToken(address)`                           | `(int256)`                        |
 | `9790686d`  | `wipeTokenAccount(address, address, uint32)`      | `(int256)`                        |
 | `1da62b01`  | `wipeTokenAccount(address, address, uint64[]])`   | `(int256)`                        |
 | `2cccc36f`  | `updateTokenInfo(address, HederaToken)`           | `(int256)`                        |
