@@ -138,7 +138,7 @@ The ABI signature and hashes for token management functions are as follows:
 | `3f28a19b`  | `getFungibleTokenInfo(address)`                   | `(int64, FungibleTokenInfo)`     |
 | `1f69565f`  | `getTokenInfo(address)`                           | `(int64, TokenInfo)`             |
 | `3c4dd32e`  | `getTokenKey(address, uint)`                      | `(int64, KeyValue)`              |
-| `2c20dcd1`  | `getNonFungibleTokenInfo(address, uint32)`        | `(int64, NonFungibleTokenInfo)`  |
+| `2c20dcd1`  | `getNonFungibleTokenInfo(address, int64)`         | `(int64, NonFungibleTokenInfo)`  |
 | `5b8f8584`  | `freezeToken(address, address)`                   | `(int64)`                        |
 | `52f91387`  | `unfreezeToken(address, address)`                 | `(int64)`                        |
 | `8f8d7f99`  | `grantTokenKyc(address, address)`                 | `(int64)`                        |
