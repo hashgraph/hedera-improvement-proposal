@@ -87,7 +87,7 @@ The additional structs build upon existing structs and in most add network info 
 | `FixedFee[] fixedFees`            | The fixed fee for the token.                                                                      |
 | `FractionalFee[] fractionalFees`  | The fractional fee for the token.                                                                 |
 | `RoyaltyFee[] royaltyFees`        | The royalty fee for the token.                                                                    |
-| `int64 totalSupply`               | The number of tokens (fungible) or serials (non-fungible) of the token                            |
+| `uint64 totalSupply`              | The number of tokens (fungible) or serials (non-fungible) of the token                            |
 | `bool deleted`                    | Specifies whether the token is deleted or not                                                     |
 | `bool defaultKycStatus`           | Specifies whether the token kyc was defaulted with KycNotApplicable (true) or Revoked (false)     |
 | `bool pauseStatus`                | Specifies whether the token is currently paused or not                                            |
