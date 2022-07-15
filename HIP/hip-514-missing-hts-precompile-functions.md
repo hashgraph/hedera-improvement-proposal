@@ -125,7 +125,7 @@ The ABI signature and hashes for token management functions are as follows:
 | `927da105`  | `allowance(address, address, address)`              | `(int64, uint256)`               |
 | `e1f21c67`  | `approve(address, address, uint256)`                | `(int64)`                        |
 | `10585c46`  | `approveNFT(address, address, uint256)`             | `(int64)`                        |
-| `098f2366`  | `getApproved(address, uint256)`                     | `(int64, address)`               |
+| `01b2194b`  | `getApproved(address, int64)`                       | `(int64, address)`               |
 | `f49f40db`  | `isApprovedForAll(address, address, address)`       | `(int64, bool)`                  |
 | `367605ca`  | `setApprovalForAll(address, address, bool)`         | `(int64)`                        |
 | `46de0fb1`  | `isFrozen(address, address)`                        | `(int64, bool)`                  |
@@ -138,7 +138,7 @@ The ABI signature and hashes for token management functions are as follows:
 | `3f28a19b`  | `getFungibleTokenInfo(address)`                     | `(int64, FungibleTokenInfo)`     |
 | `1f69565f`  | `getTokenInfo(address)`                             | `(int64, TokenInfo)`             |
 | `3c4dd32e`  | `getTokenKey(address, uint)`                        | `(int64, KeyValue)`              |
-| `2c20dcd1`  | `getNonFungibleTokenInfo(address, int64)`           | `(int64, NonFungibleTokenInfo)`  |
+| `287e1da8`  | `getNonFungibleTokenInfo(address, int64)`           | `(int64, NonFungibleTokenInfo)`  |
 | `5b8f8584`  | `freezeToken(address, address)`                     | `(int64)`                        |
 | `52f91387`  | `unfreezeToken(address, address)`                   | `(int64)`                        |
 | `8f8d7f99`  | `grantTokenKyc(address, address)`                   | `(int64)`                        |
@@ -146,7 +146,7 @@ The ABI signature and hashes for token management functions are as follows:
 | `7c41ad2c`  | `pauseToken(address)`                               | `(int64)`                        |
 | `3b3bff0f`  | `unpauseToken(address)`                             | `(int64)`                        |
 | `9790686d`  | `wipeTokenAccount(address, address, uint32)`        | `(int64)`                        |
-| `f7f38e26`  | `wipeTokenAccountNFT(address, address, uint64[]])`  | `(int64)`                        |
+| `f7f38e26`  | `wipeTokenAccountNFT(address, address, int64[]])`   | `(int64)`                        |
 | `2cccc36f`  | `updateTokenInfo(address, HederaToken)`             | `(int64)`                        |
 | `593d6e82`  | `updateTokenExpiryInfo(address, Expiry)`            | `(int64)`                        |
 | `6fc3cbaf`  | `updateTokenKeys(address, uint, KeyValue)`          | `(int64)`                        |
@@ -158,36 +158,36 @@ The proposed token management functions will build upon the [Precomiled Gas Cost
 The cost of contract function calls will track closely to the canonical cost of its HTS call (see [Hedera Fees]( https://www.hedera.com/fees/)) converted to gas.
 The additional smart contract cost will be based on the number of executed EVM instructions and the contract complexity.
 
-| Function                                        | Base Gas Cost | Incremental Cost      |
-| ------------------------------------------------|---------------|-----------------------|
-| `allowance(address, address, address)`          | xx gas        | 0 gas                 |
-| `approve(address, address, uint256)`            | xx gas        | 0 gas                 |
-| `approveNFT(address, address, uint256)`         | xx gas        | 0 gas                 |
-| `getApproved(address, uint256)`                 | xx gas        | 0 gas                 |
-| `isApprovedForAll(address, address, address)`   | xx gas        | 0 gas                 |
-| `setApprovalForAll(address, address, bool)`     | xx gas        | 0 gas                 |
-| `isFrozen(address, address)`                    | xx gas        | 0 gas                 |
-| `isKyc(address, address)`                       | xx gas        | 0 gas                 |
-| `deleteToken(address)`                          | xx gas        | 0 gas                 |
-| `getTokenCustomFees(address)`                   | xx gas        | 0 gas                 |
-| `getTokenDefaultFreezeStatus(address)`          | xx gas        | 0 gas                 |
-| `getTokenDefaultKycStatus(address)`             | xx gas        | 0 gas                 |
-| `getTokenExpiryInfo(address)`                   | xx gas        | 0 gas                 |
-| `getFungibleTokenInfo(address)`                 | xx gas        | 0 gas                 |
-| `getTokenInfo(address)`                         | xx gas        | 0 gas                 |
-| `getTokenKey(address, uint)`                    | xx gas        | 0 gas                 |
-| `getNonFungibleTokenInfo(address, uint32)`      | xx gas        | 0 gas                 |
-| `freezeToken(address, address)`                 | xx gas        | 0 gas                 |
-| `unFreezeToken(address, address)`               | xx gas        | 0 gas                 |
-| `grantTokenKyc(address, address)`               | xx gas        | 0 gas                 |
-| `revokeTokenKyc(address, address)`              | xx gas        | 0 gas                 |
-| `pauseToken(address)`                           | xx gas        | 0 gas                 |
-| `unPauseToken(address)`                         | xx gas        | 0 gas                 |
-| `wipeTokenAccount(address, address, uint32)`    | xx gas        | 0 gas                 |
-| `wipeTokenAccount(address, address, uint64[])`  | 0 gas         | xx gas / serial token |
-| `updateTokenExpiryInfo(Expiry)`                 | xx gas        | 0 gas                 |
-| `updateTokenInfo(address, HederaToken)`         | xx gas        | 0 gas                 |
-| `updateTokenKeys(address, uint, KeyValue)`      | 0 gas         | xx gas / key          |
+| Function                                          | Base Gas Cost | Incremental Cost      |
+| --------------------------------------------------|---------------|-----------------------|
+| `allowance(address, address, address)`            | xx gas        | 0 gas                 |
+| `approve(address, address, uint256)`              | xx gas        | 0 gas                 |
+| `approveNFT(address, address, uint256)`           | xx gas        | 0 gas                 |
+| `getApproved(address, int64)`                     | xx gas        | 0 gas                 |
+| `isApprovedForAll(address, address, address)`     | xx gas        | 0 gas                 |
+| `setApprovalForAll(address, address, bool)`       | xx gas        | 0 gas                 |
+| `isFrozen(address, address)`                      | xx gas        | 0 gas                 |
+| `isKyc(address, address)`                         | xx gas        | 0 gas                 |
+| `deleteToken(address)`                            | xx gas        | 0 gas                 |
+| `getTokenCustomFees(address)`                     | xx gas        | 0 gas                 |
+| `getTokenDefaultFreezeStatus(address)`            | xx gas        | 0 gas                 |
+| `getTokenDefaultKycStatus(address)`               | xx gas        | 0 gas                 |
+| `getTokenExpiryInfo(address)`                     | xx gas        | 0 gas                 |
+| `getFungibleTokenInfo(address)`                   | xx gas        | 0 gas                 |
+| `getTokenInfo(address)`                           | xx gas        | 0 gas                 |
+| `getTokenKey(address, uint)`                      | xx gas        | 0 gas                 |
+| `getNonFungibleTokenInfo(address, uint32)`        | xx gas        | 0 gas                 |
+| `freezeToken(address, address)`                   | xx gas        | 0 gas                 |
+| `unFreezeToken(address, address)`                 | xx gas        | 0 gas                 |
+| `grantTokenKyc(address, address)`                 | xx gas        | 0 gas                 |
+| `revokeTokenKyc(address, address)`                | xx gas        | 0 gas                 |
+| `pauseToken(address)`                             | xx gas        | 0 gas                 |
+| `unPauseToken(address)`                           | xx gas        | 0 gas                 |
+| `wipeTokenAccount(address, address, uint32)`      | xx gas        | 0 gas                 |
+| `wipeTokenAccountNFT(address, address, int64[])`  | 0 gas         | xx gas / serial token |
+| `updateTokenExpiryInfo(Expiry)`                   | xx gas        | 0 gas                 |
+| `updateTokenInfo(address, HederaToken)`           | xx gas        | 0 gas                 |
+| `updateTokenKeys(address, uint, KeyValue)`        | 0 gas         | xx gas / key          |
 
 ## Backwards Compatibility
 
