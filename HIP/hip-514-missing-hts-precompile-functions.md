@@ -6,10 +6,11 @@ working-group: Danno Ferrin (@shemnon)
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Last Call
+last-call-date-time: 2022-07-26T07:00:00Z
 created: 2022-06-22
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/516
-updated: 2022-06-28
+updated: 2022-06-28, 2022-07-15
 requires: 206
 ---
 
