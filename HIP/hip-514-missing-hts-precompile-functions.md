@@ -176,7 +176,7 @@ The additional smart contract cost will be based on the number of executed EVM i
 | `getFungibleTokenInfo(address)`                   | xx gas        | 0 gas                 |
 | `getTokenInfo(address)`                           | xx gas        | 0 gas                 |
 | `getTokenKey(address, uint)`                      | xx gas        | 0 gas                 |
-| `getNonFungibleTokenInfo(address, uint32)`        | xx gas        | 0 gas                 |
+| `getNonFungibleTokenInfo(address, int64)`         | xx gas        | 0 gas                 |
 | `freezeToken(address, address)`                   | xx gas        | 0 gas                 |
 | `unFreezeToken(address, address)`                 | xx gas        | 0 gas                 |
 | `grantTokenKyc(address, address)`                 | xx gas        | 0 gas                 |
