@@ -217,8 +217,6 @@ The option to create a new precompile solidity file was rejected as the addition
 
 ## Open Issues
 
-Regarding [### Solidity Function Signatures][#solidity-function-signatures]
-- Is the `CustomFee[]` optimal on `getTokenCustomFees()` or should a coordinated set of `FixedFee[]`, `FractionalFee[]` and `RoyaltyFee[]` be used instead?
 
 ## References
 
