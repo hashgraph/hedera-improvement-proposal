@@ -112,7 +112,7 @@ by the specific precompile function being called (see the functions below).
 | `TokenInfo tokenInfo`     | The shared hedera token info                                                                  |
 | `int64 serialNumber`      | The serial number of the nft                                                                   |
 | `address ownerId`         | The account id specifying the owner of the non fungible token                                 |
-| `int32 creationTime`      | The epoch second at which the token was created.                                              |
+| `int64 creationTime`      | The epoch second at which the token was created.                                              |
 | `bytes metadata`          | The unique metadata of the NFT                                                                |
 | `address spenderId`       | The account id specifying an account that has been granted spending permissions on this nft   |
 
