@@ -1,0 +1,232 @@
+---
+hip: 514
+title: Hedera Token Service Precompiled Contract Token Management Functions
+author: Nana Essilfie-Conduah (@Nana-EC)
+working-group: Danno Ferrin (@shemnon)
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Last Call
+last-call-date-time: 2022-07-26T07:00:00Z
+created: 2022-06-22
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/516
+updated: 2022-06-28, 2022-07-15
+requires: 206
+---
+
+## Abstract
+
+The Hedera Smart Contract Service (HSCS), through the initial implementation of [HIP 206](https://hips.hedera.com/hip/hip-206), allows contracts to create, transfer, mint, burn, associate, and dissociate tokens programmatically. However, following this, there remains limited capability to interact with and manage tokens in more intricate scenarios.
+
+## Motivation
+
+Allow smart contract developers on Hedera similar capabilities in token management as developers using HTS.
+
+## Rationale
+
+The Hedera Smart Contract Service (HSCS) aims to provide developers with the ability to manage tokens via smart contracts.
+Currently, capability is limited to create, transfer, mint, burn, associate, and dissociate actions.
+Whereas, HTS provides additional capabilities including update, pause, kyc, freeze and info retrieval.
+This means smart contract developer cannot capitalize on valuable HTS supported scenarios and can therefore not expose these in their contracts and DApps.
+
+To allow for more rich smart contract scenarios, these limitations on the HSCS should be addressed by providing capability parity where possible with HTS.
+
+## User stories
+
+As a smart contract developer, I would like to retrieve fungible token metadata details through a precompile contract.
+
+As a smart contract developer, I would like to retrieve non-fungible token metadata details through a precompile contract.
+
+As a smart contract developer, I would like to modify token entity properties through a precompile contract.
+
+As a smart contract developer, I would like to modify token KYC permissions through a precompile contract.
+
+As a smart contract developer, I would like to retrieve token KYC status through a precompile contract.
+
+As a smart contract developer, I would like to modify token Freeze state through a precompile contract.
+
+As a smart contract developer, I would like to retrieve token Freeze status through a precompile contract.
+
+As a smart contract developer, I would like to modify token Pause state through a precompile contract.
+
+As a smart contract developer, I would like to retrieve token Pause status through a precompile contract.
+
+As a smart contract developer, I would like to retrieve token fee properties through a precompile contract.
+
+As a smart contract developer, I would like to retrieve token key properties through a precompile contract.
+
+As a smart contract developer, I would like to delete a token through a precompile contract.
+
+As a smart contract developer, I would like to wipe an amount of fungible tokens from an account balance through a precompile contract.
+
+As a smart contract developer, I would like to wipe an amount of non-fungible tokens from an account balance through a precompile contract.
+
+## Specification
+
+### EVM Precompile extension
+
+The [IHederaTokenService.sol Solidity file](../assets/hip-206/solidity/IHederaTokenService.sol) is further extended with new types and function signatures that the precompile will respond to. 
+
+### New Solidity Types
+
+The following structs have been added to simplify the interface between Solidity and the HTS precompile: 
+
+| Name                      | Definition                                                            |
+|---------------------------|-----------------------------------------------------------------------|
+| `TokenInfo`               | `(HederaToken, uint64, bool, bool, bool, CustomFee[], string)`        |
+| `FungibleTokenInfo`       | `(TokenInfo, uint32)`                                                 |
+| `NonFungibleTokenInfo`    | `(TokenInfo, int64, address, uint32, bytes, address)`                 |
+
+The additional structs build upon existing structs and in most add network info (e.g. ledgerId) or differentiating token information (e.g. fungible vs non-fungible).
+
+#### TokenInfo
+`TokenInfo` struct defines the basic properties of a Fungible or Non-Fungible Hedera Token:
+
+| Field                             | Meaning                                                                                           |
+|-----------------------------------|---------------------------------------------------------------------------------------------------|
+| `HederaToken token`               | The hedera token.                                                                                 |
+| `FixedFee[] fixedFees`            | The fixed fee for the token.                                                                      |
+| `FractionalFee[] fractionalFees`  | The fractional fee for the token.                                                                 |
+| `RoyaltyFee[] royaltyFees`        | The royalty fee for the token.                                                                    |
+| `uint64 totalSupply`              | The number of tokens (fungible) or serials (non-fungible) of the token                            |
+| `bool deleted`                    | Specifies whether the token is deleted or not                                                     |
+| `bool defaultKycStatus`           | Specifies whether the token kyc was defaulted with KycNotApplicable (true) or Revoked (false)     |
+| `bool pauseStatus`                | Specifies whether the token is currently paused or not                                            |
+| `string ledgerId`                 | The ID of the network ledger                                                                      |
+
+Note that the tokenId and type of token (fungible or non-fungible) is not specified in the `TokenInfo` struct - it is implied 
+by the specific precompile function being called (see the functions below).
+
+#### FungibleTokenInfo
+`FungibleTokenInfo` struct defines the basic properties of a Fungible Hedera Token:
+
+| Field                 | Meaning                                               |
+|-----------------------|-------------------------------------------------------|
+| `TokenInfo tokenInfo` | The shared hedera token info                          |
+| `uint32 decimals`     | The number of decimal places a token is divisible by  |
+
+#### NonFungibleTokenInfo
+`NonFungibleTokenInfo` struct defines the basic properties of a Non Fungible Hedera Token:
+
+| Field                     | Meaning                                                                                       |
+|---------------------------|-----------------------------------------------------------------------------------------------|
+| `TokenInfo tokenInfo`     | The shared hedera token info                                                                  |
+| `int64 serialNumber`      | The serial number of the nft                                                                   |
+| `address ownerId`         | The account id specifying the owner of the non fungible token                                 |
+| `int64 creationTime`      | The epoch second at which the token was created.                                              |
+| `bytes metadata`          | The unique metadata of the NFT                                                                |
+| `address spenderId`       | The account id specifying an account that has been granted spending permissions on this nft   |
+
+### Solidity Function Signatures
+
+The ABI signature and hashes for token management functions are as follows:
+
+| hash        | effective signature                                 | return                            |
+| ------------|-----------------------------------------------------|-----------------------------------|
+| `927da105`  | `allowance(address, address, address)`              | `(int64, uint256)`               |
+| `e1f21c67`  | `approve(address, address, uint256)`                | `(int64)`                        |
+| `10585c46`  | `approveNFT(address, address, uint256)`             | `(int64)`                        |
+| `01b2194b`  | `getApproved(address, int64)`                       | `(int64, address)`               |
+| `f49f40db`  | `isApprovedForAll(address, address, address)`       | `(int64, bool)`                  |
+| `367605ca`  | `setApprovalForAll(address, address, bool)`         | `(int64)`                        |
+| `46de0fb1`  | `isFrozen(address, address)`                        | `(int64, bool)`                  |
+| `f2c31ff4`  | `isKyc(address, address)`                           | `(int64, bool)`                  |
+| `f069f712`  | `deleteToken(address)`                              | `(int64)`                        |
+| `ae7611a0`  | `getTokenCustomFees(address)`                       | `(int64, FixedFee[], FractionalFee[], RoyaltyFee[])` |
+| `a7daa18d`  | `getTokenDefaultFreezeStatus(address)`              | `(int64, bool)`                  |
+| `335e04c1`  | `getTokenDefaultKycStatus(address)`                 | `(int64, bool)`                  |
+| `d614cdb8`  | `getTokenExpiryInfo(address)`                       | `(int64, Expiry)`                |
+| `3f28a19b`  | `getFungibleTokenInfo(address)`                     | `(int64, FungibleTokenInfo)`     |
+| `1f69565f`  | `getTokenInfo(address)`                             | `(int64, TokenInfo)`             |
+| `3c4dd32e`  | `getTokenKey(address, uint)`                        | `(int64, KeyValue)`              |
+| `287e1da8`  | `getNonFungibleTokenInfo(address, int64)`           | `(int64, NonFungibleTokenInfo)`  |
+| `5b8f8584`  | `freezeToken(address, address)`                     | `(int64)`                        |
+| `52f91387`  | `unfreezeToken(address, address)`                   | `(int64)`                        |
+| `8f8d7f99`  | `grantTokenKyc(address, address)`                   | `(int64)`                        |
+| `af99c633`  | `revokeTokenKyc(address, address)`                  | `(int64)`                        |
+| `7c41ad2c`  | `pauseToken(address)`                               | `(int64)`                        |
+| `3b3bff0f`  | `unpauseToken(address)`                             | `(int64)`                        |
+| `9790686d`  | `wipeTokenAccount(address, address, uint32)`        | `(int64)`                        |
+| `f7f38e26`  | `wipeTokenAccountNFT(address, address, int64[]])`   | `(int64)`                        |
+| `2cccc36f`  | `updateTokenInfo(address, HederaToken)`             | `(int64)`                        |
+| `593d6e82`  | `updateTokenExpiryInfo(address, Expiry)`            | `(int64)`                        |
+| `6fc3cbaf`  | `updateTokenKeys(address, uint, KeyValue)`          | `(int64)`                        |
+
+
+### Gas Costing
+
+The proposed token management functions will build upon the [Precomiled Gas Cost described in HIP 206](https://hips.hedera.com/hip/hip-206) 
+The cost of contract function calls will track closely to the canonical cost of its HTS call (see [Hedera Fees]( https://www.hedera.com/fees/)) converted to gas.
+The additional smart contract cost will be based on the number of executed EVM instructions and the contract complexity.
+
+| Function                                          | Base Gas Cost | Incremental Cost      |
+| --------------------------------------------------|---------------|-----------------------|
+| `allowance(address, address, address)`            | xx gas        | 0 gas                 |
+| `approve(address, address, uint256)`              | xx gas        | 0 gas                 |
+| `approveNFT(address, address, uint256)`           | xx gas        | 0 gas                 |
+| `getApproved(address, int64)`                     | xx gas        | 0 gas                 |
+| `isApprovedForAll(address, address, address)`     | xx gas        | 0 gas                 |
+| `setApprovalForAll(address, address, bool)`       | xx gas        | 0 gas                 |
+| `isFrozen(address, address)`                      | xx gas        | 0 gas                 |
+| `isKyc(address, address)`                         | xx gas        | 0 gas                 |
+| `deleteToken(address)`                            | xx gas        | 0 gas                 |
+| `getTokenCustomFees(address)`                     | xx gas        | 0 gas                 |
+| `getTokenDefaultFreezeStatus(address)`            | xx gas        | 0 gas                 |
+| `getTokenDefaultKycStatus(address)`               | xx gas        | 0 gas                 |
+| `getTokenExpiryInfo(address)`                     | xx gas        | 0 gas                 |
+| `getFungibleTokenInfo(address)`                   | xx gas        | 0 gas                 |
+| `getTokenInfo(address)`                           | xx gas        | 0 gas                 |
+| `getTokenKey(address, uint)`                      | xx gas        | 0 gas                 |
+| `getNonFungibleTokenInfo(address, int64)`         | xx gas        | 0 gas                 |
+| `freezeToken(address, address)`                   | xx gas        | 0 gas                 |
+| `unFreezeToken(address, address)`                 | xx gas        | 0 gas                 |
+| `grantTokenKyc(address, address)`                 | xx gas        | 0 gas                 |
+| `revokeTokenKyc(address, address)`                | xx gas        | 0 gas                 |
+| `pauseToken(address)`                             | xx gas        | 0 gas                 |
+| `unPauseToken(address)`                           | xx gas        | 0 gas                 |
+| `wipeTokenAccount(address, address, uint32)`      | xx gas        | 0 gas                 |
+| `wipeTokenAccountNFT(address, address, int64[])`  | 0 gas         | xx gas / serial token |
+| `updateTokenExpiryInfo(Expiry)`                   | xx gas        | 0 gas                 |
+| `updateTokenInfo(address, HederaToken)`           | xx gas        | 0 gas                 |
+| `updateTokenKeys(address, uint, KeyValue)`        | 0 gas         | xx gas / key          |
+
+## Backwards Compatibility
+
+This HIP builds upon existing Solidity structs and Protobuf messages.
+As such, it is in compliance with previous iterations and should not impact compatibility.
+
+## Security Implications
+
+The HIP provides exposure to existing HTS functionality.
+Fundamentally security is still governed by the ledger security logic in combination with the EVM.
+As such, there should be no security implications in decreased security or increased permissions.
+
+## How to Teach This
+
+- Additonal documentation on [IHederaTokenService.sol](https://github.com/hashgraph/hedera-smart-contracts/blob/main/hts-precompile/IHederaTokenService.sol) and [HederaTokenService.sol](https://github.com/hashgraph/hedera-smart-contracts/blob/main/hts-precompile/HederaTokenService.sol)
+- Client code will be provided with a `TokenManageContract.sol` under [hts-precompile](https://github.com/hashgraph/hedera-smart-contracts/tree/main/hts-precompile)
+- SDK examples should be written to highlight solidity token management function calls.
+- Doc site tutorials utilizing SDKs should be written to highlight solidity token management function calls.
+
+## Reference Implementation
+
+
+
+## Rejected Ideas
+
+The option to create a new precompile solidity file was rejected as the additional functions will benefit from the structure and logic of the current functions
+
+## Open Issues
+
+
+## References
+
+- [Hedera Token Service Developer Docs](https://docs.hedera.com/guides/docs/hedera-api/token-service)
+- Solidity Support Code
+  - [Response Codes](https://github.com/hashgraph/hedera-smart-contracts/blob/main/hts-precompile/HederaResponseCodes.sol)
+  - [Interface ABI Calculations](https://github.com/hashgraph/hedera-smart-contracts/blob/main/hts-precompile/IHederaTokenService.sol)
+  - [Helper Class](https://github.com/hashgraph/hedera-smart-contracts/blob/main/hts-precompile/HederaTokenService.sol) to avoid Solidity's EXTCODESIZE check.
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
