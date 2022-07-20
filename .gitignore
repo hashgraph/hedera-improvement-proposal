@@ -14,3 +14,6 @@ _site/
 /.bundle/
 /vendor/bundle
 .idea
+
+## Workflows
+/.github/workflows
