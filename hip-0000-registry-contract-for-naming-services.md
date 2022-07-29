@@ -1,8 +1,8 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
 title: REGISTRY CONTRACT containing default naming structure format for HTLDs & SLDs ever minted over Hedera network
-author: som-web23 [Som Kirann](mailto:somkirann@web23.io)
-working-group: [Som Kirann](mailto:somkirann@web23.io) [Rahul Pandey](mailto:rahul@web23.io) [Del Iglesia](mailto:del@web23.io)
+author: som-web23,[Som Kirann](mailto:somkirann@web23.io)
+working-group: [Som Kirann](mailto:somkirann@web23.io),[Rahul Pandey](mailto:rahul@web23.io),[Del Iglesia](mailto:del@web23.io)
 type: Process
 category: Service
 needs-council-approval: No
