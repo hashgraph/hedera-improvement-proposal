@@ -1,4 +1,5 @@
 
+---
 
 hip: <HIP number (this is determined by the HIP editor)>
 title: REGISTRY CONTRACT containing default naming structure format for HTLDs & SLDs ever minted over Hedera network
@@ -11,6 +12,7 @@ status: Draft
 created: 2022-07-29 
 updated: 2022-07-29
 
+---
 
 ## Table of Contents
 
