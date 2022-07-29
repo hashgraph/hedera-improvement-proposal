@@ -104,7 +104,7 @@ v).	activateDomain method is used to activate Domain<br />
 **Scenario** :- This method is an external view function and is used to activate a Domain, only providers who are registered would be able to activate a domain.<br />
 
 vi).	deactivateDomain method is used to deactivate a domain<br />
-**Inputs**:- DomainName, TLDName<br />
+**Inputs**:- DomainName, TLDName <br />
 **Output**:- True or False<br />
 **Scenario** :- This method is an external view function and is used to deactivate a Domain, only providers who are registered would be able to deactivate a domain.<br />
 
