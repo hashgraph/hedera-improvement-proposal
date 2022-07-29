@@ -83,60 +83,60 @@ Inputs:- TLDName<br />
 Output:- True or False<br />
 Scenario :- This method is an external view function and will return Boolean and is used to Check whether a TLD is available or not<br />
 
-ii).	isDomainAvailable method is used to check whether a particular Domain under a TLD is available or not.
-Inputs:- DomainName, TLDName
-Output:- True or False
-Scenario :- This method is an external view function and is used to check whether a particular Domain under a TLD is available or not.
+ii).	isDomainAvailable method is used to check whether a particular Domain under a TLD is available or not.<br />
+Inputs:- DomainName, TLDName<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to check whether a particular Domain under a TLD is available or not.<br />
 
-iii).	registerTLD method is used to register TLD, only providers who are registered would be able to register a TLD
-Inputs:- TldOwnerAddress, TLDName, ChainId, Expiry
-Output:- True or False
-Scenario :- This method is an external view function and is used to register TLD, only providers who are registered would be able to register a TLD
+iii).	registerTLD method is used to register TLD, only providers who are registered would be able to register a TLD<br />
+Inputs:- TldOwnerAddress, TLDName, ChainId, Expiry<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to register TLD, only providers who are registered would be able to register a TLD<br />
 
-iv).	registerDomain method is used to register domain, only providers who are registered would be able to register a domain
-Inputs:- DomainOwnerAdress,TldOwnerAddress,TLDName,DomainName,ChainId,Expiry
-Output:- True or False
-Scenario :- This method is an external view function and is used to register Domain, only providers who are registered would be able to register a domain
+iv).	registerDomain method is used to register domain, only providers who are registered would be able to register a domain<br />
+Inputs:- DomainOwnerAdress,TldOwnerAddress,TLDName,DomainName,ChainId,Expiry<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to register Domain, only providers who are registered would be able to register a domain<br />
 
-v).	activateDomain method is used to activate Domain
-Inputs:- DomainName, TLDName
-Output:- True or False
-Scenario :- This method is an external view function and is used to activate a Domain, only providers who are registered would be able to activate a domain.
+v).	activateDomain method is used to activate Domain<br />
+Inputs:- DomainName, TLDName<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to activate a Domain, only providers who are registered would be able to activate a domain.<br />
 
-vi).	deactivateDomain method is used to deactivate a domain
-Inputs:- DomainName, TLDName
-Output:- True or False
-Scenario :- This method is an external view function and is used to deactivate a Domain, only providers who are registered would be able to deactivate a domain.
+vi).	deactivateDomain method is used to deactivate a domain<br />
+Inputs:- DomainName, TLDName<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to deactivate a Domain, only providers who are registered would be able to deactivate a domain.<br />
 
-vii).	updateDomainExpiry method is used to update the Domain Expiry 
-Inputs:- DomainName, TLDName, expiry
-Output:- True or False
-Scenario :- This method is an external view function and is used to update the Domain Expiry. The expiry should be a greater than the current date.
+vii).	updateDomainExpiry method is used to update the Domain Expiry <br />
+Inputs:- DomainName, TLDName, expiry<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to update the Domain Expiry. The expiry should be a greater than the current date.<br />
 
-viii).	deactivateTLD method is used to deactivate TLD
-Inputs:- TLDName
-Output:- True or False
-Scenario :- This method is an external view function and is used to deactivate TLD so that no domain under that TLD could be booked.
+viii).	deactivateTLD method is used to deactivate TLD<br />
+Inputs:- TLDName<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to deactivate TLD so that no domain under that TLD could be booked.<br />
 
-ix).	activateTLD method is used to activate TLD
-Inputs:- TLDName
-Output:- True or False
-Scenario :- This method is an external view function and is used to activate TLD so that domain under that TLD could be booked.
+ix).	activateTLD method is used to activate TLD<br />
+Inputs:- TLDName<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to activate TLD so that domain under that TLD could be booked.<br />
 
-x).	updateTLDExpiry method is used to update the TLD Expiry
-Inputs:- TLDName,Expiry
-Output:- True or False
-Scenario :- This method is an external view function and is used to update TLD Expiry
+x).	updateTLDExpiry method is used to update the TLD Expiry<br />
+Inputs:- TLDName,Expiry<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and is used to update TLD Expiry<br />
 
-xi).	addProvider method is used to add Provider to the Registry, so that they could add TLDs and domains to the Registry.
-Inputs:- ProviderWalletAddress
-Output:- True or False
-Scenario :- This method is an external view function and can be only executed by the administrator/Super Admin of the Smart Contract Suite  and is used to add Provider to the Registry , so that they can add TLDs and Domains to the Registry.
+xi).	addProvider method is used to add Provider to the Registry, so that they could add TLDs and domains to the Registry.<br />
+Inputs:- ProviderWalletAddress<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and can be only executed by the administrator/Super Admin of the Smart Contract Suite  and is used to add Provider to the Registry , so that they can add TLDs and Domains to the Registry.<br />
 
-xii).	getProvider method is used to get Provider by passing their provider ID
-Inputs:- ProviderID
-Output:- ProviderWalletAddress
-Scenario :- Each time a provider is registered , a Provider ID would be allocated by the smart Contract suite and the provider Wallet Address will be mapped/associated with that Provider ID. This method on passing that provider ID, would return the Provider Wallet address of Mainnet.
+xii).	getProvider method is used to get Provider by passing their provider ID<br />
+Inputs:- ProviderID<br />
+Output:- ProviderWalletAddress<br />
+Scenario :- Each time a provider is registered , a Provider ID would be allocated by the smart Contract suite and the provider Wallet Address will be mapped/associated with that Provider ID. This method on passing that provider ID, would return the Provider Wallet address of Mainnet.<br />
 
 
 ## Reference Implementation
