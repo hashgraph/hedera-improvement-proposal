@@ -131,6 +131,7 @@ The ABI signature and hashes for token management functions are as follows:
 | `367605ca`  | `setApprovalForAll(address, address, bool)`         | `(int64)`                        |
 | `46de0fb1`  | `isFrozen(address, address)`                        | `(int64, bool)`                  |
 | `f2c31ff4`  | `isKyc(address, address)`                           | `(int64, bool)`                  |
+| `19f37361`  | `isToken(address)`                                  | `(int64, bool)`                  |
 | `f069f712`  | `deleteToken(address)`                              | `(int64)`                        |
 | `ae7611a0`  | `getTokenCustomFees(address)`                       | `(int64, FixedFee[], FractionalFee[], RoyaltyFee[])` |
 | `a7daa18d`  | `getTokenDefaultFreezeStatus(address)`              | `(int64, bool)`                  |
@@ -139,6 +140,7 @@ The ABI signature and hashes for token management functions are as follows:
 | `3f28a19b`  | `getFungibleTokenInfo(address)`                     | `(int64, FungibleTokenInfo)`     |
 | `1f69565f`  | `getTokenInfo(address)`                             | `(int64, TokenInfo)`             |
 | `3c4dd32e`  | `getTokenKey(address, uint)`                        | `(int64, KeyValue)`              |
+| `93272baf`  | `getTokenType(address)`                             | `(int64, int32)`                 |
 | `287e1da8`  | `getNonFungibleTokenInfo(address, int64)`           | `(int64, NonFungibleTokenInfo)`  |
 | `5b8f8584`  | `freezeToken(address, address)`                     | `(int64)`                        |
 | `52f91387`  | `unfreezeToken(address, address)`                   | `(int64)`                        |
