@@ -1,0 +1,31 @@
+name: Validate HIP
+on: [pull_request]
+
+jobs:
+  ValidateHIP:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        run: cd "${{ github.workspace }}/projects/hip-automation" && npm install
+
+      - name: Validate HIPs
+        run: |
+            arrayOfFiles=()
+            while IFS= read -r; do
+              arrayOfFiles+=("${REPLY}")
+            done < <(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} --name-only | grep .md)
+            for i in "${arrayOfFiles[@]}"
+            do
+                node "${{ github.workspace }}/scripts/validateHIP.js" "${{ github.workspace }}/HIP/"$(basename "$i")""
+                echo 
+            done
