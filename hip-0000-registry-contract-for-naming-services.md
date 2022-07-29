@@ -50,7 +50,7 @@ Proposed Hedera centric registry contract that would also be extended to other i
 
 Architecture of the proposed registry contract over Hedera would be, as follows:
 
-![alt tag](https://drive.google.com/file/d/1e3yxtaY8glEiptSXlrNxznxfzTfk1SKr/view)
+![image](https://user-images.githubusercontent.com/97507177/181764916-06aaa2b2-bc65-4a95-94a9-fc40811853a4.png)
  
 (Image source: https://drive.google.com/file/d/1e3yxtaY8glEiptSXlrNxznxfzTfk1SKr/view) 
 
