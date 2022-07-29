@@ -67,10 +67,15 @@ To become a provider, entities need to raise a request to the admin of Registry 
 4. Structure of Smart Contracts
 The structure of smart contracts are as follows:
 a.	AlphaInterface: This solidity file is an interface and it enables functions and abstract logic for the AToZRegistry Solidity Smart Contract. It enables functionalities such as register HTLD, activate TLD, etc.
+
 b.	AlphaRegistry: This solidity file is responsible for doing all the jobs and is exposed for providers. It would internally call different smart contracts from the suite to get the job done. 
+
 c.	UTools: This smart contract empowers the suite with a handful of utility functions like substring and all.
+
 d.	AToZRegistry: This solidity file is responsible for creating a hierarchical alphabetical order of smart contracts
+
 e. Exposed Functionalities and Functions (may not be in the order)
+
 i).	isTLDAvailable method is used to check whether a particular TLD is available or not.
 Inputs:- TLDName
 Output:- True or False
