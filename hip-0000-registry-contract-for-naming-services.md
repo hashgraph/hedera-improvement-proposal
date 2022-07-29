@@ -63,7 +63,7 @@ Registry Contract Suite is an intelligent group of smart contract that maintains
 	Once a HTLD is registered by the provider, an entry in respective alphabetical hierarchy smart contract is made. All further domains and subdomains under that hierarchy would be stored in that structure. So that for future, queries for that registered domain names or HTLD/s could be appropriately handled.
 3. Who are providers and how could someone become a provider of domains/HTLDs?
 Providers for Registry Contracts are the account addresses of Mainnet of entities who have access to register and update HTLD/s and domains. These providers could do a handful of operations and are provisioned to register a domain/HTLD. 
-To become a provider, entities need to raise a request to the admin of Registry Contracts, who have the privilege to add addresses as providers for the Registry Smart Contract Suite. This would be done through a form accessible via the website of Web23 at web23.io 
+To become a provider, entities need to raise a request to the admin of Registry Contracts, who have the privilege to add addresses as providers for the Registry Smart Contract Suite. Initially this would be done through a form accessible via the website of Web23 at web23.io with a goal of moving to a fully decentralized approach.
 4. Structure of Smart Contracts
 The structure of smart contracts are as follows:
 1.	AlphaInterface: This solidity file is an interface and it enables functions and abstract logic for the AToZRegistry Solidity Smart Contract. It enables functionalities such as register HTLD, activate TLD, etc.
