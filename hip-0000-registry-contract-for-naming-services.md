@@ -58,10 +58,10 @@ Architecture of the proposed registry contract over Hedera would be, as follows:
 ## Detailed note on the flow
 
 **1. What is Registry Contract Suite?**<br />
-Registry Contract Suite is a group of smart Contracts developed over Solidity. These smart contracts are intended to register HTLDs (Hedera Top-Level-Domains) and Second-Level-Domains (SLDs) in a hierarchical manner. Domains and HTLDs once registered could be queried and looked up to avoid duplication.
+Registry Contract Suite is a group of smart Contracts developed over Solidity. These smart contracts are intended to register HTLDs (Hedera Top-Level-Domains) and Second-Level-Domains (SLDs) in a hierarchical manner. Domains and HTLDs once registered could be queried and looked up to avoid duplication.<br />
 **2. How does Registry Contract Suite Works?**<br />
-Registry Contract Suite is an intelligent group of smart contract that maintains an alphabetical hierarchy to register HTLDs and is smart enough to create and store HTLDs in their respective Alphabetical Registry Component. 
-	Once a HTLD is registered by the provider, an entry in respective alphabetical hierarchy smart contract is made. All further domains and subdomains under that hierarchy would be stored in that structure. So that for future, queries for that registered domain names or HTLD/s could be appropriately handled.
+Registry Contract Suite is an intelligent group of smart contract that maintains an alphabetical hierarchy to register HTLDs and is smart enough to create and store HTLDs in their respective Alphabetical Registry Component.<br />
+	Once a HTLD is registered by the provider, an entry in respective alphabetical hierarchy smart contract is made. All further domains and subdomains under that hierarchy would be stored in that structure. So that for future, queries for that registered domain names or HTLD/s could be appropriately handled.<br />
 **3. Who are providers and how could someone become a provider of domains/HTLDs?**<br />
 Providers for Registry Contracts are the account addresses of Mainnet of entities who have access to register and update HTLD/s and domains. These providers could do a handful of operations and are provisioned to register a domain/HTLD. <br />
 To become a provider, entities need to raise a request to the admin of Registry Contracts, who have the privilege to add addresses as providers for the Registry Smart Contract Suite. Initially this would be done through a form accessible via the website of Web23 at web23.io with a goal of moving to a fully decentralized approach.<br />
