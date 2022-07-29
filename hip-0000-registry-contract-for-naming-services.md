@@ -1,4 +1,3 @@
-
 ---
 hip: <HIP number (this is determined by the HIP editor)>
 title: REGISTRY CONTRACT containing default naming structure format for HTLDs & SLDs ever minted over Hedera network
