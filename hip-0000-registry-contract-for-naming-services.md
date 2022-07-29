@@ -66,6 +66,7 @@ Providers for Registry Contracts are the account addresses of Mainnet of entitie
 To become a provider, entities need to raise a request to the admin of Registry Contracts, who have the privilege to add addresses as providers for the Registry Smart Contract Suite. Initially this would be done through a form accessible via the website of Web23 at web23.io with a goal of moving to a fully decentralized approach.
 4. Structure of Smart Contracts
 The structure of smart contracts are as follows:
+
 a.	AlphaInterface: This solidity file is an interface and it enables functions and abstract logic for the AToZRegistry Solidity Smart Contract. It enables functionalities such as register HTLD, activate TLD, etc.
 
 b.	AlphaRegistry: This solidity file is responsible for doing all the jobs and is exposed for providers. It would internally call different smart contracts from the suite to get the job done. 
@@ -80,38 +81,47 @@ i).	isTLDAvailable method is used to check whether a particular TLD is available
 Inputs:- TLDName
 Output:- True or False
 Scenario :- This method is an external view function and will return Boolean and is used to Check whether a TLD is available or not
+
 ii).	isDomainAvailable method is used to check whether a particular Domain under a TLD is available or not.
 Inputs:- DomainName, TLDName
 Output:- True or False
 Scenario :- This method is an external view function and is used to check whether a particular Domain under a TLD is available or not.
+
 iii).	registerTLD method is used to register TLD, only providers who are registered would be able to register a TLD
 Inputs:- TldOwnerAddress, TLDName, ChainId, Expiry
 Output:- True or False
 Scenario :- This method is an external view function and is used to register TLD, only providers who are registered would be able to register a TLD
+
 iv).	registerDomain method is used to register domain, only providers who are registered would be able to register a domain
 Inputs:- DomainOwnerAdress,TldOwnerAddress,TLDName,DomainName,ChainId,Expiry
 Output:- True or False
 Scenario :- This method is an external view function and is used to register Domain, only providers who are registered would be able to register a domain
+
 v).	activateDomain method is used to activate Domain
 Inputs:- DomainName, TLDName
 Output:- True or False
 Scenario :- This method is an external view function and is used to activate a Domain, only providers who are registered would be able to activate a domain.
+
 vi).	deactivateDomain method is used to deactivate a domain
 Inputs:- DomainName, TLDName
 Output:- True or False
 Scenario :- This method is an external view function and is used to deactivate a Domain, only providers who are registered would be able to deactivate a domain.
+
 vii).	updateDomainExpiry method is used to update the Domain Expiry 
 Inputs:- DomainName, TLDName, expiry
 Output:- True or False
 Scenario :- This method is an external view function and is used to update the Domain Expiry. The expiry should be a greater than the current date.
+
 viii).	deactivateTLD method is used to deactivate TLD
 Inputs:- TLDName
 Output:- True or False
 Scenario :- This method is an external view function and is used to deactivate TLD so that no domain under that TLD could be booked.
+
 ix).	activateTLD method is used to activate TLD
 Inputs:- TLDName
 Output:- True or False
 Scenario :- This method is an external view function and is used to activate TLD so that domain under that TLD could be booked.
+
 x).	updateTLDExpiry method is used to update the TLD Expiry
 Inputs:- TLDName,Expiry
 Output:- True or False
@@ -121,6 +131,7 @@ xi).	addProvider method is used to add Provider to the Registry, so that they co
 Inputs:- ProviderWalletAddress
 Output:- True or False
 Scenario :- This method is an external view function and can be only executed by the administrator/Super Admin of the Smart Contract Suite  and is used to add Provider to the Registry , so that they can add TLDs and Domains to the Registry.
+
 xii).	getProvider method is used to get Provider by passing their provider ID
 Inputs:- ProviderID
 Output:- ProviderWalletAddress
