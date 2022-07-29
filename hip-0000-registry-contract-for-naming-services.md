@@ -50,7 +50,8 @@ Proposed Hedera centric registry contract that would also be extended to other i
 
 Architecture of the proposed registry contract over Hedera would be, as follows:
 
-![image](https://user-images.githubusercontent.com/97507177/181764916-06aaa2b2-bc65-4a95-94a9-fc40811853a4.png)
+![RegistryContract](https://user-images.githubusercontent.com/97507177/181780608-e6bc217b-ee21-4b6d-a9a4-a28916a5ec87.png)
+
  
 (Image source: https://drive.google.com/file/d/1e3yxtaY8glEiptSXlrNxznxfzTfk1SKr/view) 
 
@@ -77,10 +78,10 @@ d.	AToZRegistry: This solidity file is responsible for creating a hierarchical a
 
 e. Exposed Functionalities and Functions (may not be in the order)
 
-i).	isTLDAvailable method is used to check whether a particular TLD is available or not.
-Inputs:- TLDName
-Output:- True or False
-Scenario :- This method is an external view function and will return Boolean and is used to Check whether a TLD is available or not
+i).	isTLDAvailable method is used to check whether a particular TLD is available or not.<br />
+Inputs:- TLDName<br />
+Output:- True or False<br />
+Scenario :- This method is an external view function and will return Boolean and is used to Check whether a TLD is available or not<br />
 
 ii).	isDomainAvailable method is used to check whether a particular Domain under a TLD is available or not.
 Inputs:- DomainName, TLDName
