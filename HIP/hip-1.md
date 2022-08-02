@@ -149,8 +149,9 @@ HIPs can also be superseded by a different HIP, rendering the original obsolete.
 
 Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIPs editors will double-check if the `Yes` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council.
 
-The Council (specifically techcom) approves the HIPs that have "council approval required" field set to yes. The council approves (if the HIP has reached the council approval stage) or conditionally approves (if the HIP is still waiting in the public commenting phase) the HIPs. When a HIP goes through this approval, it may or may not have every single API defined. In this sense, the council is voting on approving the feature for further design at that stage.
-After the council approves the HIP, the HIP authors can add more details (like a more detailed API definition) to the HIP before it is implemented/active. Adding these details does not require re-approval from the council. However, if the HIP deviates from the core design, it requires re-approval from the council.
+The Council (specifically techcom) approves the HIPs that have `needs-council-approval` field set to `yes`. The Council approves (if the HIP has reached the Council approval stage) or conditionally approves (if the HIP is still waiting in the public commenting phase) the HIPs. When a HIP goes through this approval, it may or may not have final state of the API defined. In this sense, the Council is voting on approving the feature for further design at that stage.
+
+After the Council approves the HIP, the HIP authors can add more details (like a more detailed API definition) to the HIP before it is implemented/active. Adding these details does not require re-approval from the Council. However, if the HIP deviates from its core design, it requires re-approval from the Council.
 
 The possible paths of the status of HIPs are as follows:
 
