@@ -2,7 +2,14 @@ const fs = require('fs');
 const readline = require('readline');
 const regexs = require('../assets/regex');
 
-async function validate(hipPath) {
+/**
+ * Validates a hip's headers by looking for enclosing '---' substrings and calls functions that validate the contents.
+ *
+ * @async
+ * @function captureHeaderValidation
+ * @param {string} hipPath - Path to the hip.
+ */
+async function captureHeaderValidation(hipPath) {
   const hip = hipPath || process.argv[2];
   console.log(`Validating ${hip}`)
   const fileStream = fs.createReadStream(hip);
@@ -26,7 +33,7 @@ async function validate(hipPath) {
       break
     }
     if (/author: /.test(line) || /working-group/.test(line)) {
-      validateNames(line) // couldnt find an all encompassing regex to enforce <@gitname or email>, so I wrote this
+      validateNames(line);
     }
     
     if (lineCount ===  17) {
@@ -36,9 +43,15 @@ async function validate(hipPath) {
   }
 }
 
+/**
+ * Takes a hip's header and runs regexs against the contained properties.
+ *
+ * @async
+ * @function validateHeaders
+ * @param {string} headers
+ */
 function validateHeaders(headers) {
   try {
-
     if (!regexs.hipNum.test(headers)) {
       throw 'hip num must be a number use 000 if not yet assigned';
     }
@@ -67,12 +80,12 @@ function validateHeaders(headers) {
     }
 
     if (/needs-council-approval: Yes/.test(headers) && /category: Application/.test(headers)) {
-      throw 'Application category HIPs do not need council approval'
+      throw 'Application category HIPs do not need council approval';
     }
 
     if (/needs-council-approval: No/.test(headers)
       && (/category: Service/.test(headers) || /category: Core/.test(headers))) {
-      throw 'Service and Core categories require council approval'
+      throw 'Service and Core categories require council approval';
     }
 
     if (!regexs.createdDate.test(headers)) {
@@ -104,15 +117,18 @@ function validateHeaders(headers) {
       throw 'superseded-by field must specify the hip number(s) its referring "superseded-by: hipnum, hipnum(s)"';
     }
   } catch (error) {
-    if (require.main === module) {
-      console.log(Error(error));
-      process.exit(1);
-    }
-    throw Error(error)
+    console.log(Error(error));
+    process.exit(1);
   }
-
 }
 
+/**
+ * Takes an author: or a working-group: list and validates it.
+ *
+ * @async
+ * @function validateHeaders
+ * @param {string} line - line in header containing author or working-group
+ */
 function validateNames(line) {
   try {
       line.split(',')
@@ -133,14 +149,7 @@ function validateNames(line) {
   }
 }
 
-if (require.main === module) {
-  validate().catch(error => {
-    console.log(error);
-    process.exit(1);
-  });
-}
-
-module.exports = {
-  validateHeaders,
-  validate
-};
+captureHeaderValidation().catch(error => {
+  console.log(error);
+  process.exit(1);
+});
