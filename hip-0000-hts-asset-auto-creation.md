@@ -2,7 +2,7 @@
 hip: <HIP number (this is determined by the HIP editor)>
 title: Payer-sponsored auto-account creation with HTS assets
 author: Michael Tinker (@tinker-michaelj)
-working-group: Neeha Sompalli (@Neeharika-Sompalli )
+working-group: Neeha Sompalli (@Neeharika-Sompalli), Ali Katamjani (ali@swirldslabs.com)
 type: Standards Track
 category: Service
 needs-council-approval: Yes
@@ -24,8 +24,8 @@ from the sent hbar, and uses whatever is left over as the new account's balance.
 This means auto-account creation does not work when sending only a units of a fungible token or an NFT to a new alias, 
 because an hbar fee cannot be deducted from such assets. We propose to charge auto-account creation fees to the payer of a 
 `CryptoTransfer` that sends assets to a new alias anywhere in body of a `CryptoTransfer`; whether in the hbar transfer 
-list, or in an HTS token transfer list. (This creation fee will include one auto-association slot, since the new account 
-needs it to receive the token asset.)
+list, or in an HTS token transfer list. (This creation fee will include at least one auto-association slot, since the new 
+account must be associated to its originating HTS assets.)
 
 **IMPORTANT:** We do _not_ propose to make nodes do extra work in precheck estimating implied auto-creation fees. These
 fees will be assessed as part of the `CryptoTransfer` service logic; and, as with all other service fees, will not be 
