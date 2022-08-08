@@ -22,11 +22,10 @@ jobs:
       - name: Get HIP name
         if: steps.status.outcome == 'success'
         id: hip_name
-        continue-on-error: true
         run:  echo ::set-output name=hipname::$(basename -- $(git diff --name-only HEAD HEAD~1 | grep .md) .md)
 
       - name: Discord notification
-        if: steps.status.outcome == 'success'
+        if: "${{ steps.hip_name.outputs.hipname != '.md' }}"
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD }}
         uses: Ilshidur/action-discord@master
