@@ -1,5 +1,5 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 000
 title: Payer-sponsored auto-account creation with HTS assets
 author: Michael Tinker (@tinker-michaelj)
 working-group: Neeha Sompalli (@Neeharika-Sompalli), Ali Katamjani (ali@swirldslabs.com)
