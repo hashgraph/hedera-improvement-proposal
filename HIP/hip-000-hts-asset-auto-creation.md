@@ -7,7 +7,7 @@ type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Draft
-created: 08-08-2022
+created: 2022-08-08
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/541
 requires: HIP-32
 ---
