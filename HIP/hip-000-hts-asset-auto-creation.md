@@ -9,7 +9,7 @@ needs-council-approval: Yes
 status: Draft
 created: 2022-08-08
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/541
-requires: HIP-32
+requires: 32
 ---
 
 ## Abstract
