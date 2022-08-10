@@ -1,153 +1,134 @@
 ---
-hip: xxx
-title: Fractional NFTs
-author: Matthew Smithies <matt.s@dovu.io>, Justyn Spooner <justyn@dovu.io>, Jesse Whiteside <jesse@hashport.network>
-working-group: Guardian & ESG
-type: Standards Track
-category: Core
-needs-council-approval: No
-status: Draft
-created: 2022-08-08
-discussions-to: TBA
-updated: N/A
+hip: <HIP number (this is determined by the HIP editor)>
+title: <HIP title>
+author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
+working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
+type: <Standards Track | Informational | Process>
+category: <Core | Service | Mirror | Application>
+needs-council-approval: <Yes | No>
+status: <Draft | Review | Last Call | Active | Inactive | Deferred | Rejected | Withdrawn | Accepted | Final | Replaced>
+created: <date created on>
+discussions-to: <a URL pointing to the official discussion thread>
+updated: <comma separated list of dates>
+requires: <HIP number(s)>
+replaces: <HIP number(s)>
+superseded-by: <HIP number(s)>
 ---
 
 ## Abstract
 
-This HIP specifies the need for fractional NFTs within the Hedera eco-system, the purview for this capability is specifically viewed through the lens of ESG assets, such as tokenised carbon credits, to be fractional when primarily created through the Guardian. As ESG assets created are unique they philosophically act more like an NFT as compare to fungible counterparts as they are backed by a real-world asset that is not interchangeable.
+Introduce a recommended path of the implementation of minting and maintenance of ecological tokens based on [IWA sustainability](https://github.com/InterWorkAlliance/Sustainability) specifications from the voluntary ecological markets taskforce. This combines and is the first use-case of [dNFT/dFT](https://github.com/trustenterprises/hedera-dnft-specification) on hedera to provide an ability for tokens to attach an unlimited amount of evidence.
 
-Additionally, this HIP suggests a specification update for adding this capability, simply put to enable decimals within NFT token types. It also includes a view to deal with backwards capability issues for NFT token transfers.
-
-Naturally, outside the scope of ESG, fractional NFTs would be highly welcome in many other use cases on network as they are present on EVM ecosystems.
+_note: dNFTs will form a separate HIP at a generic level, but were initially designed to meet the needs of carbon offsetting._
 
 ## Motivation
 
-One of the current downsides of NFTs on Hedera are that they are incapable of having decimals, or in other words fractional. Particularly for ESG assets, like carbon credits, this is a particular problem as it becomes impossible to make micro payments due to the lack of fractional or divisable NFTs upon creation, is where one token equals one tonne of carbon.
-
-If we so wish to mint fractional tokens for emissions or credits at a sub-tonne granularity we require divisible NFTs on token creation.
-
-Here are some additional points:
-
-- Partial ownership/division of NFTs is already a thing in EVM land, the network should align with common patterns.
-- It would be preferable to mirror specifications like CRUs (as NFTs) as Hashport has NFT bridge capability, thus all guardian derived ESG assets would be multi-chain by default.
-  - This would inevitably open up easier business development and integration between ecosystems, so DOVU’s generated credits could potentially be bundled into FlowCarbon’s GNT-type assets.
-  - Thus there would be a greater vector for pooling assets to back stable coins using a range of tokenised commodities (carbon, soya, wheat etc).
-- We’re not going to get away from the need for micropayments, KG-level (or less) offsetting.
-- In traditional markets, or centralised registries like Gold Standard, a carbon credit represents 1 tonne of removal or reduction. Without this and by potentially going against the grain by minting where 1 token equals 1 kg will result in non-compliant and standardised assets, as well as causing additional onboarding friction for external market actors due to the mis-smatch.
-- All tokens are backed by a real asset (NFTs fit that definition moreso then fungible types)
-- To be compliant to the [IWA Framework](https://interwork.org/wp-content/uploads/2021/11/Digital-MRV-Framework-1.0.pdf) for minting carbon removals with fractional granularity we currently need to use Core Carbon Principles (CCP) token instead of the NFT equivalent, Carbon Removal Credits (CRUs).
-
-Leveraging Hashport as a key piece of infrastructure in ensuring that any ESG asset minted on Hedera is multi-chain (EVM) by default would be a killer application network-wide for both marketplaces, exchanges, and project owners to get access to more capital present on other networks.
+There are not enough verified carbon credits globally to meet demand. In turn, corporates are overpaying for carbon credits to meet [ESG](https://www.investopedia.com/terms/e/environmental-social-and-governance-esg-criteria.asp) targets. In addition current carbon credit systems are not fit for purpose due to a number of issues including accountability, leakage, and additionally.
 
 ## Rationale
 
-In short, enable optional decimal usage on the creation of NFTs token types and add optional values for transfer functions.
+Soil is the greatest land store of carbon, and if correct agricultural processes aren't followed this can [trigger a negative effect of carbon stores](https://hedera.com/blog/why-earth-day-2021-means-the-world-to-dovu). At DOVU we believe that such projects should include incentivization structures by default including a layer of accountability so that the carbon capture abilities of soil are optimized.
 
-With regards to Hashport's NFT bridging capability, it at present can only process a single NFT at a time, this would be a challenge for larger volumes of ESG assets but if a precedent was set by minting tokens with this method it would provide a provable route for migration of NFT collections across networks, perhaps with a specific ESG bridging module.
+There are a number of elements that are required:
+
+- A project owner that has been created and is linked to a new [Ecological Project (EP)](https://github.com/InterWorkAlliance/Sustainability/blob/main/vem/supply/ep.md).
+- A link between HTS and HCS, a common format.
+- A genesis message that would reference the initial asset in terms of a [CCP token](https://github.com/InterWorkAlliance/Sustainability/blob/main/vem/supply/ccp.md).
+- State changes of the CCP representation, with versions and updates including additionally and leakage.
+- Continued messages, with a common schema that can be used as a mechanism to upload evidence.
+
+I expect that this work will continue to evolve and adjust over time.
 
 ## User stories
 
-1. As a carbon project owner I want to ensure that by carbon credits can be traded on as many platforms as possible
-2. As a marketplace, minting with the guardian, I want to ensure client success by providing the largest vector to benefit my clients.
-
-*Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”*
+Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
 
 ## Specification
 
-Below the specification will be focusing upon using with the JS SDK as a developer, however it can be applied to any SDK or core HAPI services.
+### Roles
 
-### Creating a NFT, with the adding of decimals to the Create Transactions
+Roles of the
 
-The only difference here is *unlocking* decimals for NFTs, inside of any documentation we can refer to them as *fractional*, but we retain the same method names as per fungible token types.
+### A project owner and the creation of an EP
 
-```
-const transaction = new TokenCreateTransaction()
-  .setTokenName(collection_name)
-  .setTokenType(TokenType.NonFungibleUnique)
-  .setSupplyType(TokenSupplyType.Finite)
-  .setSupplyKey(operatorPrivateKey)
-  .setTokenSymbol(symbol)
-  .setTreasuryAccountId(account_id)
-  .setMaxSupply(supply)
-  .setInitialSupply(0)
-  .setDecimals(4) // Allowing decimals
-```
+Every project owner is considered a supplier and can create a new (EP)(https://github.com/InterWorkAlliance/Sustainability/blob/main/vem/supply/ep.md) on a per-project basis.
 
-### Minting an NFT, using set amount
+### The HTS to HCS link
 
-The default functionality, seen below, will be backward compatible as previously expected that is NFTs will be generated in batches up to 10, based on the setMetadata array size. It will default to mint whole NFTs, if the decimals are set to zero.
+The basic dNFT specification describes an approach to how to connect an HTS token to an HCS topic, this is described through a format (these formats would ultimately be a HIP unto themselves)
 
-```
-const transaction = await new TokenMintTransaction()
-  .setTokenId(token_id)
-  .setMetadata(nftBatchBuffer)
-  .freezeWith(client)
-```
+This is the proposed dNFT ~~name~~ memo format, within 100 bytes.
 
-However, there would need to be a slight update for minting, this is set below with 4 tokens being minted with the granularity of 4 decimal places.
+- The Topic Id of the HCS topic
+- The Account ID of the minter
+- The Symbol of the proposed
+- Optional metadata to describe the dNFT
 
-- If a NFT has decimals tokens cannot be batched, using an array inside of **setMetadata** must only have 1 entry.
-- The amount is used to mint based on the **setAmount** value, as per how fungible HTS tokens work
+This could have this generic form below:
 
-```
-const transaction = await new TokenMintTransaction()
-  .setTokenId(token_id)
-  .setMetadata(nftSingleBuffer)
-  .setAmount(4 * 4 ** 1000)
-  .freezeWith(client)
-```
+> 'ECO:{symbol}_{metadata}:{topic_id}:{account_id}'
 
-### Transfer an NFT
+In particular, for DOVU we would look at using **cDOV** as our internal reference of a full token representing a tonne of carbon.
 
-Below is an example of transferring an NFT, for the *addNftTransfer* method amount has been optional for NFTs that have decimals.
+> 'ECO:cDOV:{topic_id}:{account_id}'
 
-```
-const transfer = await new TransferTransaction()
-  .addNftTransfer(new NftId(token_id, serial_number), Config.accountId, receiver_id, amount)
-  .execute(client)
-```
+### The Genesis CCP token message (First HCS message)
+
+The primary rationale behind using CCP specification is due to the unique fungible property. At first
+
+### State Changes to a given project using CCP token spec
+
+### Miscellaneous messages for ongoing evidence proofs.
 
 ## Backwards Compatibility
 
-There are a number of effects of fractional NFT tokens in the ecosystem, these *shouldn't* cause immediate concern, and the ability to process them is opt-in based on a given external teams priority needs.
-
-All previous NFTs on network need to be considered "non-fractional" by default, this would imply that the "decimal" value of all historic NFTs would be zero. For any `addNftTransfer` inside of `TransferTransaction` calls we would require a forth field in the method signature to represent `value`
-
-In docs this could be the changes:
-
-Previous `addNftTransfer(<nftId>, <sender>, <receiver>)`
-
-New `addNftTransfer(<nftId>, <sender>, <receiver>, <value = 1 (default if not changed)>)`
-
-However, in particular SDK implementations, like JS, there are at present 4 fields within the signature of the `addNftTransfer` method which is on the cusp of being overloaded, there would need to be careful thought on whether it would be more appropriate to refractor some of these methods, or to include the optional `value` property inside of an `nftId` object.
-
-### Wallets and downstream clients
-
-All wallets or clients may behave in the same manner to view or manipulate NFTs, using the same code, however for fractional NFTs there would be a requirement to update codebases to handle updated decimal, in the same way fungible tokens are processed.
+No issues.
 
 ## Security Implications
 
-None, other then NFTs working in the same fashion as using decimals on Fungible token types.
+None, the HCS topic must ensure that the issuer or owner of tokens has the permission to send new messages to act as evidence linked to a token. This could potentially be expanded to include auditors.
+
+It's likely that the **owner** of a project will have the core permission to post evidence messages as it is their responsibility to prove intent and results in order for the incentivization structure to trigger.
+
+Care will have to be taken in the design of the token standard to allow for real-life issues where keys could be lost.
 
 ## How to Teach This
 
-Update the documentation, updated blog post of the feature to cover the new feature, new code examples driven through the core developer advocates, perhaps with bounties.
+~~For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.~~
 
 ## Reference Implementation
 
-TBC (see specification for early approach/design)
+Work in progress and looking to invite collaboration on the preferred design of this standard, this needs to be driven from all possible ecological projects in the Hedera eco-system.
+
+~~The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation~~.
 
 ## Rejected Ideas
 
+None.
 
 ## Open Issues
 
+The Trust Enterprises initial specification of dNFTs has a number of issues:
+
+1) The **name** of the token was used to link to an HCS topic, this will be changed in an official HIP to using the **memo**.
+2) It's currently opinionated, has no community consensus, used as a product feature for DOVU and SportsIcon.
+3) It's named with **non-fungible** but the token specification does not care if it is divisible, it purely is used as a marketing term to **indicate a token linked to evidence**.
+4) In my opinion, there is an expectation that additional HIPs for dNFTs will be created to form a vast number of use-cases as they represent a new genre of token due to flexibility that wasn't possible pre HCS and HTS.
+5) It assumes that the issuer of the token is the only entity that can create HCS messages for the given topic.
+6) Due to the reduction of HCS message sizes to 1024 bytes there needs to be more reliance on HFS or IPFS services.
+7) In particular, for IPFS is to include the [CID](https://docs.ipfs.io/concepts/content-addressing/) within the meta to eliminate the DNS ransom issue for linked content for NFTs.
 
 ## References
 
-1. [IWA Framework](https://interwork.org/wp-content/uploads/2021/11/Digital-MRV-Framework-1.0.pdf)
-2. [NFT porting Hashport](https://app.hashport.network/nft-port)
-
+1. https://github.com/trustenterprises/hedera-dnft-specification
+2. https://hedera.com/users/dovu
+3. https://hedera.com/blog/why-earth-day-2021-means-the-world-to-dovu
+4. https://github.com/InterWorkAlliance/Sustainability/blob/main/vem/supply/ccp.md
+5. https://github.com/InterWorkAlliance/Sustainability
+6. https://docs.ipfs.io/concepts/content-addressing/
+7. https://www.investopedia.com/terms/e/environmental-social-and-governance-esg-criteria.asp
+8. https://github.com/InterWorkAlliance/Sustainability/blob/main/vem/supply/ep.md
+9. https://github.com/InterWorkAlliance/Sustainability/blob/main/vem/roles.md
 
 ## Copyright/license
 
