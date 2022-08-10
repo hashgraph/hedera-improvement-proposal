@@ -157,11 +157,11 @@ We have opted for a new token type as of the unknown side effects on the current
 From Patches perspective on the effect on the NFT Hedera community:
 
 > Just like we have a different token type for fungible tokens, I think there should be a different token type for Fractionlized Non Fungible Tokens or FNFTs
-> 
+>
 > A lot of infrastructure that's being built or that is already in place for NFTs has an understanding that 1 serial # = 1 entity / 1 wallet.
-> 
+>
 > Injecting the possibility of there being 1 serial number on 1 token Id that can be in multiple wallets would cause a lot of systems to need to be refactored, headaches for possible scams and exploits
-> 
+>
 > Segmenting this update out into it's own type of token would allow clearer delineation, and remove the chance an ADMIN key could later segment out multiple fractions of an already minted NFT in circulation
 
 ## How to Teach This
