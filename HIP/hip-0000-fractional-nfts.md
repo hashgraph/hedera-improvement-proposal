@@ -1,5 +1,5 @@
 ---
-hip: xxx
+hip: 000
 title: Fractional NFTs
 author: Matthew Smithies <matt.s@dovu.io>, Justyn Spooner <justyn@dovu.io>, Jesse Whiteside <jesse@hashport.network>
 working-group: Matthew Smithies <matt.s@dovu.io>
@@ -8,8 +8,8 @@ category: Core
 needs-council-approval: No
 status: Draft
 created: 2022-08-08
-discussions-to: TBA
-updated: N/A
+discussions-to: https://docs.google.com/document/d/1HOrUBHX6CCcb5Ch0b5QLEp1qWA65fa9ztggoSM_xggU
+updated: 2022-08-11
 ---
 
 ## Abstract
