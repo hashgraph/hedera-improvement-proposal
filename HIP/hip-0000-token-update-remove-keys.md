@@ -78,7 +78,11 @@ Neither of these approaches is ideal and could easily be solved by allowing the 
 
 ## Specification
 
-If set as part of the initial Token creation, all these keys should be removable as part of a `TokenUpdateTransaction`:
+There are two approaches I see how this feature could manifest itself in the SDKs. I'll use the JS SDK as an example.
+
+### Option 1. Extend `TokenUpdateTransaction` to Support Removing Keys
+
+All these keys should be removable as part of a `TokenUpdateTransaction` if present on a Token:
 
 - Admin Key
 - Wipe Key
@@ -88,7 +92,7 @@ If set as part of the initial Token creation, all these keys should be removable
 - Supply Key
 - Fee Schedule Key
 
-Example `TokenUpdateTransaction` to remove all keys from a Token.
+**An example `TokenUpdateTransaction` to remove all keys from a Token.**
 
 ```js
 let transaction = new TokenUpdateTransaction({
@@ -103,20 +107,41 @@ let transaction = new TokenUpdateTransaction({
 });
 ```
 
-We can’t use `null` for these fields because behind the scenes protobuf removes them for optimisation. We might want a constant here instead such as `Key.None`.
+We can’t use `null` as the value for these fields because behind the scenes protobuf removes them for optimisation. This is why a constant is used here instead - `Key.None`.
 
-An alternative approach might be to have a dedicated transaction for the removal of keys.
+### Option 2. Dedicated Remove Key Action
 
-An example of removing the wipe key from an NFT
+An alternative approach might be to have a dedicated transaction `RemoveKeysTransaction`.
+
+This would take 3 parameters
+`tokenId` - The token to update
+`removeKey` - An enum representing a key Key.Wipe, Key.Freeze etc
+`removeKeys` - An array of Key enums [Key.Pause, Key.FeeSchedule, Key.Admin]
+
+**An example of removing the wipe key from an NFT**
 
 ```js
 const transaction = new RemoveKeysTransaction()
   .setTokenId(tokenId)
-  .setRemoveWipeKey(true)
+  .setRemoveKey(Key.Wipe)
   .freezeWithClient(client);
 
 // Sign the transaction with the admin key if present on the token or with the wipe key
 const signTx = await transaction.sign(adminKey || wipeKey);
+```
+
+**An example of removing multiple keys from a Token that has no Admin Key set**
+
+```js
+const transaction = new RemoveKeysTransaction()
+  .setTokenId(tokenId)
+  .setRemoveKeys([Key.Pause, Key.FeeSchedule, Key.Kyc])
+  .freezeWithClient(client);
+
+// Sign the transaction with each key we want to remove from the token
+const signPauseTx = await transaction.sign(pauseKey);
+const signFeeScheduleTx = await transaction.sign(feeScheduleKey);
+const signKycTx = await transaction.sign(kycKey);
 ```
 
 **Requirements**
