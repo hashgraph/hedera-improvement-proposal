@@ -1,7 +1,7 @@
 ---
 hip: 0000
-title: Remove existing keys from a Token
-author: Justyn Spooner (@justynjj)
+title: Remove Existing Keys From A Token
+author: Justyn Spooner (justyn@dovu.io)
 working-group: Justyn Spooner
 type: Standards Track
 category: Service
@@ -17,15 +17,15 @@ superseded-by: N/A
 
 ## Abstract
 
-This proposal will result in a modification to the `TokenUpdateTransaction` feature to allow the admin key to sign an update to remove itself and/or any other key (Wipe, KYC, Freeze, Pause, Supply, Fee Schedule) from a Token.
+This proposal will result in a modification to the `TokenUpdateTransaction` feature to allow the admin key to sign an update to remove itself and/or any other key (Wipe, KYC, Freeze, Pause, Supply, Fee Schedule) from a Token. Each key will also be able to sign an update to remove itself from the token.
 
 ## Motivation
 
 Many NFT projects require that their Token remains immutable yet many project owners have unknowingly created NFTs with keys such as Admin, Wipe, Freeze and Pause set which undermines this assumption.
 
-The majority of Collectors will also be unaware of the implications of having these keys set on the NFTs they have purchased.
+The majority of collectors will also be unaware of the implications of having these keys set on the NFTs they have purchased.
 
-For example, an NFT with a [Wipe Key](https://docs.hedera.com/guides/docs/sdks/tokens/wipe-a-token) set poses a risk to the owner that the NFT could at any point be burned even though it's not in the treasurey account.
+For example, an NFT with a [Wipe Key](https://docs.hedera.com/guides/docs/sdks/tokens/wipe-a-token) set poses a risk to the owner that the NFT could at any point be burned even though it's not in the treasury account.
 
 Right now there is no way to remove keys (Admin, Wipe, KYC, Freeze, Pause, Supply, Fee Schedule) from a Token. They can only be updated.
 
@@ -70,10 +70,11 @@ Neither of these approaches is ideal and could easily be solved by allowing the 
 
 ## User stories
 
-As a creator I want to remove the Wipe Key on my existing NFT collection so that collectors can be assured their NFT can't be removed from their account.
-As a creator I want to remove the Admin Key on my existing NFT collection so that I can be sure my NFT is immutable.
-As a creator I want the flexibilty to remove keys as my project evolves. For example, I might start out with KYC as a requirement and later decide that it is not necessary.
-As an NFT minting service I want to be able to mint an NFT collection on behalf of a creator using our private key and then update the Treasurey Account to the creator's account whilst simultaneously removing the admin key so the creator ends up with an immutable NFT collection in their Treasurey Account.
+- As a creator I want to remove the Wipe Key on my existing NFT collection so that collectors can be assured their NFT can't be removed from their account.
+- As a creator I want to remove the Admin Key on my existing NFT collection so that I can be sure my NFT is immutable.
+- As a creator I want the flexibility to remove keys as my project evolves. For example, I might start out with KYC as a requirement and later decide that it is not necessary.
+- As an NFT minting service I want to be able to mint an NFT collection on behalf of a creator using our private key and then update the treasury account to the creator's account whilst simultaneously removing the admin key so the creator ends up with an immutable NFT collection in their treasury account.
+- As a creator of an NFT which has no Admin Key but does have a Wipe Key, I want to be able to remove the Wipe Key
 
 ## Specification
 
@@ -92,21 +93,35 @@ Example `TokenUpdateTransaction` to remove all keys from a Token.
 ```js
 let transaction = new TokenUpdateTransaction({
   tokenId: "0.0.123456",
-  kycKey: null,
-  freezeKey: null,
-  pauseKey: null,
-  wipeKey: null,
-  supplyKey: null,
-  feeScheduleKey: null,
-  adminKey: null,
+  kycKey: Key.None,
+  freezeKey: Key.None,
+  pauseKey: Key.None,
+  wipeKey: Key.None,
+  supplyKey: Key.None,
+  feeScheduleKey: Key.None,
+  adminKey: Key.None,
 });
 ```
 
-TODO: `null` might not be the best way to express this. It might be better to have some constant that does this instead such as `Key.Empty`. Open to suggestions here.
+We can’t use `null` for these fields because behind the scenes protobuf removes them for optimisation. We might want a constant here instead such as `Key.None`.
+
+An alternative approach might be to have a dedicated transaction for the removal of keys.
+
+An example of removing the wipe key from an NFT
+
+```
+const transaction = new RemoveKeysTransaction()
+           .setTokenId(tokenId)
+ 	.setRemoveWipeKey(true)
+	.freezeWithClient(client);
+
+// Sign the transaction with the admin key if present on the token or with the wipe key
+const signTx = await transaction.sign(adminKey || wipeKey);
+```
 
 **Requirements**
 
-- If the Admin key is removed as part of other changes in the update transaction, then all other updates should happen first and the admin key removed last to avoid any `TOKEN_IS_IMMUTABlE` errors.
+- If the Admin key is removed as part of other changes in the update transaction, then all other updates should happen first and the admin key removed last to avoid any `TOKEN_IS_IMMUTABLE` errors.
 - If a key doesn't exist on the Token and a call is made to remove it then return a `TOKEN_HAS_NO_SUPPLY_KEY`, `TOKEN_HAS_NO_PAUSE_KEY` etc. This error response is the same as when trying to update a key that doesn't exist.
 
 ## Backwards Compatibility
@@ -123,7 +138,9 @@ The documentation for the [Token Service - Token Update](https://docs.hedera.com
 
 ## Open Issues
 
-The specification needs updating with something a bit more concrete. I'm not sure if passing `null` is the best way to express removing a key. It might be better to have some constant that does this instead such as `Key.Empty`.
+Greg Scullard raises an important point on why an early decision was made to prevent the removal of keys:
+
+> Generally speaking, whenever a key is set on an entity, it cannot be removed (so the same applies to supply, freeze, etc... keys). This is an early design decision which makes sense for some keys, if you had a freeze key and frozen accounts, unsetting the key would mean these accounts would be frozen for ever, unless a check is made which could be costly in terms of performance… - Greg Scullard [Discord](https://discord.com/channels/373889138199494658/616725732650909710/935199340555800616)
 
 ## References
 
