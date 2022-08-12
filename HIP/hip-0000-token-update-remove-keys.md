@@ -109,11 +109,11 @@ An alternative approach might be to have a dedicated transaction for the removal
 
 An example of removing the wipe key from an NFT
 
-```
+```js
 const transaction = new RemoveKeysTransaction()
-           .setTokenId(tokenId)
- 	.setRemoveWipeKey(true)
-	.freezeWithClient(client);
+  .setTokenId(tokenId)
+  .setRemoveWipeKey(true)
+  .freezeWithClient(client);
 
 // Sign the transaction with the admin key if present on the token or with the wipe key
 const signTx = await transaction.sign(adminKey || wipeKey);
