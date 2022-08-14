@@ -8,7 +8,7 @@ category: Service
 needs-council-approval: Yes
 status: Draft
 created: 2022-08-05
-discussions-to: https://docs.google.com/document/d/1P-qeYaXOcPIKCkTvfqFSbuVWfgrwvf0pwNMbGfurNjI/edit?usp=sharing
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/545
 updated: 2022-10-05, 2022-10-12
 requires:
 replaces:
