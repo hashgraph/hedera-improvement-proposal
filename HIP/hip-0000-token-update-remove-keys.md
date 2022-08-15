@@ -1,8 +1,8 @@
 ---
 hip: 0000
 title: Remove Existing Keys From A Token
-author: Justyn Spooner (justyn@dovu.io)
-working-group: Justyn Spooner (justyn@dovu.io)
+author: Justyn Spooner <justyn@dovu.io>
+working-group: Justyn Spooner <justyn@dovu.io>
 type: Standards Track
 category: Service
 needs-council-approval: Yes
