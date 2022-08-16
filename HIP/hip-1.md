@@ -223,9 +223,8 @@ Each HIP must begin with a header preamble in a table format. The headers must a
 
 - hip: HIP number (this is determined by the PR number and set by the editor)
 - title: HIP title
-- author: a list of the author's or authors' name(s) and/or username(s), or name(s) and email(s).
-- working-group\*: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
-- implementer: person or group of people willing to implement the work
+- author: a list of the author's or authors' name(s) and/or username(s), or name(s) and email(s)
+- working-group\*: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s)
 - type: Standards Track | Informational | Process
 - category\*: Core | Service | API | Mirror | Application
 - needs-council-approval: Yes | No
