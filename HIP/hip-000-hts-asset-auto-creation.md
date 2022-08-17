@@ -14,15 +14,15 @@ requires: 32
 
 ## Abstract
 
-[HIP-32](https://hips.hedera.com/hip/hip-32) defined a new way to create a Hedera account, by submitting a `CryptoTransfer` 
+[HIP-32](https://hips.hedera.com/hip/hip-32) defined a new way to create a Hedera account by submitting a `CryptoTransfer` 
 that sends hbar to a protobuf representation of a key called an _alias_.
 
-When this alias has not already been used `CryptoTransfer`, **and** the sent hbar is enough to cover the account creation 
-fee, then the network creates a new account with the key implied by the alias. It deducts the account creation fee from 
-the sent hbar, and uses whatever is left over as the new account's balance. 
+When an account is not already using the alias, **and** the sent hbar is enough to cover the account creation fee, then 
+the network creates a new account with the key implied by the alias. It deducts the account creation fee from 
+the sent hbar, and the new account's balance is the remaining hbar. 
 
-Thus auto-account creation does not work if sending only a units of a fungible token or an NFT to a new alias, 
-because an hbar fee cannot be deducted from HTS assets. 
+Thus auto-account creation does not work if sending only a unit of a fungible token or an NFT to a new alias, 
+because HTS assets may not have fees deducted from them. 
 
 We propose to support auto-creation via HTS assets by charging the account creation fee to the payer of the triggering 
 `CryptoTransfer`. This means a new alias may be given anywhere in the transaction; both in the hbar transfer list, or in 
@@ -42,7 +42,7 @@ account has been created by sending it value.
 ## Rationale
 
 We cannot provide free account creation, for the same DOS risks outlined in HIP-32. There is also no reasonable way to 
-convert HTS token units or NFTs into hbar. It follows that the only solution to extend `CryptoTransfer` auto-creation to 
+convert HTS token units or NFTs into hbar. Therefore, a solution to extend `CryptoTransfer` auto-creation to 
 HTS assets is to deduct the account creation fee from the `CryptoTransfer` payer.
 
 ## User stories
@@ -54,11 +54,11 @@ than first submitting a `CryptoCreate`, then a `TokenAssociate`, then a `CryptoT
 ## Specification
 
 The technical specification for this HIP requires three changes in the network:
- - Instead of returning `INVALID_ACCOUNT_ID` when a new alias is credited with a non-hbar asset,
-run the same auto-creation logic that runs today when a new alias is credited with hbar.
+ - Instead of returning `INVALID_ACCOUNT_ID` when a `CryptoTransfer` attempts to credit a new alias
+ with a non-hbar asset, run the same auto-creation logic that runs today when crediting a new alias with hbar.
  - Instead of deducting the account creation fee from the assets being transferred to a new 
 alias, charge this creation fee to the `CryptoTransfer` payer account.
- - When a new alias is receiving _n_ different types of HTS assets, create the synthetic `CryptoCreate` 
+ - When a new alias receives _n_ different types of HTS assets, create the synthetic `CryptoCreate` 
 transaction with `maxAutoAssociationSlots=n`.
 
 ## Backwards Compatibility
@@ -83,7 +83,7 @@ on the reference implementation.
 
 ## Rejected Ideas
 
-We briefly considered requiring a simultaneous hbar payment upon auto-creation with an HTS assets; but this would have
+We briefly considered requiring a simultaneous hbar payment upon auto-creation with HTS assets, but this would have
 eliminated most of the usability gains intended with the HIP.
 
 ## Open Issues
