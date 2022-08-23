@@ -32,6 +32,10 @@ jobs:
 
             for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
               gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
+
+              if [[ ${arrayOfStatuses[$i]} == " Last Call" ]]; then
+                gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
+              fi
             done
 
         
