@@ -6,7 +6,7 @@ working-group: Neeha Sompalli (@Neeharika-Sompalli), Ali Katamjani (ali@swirldsl
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2022-08-08
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/541
 requires: 32
