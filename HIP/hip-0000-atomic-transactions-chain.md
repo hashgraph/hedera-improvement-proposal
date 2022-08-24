@@ -1,7 +1,7 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 0000
 title: Atomic transactions chain
-author: Piotr Swierzy <piotr.swierzy@arianelabs.com> aka @se7enarianelabs
+author: Piotr Swierzy <piotr.swierzy@arianelabs.com>
 type: Standards Track
 category: Service
 needs-council-approval: Yes
