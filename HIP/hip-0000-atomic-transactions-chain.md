@@ -1,6 +1,6 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
-title: Atomic transactions chains
+title: Atomic transactions chain
 author: Piotr Swierzy <piotr.swierzy@arianelabs.com> aka @se7enarianelabs
 type: Standards Track
 category: Service
