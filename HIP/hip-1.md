@@ -235,6 +235,7 @@ Each HIP must begin with a header preamble in a table format. The headers must a
 - requires\*: HIP number(s)
 - replaces\*: HIP number(s)
 - superseded-by\*: HIP number(s)
+- release\*: release version of implementation
 
 Headers that permit lists must separate elements with commas.
 
@@ -317,6 +318,10 @@ HIPs may have a requires header, indicating the HIP numbers that this HIP depend
 #### `superseded-by` and `replaces` headers
 
 HIPs may also have a superseded-by header indicating that a HIP has been rendered obsolete by a later document; the value is the number of the HIP that replaces the current document. The current document must change status to "Replaced" once the superseding HIP is changed to "Final" status. The newer HIP must have a replaces header containing the number of the HIP that it rendered obsolete.
+
+#### `release` header
+
+The release header indicates when the HIP was implemented on the network (vX.Y.Z), e.g. 0.29.0.
 
 ### Linking to other HIPs
 
