@@ -70,7 +70,7 @@ function validateHeaders(headers) {
     }
 
     if (!regexs.type.test(headers)) {
-      throw 'header must mast one of the following types exactly ' +
+      throw 'header must match one of the following types exactly ' +
       '"type: Standards Track | Informational | Process"';
     }
 
