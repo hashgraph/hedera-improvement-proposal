@@ -14,11 +14,11 @@ updated: 2022-08-05, 2022-08-12, 2022-08-16, 2022-09-06
 
 ## Abstract
 
-This proposal will result in a modification to the `TokenUpdateTransaction` feature to allow the admin key to sign an update to remove itself and/or any other key (Wipe, KYC, Freeze, Pause, Supply, Fee Schedule) from a Token. Each key will also be able to sign an update to remove itself from the token.
+All entities across Hedera have opt-in administrative keys. Currently, the Consensus Service and File service allow these keys to be removed (making the entities immutable). However the Contract and Token Services do not provide such a feature consistently. We should enable existing administrative keys for these entities to be able to sign an update transaction that permanently removes any privileged key (Admin, Wipe, KYC, Freeze, Pause, Supply, Fee Schedule) from the entity.
 
 ## Motivation
 
-Many NFT projects require that their Token remains immutable yet many project owners have unknowingly created NFTs with keys such as Admin, Wipe, Freeze and Pause set which undermines this assumption.
+Many NFT projects require that their Token remains immutable yet some project owners have unknowingly created NFTs with keys such as Admin, Wipe, Freeze and Pause set which undermines this assumption.
 
 The majority of collectors will also be unaware of the implications of having these keys set on the NFTs they have purchased.
 
@@ -27,6 +27,10 @@ For example, an NFT with a [Wipe Key](https://docs.hedera.com/guides/docs/sdks/t
 Right now there is no way to remove keys (Admin, Wipe, KYC, Freeze, Pause, Supply, Fee Schedule) from a Token. They can only be updated.
 
 ## Rationale
+
+Currently you’re either in an admin world, or an admin-less world, on Hedera. It’s often preferable to launch in an administrative capacity to ensure things are operating smoothly, and transition into a more admin-less world overtime.
+
+We should also let creators fix mistakes in their token keys. We present some community comments around the subject below:
 
 Ashe Oro raised the following question in this [tweet](https://twitter.com/Ashe_Oro/status/1553089797610160128)
 
@@ -40,7 +44,7 @@ Ashe Oro raised the following question in this [tweet](https://twitter.com/Ashe_
 
 A large proportion of the creators of those 66,914 NFTs are likely unaware of the implications those keys have on their collection.
 
-Without highlighting specific projects in this HIP, there are a number of high profile NFT collections circulating right now that have some or all of these keys set. After reaching out to a few of the creators, the first thing they have all said is that they did not realise and how can we remove them.
+There are a number of high profile NFT collections circulating right now that have some or all of these keys set. After reaching out to a few of the creators, the first thing they have all said is that they did not realise and how can we remove them.
 
 These conversations have led to this HIP as right now there is no way for a creator to address this issue in their collections which are already distributed to collectors.
 
@@ -71,11 +75,11 @@ Neither of these approaches is ideal and could easily be solved by allowing the 
 - As a creator I want to remove the Admin Key on my existing NFT collection so that I can be sure my NFT is immutable.
 - As a creator I want the flexibility to remove keys as my project evolves. For example, I might start out with KYC as a requirement and later decide that it is not necessary.
 - As an NFT minting service I want to be able to mint an NFT collection on behalf of a creator using our private key and then update the treasury account to the creator's account whilst simultaneously removing the admin key so the creator ends up with an immutable NFT collection in their treasury account.
-- As a creator of an NFT which has no Admin Key but does have a Wipe Key, I want to be able to remove the Wipe Key
+- As an author of a smart contract that I am now happy is operating smoothly, I would like to remove the admin key
 
 ## Specification
 
-There are two approaches I see how this feature could manifest itself in the SDKs. I'll use the JS SDK as an example.
+Two possible approaches are presented using the JS SDK for demonstration using the HTS Token entity as an example. The same approaches could be take for the `ContractUpdateTransaction`.
 
 ### Option 1. Extend `TokenUpdateTransaction` to Support Removing Keys
 
@@ -101,10 +105,13 @@ let transaction = new TokenUpdateTransaction({
   supplyKey: Key.None,
   feeScheduleKey: Key.None,
   adminKey: Key.None,
-});
+}).freezeWithClient(client);
+
+// Sign the transaction with the admin key
+const signTx = await transaction.sign(adminKey);
 ```
 
-We can’t use `null` as the value for these fields because behind the scenes protobuf removes them for optimisation. This is why a constant is used here instead - `Key.None`.
+We can’t use `null` as the value for these fields because behind the scenes protobuf removes them for optimisation. This is why a constant is used here instead - `Key.None`. `Key.None` could equally be swapped out with an empty KeyList, however, the dedicated enum provides a clearer intent which is crucial when dealing with a transaction that can't be reversed.
 
 ### Option 2. Dedicated Remove Key Action
 
@@ -123,11 +130,11 @@ const transaction = new RemoveKeysTransaction()
   .setRemoveKey(Key.Wipe)
   .freezeWithClient(client);
 
-// Sign the transaction with the admin key if present on the token or with the wipe key
-const signTx = await transaction.sign(adminKey || wipeKey);
+// Sign the transaction with the admin key
+const signTx = await transaction.sign(adminKey);
 ```
 
-**An example of removing multiple keys from a Token that has no Admin Key set**
+**An example of removing multiple keys from a Token**
 
 ```js
 const transaction = new RemoveKeysTransaction()
@@ -135,20 +142,23 @@ const transaction = new RemoveKeysTransaction()
   .setRemoveKeys([Key.Pause, Key.FeeSchedule, Key.Kyc])
   .freezeWithClient(client);
 
-// Sign the transaction with each key we want to remove from the token
-const signPauseTx = await transaction.sign(pauseKey);
-const signFeeScheduleTx = await transaction.sign(feeScheduleKey);
-const signKycTx = await transaction.sign(kycKey);
+// Sign the transaction with the admin key
+const signPauseTx = await transaction.sign(adminKey);
 ```
 
 **Requirements**
 
-- If the Admin key is removed as part of other changes in the update transaction, then all other updates should happen first and the admin key removed last to avoid any `TOKEN_IS_IMMUTABLE` errors.
+- If the Admin key is removed as part of the update transaction, then all other updates should happen first and the admin key removed last to avoid any `TOKEN_IS_IMMUTABLE` errors.
 - If a key doesn't exist on the Token and a call is made to remove it then return a `TOKEN_HAS_NO_SUPPLY_KEY`, `TOKEN_HAS_NO_PAUSE_KEY` etc. This error response is the same as when trying to update a key that doesn't exist.
+- All transactions to remove a key must be signed with the admin key so if a token has no admin key, then any other keys present can't be removed.
 
 ## Backwards Compatibility
 
+This change is fully backwards compatible & opt-in. Existing entities that have been created with administrative keys can continue operating as desired. Entities that have been created without administrative keys can continue operating as desired.
+
 ## Security Implications
+
+Generally with administrative keys there are security requirements about how to secure and manage these secrets. This becomes increasingly important with this change, as a potential attacker could gain access to the admin keys and subsequently remove them from the entity - however, this would effectively lock/freeze them out, as it would the original administrator. These security considerations are not unique to this proposal and generally consistent with all keys attached to entities within the Hedera network.
 
 ## How to Teach This
 
@@ -160,7 +170,7 @@ The documentation for the [Token Service - Token Update](https://docs.hedera.com
 
 ## Open Issues
 
-Greg Scullard raises an important point on why an early decision was made to prevent the removal of keys:
+Greg Scullard raises an important point on why an early decision was made to prevent the removal of keys. This should be discussed as part of this HIP review so everyone is clear how removing certain keys could affect the token.
 
 > Generally speaking, whenever a key is set on an entity, it cannot be removed (so the same applies to supply, freeze, etc... keys). This is an early design decision which makes sense for some keys, if you had a freeze key and frozen accounts, unsetting the key would mean these accounts would be frozen for ever, unless a check is made which could be costly in terms of performance… - Greg Scullard [Discord](https://discord.com/channels/373889138199494658/616725732650909710/935199340555800616)
 
