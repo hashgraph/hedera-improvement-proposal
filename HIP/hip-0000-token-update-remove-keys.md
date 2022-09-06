@@ -5,7 +5,7 @@ author: Justyn Spooner <justyn@dovu.io>
 working-group: Justyn Spooner <justyn@dovu.io>
 type: Standards Track
 category: Application
-needs-council-approval: Yes
+needs-council-approval: No
 status: Draft
 created: 2022-08-05
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/522
