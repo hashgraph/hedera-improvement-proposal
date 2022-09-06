@@ -2,7 +2,7 @@
 hip: 0000
 title: Remove Existing Keys From A Token
 author: Justyn Spooner <justyn@dovu.io>
-working-group: Justyn Spooner <https://twitter.com/justynjj>, Cooper Kunz <https://twitter.com/cooper_kunz>, Jason Fabritz <https://twitter.com/bugbytesinc>
+working-group: Justyn Spooner (@justynjj), Cooper Kunz (@cooper_kunz), Jason Fabritz (@bugbytesinc)
 type: Standards Track
 category: Application
 needs-council-approval: No
