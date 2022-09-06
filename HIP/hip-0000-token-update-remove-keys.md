@@ -8,7 +8,7 @@ category: Application
 needs-council-approval: Yes
 status: Draft
 created: 2022-08-05
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/545
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/522
 updated: 2022-08-05, 2022-08-12, 2022-08-16, 2022-09-06
 ---
 
