@@ -297,7 +297,7 @@ Alternatively, you can use [Arweave](https://www.arweave.org/), receiving a simi
 
 ### properties.files.localization.locale
 
-**Type:** string (two-letter language code according to [ISO 639-1 standard](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+**Type:** string (two-letter language code according to [ISO 639-1 standard](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes))
 
 **Required**
 
