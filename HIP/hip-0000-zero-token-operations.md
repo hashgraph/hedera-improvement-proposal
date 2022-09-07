@@ -48,13 +48,14 @@ N/A
 
 ## Reference Implementation
 #### Example :
-Example of a transfer transaction that should be allowed if a 0 amount is passed.
-```js
+Example of a mint transaction that should be allowed if a 0 amount is passed.
+```
 function mint(uint amount) external {
         balanceOf[msg.sender] += amount;
         totalSupply += amount;
         emit Transfer(address(0), msg.sender, amount);
  }
+ ```
 
 ## Rejected Ideas
 
