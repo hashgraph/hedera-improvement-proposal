@@ -25,6 +25,10 @@ DeFi contracts using ERC20 standard may mint, burn, and transfer zero tokens.
 
 The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
 
+When we deprecate farms in our farm contracts by giving them a weighting of 0, the network rejects 0 units in these operations, forcing contract developers to include special cases that would not be necessary on most networks. Currently, all 'SafeHederaTokenService' calls (meaning they require HederaResponseCode.SUCCESS) must be qualified with a statement `if(amount > 0)`, as a 0 amount would result in HederaResponseCode.INVALID_TOKEN_MINT_AMOUNT or similar.
+
+Importantly, ERC20 token standard allows for 0 amount mint, burn, transfer, etc.
+
 ## User stories
 
 As a solidity developer, I would like to send 0 tokens in my smart contracts. 
