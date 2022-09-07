@@ -2,7 +2,6 @@
 hip: 0000
 title: Zero unit token operations in smart contracts
 author: Matthew DeLorenzo <mdelore.ufl@gmail.com>, Vae Vecturne <vea.vecturne@gmail.com>
-working-group:
 type: Standards track
 category: Service
 needs-council-approval: Yes
@@ -17,13 +16,11 @@ Integer rounding will naturally lead to DeFi contracts sometimes minting or tran
 
 ## Motivation
 
-To reduce code, if statement checks, etc inside smart contracts and make DeFi contracts easier to use. To reduce bugs in DeFi applications involving math and rounding.
+Currently, whenever a zero value parameter passes through a mint, burn or transfer transaction, the network rejects it immediately. Frequently this happens with integer rounding calculations in smart contracts. To get around it, contract developers must check for a non-zero value to submit mint, burn or transfer transactions, which is inconsistent with most other networks. This hip will eliminate `if` statements checking for zero before mint, burn or transfer transactions in smart contracts making them easier to use and be in alignment with most other networks.
 
 ## Rationale
 
 DeFi contracts using ERC20 standard may mint, burn, and transfer zero tokens.
-
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
 
 When we deprecate farms in our farm contracts by giving them a weighting of 0, the network rejects 0 units in these operations, forcing contract developers to include special cases that would not be necessary on most networks. Currently, all 'SafeHederaTokenService' calls (meaning they require HederaResponseCode.SUCCESS) must be qualified with a statement `if(amount > 0)`, as a 0 amount would result in HederaResponseCode.INVALID_TOKEN_MINT_AMOUNT or similar.
 
@@ -43,15 +40,21 @@ This would be backward compatible.
 
 ## Security Implications
 
-
+N/A
 
 ## How to Teach This
 
-
+N/A
 
 ## Reference Implementation
-
-
+#### Example :
+Example of a transfer transaction that should be allowed if a 0 amount is passed.
+```js
+function mint(uint amount) external {
+        balanceOf[msg.sender] += amount;
+        totalSupply += amount;
+        emit Transfer(address(0), msg.sender, amount);
+ }
 
 ## Rejected Ideas
 
