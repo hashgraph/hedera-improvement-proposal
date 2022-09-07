@@ -5,7 +5,7 @@ author: Matthew DeLorenzo <mdelore.ufl@gmail.com>, Vae Vecturne <vea.vecturne@gm
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2022-09-01
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/563
 ---
