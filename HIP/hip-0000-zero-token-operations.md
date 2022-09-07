@@ -1,18 +1,14 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 0000
 title: Zero unit token operations in smart contracts
-author: littletarzan, vae.vecturne
+author: Matthew DeLorenzo <mdelore.ufl@gmail.com>, Vae Vecturne <vea.vecturne@gmail.com>
 working-group:
 type: Standards track
 category: Service
-needs-council-approval: No
+needs-council-approval: Yes
 status: Draft
-created: Sept 1, 2022
+created: 2022-09-01
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/563
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
 ---
 
 ## Abstract
