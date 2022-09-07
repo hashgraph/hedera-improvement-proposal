@@ -32,7 +32,7 @@ The rationale should provide evidence of consensus within the community and disc
 ## User stories
 
 Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
-
+  
 ## Specification
 
 The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
