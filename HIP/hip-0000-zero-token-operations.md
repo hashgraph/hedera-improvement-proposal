@@ -2,7 +2,7 @@
 hip: 0000
 title: Zero unit token operations in smart contracts
 author: Matthew DeLorenzo <mdelore.ufl@gmail.com>, Vae Vecturne <vea.vecturne@gmail.com>
-type: Standards track
+type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Draft
