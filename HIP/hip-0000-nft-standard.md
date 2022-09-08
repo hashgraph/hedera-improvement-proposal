@@ -146,7 +146,7 @@ It's recommended to host your file on [IPFS](https://ipfs.io/) and use a service
 Alternatively, you can use [Arweave](https://www.arweave.org/), receiving a similar CID that looks like this: `ar://<hash>`.
 
 
-### image_integrity
+### sha256_checksum
 
 **Type:** string (SHA-256)
 
