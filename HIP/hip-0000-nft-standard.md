@@ -37,14 +37,14 @@ This HIP focuses on:
   
 ## Specification
 
-Below is the human-readable schema, presented to maximize clarity. 
+Below is the human-readable schema, presented to maximize clarity. This document also includes a Formal JSON Schema definition to assist in data validation and describe the data in formal terms. **[See the Formal JSON Schema Definition](#formal-json-schema-definition) section below.**
 
 ```json
 {
     "name": "NFT name (required)",
     "creator": "artist (required)",
     "creatorDID": "DID URI (optional)",
-    "description": "human readable description of the asset (recommended)",
+    "description": "human readable description of the asset (required)",
     "image": "cid or path to the NFT's preview image file (required)",
     "sha256_checksum": "SHA-256 digest of the file pointed by the image field (recommended)",
     "type": "MIME type (required)",
@@ -233,7 +233,7 @@ Alternatively, you can use [Arweave](https://www.arweave.org/), receiving a simi
 
 **Optional (recommended)**
 
-**Description:** SHA-256 digest of the file pointed by the `properties.files.uri` property. The `sha256_checksum` property that contains a cryptographic hash of the representation of the resource the author expects to load (just like the `image_integrity` property).
+**Description:** SHA-256 digest of the file pointed by the `properties.files.uri` property. The `sha256_checksum` property that contains a cryptographic hash of the representation of the resource the author expects to load (just like the `sha256_checksum` property).
 
 For instance, an author may wish to load some image from a shared server. Specifying that the expected SHA-256 hash of https://example.com/image.jpeg is ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad means that the user agent can verify that the data it loads from that URL matches that expected hash before loading the NFT. This integrity verification significantly reduces the risk that an attacker can substitute malicious content.
 
@@ -409,7 +409,7 @@ To give an example, imagine an NFT with the `trait_type: mouth`. Possible values
 
 #### Example Schema: Full specification implementation for image
 
-An example of a full implementation of the metadata schema described in the above specification for an image-based NFT. We are setting the image field to a URI and including the `image_integrity` field which represents a hash of the provided image. The `properties.files` array contains the main image hosted on IPFS, also including a checksum for validation purposes. No additional properties are defined on the JSON object.
+An example of a full implementation of the metadata schema described in the above specification for an image-based NFT. We are setting the image field to a URI and including the `sha256_checksum` field which represents a hash of the provided image. The `properties.files` array contains the main image hosted on IPFS, also including a checksum for validation purposes. No additional properties are defined on the JSON object.
 
 ```json
 {
@@ -418,7 +418,7 @@ An example of a full implementation of the metadata schema described in the abov
     "creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
     "description": "This describes my NFT",
     "image": "https://myserver.com/nft-001.png",
-    "image_integrity": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
     "type": "image/png",
     "format": "HIP500",
     "properties" : {
@@ -468,7 +468,7 @@ An example of a video NFT with a preview `image` and added localization for the 
     "creator": "Jane Doe, John Doe",
     "description": "This describes my video NFT",
     "image": "https://myserver.com/video-preview.png",
-    "image_integrity": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
     "type": "image/png",
     "format": "HIP500",
     "properties" : {
@@ -508,7 +508,7 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
     "creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
     "description": "This describes my NFT",
     "image": "https://myserver.com/preview-001.png",
-    "image_integrity": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
     "type": "image/png",
     "format": "HIP500",
     "properties" : {
@@ -548,6 +548,194 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
 }
 ```
 
+
+## Formal JSON Schema Definition
+
+The following is the formal definition of this schema using JSON Schema notation. JSON Schema assists in metadata validation and describes the data in the schema in more formal terms. **Despite looking like JSON, this is NOT how actual metadata should look. If you are creating the metadata file for an NFT do not use this definition as a reference.** For more info, see [JSON-schema.org](https://json-schema.org/).
+
+```json
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+            "description": "Identifies the asset to which this token represents."
+		},
+		"creator": {
+			"type": "string",
+            "description": "Identifies the artist name(s)."
+		},
+		"creatorDID": {
+			"type": "string",
+            "format": "uri",
+            "description": "Points to a decentralized identifier to identify the creator.",
+		},
+		"description": {
+			"type": "string",
+            "description": "Describes the asset to which this token represents."
+		},
+		"image": {
+			"type": "string",
+            "format": "uri",
+            "description": "A URI pointing to a preview image resource."
+		},
+		"sha256_checksum": {
+			"type": "string",
+            "description": "Cryptographic hash of the representation of the 'image' resource."
+		},
+		"type": {
+			"type": "string",
+            "description": "Sets the MIME type for the 'image' resource."
+		},
+		"format": {
+			"type": "string",
+            "description": "Name of the format or schema used by the NFT."
+		},
+		"properties": {
+			"type": "object",
+			"properties": {
+				"files": {
+					"type": "array",
+					"items": {
+                        "type": "object",
+                        "properties": {
+                            "uri": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "A URI pointing to a resource."
+                            },
+                            "sha256_checksum": {
+                                "type": "string",
+                                "description": "Cryptographic hash of the representation of the 'uri' resource."
+                            },
+                            "type": {
+                                "type": "string",
+                                "description": "Sets the MIME type for the 'image' resource."
+                            },
+                            "is_default_file": {
+                                "type": "boolean",
+                                "description": "Indicates if this file object is the main file representing the NFT."
+                            },
+                            "metadata": {
+                                "type": "object",
+                                "description": "Represents a nested metadata object for the file."
+                            },
+                            "metadata_uri": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "A URI pointing to a metadata resource."
+                            },
+                            "localization": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "uri": {
+                                            "type": "string",
+                                            "format": "uri",
+                                            "description": "A URI pointing to a localized resource."
+                                        },
+                                        "locale": {
+                                            "type": "string",
+                                            "description": "Sets the two-letter language code for the localization resource."
+                                        }
+                                    },
+                                    "required": [
+                                        "uri",
+                                        "locale"
+                                    ]
+                                }
+                            },
+                        },
+                        "required": [
+                            "uri",
+                            "type"
+                        ]
+                    }
+				},
+				"collection": {
+					"type": "string",
+                    "description": "Defines a collection name."
+				},
+				"external_url": {
+					"type": "string",
+                    "format": "uri",
+                    "description": "A URI pointing to an informational page about the NFT."
+				}
+			},
+			"required": [
+				"files"
+			]
+		},
+		"attributes": {
+			"type": "array",
+            "contains": {
+                "type": "object"
+            },
+            "minContains": 1,
+			"items": {
+                "type": "object",
+                "properties": {
+                    "trait_type": {
+                        "type": "string",
+                        "description": "Name of trait."
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "Value for trait."
+                    },
+                    "max_value": {
+                        "type": "string",
+                        "description": "Maximum value for trait."
+                    }
+                },
+                "required": [
+                    "trait_type",
+                    "value"
+                ]
+			}
+		},
+		"localization": {
+			"type": "array",
+			"items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Identifies the asset to which this token represents."
+                    },
+                    "creator": {
+                        "type": "string",
+                        "description": "Identifies the artist name(s).",
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Describes the asset to which this token represents."
+                    },
+                    "locale": {
+                        "type": "string",
+                        "description": "Sets the two-letter language code for the localization resource."
+                    }
+                },
+                "required": [
+                    "description",
+                    "locale"
+                ]
+            }
+		}
+	},
+	"required": [
+		"name",
+		"creator",
+		"image",
+		"type",
+		"format",
+		"properties",
+		"attributes"
+	]
+}
+```
 
 ## Backwards Compatibility with existing NFTs?
 
