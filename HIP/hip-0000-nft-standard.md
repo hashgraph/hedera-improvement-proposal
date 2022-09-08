@@ -46,7 +46,7 @@ Below is the human-readable schema, presented to maximize clarity.
     "creatorDID": "DID URI (optional)",
     "description": "human readable description of the asset (recommended)",
     "image": "cid or path to the NFT's preview image file (required)",
-    "image_integrity": "SHA-256 digest of the file pointed by the image field (recommended)",
+    "sha256_checksum": "SHA-256 digest of the file pointed by the image field (recommended)",
     "type": "MIME type (required)",
     "format": "standard specification (required - i.e. none, opensea, HIPXXX, hashaxis)",
     "properties": {
