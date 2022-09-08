@@ -560,37 +560,37 @@ The following is the formal definition of this schema using JSON Schema notation
 	"properties": {
 		"name": {
 			"type": "string",
-            "description": "Identifies the asset to which this token represents."
+			"description": "Identifies the asset to which this token represents."
 		},
 		"creator": {
 			"type": "string",
-            "description": "Identifies the artist name(s)."
+			"description": "Identifies the artist name(s)."
 		},
 		"creatorDID": {
 			"type": "string",
-            "format": "uri",
-            "description": "Points to a decentralized identifier to identify the creator.",
+			"format": "uri",
+			"description": "Points to a decentralized identifier to identify the creator.",
 		},
 		"description": {
 			"type": "string",
-            "description": "Describes the asset to which this token represents."
+			"description": "Describes the asset to which this token represents."
 		},
 		"image": {
 			"type": "string",
-            "format": "uri",
-            "description": "A URI pointing to a preview image resource."
+			"format": "uri",
+			"description": "A URI pointing to a preview image resource."
 		},
 		"sha256_checksum": {
 			"type": "string",
-            "description": "Cryptographic hash of the representation of the 'image' resource."
+			"description": "Cryptographic hash of the representation of the 'image' resource."
 		},
 		"type": {
 			"type": "string",
-            "description": "Sets the MIME type for the 'image' resource."
+			"description": "Sets the MIME type for the 'image' resource."
 		},
 		"format": {
 			"type": "string",
-            "description": "Name of the format or schema used by the NFT."
+			"description": "Name of the format or schema used by the NFT."
 		},
 		"properties": {
 			"type": "object",
@@ -598,70 +598,70 @@ The following is the formal definition of this schema using JSON Schema notation
 				"files": {
 					"type": "array",
 					"items": {
-                        "type": "object",
-                        "properties": {
-                            "uri": {
-                                "type": "string",
-                                "format": "uri",
-                                "description": "A URI pointing to a resource."
-                            },
-                            "sha256_checksum": {
-                                "type": "string",
-                                "description": "Cryptographic hash of the representation of the 'uri' resource."
-                            },
-                            "type": {
-                                "type": "string",
-                                "description": "Sets the MIME type for the 'image' resource."
-                            },
-                            "is_default_file": {
-                                "type": "boolean",
-                                "description": "Indicates if this file object is the main file representing the NFT."
-                            },
-                            "metadata": {
-                                "type": "object",
-                                "description": "Represents a nested metadata object for the file."
-                            },
-                            "metadata_uri": {
-                                "type": "string",
-                                "format": "uri",
-                                "description": "A URI pointing to a metadata resource."
-                            },
-                            "localization": {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "uri": {
-                                            "type": "string",
-                                            "format": "uri",
-                                            "description": "A URI pointing to a localized resource."
-                                        },
-                                        "locale": {
-                                            "type": "string",
-                                            "description": "Sets the two-letter language code for the localization resource."
-                                        }
-                                    },
-                                    "required": [
-                                        "uri",
-                                        "locale"
-                                    ]
-                                }
-                            },
-                        },
-                        "required": [
-                            "uri",
-                            "type"
-                        ]
-                    }
+						"type": "object",
+						"properties": {
+							"uri": {
+								"type": "string",
+								"format": "uri",
+								"description": "A URI pointing to a resource."
+							},
+							"sha256_checksum": {
+								"type": "string",
+								"description": "Cryptographic hash of the representation of the 'uri' resource."
+							},
+							"type": {
+								"type": "string",
+								"description": "Sets the MIME type for the 'image' resource."
+							},
+							"is_default_file": {
+								"type": "boolean",
+								"description": "Indicates if this file object is the main file representing the NFT."
+							},
+							"metadata": {
+								"type": "object",
+								"description": "Represents a nested metadata object for the file."
+							},
+							"metadata_uri": {
+								"type": "string",
+								"format": "uri",
+								"description": "A URI pointing to a metadata resource."
+							},
+							"localization": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"uri": {
+											"type": "string",
+											"format": "uri",
+											"description": "A URI pointing to a localized resource."
+										},
+										"locale": {
+											"type": "string",
+											"description": "Sets the two-letter language code for the localization resource."
+										}
+									},
+									"required": [
+										"uri",
+										"locale"
+									]
+								}
+							},
+						},
+						"required": [
+							"uri",
+							"type"
+						]
+					}
 				},
 				"collection": {
 					"type": "string",
-                    "description": "Defines a collection name."
+					"description": "Defines a collection name."
 				},
 				"external_url": {
 					"type": "string",
-                    "format": "uri",
-                    "description": "A URI pointing to an informational page about the NFT."
+					"format": "uri",
+					"description": "A URI pointing to an informational page about the NFT."
 				}
 			},
 			"required": [
@@ -670,59 +670,59 @@ The following is the formal definition of this schema using JSON Schema notation
 		},
 		"attributes": {
 			"type": "array",
-            "contains": {
-                "type": "object"
-            },
-            "minContains": 1,
+			"contains": {
+				"type": "object"
+			},
+			"minContains": 1,
 			"items": {
-                "type": "object",
-                "properties": {
-                    "trait_type": {
-                        "type": "string",
-                        "description": "Name of trait."
-                    },
-                    "value": {
-                        "type": "string",
-                        "description": "Value for trait."
-                    },
-                    "max_value": {
-                        "type": "string",
-                        "description": "Maximum value for trait."
-                    }
-                },
-                "required": [
-                    "trait_type",
-                    "value"
-                ]
+				"type": "object",
+				"properties": {
+					"trait_type": {
+						"type": "string",
+						"description": "Name of trait."
+					},
+					"value": {
+						"type": "string",
+						"description": "Value for trait."
+					},
+					"max_value": {
+						"type": "string",
+						"description": "Maximum value for trait."
+					}
+				},
+				"required": [
+					"trait_type",
+					"value"
+				]
 			}
 		},
 		"localization": {
 			"type": "array",
 			"items": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "Identifies the asset to which this token represents."
-                    },
-                    "creator": {
-                        "type": "string",
-                        "description": "Identifies the artist name(s).",
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "Describes the asset to which this token represents."
-                    },
-                    "locale": {
-                        "type": "string",
-                        "description": "Sets the two-letter language code for the localization resource."
-                    }
-                },
-                "required": [
-                    "description",
-                    "locale"
-                ]
-            }
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Identifies the asset to which this token represents."
+					},
+					"creator": {
+						"type": "string",
+						"description": "Identifies the artist name(s).",
+					},
+					"description": {
+						"type": "string",
+						"description": "Describes the asset to which this token represents."
+					},
+					"locale": {
+						"type": "string",
+						"description": "Sets the two-letter language code for the localization resource."
+					}
+				},
+				"required": [
+					"description",
+					"locale"
+				]
+			}
 		}
 	},
 	"required": [
