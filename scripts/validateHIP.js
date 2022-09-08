@@ -136,7 +136,7 @@ function validateNames(line) {
                 element => {
                   const words = element.split(': ');
                   if (!regexs.name.test(words[words.length - 1])) {
-                    throw 'name is improperly formatted, resubmit PR in the form ex: author: Firstname Lastname <@gitName or email>'
+                    throw 'name is improperly formatted, resubmit PR in the form ex: (author|working-group): Firstname Lastname <@gitName or email>'
                   }
                 }
               )
