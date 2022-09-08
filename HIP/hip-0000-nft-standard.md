@@ -78,6 +78,15 @@ Below is the human-readable schema, presented to maximize clarity.
             "value": "value for this trait (required)",
             "max_value": "maximum possible value for this trait (optional)"
         }
+    ],
+    "localization": [
+        // optional localization array (only for root-level properties)
+        {
+            "name": "localized NFT name (optional)",
+            "creator": "localized artist name (optional)",
+            "description": "localized description (required)",
+            "locale": "language identifier (required)"
+        }
     ]
     // no additional root-level properties allowed - properties array should contain additional properties you may require
 }
@@ -360,6 +369,42 @@ To give an example, imagine an NFT with the `trait_type: mouth`. Possible values
 **Description:** Adding an optional `max_value` sets a ceiling for a numerical trait's possible values. **NFT tooling should default this value to the maximum value seen for a collection.** Only use this property if you want to set a different value than the maximum value seen in the collection. Make sure the `max_value` is equal to or higher than the maximum value seen for your collection.
 
 
+### localization
+
+**Type:** array
+
+**Optional**
+
+**Description:** Allows to add multiple localization objects for root-level properties, such as `name`, `creator`, and `description`.
+
+
+### localization.name
+
+**Type:** string
+
+**Optional**
+
+**Description:** Localized NFT name
+
+
+### localization.creator
+
+**Type:** string
+
+**Optional**
+
+**Description:** Localized artist name
+
+
+### localization.description
+
+**Type:** string
+
+**Required**
+
+**Description:** Localized human-readable description of the NFT.
+
+
 ## Reference Implementation
 
 #### Example Schema: Full specification implementation for image
@@ -399,6 +444,14 @@ An example of a full implementation of the metadata schema described in the abov
         {
             "trait_type": "coolness",
             "value": "50"
+        }
+    ],
+    "localization": [
+        {
+            "name": "Voorbeeld NFT 001",
+            "creator": "Jane Doe, John Doe",
+            "description": "Dit beschrijft mijn NFT",
+            "locale": "nl"
         }
     ]
 }
