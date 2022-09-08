@@ -37,7 +37,12 @@ jobs:
                 gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
               fi
             done
-
+            
+      - name: Delete branch
+        if: github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url
+        uses: SvanBoxel/delete-merged-branch@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         
             
 
