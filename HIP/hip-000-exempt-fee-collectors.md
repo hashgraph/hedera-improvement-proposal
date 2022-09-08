@@ -3,7 +3,8 @@ hip: 000
 title: Blanket exemptions for custom fee collectors
 author: Michael Tinker (@tinker-michaelj)
 working-group: Ken Anderson (@kenthejr), Richard Bair (@rbair23), Nick Poorman (@nickpoorman)
-category: Standards Track
+type: Standards Track
+category: Service
 needs-council-approval: Yes
 status: Draft
 created: 2022-09-08
