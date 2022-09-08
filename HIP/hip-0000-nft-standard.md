@@ -152,7 +152,7 @@ Alternatively, you can use [Arweave](https://www.arweave.org/), receiving a simi
 
 **Optional (recommended)**
 
-**Description:** SHA-256 digest of the file pointed by the `image` property. The `image_integrity` property that contains a cryptographic hash of the representation of the resource the author expects to load. 
+**Description:** SHA-256 digest of the file pointed by the `image` property. The `sha256_checksum` property that contains a cryptographic hash of the representation of the resource the author expects to load. 
 
 For instance, an author may wish to load some image from a shared server. Specifying that the expected SHA-256 hash of https://example.com/image.jpeg is ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad means that the user agent can verify that the data it loads from that URL matches that expected hash before loading the NFT. This integrity verification significantly reduces the risk that an attacker can substitute malicious content.
 
