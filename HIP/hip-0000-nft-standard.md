@@ -597,6 +597,10 @@ The following is the formal definition of this schema using JSON Schema notation
 			"properties": {
 				"files": {
 					"type": "array",
+                    "contains": {
+                        "type": "object"
+                    },
+                    "minContains": 1,
 					"items": {
 						"type": "object",
 						"properties": {
@@ -670,10 +674,6 @@ The following is the formal definition of this schema using JSON Schema notation
 		},
 		"attributes": {
 			"type": "array",
-			"contains": {
-				"type": "object"
-			},
-			"minContains": 1,
 			"items": {
 				"type": "object",
 				"properties": {
