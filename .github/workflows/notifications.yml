@@ -42,7 +42,7 @@ jobs:
         if: github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url
         uses: SvanBoxel/delete-merged-branch@main
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
             
 
