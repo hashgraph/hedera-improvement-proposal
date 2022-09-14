@@ -74,7 +74,7 @@ Below is the human-readable schema, presented to maximize clarity. This document
         // Can only contain trait types for rarity calculation
         {
             "trait_type": "name of trait (required)",
-            "value": "value for this trait (required)",
+            "value": "value for this trait - Allowed types: string, integer, number, boolean (required)",
             "max_value": "maximum possible value for this trait (optional)"
         }
     ],
@@ -341,11 +341,11 @@ Alternatively, you can use [Arweave](https://www.arweave.org/), receiving a simi
 
 ### attributes.value
 
-**Type:** string
+**Type:** Allowed types: string, integer, number, boolean
 
 **Required**
 
-**Description:** Value for trait. Can be a textual or a numeric value. **When using a numeric value, make sure the numeric value is of type integer or float.**
+**Description:** Value for trait.
 
 To give an example, imagine an NFT with the `trait_type: mouth`. Possible values are `bubblegum`, `smiling`, `braces`, or `trumpet`. 
 
@@ -427,12 +427,12 @@ An example of a full implementation of the metadata schema described in the abov
             "value": "red"
         },
         {
-            "trait_type": "mouth",
-            "value": "bubblegum"
+            "trait_type": "hasPipe",
+            "value": true
         },
         {
             "trait_type": "coolness",
-            "value": "50"
+            "value": 50
         }
     ],
     "localization": [
@@ -459,7 +459,7 @@ An example of a video NFT with a preview `image` and added localization for the 
     "image": "https://myserver.com/video-preview.png",
     "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
     "type": "image/png",
-    "format": "HIP500",
+    "format": "HIP412",
     "properties" : {
         "files": [
             {
@@ -531,7 +531,7 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
         },
         {
             "trait_type": "coolness",
-            "value": "50"
+            "value": 50
         }
     ]
 }
@@ -667,7 +667,7 @@ The following is the formal definition of this schema using JSON Schema notation
 						"description": "Name of trait."
 					},
 					"value": {
-						"type": "string",
+						"type": ["string", "integer", "number", "boolean"],
 						"description": "Value for trait."
 					},
 					"max_value": {
