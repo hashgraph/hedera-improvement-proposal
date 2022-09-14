@@ -41,18 +41,18 @@ Below is the human-readable schema, presented to maximize clarity. This document
 
 ```json
 {
-    "name": "NFT name (required)",
-    "creator": "artist (required)",
-    "creatorDID": "DID URI (optional)",
-    "description": "human readable description of the asset (required)",
-    "image": "cid or path to the NFT's preview image file (required)",
-    "sha256_checksum": "SHA-256 digest of the file pointed by the image field (recommended)",
-    "type": "MIME type (required)",
-    "format": "standard specification (required - i.e. none, opensea, HIPXXX, hashaxis)",
-    "properties": {
-        // json object that cover the overarching properties of the token
-        "external_url": "External URI pointing to an informational page about your collection or specific NFT information i.e. www.mynft/collection/<serial>/ (optional)"
-    },
+	"name": "NFT name (required)",
+	"creator": "artist (required)",
+	"creatorDID": "DID URI (optional)",
+	"description": "human readable description of the asset (required)",
+	"image": "cid or path to the NFT's preview image file (required)",
+	"sha256_checksum": "SHA-256 digest of the file pointed by the image field (recommended)",
+	"type": "MIME type (required)",
+	"format": "standard specification (required - i.e. none, opensea, HIPXXX, hashaxis)",
+	"properties": {
+		// json object that cover the overarching properties of the token
+		"external_url": "External URI pointing to an informational page about your collection or specific NFT information i.e. www.mynft/collection/<serial>/ (optional)"
+	},
 	"files": [
 		{
 			"uri": "uri to file (required)",
@@ -370,17 +370,17 @@ An example of a full implementation of the metadata schema described in the abov
 
 ```json
 {
-    "name": "Example NFT 001",
-    "creator": "Jane Doe, John Doe",
-    "creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
-    "description": "This describes my NFT",
-    "image": "https://myserver.com/nft-001.png",
-    "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-    "type": "image/png",
-    "format": "HIP412",
-    "properties" : {
-        "external_url": "https://nft.com/mycollection/001"
-    },
+	"name": "Example NFT 001",
+	"creator": "Jane Doe, John Doe",
+	"creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
+	"description": "This describes my NFT",
+	"image": "https://myserver.com/nft-001.png",
+	"sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+	"type": "image/png",
+	"format": "HIP412",
+	"properties" : {
+		"external_url": "https://nft.com/mycollection/001"
+	},
 	"files": [
 		{
 			"uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
@@ -388,21 +388,21 @@ An example of a full implementation of the metadata schema described in the abov
 			"type": "image/png"
 		}
 	],
-    "attributes": [
-        {
-            "trait_type": "colour",
-            "value": "red"
-        },
-        {
-            "trait_type": "hasPipe",
-            "value": true
-        },
-        {
-            "trait_type": "coolness",
-            "value": 50
-        }
-    ],
-    "localization": [
+	"attributes": [
+		{
+			"trait_type": "colour",
+			"value": "red"
+		},
+		{
+			"trait_type": "hasPipe",
+			"value": true
+		},
+		{
+			"trait_type": "coolness",
+			"value": 50
+		}
+	],
+	"localization": [
 		{
 			"locale": "en",
 			"is_default_locale": true
@@ -415,7 +415,7 @@ An example of a full implementation of the metadata schema described in the abov
 			"locale": "jp",
 			"metadata_uri": "ipfs://yidooajiaefiakfldanm12554woakoakga4sfda"
 		}
-    ]
+	]
 }
 ```
 
@@ -426,17 +426,17 @@ An example of a video NFT with a preview `image` and added localization for the 
 
 ```json
 {
-    "name": "Video NFT 001",
-    "creator": "Jane Doe, John Doe",
-    "description": "This describes my video NFT",
-    "image": "https://myserver.com/video-preview.png",
-    "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-    "type": "image/png",
-    "format": "HIP412",
-    "properties" : {
-        "my_property": "Some random property the artist needs",
-        "another_property": "Additional property"
-    },
+	"name": "Video NFT 001",
+	"creator": "Jane Doe, John Doe",
+	"description": "This describes my video NFT",
+	"image": "https://myserver.com/video-preview.png",
+	"sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+	"type": "image/png",
+	"format": "HIP412",
+	"properties" : {
+		"my_property": "Some random property the artist needs",
+		"another_property": "Additional property"
+	},
 	"files": [
 		{
 			"uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
@@ -444,7 +444,7 @@ An example of a video NFT with a preview `image` and added localization for the 
 			"type": "video/mp4",
 		}
 	],
-    "attributes": [],
+	"attributes": [],
 	"localization": [
 		{
 			"locale": "en",
@@ -466,15 +466,15 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
 ```json
 // Main metadata (English) for multi-file NFT
 {
-    "name": "Example multi-image NFT 001",
-    "creator": "Jane Doe, John Doe",
-    "creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
-    "description": "This describes my NFT",
-    "image": "https://myserver.com/preview-001.png",
-    "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-    "type": "image/png",
-    "format": "HIP412",
-    "properties" : {},
+	"name": "Example multi-image NFT 001",
+	"creator": "Jane Doe, John Doe",
+	"creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
+	"description": "This describes my NFT",
+	"image": "https://myserver.com/preview-001.png",
+	"sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+	"type": "image/png",
+	"format": "HIP412",
+	"properties" : {},
 	"files": [
 		{
 			"uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
@@ -493,20 +493,20 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
 			"type": "image/jpeg"
 		}
 	],
-    "attributes": [
-        {
-            "trait_type": "colour",
-            "value": "red"
-        },
-        {
-            "trait_type": "mouth",
-            "value": "bubblegum"
-        },
-        {
-            "trait_type": "coolness",
-            "value": 50
-        }
-    ],
+	"attributes": [
+		{
+			"trait_type": "colour",
+			"value": "red"
+		},
+		{
+			"trait_type": "mouth",
+			"value": "bubblegum"
+		},
+		{
+			"trait_type": "coolness",
+			"value": 50
+		}
+	],
 	"localization": [
 		{
 			"locale": "en",
@@ -523,15 +523,15 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
 // Dutch version of metadata for multi-file NFT
 // ipfs://localized-nft-metadata
 {
-    "name": "Voorbeeld multi-afbeelding NFT 001",
-    "creator": "Jane Doe, John Doe",
-    "creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
-    "description": "Dit beschrijft mijn NFT",
-    "image": "https://myserver.com/preview-001.png",
-    "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-    "type": "image/png",
-    "format": "HIP412",
-    "properties" : {},
+	"name": "Voorbeeld multi-afbeelding NFT 001",
+	"creator": "Jane Doe, John Doe",
+	"creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
+	"description": "Dit beschrijft mijn NFT",
+	"image": "https://myserver.com/preview-001.png",
+	"sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+	"type": "image/png",
+	"format": "HIP412",
+	"properties" : {},
 	"files": [
 		// Localized files (Dutch)
 		{
@@ -551,20 +551,20 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
 			"type": "image/jpeg"
 		}
 	],
-    "attributes": [
-        {
-            "trait_type": "kleur",
-            "value": "rood"
-        },
-        {
-            "trait_type": "mond",
-            "value": "bubblegum"
-        },
-        {
-            "trait_type": "coolheid",
-            "value": 50
-        }
-    ]
+	"attributes": [
+		{
+			"trait_type": "kleur",
+			"value": "rood"
+		},
+		{
+			"trait_type": "mond",
+			"value": "bubblegum"
+		},
+		{
+			"trait_type": "coolheid",
+			"value": 50
+		}
+	]
 	// Don't define a localication object here to avoid infinite localization loops pointing to each other
 }
 ```
