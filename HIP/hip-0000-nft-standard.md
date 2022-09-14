@@ -68,7 +68,6 @@ Below is the human-readable schema, presented to maximize clarity. This document
                 ]
             }
         ],
-        "collection": "Define your collection name to which the NFT belongs (optional)",
         "external_url": "External URI pointing to an informational page about your collection or specific NFT information i.e. www.mynft/collection/<serial>/ (optional)"
     },
     "attributes": [
@@ -213,7 +212,7 @@ Note that mime types for directories are not uniformly defined. Some IPFS CIDs p
 
 **Required**
 
-**Description:** The `files` array holds a collection of one or many files. Because the `image` property is used as a preview image, the `files` array should at least hold one `file` object that represents the NFT. 
+**Description:** The `files` array holds one or many files. Because the `image` property is used as a preview image, the `files` array should at least hold one `file` object that represents the NFT. 
 
 
 ### properties.files.uri
@@ -311,15 +310,6 @@ Alternatively, you can use [Arweave](https://www.arweave.org/), receiving a simi
 **Required**
 
 **Description:** A two-letter language code identifying the file's language. No need to further define subregion locales such as `en-GB` to keep things simple.
-
-
-### properties.collection
-
-**Type:** string
-
-**Optional**
-
-**Description:** Ability to define a collection name to which the NFT belongs.
 
 
 ### properties.external_url
@@ -429,7 +419,6 @@ An example of a full implementation of the metadata schema described in the abov
                 "type": "image/png"
             }
         ],
-        "collection": "My NFT Collection",
         "external_url": "https://nft.com/mycollection/001"
     },
     "attributes": [
@@ -657,10 +646,6 @@ The following is the formal definition of this schema using JSON Schema notation
 							"type"
 						]
 					}
-				},
-				"collection": {
-					"type": "string",
-					"description": "Defines a collection name."
 				},
 				"external_url": {
 					"type": "string",
