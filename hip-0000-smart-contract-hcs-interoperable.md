@@ -9,7 +9,7 @@ status: Review
 last-call-date-time: 2022-06-21T07:00:00Z
 created: 05-17-2022
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/479
-updated: 05-24-2022
+updated: 2022-09-14
 ---
 
 ## Abstract
