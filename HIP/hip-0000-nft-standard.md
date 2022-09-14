@@ -67,6 +67,7 @@ Below is the human-readable schema, presented to maximize clarity. This document
 		// Can only contain trait types for rarity calculation
 		{
 			"trait_type": "name of trait (required)",
+			"display_type": "how to represent the value of this trait (optional)",
 			"value": "value for this trait - Allowed types: string, integer, number, boolean (required)",
 			"max_value": "maximum possible value for this trait (optional)"
 		}
@@ -302,6 +303,20 @@ An NFT creator has the option of using either "metadata" or "metadata_uri". Meta
 **Description:** Name of trait.
 
 
+### attributes.display_type
+
+**Type:** string - Possible display types (but other types are allowed):
+
+- `text` (**default value representation**)
+- `percentage` (for integer or number values)
+- `boost` (for integer or number values)
+- `datetime` (for string values)
+
+**Optional**
+
+**Description:** Indicates how the trait value should be displayed.
+
+
 ### attributes.value
 
 **Type:** Allowed types: string, integer, number, boolean
@@ -399,7 +414,20 @@ An example of a full implementation of the metadata schema described in the abov
 		},
 		{
 			"trait_type": "coolness",
-			"value": 50
+			"display_type": "boost",
+			"value": 10,
+			"max_value": 100
+		},
+		{
+			"trait_type": "stamina",
+			"display_type": "percentage",
+			"value": 83
+		}
+		,
+		{
+			"trait_type": "birth",
+			"display_type": "datetime",
+			"value": "23-03-1993"
 		}
 	],
 	"localization": [
@@ -675,6 +703,10 @@ The following is the formal definition of this schema using JSON Schema notation
 					"trait_type": {
 						"type": "string",
 						"description": "Name of trait."
+					},
+					"display_type": {
+						"type": "string",
+						"description": "Sets the representation of the value of the trait."
 					},
 					"value": {
 						"type": ["string", "integer", "number", "boolean"],
