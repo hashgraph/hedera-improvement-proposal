@@ -60,34 +60,26 @@ Below is the human-readable schema, presented to maximize clarity. This document
 			"type": "MIME type (required)",
 			"is_default_file": "(Type: boolean) indicates if the file is the main file for this NFT (conditionally optional - required when multiple files are listed)",
 			"metadata": "metadata object (optional)",
-			"metadata_uri": "uri to metadata (optional)",
-			"localization": [
-				// optional localization array
-				{
-					"uri": "uri to file (required)",
-					"locale": "language identifier (required)"
-				}
-			]
+			"metadata_uri": "uri to metadata (optional)"
 		}
 	],
-    "attributes": [
-        // Can only contain trait types for rarity calculation
-        {
-            "trait_type": "name of trait (required)",
-            "value": "value for this trait - Allowed types: string, integer, number, boolean (required)",
-            "max_value": "maximum possible value for this trait (optional)"
-        }
-    ],
-    "localization": [
-        // optional localization array (only for root-level properties)
-        {
-            "name": "localized NFT name (optional)",
-            "creator": "localized artist name (optional)",
-            "description": "localized description (required)",
-            "locale": "language identifier (required)"
-        }
-    ]
-    // no additional root-level properties allowed - properties array should contain additional properties you may require
+	"attributes": [
+		// Can only contain trait types for rarity calculation
+		{
+			"trait_type": "name of trait (required)",
+			"value": "value for this trait - Allowed types: string, integer, number, boolean (required)",
+			"max_value": "maximum possible value for this trait (optional)"
+		}
+	],
+	"localization": [
+		// optional localization array
+		{
+			"locale": "language identifier (required)",
+			"is_default_locale": "(Type: boolean) indicates if the locale is the main locale for this NFT's metadata (when set, 'metadata_uri' should not be set)",
+			"metadata_uri": "uri to metadata (required)"
+		}
+	]
+	// no additional root-level properties allowed - properties array should contain additional properties you may require
 }
 ```
 
@@ -292,35 +284,6 @@ Note that mime types for directories are not uniformly defined. Some IPFS CIDs p
 An NFT creator has the option of using either "metadata" or "metadata_uri". Metadata should be considered the default behaviour as it minimizes the number of calls that need to be made. Metadata_uri should be used in specific situations where defining the metadata object within the base metadata file is inadequate.
 
 
-### files.localization
-
-**Type:** array
-
-**Optional**
-
-**Description:** Allows artists to optionally add localization for their listed `files`. 
-
-
-### files.localization.uri
-
-**Type:** string (CID or URI)
-
-**Required**
-
-**Description:** CID or path to the NFT's file. It's recommended to host your file on [IPFS](https://ipfs.io/) and use a service like [Pinata](https://pinata.cloud/) to easily pin your file. Your CID should look like this: `ipfs://<hash>`.
-
-Alternatively, you can use [Arweave](https://www.arweave.org/), receiving a similar CID that looks like this: `ar://<hash>`.
-
-
-### files.localization.locale
-
-**Type:** string (two-letter language code according to [ISO 639-1 standard](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes))
-
-**Required**
-
-**Description:** A two-letter language code identifying the file's language. No need to further define subregion locales such as `en-GB` to keep things simple.
-
-
 ### attributes
 
 **Type:** array
@@ -365,34 +328,38 @@ To give an example, imagine an NFT with the `trait_type: mouth`. Possible values
 
 **Optional**
 
-**Description:** Allows to add multiple localization objects for root-level properties, such as `name`, `creator`, and `description`.
+**Description:** Allows artists to optionally add localization for their NFT. Each localization object points to a new localized metadata file that also includes a reference to one or multiple localized `files`. Don't add another `localization` object to the localized metadata file to avoid infinite localization loops pointing to each other.
 
 
-### localization.name
+### localization.locale
 
-**Type:** string
-
-**Optional**
-
-**Description:** Localized NFT name
-
-
-### localization.creator
-
-**Type:** string
-
-**Optional**
-
-**Description:** Localized artist name
-
-
-### localization.description
-
-**Type:** string
+**Type:** string (two-letter language code according to [ISO 639-1 standard](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes))
 
 **Required**
 
-**Description:** Localized human-readable description of the NFT.
+**Description:** A two-letter language code identifying the file's language. No need to further define subregion locales such as `en-GB` to keep things simple.
+
+
+### localization.is_default_locale
+
+**Type:** boolean (false/true)
+
+**Optional**
+
+**Description:** Indicates the primary language for this NFT. When multiple locales are listed, make sure to add this property to set the default locale for this metadata file. When `is_default_locale` is set, the `metadata_uri` property should not be defined for this localization object.
+
+
+### localization.metadata_uri
+
+**Type:** string (CID or URI)
+
+**Required**
+
+**Description:** CID or path to the localized NFT's metadata file. It's recommended to host your file on [IPFS](https://ipfs.io/) and use a service like [Pinata](https://pinata.cloud/) to easily pin your file. Your CID should look like this: `ipfs://<hash>`.
+
+Alternatively, you can use [Arweave](https://www.arweave.org/), receiving a similar CID that looks like this: `ar://<hash>`.
+
+When `is_default_locale` is set, don't define the `metadata_uri` property because it indicates the default language for this NFT's metadata.
 
 
 ## Reference Implementation
@@ -410,17 +377,17 @@ An example of a full implementation of the metadata schema described in the abov
     "image": "https://myserver.com/nft-001.png",
     "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
     "type": "image/png",
-    "format": "HIP500",
+    "format": "HIP412",
     "properties" : {
-        "files": [
-            {
-                "uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
-                "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-                "type": "image/png"
-            }
-        ],
         "external_url": "https://nft.com/mycollection/001"
     },
+	"files": [
+		{
+			"uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
+			"sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+			"type": "image/png"
+		}
+	],
     "attributes": [
         {
             "trait_type": "colour",
@@ -436,12 +403,18 @@ An example of a full implementation of the metadata schema described in the abov
         }
     ],
     "localization": [
-        {
-            "name": "Voorbeeld NFT 001",
-            "creator": "Jane Doe, John Doe",
-            "description": "Dit beschrijft mijn NFT",
-            "locale": "nl"
-        }
+		{
+			"locale": "en",
+			"is_default_locale": true
+		},
+		{
+			"locale": "es",
+			"metadata_uri": "ipfs://keiyidooajiaefklankfldanmfoieoakddqtyty"
+		},
+		{
+			"locale": "jp",
+			"metadata_uri": "ipfs://yidooajiaefiakfldanm12554woakoakga4sfda"
+		}
     ]
 }
 ```
@@ -461,36 +434,37 @@ An example of a video NFT with a preview `image` and added localization for the 
     "type": "image/png",
     "format": "HIP412",
     "properties" : {
-        "files": [
-            {
-                "uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
-                "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-                "type": "video/mp4",
-                "localization": [
-                    {
-                        "uri": "ipfs://bawlkjaklfjoiaefklankflda132zafga3tfa",
-                        "locale": "es"
-                    },
-                    {
-                        "uri": "ipfs://bawlkjaklfjoiaefklankf12554wa6aga4fda",
-                        "locale": "jp"
-                    }
-                ]
-            }
-        ],
         "my_property": "Some random property the artist needs",
         "another_property": "Additional property"
     },
-    "attributes": []
+	"files": [
+		{
+			"uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
+			"sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+			"type": "video/mp4",
+		}
+	],
+    "attributes": [],
+	"localization": [
+		{
+			"locale": "en",
+			"is_default_locale": true
+		},
+		{
+			"uri": "ipfs://bawlkjaklfjoiaefklankf12554wa6aga4fda",
+			"locale": "nl"
+		}
+	]
 }
 ```
 
 
-#### Example: Multi-image NFT
+#### Example: Multi-image NFT with localization metadata
 
 An example of a multi-image NFT where the last file in the `properties.files` array is set as the default file using `is_default_file`.
 
 ```json
+// Main metadata (English) for multi-file NFT
 {
     "name": "Example multi-image NFT 001",
     "creator": "Jane Doe, John Doe",
@@ -499,27 +473,26 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
     "image": "https://myserver.com/preview-001.png",
     "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
     "type": "image/png",
-    "format": "HIP500",
-    "properties" : {
-        "files": [
-            {
-                "uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
-                "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-                "type": "image/jpeg"
-            },
-            {
-                "uri": "ipfs://slaijfidnsklwnwklwnwlbawlkjbawlkjseq",
-                "sha256_checksum": "6db3e42df27a8c6c63a2ac8396412d585c749ef84a4b5d9fced5b891ea9fb853",
-                "type": "image/jpeg"
-            },
-            {
-                "uri": "ipfs://nsklwlaijfidbawakssaioalikwaifjljwbi",
-                "is_default_file": true,
-                "sha256_checksum": "b61127d81eda21b0eb789be531e76c986717b4756620666095fe19082db9d426",
-                "type": "image/jpeg"
-            }
-        ]
-    },
+    "format": "HIP412",
+    "properties" : {},
+	"files": [
+		{
+			"uri": "ipfs://bawlkjaklfjoiaefklankfldanmfoieiajfl",
+			"sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+			"type": "image/jpeg"
+		},
+		{
+			"uri": "ipfs://slaijfidnsklwnwklwnwlbawlkjbawlkjseq",
+			"sha256_checksum": "6db3e42df27a8c6c63a2ac8396412d585c749ef84a4b5d9fced5b891ea9fb853",
+			"type": "image/jpeg"
+		},
+		{
+			"uri": "ipfs://nsklwlaijfidbawakssaioalikwaifjljwbi",
+			"is_default_file": true,
+			"sha256_checksum": "b61127d81eda21b0eb789be531e76c986717b4756620666095fe19082db9d426",
+			"type": "image/jpeg"
+		}
+	],
     "attributes": [
         {
             "trait_type": "colour",
@@ -533,7 +506,66 @@ An example of a multi-image NFT where the last file in the `properties.files` ar
             "trait_type": "coolness",
             "value": 50
         }
+    ],
+	"localization": [
+		{
+			"locale": "en",
+			"is_default_locale": true
+		},
+		{
+			// Links to file below
+			"uri": "ipfs://localized-nft-metadata",
+			"locale": "nl"
+		}
+	]
+}
+
+// Dutch version of metadata for multi-file NFT
+// ipfs://localized-nft-metadata
+{
+    "name": "Voorbeeld multi-afbeelding NFT 001",
+    "creator": "Jane Doe, John Doe",
+    "creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
+    "description": "Dit beschrijft mijn NFT",
+    "image": "https://myserver.com/preview-001.png",
+    "sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    "type": "image/png",
+    "format": "HIP412",
+    "properties" : {},
+	"files": [
+		// Localized files (Dutch)
+		{
+			"uri": "ipfs://bawlkjaklfjoiaefklankfldanmf-dutch",
+			"sha256_checksum": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+			"type": "image/jpeg"
+		},
+		{
+			"uri": "ipfs://slaijfidnsklwnwklwnwlbawlkjb-dutch",
+			"sha256_checksum": "6db3e42df27a8c6c63a2ac8396412d585c749ef84a4b5d9fced5b891ea9fb853",
+			"type": "image/jpeg"
+		},
+		{
+			"uri": "ipfs://nsklwlaijfidbawakssaioalikwa-dutch",
+			"is_default_file": true,
+			"sha256_checksum": "b61127d81eda21b0eb789be531e76c986717b4756620666095fe19082db9d426",
+			"type": "image/jpeg"
+		}
+	],
+    "attributes": [
+        {
+            "trait_type": "kleur",
+            "value": "rood"
+        },
+        {
+            "trait_type": "mond",
+            "value": "bubblegum"
+        },
+        {
+            "trait_type": "coolheid",
+            "value": 50
+        }
     ]
+	// Don't define a localication object here to avoid infinite localization loops pointing to each other
 }
 ```
 
@@ -584,78 +616,56 @@ The following is the formal definition of this schema using JSON Schema notation
 		"properties": {
 			"type": "object",
 			"properties": {
-				"files": {
-					"type": "array",
-                    "contains": {
-                        "type": "object"
-                    },
-                    "minContains": 1,
-					"items": {
-						"type": "object",
-						"properties": {
-							"uri": {
-								"type": "string",
-								"format": "uri",
-								"description": "A URI pointing to a resource."
-							},
-							"sha256_checksum": {
-								"type": "string",
-								"description": "Cryptographic hash of the representation of the 'uri' resource."
-							},
-							"type": {
-								"type": "string",
-								"description": "Sets the MIME type for the 'image' resource."
-							},
-							"is_default_file": {
-								"type": "boolean",
-								"description": "Indicates if this file object is the main file representing the NFT."
-							},
-							"metadata": {
-								"type": "object",
-								"description": "Represents a nested metadata object for the file."
-							},
-							"metadata_uri": {
-								"type": "string",
-								"format": "uri",
-								"description": "A URI pointing to a metadata resource."
-							},
-							"localization": {
-								"type": "array",
-								"items": {
-									"type": "object",
-									"properties": {
-										"uri": {
-											"type": "string",
-											"format": "uri",
-											"description": "A URI pointing to a localized resource."
-										},
-										"locale": {
-											"type": "string",
-											"description": "Sets the two-letter language code for the localization resource."
-										}
-									},
-									"required": [
-										"uri",
-										"locale"
-									]
-								}
-							},
-						},
-						"required": [
-							"uri",
-							"type"
-						]
-					}
-				},
 				"external_url": {
 					"type": "string",
 					"format": "uri",
 					"description": "A URI pointing to an informational page about the NFT."
 				}
 			},
-			"required": [
-				"files"
-			]
+			"additionalProperties": true
+		},
+		"files": {
+			"type": "array",
+			"contains": {
+				"type": "object"
+			},
+			"minContains": 1,
+			"items": {
+				"type": "object",
+				"properties": {
+					"uri": {
+						"type": "string",
+						"format": "uri",
+						"description": "A URI pointing to a resource."
+					},
+					"sha256_checksum": {
+						"type": "string",
+						"description": "Cryptographic hash of the representation of the 'uri' resource."
+					},
+					"type": {
+						"type": "string",
+						"description": "Sets the MIME type for the 'image' resource."
+					},
+					"is_default_file": {
+						"type": "boolean",
+						"description": "Indicates if this file object is the main file representing the NFT."
+					},
+					"metadata": {
+						"type": "object",
+						"description": "Represents a nested metadata object for the file."
+					},
+					"metadata_uri": {
+						"type": "string",
+						"format": "uri",
+						"description": "A URI pointing to a metadata resource."
+					},
+				},
+				"required": [
+					"uri",
+					"type"
+				],
+				"additionalProperties": false
+			}
 		},
 		"attributes": {
 			"type": "array",
@@ -678,7 +688,8 @@ The following is the formal definition of this schema using JSON Schema notation
 				"required": [
 					"trait_type",
 					"value"
-				]
+				],
+				"additionalProperties": false
 			}
 		},
 		"localization": {
@@ -686,27 +697,24 @@ The following is the formal definition of this schema using JSON Schema notation
 			"items": {
 				"type": "object",
 				"properties": {
-					"name": {
-						"type": "string",
-						"description": "Identifies the asset to which this token represents."
-					},
-					"creator": {
-						"type": "string",
-						"description": "Identifies the artist name(s).",
-					},
-					"description": {
-						"type": "string",
-						"description": "Describes the asset to which this token represents."
-					},
 					"locale": {
 						"type": "string",
 						"description": "Sets the two-letter language code for the localization resource."
+					},
+					"is_default_locale": {
+						"type": "boolean",
+						"description": "Indicates if the set locale is the default locale for this metadata file."
+					},
+					"metadata_uri": {
+						"type": "string",
+						"format": "uri",
+						"description": "A URI pointing to a metadata resource."
 					}
 				},
 				"required": [
-					"description",
 					"locale"
-				]
+				],
+				"additionalProperties": false
 			}
 		}
 	},
@@ -716,9 +724,11 @@ The following is the formal definition of this schema using JSON Schema notation
 		"image",
 		"type",
 		"format",
+		"files",
 		"properties",
 		"attributes"
-	]
+	],
+	"additionalProperties": false
 }
 ```
 
