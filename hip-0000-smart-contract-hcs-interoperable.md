@@ -3,9 +3,9 @@ hip: 478
 title: Interoperability Between Smart Contracts and the HCS
 author: John Conway (@scalemaildev), Walter Hernandez (@walter-hernandez)
 type: Standards Track
-category: Core
-needs-council-approval: Yes
-status: Last Call
+category: Application
+needs-council-approval: No
+status: Review
 last-call-date-time: 2022-06-21T07:00:00Z
 created: 05-17-2022
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/479
