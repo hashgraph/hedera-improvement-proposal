@@ -19,7 +19,7 @@ jobs:
       
       - name: Get status changes and hipnames then dispatch jobs
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             arrayOfFiles=()
             while IFS= read -r; do
