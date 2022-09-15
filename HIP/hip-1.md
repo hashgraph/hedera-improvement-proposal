@@ -147,7 +147,11 @@ When a HIP is Accepted, Rejected or Withdrawn, the HIP should be updated accordi
 
 HIPs can also be superseded by a different HIP, rendering the original obsolete. This is intended for Informational HIPs, where version 2 of an API can replace version 1.
 
-Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIPs editors will double-check if the `Yes` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council. 
+Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIPs editors will double-check if the `Yes` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council.
+
+The Council (specifically techcom) approves the HIPs that have `needs-council-approval` field set to `yes`. The Council approves (if the HIP has reached the Council approval stage) or conditionally approves (if the HIP is still waiting in the public commenting phase) the HIPs. When a HIP goes through this approval, it may or may not have final state of the API defined. In this sense, the Council is voting on approving the feature for further design at that stage.
+
+After the Council approves the HIP, the HIP authors can add more details (like a more detailed API definition) to the HIP before it is implemented/active. Adding these details does not require re-approval from the Council. However, if the HIP deviates from its core design, it requires re-approval from the Council.
 
 The possible paths of the status of HIPs are as follows:
 
@@ -160,6 +164,7 @@ The possible paths of the status of HIPs are as follows:
 - __Review__ - A HIP Author marks a HIP as ready for and requesting Editorial Review.
 - __Deferred__ - Any HIP in Draft or Review if inactive for a period of 6 months or greater is moved to Deferred. A HIP may be resurrected from this state by Authors or HIP Editors through moving it back to Draft.
 - __Withdrawn__ - The HIP Author(s) have withdrawn the proposed HIP. This state has finality and can no longer be resurrected using this HIP number. If the idea is pursued at a later date - it is considered a new proposal.
+- __Stagnant__ - Any HIP that has failed to receive enough community support and fails to get an implementer willing to do the work four weeks after the creation date will be considered Stagnant. Community support defines the level of engagement a HIP's related discussion has. The discussion should have at least fifteen upvotes and more than three unique responders to qualify as sufficient community support. If no discussion link is defined, the HIP will be considered Stagnant four weeks after the HIP creation date. If a HIP has a status of Stagnant for six months, it automatically moves to Rejected status. At any point during this time, a HIP can be resurrected back into its previous state (Draft/Review) if it receives enough community support, as outlined in this document.
 - __Rejected__ - Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP and prevents people from bringing up the same rejected idea again in subsequent discussions.
 - __Last Call__ - This is the final review window for a HIP before moving to "Accepted". A HIP editor will assign Last Call status and set a review end date (`last-call-date-time`), typically 14 days later. If this period results in necessary normative changes it will revert the HIP to Review.
 - __Council Review__ - Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP editors will double-check if the `Yes` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council.
@@ -222,8 +227,8 @@ Each HIP must begin with a header preamble in a table format. The headers must a
 
 - hip: HIP number (this is determined by the PR number and set by the editor)
 - title: HIP title
-- author: a list of the author's or authors' name(s) and/or username(s), or name(s) and email(s).
-- working-group\*: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
+- author: a list of the author's or authors' name(s) and/or username(s), or name(s) and email(s)
+- working-group\*: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s)
 - type: Standards Track | Informational | Process
 - category\*: Core | Service | API | Mirror | Application
 - needs-council-approval: Yes | No

@@ -4,6 +4,9 @@
 *.idea
 *.iml
 
+# VSCode
+.vscode/
+
 ## Jekyll
 _site/
 .sass-cache/
