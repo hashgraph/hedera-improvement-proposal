@@ -1,0 +1,49 @@
+name: Dispatch Status Change Notifications (discord and email)
+permissions:
+    contents: read
+    actions: write
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  DispatchNotifications:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Get status changes and hipnames then dispatch jobs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            arrayOfFiles=()
+            while IFS= read -r; do
+                arrayOfFiles+=("${REPLY}")
+            done < <(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -G'status:' --name-only | grep .md)
+            arrayOfStatuses=()
+            while IFS= read -r; do
+                arrayOfStatuses+=("${REPLY}")
+            done < <(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
+
+            for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
+              gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
+
+              if [[ ${arrayOfStatuses[$i]} == " Last Call" ]]; then
+                gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
+              fi
+            done
+            
+      - name: Delete branch
+        if: github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url
+        uses: SvanBoxel/delete-merged-branch@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+            
+
+      

@@ -1,5 +1,5 @@
 <html>
-<!-- (c) 2020-2021 Hedera Hashgraph, released under Apache 2.0 license. -->
+<!-- (c) 2020-2022 Hedera Hashgraph, released under Apache 2.0 license. -->
 
 <h1>HIP-15 Address Checksum Format</h1>
   
@@ -15,7 +15,7 @@ Hedera's <a href="https://github.com/hashgraph/hedera-improvement-proposal/blob/
   </tr>
   <tr>
     <td>Ledger ID:</td>
-    <td><input style="font-size:25px;" size = "50" type="text" id="ledgerId" value="0"></td>
+    <td><input style="font-size:25px;" size = "50" type="text" id="ledgerId" value="00"></td>
   </tr>
   <tr>
     <td></td>
@@ -45,16 +45,22 @@ Currently, each network has a ledger ID that is a single byte:
   2 = previewnet
 </pre>
 <br>
+NOTE: the ledger ID is a byte array that should be entered in hex, with 2 digits per byte. Error checking code has now been added so a leading zero will be added if it doesn't have the required 2 digits per byte.
 <br>
-Last updated May 9, 2021.
+<br>
+Last updated June 3, 2022.
 <br>
 <br>
-(c) 2020-2021 Hedera Hashgraph, released under Apache 2.0 license.
+(c) 2020-2022 Hedera Hashgraph, released under Apache 2.0 license.
 <script>
 //(c) 2020 Hedera Hashgraph, released under Apache 2.0 license.
 
 //if noChecksum has an address like "0.0.123", then put in withChecksum "0.0.123-vfmkw"
 function convert() {
+    let ledger = document.getElementById("ledgerId").value;
+    if (ledger.length % 2 == 1)
+        document.getElementById("ledgerId").value = "0" + ledger;
+
     let result = parseAddress(document.getElementById("ledgerId").value, document.getElementById("noChecksum").value);
     if (result.status != 2) {
         output("withChecksum", "red", "no-checksum format should be like 0.0.123");
@@ -62,9 +68,12 @@ function convert() {
         output("withChecksum", "black", result.withChecksumFormat);
     }
 }
-
 //check that the checksum in box withChecksum is correct
 function verify() {
+    let ledger = document.getElementById("ledgerId").value;
+    if (ledger.length % 2 == 1)
+        document.getElementById("ledgerId").value = "0" + ledger;
+
     let result = parseAddress(document.getElementById("ledgerId").value, document.getElementById("withChecksum").value);
     switch (result.status) {
         case 0: //syntax error
@@ -165,6 +174,7 @@ function checksum(ledgerId, addr) {
     
     let id = ledgerId + "000000000000";
     let h = [];
+    if (id.length % 2 == 1) id = "0" + id;
     for (var i=0; i<id.length; i+=2) {
         h.push(parseInt(id.substr(i,2),16));
     }  
