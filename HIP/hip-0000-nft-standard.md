@@ -5,7 +5,7 @@ author: Michiel Mulders <@michielmulders>
 working-group: Michiel Mulders <@michielmulders>, Ashe Oro <@Ashe_Oro>, Hash Axis <@hashaxis>, Rocket May <@rocketmay>, HGP Patches <@HGP_Patches>
 type: Informational
 needs-council-approval: No
-status: Draft
+status: Deferred
 created: 2022-09-05
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/413#discussioncomment-3465759
 updated: 2022-09-05
