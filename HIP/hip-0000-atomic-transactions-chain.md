@@ -1,18 +1,18 @@
 ---
 hip: 0000
-title: Atomic transactions chain
+title: Batch transactions
 author: Piotr Swierzy <piotr.swierzy@arianelabs.com>
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2022-07-25
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/531
 ---
 
 ## Abstract
 
-This HIP defines a mechanism to execute atomic transactions chain such that a series of transactions(HAPI calls) depending on each other can be rolled into one transaction that passes the ACID test (atomicity, consistency, isolation, and durability)
+This HIP defines a mechanism to execute batch transactions such that a series of transactions(HAPI calls) depending on each other can be rolled into one transaction that passes the ACID test (atomicity, consistency, isolation, and durability)
 
 ## Motivation
 
@@ -37,7 +37,7 @@ As a Hedera token service user, I want to be able to wipe a token, mint a token,
 That way a backend developer could create complicated flows without the need to use smart contracts and the need to handle partially successful flows in the backend,
 e.g. the wipe transaction was successful but the mint transaction was not.
 
-As a Hedera service user, I want to be able to create atomic transactions chain, that use multiple Hedera services e. g.
+As a Hedera service user, I want to be able to create batch transaction, that use multiple Hedera services e. g.
 I want to be able to wipe a token, mint a token, transfer a token, and submit a topic message in one ACID transaction.
 That way a backend developer could create complicated flows without the need to use smart contracts and the need to handle partially successful flows in the backend,
 e.g. the wipe transaction was successful but the mint transaction was not.
@@ -45,7 +45,7 @@ e.g. the wipe transaction was successful but the mint transaction was not.
 ## Specification
 We could create a new protobuf message based on `SignedTransaction` message:
 ```
-message AtomicTransactionsChainTransaction {
+message BatchTransaction {
     /**
     * TransactionBodies serialized into bytes, which must be signed
     */
@@ -66,7 +66,7 @@ message AtomicTransactionsChainTransaction {
 ## Reference Implementation
 
 ## Rejected Ideas
-We rejected the idea to add the support of conditional branching to the atomic transactions chain,
+We rejected the idea to add the support of conditional branching to the batch transactions,
 because we don't think it's useful compared to the increase of complications in implementing the HIP.
 
 ## Open Issues
