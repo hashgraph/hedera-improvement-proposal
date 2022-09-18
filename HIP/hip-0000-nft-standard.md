@@ -713,7 +713,7 @@ The following is the formal definition of this schema using JSON Schema notation
 						"description": "Value for trait."
 					},
 					"max_value": {
-						"type": "string",
+						"type": ["string", "integer", "number"],
 						"description": "Maximum value for trait."
 					}
 				},
