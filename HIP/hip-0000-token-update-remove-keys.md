@@ -4,7 +4,6 @@ title: Remove Existing Keys From A Token Or Contract
 author: Justyn Spooner <justyn@dovu.io>, Cooper Kunz (@cooper_kunz), Jason Fabritz (@bugbytesinc)
 working-group: Justyn Spooner (@justynjj), Cooper Kunz (@cooper_kunz), Jason Fabritz (@bugbytesinc)
 type: Informational
-category: Application
 needs-council-approval: No
 status: Review
 created: 2022-08-05
