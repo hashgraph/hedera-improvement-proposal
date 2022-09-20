@@ -1,15 +1,15 @@
 ---
 hip: 0000
-title: Remove Existing Keys From A Token
+title: Remove Existing Keys From A Token Or Contract
 author: Justyn Spooner <justyn@dovu.io>
 working-group: Justyn Spooner (@justynjj), Cooper Kunz (@cooper_kunz), Jason Fabritz (@bugbytesinc)
-type: Standards Track
+type: Informational
 category: Application
 needs-council-approval: No
-status: Draft
+status: Review
 created: 2022-08-05
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/522
-updated: 2022-08-05, 2022-08-12, 2022-08-16, 2022-09-06
+updated: 2022-08-05, 2022-08-12, 2022-08-16, 2022-09-06, 2022-09-20
 ---
 
 ## Abstract
@@ -18,7 +18,7 @@ All entities across Hedera have opt-in administrative keys. Currently, the Conse
 
 ## Motivation
 
-Many NFT projects require that their Token remains immutable yet some project owners have unknowingly created NFTs with keys such as Admin, Wipe, Freeze and Pause set which undermines this assumption.
+Many NFT projects require that their token remains immutable yet some project owners have unknowingly created NFTs with keys such as Admin, Wipe, Freeze and Pause set which undermines this assumption.
 
 The majority of collectors will also be unaware of the implications of having these keys set on the NFTs they have purchased.
 
@@ -79,11 +79,15 @@ Neither of these approaches is ideal and could easily be solved by allowing the 
 
 ## Specification
 
-Two possible approaches are presented using the JS SDK for demonstration using the HTS Token entity as an example. The same approaches could be take for the `ContractUpdateTransaction`.
+1. Introduce a constant to represent an empty key. This will be used as part of the token and/or contract update calls to remove existing keys.
 
-### Option 1. Extend `TokenUpdateTransaction` to Support Removing Keys
+2. Update all other areas of the SDK that make use of an empty key to use this new constant for consistency.
 
-All these keys should be removable as part of a `TokenUpdateTransaction` if present on a Token:
+We use the JS SDK for demonstration using the HTS token entity as an example. The same approaches could be take for the `ContractUpdateTransaction`.
+
+### Extend `TokenUpdateTransaction` to Support Removing Keys
+
+All these keys should be removable as part of a `TokenUpdateTransaction` if they are present on a Token:
 
 - Admin Key
 - Wipe Key
@@ -111,7 +115,39 @@ let transaction = new TokenUpdateTransaction({
 const signTx = await transaction.sign(adminKey);
 ```
 
-We can’t use `null` as the value for these fields because behind the scenes protobuf removes them for optimisation. This is why a constant is used here instead - `Key.None`. `Key.None` could equally be swapped out with an empty KeyList, however, the dedicated enum provides a clearer intent which is crucial when dealing with a transaction that can't be reversed.
+**Key.None**
+We can’t use `null` as the value for these fields because behind the scenes protobuf removes them for optimisation. An empty KeyList could be used however, since this action can't be undone, we propose having a dedicated constant `Key.None`. The constant provides clearer intent which is crucial when dealing with a transaction that can't be reversed.
+
+**Requirements**
+
+- If an empty KeyList is passed in, the SDK should throw an error to avoid accidental removal of keys.
+- The `TokenUpdateTransaction` should be able to remove any/all keys from a token if the key exists on the token.
+- If the Admin key is removed as part of the update transaction, then all other updates should happen first and the admin key removed last to avoid any `TOKEN_IS_IMMUTABLE` errors.
+- If a key doesn't exist on the token and a call is made to remove it then return a `TOKEN_HAS_NO_SUPPLY_KEY`, `TOKEN_HAS_NO_PAUSE_KEY` etc. This error response is the same as when trying to update a key that doesn't exist.
+- All transactions to remove a key must be signed with the admin key so if a token has no admin key, then any other keys present can't be removed.
+- When a key is removed, the token should appear as if it was created with no key set for that field. For example, if the admin key is removed, then the token should appear as if it was created with no admin key set.
+
+## Backwards Compatibility
+
+This change is fully backwards compatible & opt-in. Existing entities that have been created with administrative keys can continue operating as desired. Entities that have been created without administrative keys can continue operating as desired.
+
+Existing services such as HCS allow you to remove keys using the empty KeyList. Making these services consistent with the proposal above would result in an error being returned. The proposal above uses a dedicated constant to remove keys which is more explicit and less error prone.
+
+## Security Implications
+
+Generally with administrative keys there are security requirements about how to secure and manage these secrets. This becomes increasingly important with this change, as a potential attacker could gain access to the admin keys and subsequently remove them from the entity - however, this would effectively lock/freeze them out, as it would the original administrator. These security considerations are not unique to this proposal and generally consistent with all keys attached to entities within the Hedera network.
+
+## How to Teach This
+
+The documentation for the [Token Service - Token Update](https://docs.hedera.com/guides/docs/sdks/tokens/update-a-token) would be updated to add examples on how to remove keys from a Token.
+
+## Reference Implementation
+
+## Rejected Ideas
+
+There was a discussion to introduce a dedicated method for removing keys. It opened up too many edge cases and since the solution proposed above solves the problem, it was decided to go with that approach.
+
+Here was the second option:
 
 ### Option 2. Dedicated Remove Key Action
 
@@ -145,28 +181,6 @@ const transaction = new RemoveKeysTransaction()
 // Sign the transaction with the admin key
 const signPauseTx = await transaction.sign(adminKey);
 ```
-
-**Requirements**
-
-- If the Admin key is removed as part of the update transaction, then all other updates should happen first and the admin key removed last to avoid any `TOKEN_IS_IMMUTABLE` errors.
-- If a key doesn't exist on the Token and a call is made to remove it then return a `TOKEN_HAS_NO_SUPPLY_KEY`, `TOKEN_HAS_NO_PAUSE_KEY` etc. This error response is the same as when trying to update a key that doesn't exist.
-- All transactions to remove a key must be signed with the admin key so if a token has no admin key, then any other keys present can't be removed.
-
-## Backwards Compatibility
-
-This change is fully backwards compatible & opt-in. Existing entities that have been created with administrative keys can continue operating as desired. Entities that have been created without administrative keys can continue operating as desired.
-
-## Security Implications
-
-Generally with administrative keys there are security requirements about how to secure and manage these secrets. This becomes increasingly important with this change, as a potential attacker could gain access to the admin keys and subsequently remove them from the entity - however, this would effectively lock/freeze them out, as it would the original administrator. These security considerations are not unique to this proposal and generally consistent with all keys attached to entities within the Hedera network.
-
-## How to Teach This
-
-The documentation for the [Token Service - Token Update](https://docs.hedera.com/guides/docs/sdks/tokens/update-a-token) would be updated to add examples on how to remove keys from a Token.
-
-## Reference Implementation
-
-## Rejected Ideas
 
 ## Open Issues
 
