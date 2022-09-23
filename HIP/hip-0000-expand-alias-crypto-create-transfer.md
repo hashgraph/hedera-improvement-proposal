@@ -1,8 +1,8 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
 title: Expand alias support in CryptoCreate & CryptoTransfer Transactions
-author: Nana Essilfie-Conduah(@Nana-EC)
-working-group: Danno Ferrin (@shemnon), Atul Mahamuni, Richard Bair (@rbair23), Ali Katamjani, Michael Tinker (@tinker-michaelj), Mohsin Qamar, Leemon Baird.
+author: Nana Essilfie-Conduah <@Nana-EC>
+working-group: Danno Ferrin <@shemnon>, Atul Mahamuni, Richard Bair <@rbair23>, Ali Katamjani, Michael Tinker <@tinker-michaelj>, Mohsin Qamar, Leemon Baird <lbaird>
 type: Standards Track
 category: Service
 needs-council-approval: Yes
