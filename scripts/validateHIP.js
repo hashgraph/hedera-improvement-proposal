@@ -1,6 +1,7 @@
 const fs = require('fs');
 const readline = require('readline');
 const regexs = require('../assets/regex');
+const errs = [];
 
 /**
  * Validates a hip's headers by looking for enclosing '---' substrings and calls functions that validate the contents.
@@ -51,7 +52,6 @@ async function captureHeaderValidation(hipPath) {
  * @param {string} headers
  */
  function validateHeaders(headers) {
-  const errs = [];
   try {
     if (!regexs.hipNum.test(headers)) {
       errs.push(Error('hip num must be a number use 000 if not yet assigned'));
@@ -140,16 +140,12 @@ function validateNames(line) {
                 element => {
                   const words = element.split(': ');
                   if (!regexs.name.test(words[words.length - 1])) {
-                    throw 'name is improperly formatted, resubmit PR in the form ex: (author|working-group): Firstname Lastname <@gitName or email>'
+                    errs.push(Error('name is improperly formatted, resubmit PR in the form ex: (author|working-group): Firstname Lastname <@gitName or email>'));
                   }
                 }
               )
   } catch (error) {
-    if (require.main === module) {
-      console.log(Error(error));
-      process.exit(1);
-    }
-    throw Error(error)
+    errs.push(Error(error));
   }
 }
 
