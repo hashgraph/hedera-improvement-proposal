@@ -2,7 +2,7 @@ const regex = {
     enclosingDashes: /---([\s\S]*?)---/,
     hipNum: /hip: \d+\n/,
     title: /title: [\w\W]+/,
-    name: /[A-z]+?\s[A-z]+?\s(?:\<(?!.*\))[^>]+?\>|\((?!.*>)[^)]+?\))$/,
+    name: /[a-zA-Z\-_\s]+(?:\<(?!.*\))[^>]+?\>|\((?!.*>)[^)]+?\))$/,
     type: /type: (Standards Track|Informational|Process)/,
     category: /category: (Core|Service|API|Mirror|Application)/,
     councilApproval: /needs-council-approval: (\Yes|No)/,
