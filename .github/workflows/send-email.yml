@@ -23,5 +23,6 @@ jobs:
           subject: ${{ github.event.inputs.filename }} moved into ${{ github.event.inputs.status }}
           to: ${{ secrets.LAST_CALL_EMAILS }}
           from: The HIPs repository
+          body: This is an automated message, please do not reply. Check https://hips.hedera.com/hip/${{ github.event.inputs.filename }} for more info. Thank you.
           secure: true
           priority: medium
