@@ -6,7 +6,7 @@ working-group: Danno Ferrin <@shemnon>, Atul Mahamuni, Richard Bair <@rbair23>, 
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2022-09-20
 discussions-to: <a URL pointing to the official discussion thread>
 updated: <comma separated list of dates>
@@ -141,13 +141,19 @@ Additionally, if an account is created with an `ECDSA` public key the alias prop
 
 The `CryptoCreate` transaction should be expanded to create a new account on the network when only a `public-address` alias is provided with no `public-key`.
 
-If a `public-key` is provided as an alias the `key` property on the account may be set automatically. When a `public-address` (based on an `ECDSA` key) is provided as an alias the `key` on the account will be left empty and only the alias set.  An account created in this manner will be known as a `Hollow Account` and will only be able to receive HBAR and applicable token transfers, but can not take part in transactions submitted by others requiring its signature.
+If a `public-key` is provided as an alias the `key` property on the account may be set automatically. When a `public-address` (based on an `ECDSA` key) is provided as an alias the `key` on the account will be left empty and only the `alias` set with a value of the `public-address`.  An account created in this manner will be known as a `Hollow Account` and will only be able to receive HBAR and applicable token transfers, but can not take part in transactions submitted by others requiring its signature.
 
 Since Hedera accounts require keys to ensure security, a matching `ECDSA` `public-key` must be provided in a future signed transaction issued by the owner of the `public-address`. Due to the nature of `ECDSA` keys the `public-key` and `public-address` may be extracted from the signature of a transaction signed by the `ECDSA` private key that owns the new account. This process will complete the creation of the account, taking it from a `Hollow Account` to a normal complete account with a valid `public-key`.
+Note, in this case the final value of the account alias will remain as the `public-address` and not the `public-key` as it would be in the `auto-create` case.
 
 As an illustration, a wallet or exchange could create and fund a new Hedera account based on the `public-address` alone. Once the transaction goes through the owner of the `public-address` user may use a wallet of their choice to submit a signed transaction (e.g. `CryptoTransfer`, `ContractCreate`, `ContractCall`, `EthereumTransaction` or `TokenAssociation`) to claim ownership of the account and carry out the desired transaction. The ownership claim and account completion will be seamless and transparent to the user.
 
-`CryptoTransfer` should also support this case. This will support developers and exchanges who prefer to transfer to and create an account in one step.
+`CryptoTransfer` transactions should also support this case.
+This will support users, developers and exchanges who prefer to create and credit an accounts balance in one step.
+
+`EthereumTransaction` transactions where value is transfered  (i.e `tx.to` and `tx.value` are set) should also support this case.
+This will support users of `Ethereum-native wallets` and eth dev tools who are accumstomed to creating and crediting an accounts balance in one step.
+In this case th `tx.to` value of the RLP encoded transaction would dictate the `public-address` to be used as an alias.
 
 ### Allow CryptoCreate to automatically set alias
 
@@ -211,7 +217,6 @@ In a way, this section can be thought of as a breakout section of the Rationale 
 
 ## Open Issues
 
-- Should we expose the `lazy-create` flow via precompile also? This would allow `Ethereum-native wallet` (e.g. Metamask) users with balance to create new accounts from their wallet. How does this affect the relay cost?
 - For an account created via the `lazy-create` flow, should query calls to a network node result in the key extraction and mapping via a child `CryptoUpdate` transaction?
 
 ## References
