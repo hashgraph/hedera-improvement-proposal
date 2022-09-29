@@ -66,6 +66,9 @@ layout: default
     {% if page["superseded-by"] != undefined %}
       <tr><th>Superseded by</th><td>{{ page.superseded-by | xml_escape }}</td></tr>
     {% endif %}
+    {% if page.release != undefined %}
+      <tr><th>Release</th><td><a href="https://github.com/hashgraph/hedera-services/releases/tag/{{page.release}}">{{ page.release | xml_escape }}</a></td></tr>
+    {% endif %}
     {% if page.resolution != undefined %}
       <tr><th>Resolution</th><td><a href="{{page.resolution | uri_escape }}">{{ page.resolution | xml_escape }}</a></td></tr>
     {% endif %}
