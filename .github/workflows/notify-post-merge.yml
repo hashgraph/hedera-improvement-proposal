@@ -1,4 +1,4 @@
-name: Dispatch Status Change Notifications (discord and email)
+name: Notifications post merge
 permissions:
     contents: read
     actions: write

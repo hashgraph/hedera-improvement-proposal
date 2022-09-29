@@ -1,0 +1,30 @@
+name: Notifications pre merge
+permissions:
+    contents: read
+    actions: write
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  DispatchNotifications:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Get status changes and hipnames then dispatch jobs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            arrayOfFiles=()
+            while IFS= read -r; do
+                arrayOfFiles+=("${REPLY}")
+            done < <(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -G'status: Draft' --name-only | grep .md)
+
+            for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
+              echo "Initiating email for HIPs in Draft"
+              gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Draft"
+            done
