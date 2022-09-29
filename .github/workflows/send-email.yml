@@ -21,7 +21,7 @@ jobs:
           username: hips@hedera.com
           password: ${{ secrets.GOOGLE_APP_PASS }}
           subject: ${{ github.event.inputs.filename }} moved into ${{ github.event.inputs.status }}
-          to: ${{ secrets.LAST_CALL_EMAILS }}
+          to: ${{ github.event.inputs.status == 'Draft' && secrets.DRAFT_EMAILS || secrets.LAST_CALL_EMAILS }}
           from: The HIPs repository
           secure: true
           priority: medium
