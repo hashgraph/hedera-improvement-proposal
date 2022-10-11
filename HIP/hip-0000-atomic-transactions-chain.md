@@ -57,6 +57,16 @@ message BatchTransaction {
     SignatureMap sigMap = 2;
 }
 ```
+We could also create a predefined set of batch transactions and add new elements to it in the future
+if the community asks for it.<br>
+Initial set:
+```
+Unfreeze -> Transfer -> Freeze
+Wipe -> Mint -> Transfer
+Mint -> Unfreeze -> Transfer -> Freeze
+Associate -> Mint -> Transfer
+Associate -> Transfer
+```
 ## Backwards Compatibility
 
 ## Security Implications
