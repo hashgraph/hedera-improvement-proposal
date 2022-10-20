@@ -25,9 +25,11 @@
         <h2 id="{{status|slugify}}">{{status}}</h2>
         <table class="hipstable">
             <thead>
-                <tr><th>Number</th><th>Title</th><th>Author</th><th>Needs Council Approval</th><th>Release</th>
+                <tr><th>Number</th><th>Title</th><th>Author</th><th>Needs Council Approval</th>
                 {% if status == "Last Call" %}
-                    <th>Last Call Date Time</th>
+                    <th>Review Period Ends</th>
+                {% else %}
+                <th>Release</th>
                 {% endif %}
                 </tr>
             </thead>
@@ -47,8 +49,9 @@
                 </td>
                 {% if status == "Last Call" %}
                 <td  class="last-call-date-time">{{page.last-call-date-time | date_to_rfc822 }}</td>
-                {% endif %}
+                {% else %}
                 <td class="release"><a href="https://github.com/hashgraph/hedera-services/releases/tag/{{page.release}}">{{page.release|xml_escape}}</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </table>
