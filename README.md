@@ -8,6 +8,7 @@
 1. Fork this repository
 2. Fill out this template: [hip template](hip-0000-template.md)
 3. Submit a pull request
+
 But what category do I put for my HIP? See [hip-1 HIP types](HIP/hip-1.md#hip-types)
 
 See [hip-1](HIP/hip-1.md) for details on the HIP process or watch [this video](https://www.youtube.com/watch?v=Gbk8EbtibA0).
