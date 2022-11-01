@@ -1,7 +1,7 @@
 ---
 hip: 0000
 title: Remove Existing Keys From A Token Or Contract
-author: Justyn Spooner <justyn@dovu.io>
+author: Justyn Spooner <justyn@dovu.io>, Cooper Kunz (@cooper_kunz), Jason Fabritz (@bugbytesinc)
 working-group: Justyn Spooner (@justynjj), Cooper Kunz (@cooper_kunz), Jason Fabritz (@bugbytesinc)
 type: Informational
 category: Application
