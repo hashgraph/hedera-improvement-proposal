@@ -3,6 +3,15 @@
 [![](https://img.shields.io/discord/373889138199494658)](https://discord.com/channels/373889138199494658/813488589773471774)
 [![](https://img.shields.io/badge/view-published-blue)](https://hips.hedera.com)
 
+## Submit a HIP in 5 minutes or less
+
+1. Fork this repository
+2. Fill out this template: [hip template](hip-0000-template.md)
+3. Submit a pull request
+But what category do I put for my HIP? See [hip-1 HIP types](HIP/hip-1.md#hip-types)
+
+See [hip-1](HIP/hip-1.md) for details on the HIP process or watch [this video](https://www.youtube.com/watch?v=Gbk8EbtibA0).
+
 ## What is a HIP?
 
 HIP stands for "Hedera Improvement Proposal". These improvement proposals can range from core protocol changes, to the applications, frameworks, and protocols built on top of the Hedera public network and used by the community. The HIP author is responsible for building consensus within the community and documenting dissenting opinions, as well as tracking their HIP through the process outlined below.
@@ -16,10 +25,6 @@ You can see the list of all HIPs on [the official HIPs site](https://hips.hedera
 ## Purpose
 
 The goal of HIPs is to have a place to propose new features, to collect community thoughts and input on a particular issue, and further to document all these subject matters in one place. It’s a great way to document these discussions and proposals [here on GitHub](https://github.com/hashgraph/hedera-improvement-proposal), because any [revisions made on these text files will be recorded](https://github.com/hashgraph/hedera-improvement-proposal/commits/master).
-
-## Process
-
-See [hip-1](HIP/hip-1.md) for details on the HIP process.
 
 ## Qualifications
 
