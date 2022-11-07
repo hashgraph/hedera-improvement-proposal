@@ -1,23 +1,19 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
-title: <HIP title>
-author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
+hip: xxxx
+title: Space HIP
+author: Michael Garber <michael.garber@swirldslabs.com>
 working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
-type: <Standards Track | Informational | Process>
-category: <Core | Service | Mirror | Application>
-needs-council-approval: <Yes | No>
-status: <Draft | Review | Last Call | Active | Inactive | Deferred | Rejected | Withdrawn | Accepted | Final | Replaced>
-created: <date created on>
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
+type: Standards Track
+category: Application
+needs-council-approval: No
+status: Draft
+created: 2022-11-07
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/408
 ---
 
 ## Abstract
 
-Please provide a short (~200 word) description of the issue being addressed.
+Cool space hip that does stuff on hedera
 
 ## Motivation
 
