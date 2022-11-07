@@ -41,8 +41,8 @@ async function captureHeaderValidation(hipPath) {
       validateNames(line);
     }
     if (/updated: 2/.test(line)) { // excludes empty updates dates which happens when new hips are created
-      const updatedDate = new Date(line.split(',').pop());
-      if (updatedDate.toDateString() !== new Date().toDateString()) {
+      const lastUpdatedDate = new Date(line.split(',').pop());
+      if (lastUpdatedDate.toDateString() !== new Date().toDateString()) {
         errs.push(Error('updated date doesnt match current date in header, add current day'));
       }
     }
