@@ -17,3 +17,6 @@ _site/
 /.bundle/
 /vendor/bundle
 .idea
+
+## Node
+/node_modules/
