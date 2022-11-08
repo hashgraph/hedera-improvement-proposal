@@ -3,15 +3,14 @@
 [![](https://img.shields.io/discord/373889138199494658)](https://discord.com/channels/373889138199494658/813488589773471774)
 [![](https://img.shields.io/badge/view-published-blue)](https://hips.hedera.com)
 
-## Submit a HIP in 5 minutes or less
-
+## Submit a HIP
 1. Fork this repository
 2. Fill out this template: [hip template](hip-0000-template.md)
-3. Submit a pull request
+3. Create a pull request against hashgraph/hedera-improvement-proposal main
 
 But what category do I make my HIP? See [hip-1 HIP types](HIP/hip-1.md#hip-types)
 
-See [hip-1](HIP/hip-1.md) for details on the HIP process or watch [this video](https://www.youtube.com/watch?v=Gbk8EbtibA0).
+See [hip-1](HIP/hip-1.md) for details on the HIP process or watch [this video](https://www.youtube.com/watch?v=Gbk8EbtibA0)
 
 ## What is a HIP?
 
