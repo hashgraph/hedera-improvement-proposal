@@ -90,13 +90,14 @@ async function captureHeaderValidation(hipPath) {
       '"discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/xxx"'));
     }
 
-    if (/needs-council-approval: Yes/.test(headers) && /category: Application/.test(headers)) {
-      errs.push(Error('Application category HIPs do not need council approval'));
+    if (/needs-council-approval: Yes/.test(headers) && 
+      (/category: Application/.test(headers) || /type: Informational/.test(headers) || /type: Process/.test(headers))) {
+      errs.push(Error('Application Standards Track/Informational/Process HIPs do not need council approval'));
     }
 
     if (/needs-council-approval: No/.test(headers)
-      && (/category: Service/.test(headers) || /category: Core/.test(headers))) {
-        errs.push(Error('Service and Core categories require council approval'));
+      && (/category: Service/.test(headers) || /category: Core/.test(headers) || /category: Mirror/.test(headers))) {
+        errs.push(Error('Service/Core/Mirror categories require council approval'));
     }
 
     if (!regexs.createdDate.test(headers)) {
