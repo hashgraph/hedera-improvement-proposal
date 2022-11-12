@@ -40,16 +40,22 @@ async function captureHeaderValidation(hipPath) {
     if (/author: /.test(line) || /working-group/.test(line)) {
       validateNames(line);
     }
+    if (/updated: 2/.test(line)) { // excludes empty updates dates which happens when new hips are created
+      const lastUpdatedDate = new Date(line.split(',').pop());
+      if (lastUpdatedDate.toDateString() !== new Date().toDateString()) {
+        errs.push(Error('updated date doesnt match current date in header, add current day'));
+      }
+    }
     
     if (lineCount ===  17) {
-      throw new Error('header must be enclosed by "---"')
+      throw new Error('header must be enclosed by "---"');
     }
     lineCount++;
   }
 }
 
 /**
- * Takes a hip's header and runs regexs against the contained properties.
+ * Takes a hip's header and runs regexs against the contained properties to validate them.
  *
  * @async
  * @function validateHeaders
