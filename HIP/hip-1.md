@@ -162,22 +162,22 @@ The possible paths of the status of HIPs are as follows:
 - __Idea__ - An idea that is pre-draft. This is not tracked within the HIP Repository.
 - __Draft__ - The first formally tracked stage of a HIP in development. A HIP is merged by a HIP Editor into the HIP repository when properly formatted.
 - __Review__ - A HIP Author marks a HIP as ready for and requesting Editorial Review.
-- __Deferred__ - Any HIP in Draft or Review if inactive for a period of 6 months or greater is moved to Deferred. A HIP may be resurrected from this state by Authors or HIP Editors through moving it back to Draft.
+- __Deferred__ - A HIP that is already being addressed in another HIP
 - __Withdrawn__ - The HIP Author(s) have withdrawn the proposed HIP. This state has finality and can no longer be resurrected using this HIP number. If the idea is pursued at a later date - it is considered a new proposal.
-- __Stagnant__ - Any HIP that has failed to receive enough community support and fails to get an implementer willing to do the work four weeks after the creation date will be considered Stagnant. Community support defines the level of engagement a HIP's related discussion has. The discussion should have at least fifteen upvotes and more than three unique responders to qualify as sufficient community support. If no discussion link is defined, the HIP will be considered Stagnant four weeks after the HIP creation date. If a HIP has a status of Stagnant for six months, it automatically moves to Rejected status. At any point during this time, a HIP can be resurrected back into its previous state (Draft/Review) if it receives enough community support, as outlined in this document.
+- __Stagnant__ - Any HIP in Draft or Review if inactive for a period of 6 months or greater is moved to Stagnant. A HIP may be resurrected from this state by Authors or HIP Editors through moving it back to Draft.
 - __Rejected__ - Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP and prevents people from bringing up the same rejected idea again in subsequent discussions.
 - __Last Call__ - This is the final review window for a HIP before moving to "Accepted". A HIP editor will assign Last Call status and set a review end date (`last-call-date-time`), typically 14 days later. If this period results in necessary normative changes it will revert the HIP to Review.
 - __Council Review__ - Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP editors will double-check if the `Yes` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council.
 - __Accepted__ - An accepted HIP is a HIP that went through the "Last Call" status period without changes to the content and is considered ready for implementation. This is often a base HIP proposal for the development team to start implementing IP in code.
 - __Final__ - This HIP represents the final standard implemented in code. A Final HIP exists in a state of finality and should only be updated to correct errata and add non-normative clarifications.
-- __Active__ - Some Informational or Process HIPs may also have a status of "Active" if they are never meant to be completed. An "Active" HIP may be made "Inactive" or "Replaced" by another HIP.
+- __Active__ - Some Informational or Process HIPs may also have a status of "Active" if they are never meant to be completed. An "Active" HIP may be "Withrawn" or "Replaced" by another HIP. If the idea is pursued at a later date - it is considered a new proposal.
 - __Replaced__ - "Replaced" HIPs are overwritten by a newer standard or implementation. 
 
 ### HIP Maintenance
 
 In general, Standards track HIPs are no longer modified after they have reached the Final state. Once a HIP has been completed, the Hedera codebase becomes the formal documentation of the expected behavior.
 
-If changes based on implementation experience and user feedback are made to Standards track HIPs while in Provisional state, those changes should be noted in the HIP, such that the HIP accurately describes the state of the implementation at the point where it is marked Final.
+If changes based on implementation experience and user feedback are made to Standards track HIPs while in Accepted state, those changes should be noted in the HIP, such that the HIP accurately describes the state of the implementation at the point where it is marked Final.
 
 Informational and Process HIPs may be updated over time to reflect changes to the development practices and other details. The precise process followed in these cases will depend on the nature and purpose of the HIP being updated.
 
@@ -232,7 +232,7 @@ Each HIP must begin with a header preamble in a table format. The headers must a
 - type: Standards Track | Informational | Process
 - category\*: Core | Service | API | Mirror | Application
 - needs-council-approval: Yes | No
-- status: Draft | Active | Inactive | Provisional | Deferred | Rejected | Withdrawn | Final | Replaced 
+- status: Draft | Withdrawn | Review | Stagnant | Deferred | Last Call | Accepted | Rejected | Final | Active | Replaced 
 - created: date created on
 - last-call-date-time: the anticipated date and time when this HIP will change status to `Last Call`, filled out by the editor
 - discussions-to: a URL pointing to the official discussion thread
