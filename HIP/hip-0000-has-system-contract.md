@@ -34,9 +34,9 @@ To provide good user experience an to allow hedera users to enjoy additioal feat
 
 ## Rationale
 
-In smart contract operations will provide `msg.sender` values as eithere Hedera addresses or virtual addresses. 
+In smart contract operations will provide `msg.sender` values as either Hedera addresses or virtual addresses. 
 To support authorization flows that check addresses either explicitly in smart contract code the network should support in smart contract distinguishing operations that allow smart contract to distinug between the two forms.
-Additionally, to support standard implicit the network should support system contract checks in a manner similar ECRECOVER for easy developer support. 
+Additionally, to support standard implicit checks the network should support system contract checks in a manner similar ECRECOVER for easy developer support. 
 
 ## User stories
 
