@@ -25,7 +25,7 @@ This inadvertently presents multiple points of Hedera vs Ethereum design choices
 
 For easy reference new and clarifying terms are listed here
 
-- `ETH contracts`: Contracts lifted from Ethereum or other EVM compatible ledgers in which a maintainer does not desire to change code in porting and or explicitly wants to use precompile contracto operations such as `ECRECOVER`.
+- `ETH contracts`: Contracts lifted from Ethereum or other EVM compatible ledgers in which a maintainer does not desire to change code in porting and or explicitly wants to use precompile contract operations such as `ECRECOVER`.
 
 - `Hedera contracts`: Smart Contracts designed with additional logic to utilize Hedera system smart contracts.
 
@@ -231,6 +231,39 @@ message TransactionRecord {
 ```
 
 The following is a table of HAPI proto inputs and outputs to show case new/modified transaction calls and how details are exposed in record files
+
+| Transaction Type | Inputs
+(all keys and address map to valid ECDSA keys) | Account Exists | Record Output
+(VirtualAddressUpdate) | Description |
+| --- | --- | --- | --- | --- |
+| ContractCreate | virtual_address_override | - | - | Contract create transaction with an override for the virtual address to be used |
+|  |  |  |  |  |
+| ContractCall | virtual_address_override | - | - | Contract call transaction with an override for the virtual address to be used |
+|  |  |  |  |  |
+| CryptoCreate | alias | N | evm_address = new | auto-create non-existing account with new virtual address.
+The provided virtual address will serve as the default virtual address for the account. |
+|  | key | N | evm_address = new | normal create non-existing account with new virtual address.
+The provided virtual address will serve as the default virtual address for the account. |
+|  | evm_address | N |  | lazy-create non-existing account with new virtual address.
+The provided virtual address will serve as the default virtual address for the account. |
+|  |  |  |  |  |
+| CryptoTransfer | accountId.alias | N | evm_address = new | transfer to non-existing account (auto-create with new virtual address).
+The provided virtual address will serve as the default virtual address for the account. |
+|  | accountId.alias | Y | - | transfer to existing |
+|  | accountId.evmAddress | N | evm_address = new | transfer to non-existing account (lazy-create with new virtual address).
+The provided virtual address will serve as the default virtual address for the account. |
+|  | accountId.evmAddress | Y | - | transfer to existing |
+|  |  |  |  |  |
+| CryptoUpdate | virtual_address_update.add.evmAddress = new
+(optional) virtualAddress.isDefault = true | Y | - | Add virtual address to existing account.
+Pull details from transaction body
+(not populating record preserves space) |
+|  | virtual_address_update.remove = old | Y | - | Remove virtual address from existing account.
+Pull details from transaction body
+(not populating record preserves space) |
+|  |  |  |  |  |
+| EthereumTransaction | ethereum_data (tx.to = new) | N | evm_address = new | lazy-create non-existing account.
+The provided virtual address will serve as the default virtual address for the account. |
 
 ### Update Account state
 
@@ -470,7 +503,7 @@ The addition and removal of virtual addresses relies on the current Hedera metho
 
 Additionally, the use of an evmAddress provides no authorization for Hedera transaction functionality. On the EVM smart contracts can perform the appropriate authorization checks as they normally would before carrying out sensitive operations.
 
-As such there are no security implications since the ledger and the EVM maintain their authorization capabilities. In fact, it may be argued security is enhanced by the precompile support for contracts to verify both raw and protocol formatted signatures
+As such there are no security implications since the ledger and the EVM maintain their authorization capabilities. 
 
 As always users and developers are responsible for key hygiene and proper storage of keys
 
