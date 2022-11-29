@@ -232,38 +232,25 @@ message TransactionRecord {
 
 The following is a table of HAPI proto inputs and outputs to show case new/modified transaction calls and how details are exposed in record files
 
-| Transaction Type | Inputs
-(all keys and address map to valid ECDSA keys) | Account Exists | Record Output
-(VirtualAddressUpdate) | Description |
+| Transaction Type | Inputs (all keys and address map to valid ECDSA keys) | Account Exists | Record Output  (VirtualAddressUpdate) | Description |
 | --- | --- | --- | --- | --- |
 | ContractCreate | virtual_address_override | - | - | Contract create transaction with an override for the virtual address to be used |
 |  |  |  |  |  |
 | ContractCall | virtual_address_override | - | - | Contract call transaction with an override for the virtual address to be used |
 |  |  |  |  |  |
-| CryptoCreate | alias | N | evm_address = new | auto-create non-existing account with new virtual address.
-The provided virtual address will serve as the default virtual address for the account. |
-|  | key | N | evm_address = new | normal create non-existing account with new virtual address.
-The provided virtual address will serve as the default virtual address for the account. |
-|  | evm_address | N |  | lazy-create non-existing account with new virtual address.
-The provided virtual address will serve as the default virtual address for the account. |
+| CryptoCreate | alias | N | evm_address = new | auto-create non-existing account with new virtual address. The provided virtual address will serve as the default virtual address for the account. |
+|  | key | N | evm_address = new | normal create non-existing account with new virtual address. The provided virtual address will serve as the default virtual address for the account. |
+|  | evm_address | N |  | lazy-create non-existing account with new virtual address. The provided virtual address will serve as the default virtual address for the account. |
 |  |  |  |  |  |
-| CryptoTransfer | accountId.alias | N | evm_address = new | transfer to non-existing account (auto-create with new virtual address).
-The provided virtual address will serve as the default virtual address for the account. |
+| CryptoTransfer | accountId.alias | N | evm_address = new | transfer to non-existing account (auto-create with new virtual address). The provided virtual address will serve as the default virtual address for the account. |
 |  | accountId.alias | Y | - | transfer to existing |
-|  | accountId.evmAddress | N | evm_address = new | transfer to non-existing account (lazy-create with new virtual address).
-The provided virtual address will serve as the default virtual address for the account. |
+|  | accountId.evmAddress | N | evm_address = new | transfer to non-existing account (lazy-create with new virtual address). The provided virtual address will serve as the default virtual address for the account. |
 |  | accountId.evmAddress | Y | - | transfer to existing |
 |  |  |  |  |  |
-| CryptoUpdate | virtual_address_update.add.evmAddress = new
-(optional) virtualAddress.isDefault = true | Y | - | Add virtual address to existing account.
-Pull details from transaction body
-(not populating record preserves space) |
-|  | virtual_address_update.remove = old | Y | - | Remove virtual address from existing account.
-Pull details from transaction body
-(not populating record preserves space) |
+| CryptoUpdate | virtual_address_update.add.evmAddress = new (optional) virtualAddress.isDefault = true | Y | - | Add virtual address to existing account. Pull details from transaction body (not populating record preserves space) |
+|  | virtual_address_update.remove = old | Y | - | Remove virtual address from existing account. Pull details from transaction body (not populating record preserves space) |
 |  |  |  |  |  |
-| EthereumTransaction | ethereum_data (tx.to = new) | N | evm_address = new | lazy-create non-existing account.
-The provided virtual address will serve as the default virtual address for the account. |
+| EthereumTransaction | ethereum_data (tx.to = new) | N | evm_address = new | lazy-create non-existing account.The provided virtual address will serve as the default virtual address for the account. |
 
 ### Update Account state
 
