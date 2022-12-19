@@ -1,14 +1,14 @@
 ---
 hip: 0000
 title: Remove Existing Keys From A Token Or Contract
-author: Justyn Spooner <justyn@dovu.io>, Cooper Kunz (@cooper_kunz), Jason Fabritz (@bugbytesinc)
-working-group: Justyn Spooner (@justynjj), Cooper Kunz (@cooper_kunz), Jason Fabritz (@bugbytesinc)
-type: Informational
-needs-council-approval: No
+author: Cooper Kunz (@cooper_kunz), Justyn Spooner <justyn@dovu.io>, Jason Fabritz (@bugbytesinc)
+working-group: Cooper Kunz (@cooper_kunz), Justyn Spooner (@justynjj), Jason Fabritz (@bugbytesinc)
+type: Services
+needs-council-approval: Yes
 status: Review
 created: 2022-08-05
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/522
-updated: 2022-08-05, 2022-08-12, 2022-08-16, 2022-09-06, 2022-09-20
+updated: 2022-08-05, 2022-08-12, 2022-08-16, 2022-09-06, 2022-09-20, 2022-12-19
 ---
 
 ## Abstract
