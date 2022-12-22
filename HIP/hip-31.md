@@ -7,6 +7,7 @@ category: Service
 needs-council-approval: Yes
 status: Final
 last-call-date-time: 2021-12-21T07:00:00Z
+release: v0.22.0
 created: 2021-10-14
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/issues/165
 updated: 2021-10-25, 2022-03-16, 2022-04-26
