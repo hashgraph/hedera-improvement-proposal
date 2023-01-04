@@ -7,8 +7,9 @@ type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Draft
-created: 2022-12-13
+created: 2023-01-04
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/627
+updated: 2023-01-04
 ---
 
 ## Abstract
