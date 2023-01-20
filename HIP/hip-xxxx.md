@@ -1,0 +1,106 @@
+---
+hip: xxxx 
+title: Token airdrops without explicit associations 
+author: Richard Bair <@rbair23> 
+working-group: Jasper Potts <@jasperpotts>, Atul Mahamuni <@atul-hedera>, Michael Tinker <@tinker-michaelj>, Leemon Baird <@lbaird> 
+type: Standards Track 
+category: Service
+needs-council-approval: Yes 
+status: Draft
+created: 2022-10-20 
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/654
+updated: 2023-01-20
+---
+
+## Abstract
+
+[HIP-23](https://hips.hedera.com/hip/hip-23) allowed an account owner to open up a specified number of automatic token-association slots into which others can transfer tokens. However, this capability doesn't allow for a pure "airdrop" of tokens. This HIP provides an additional mechanism for senders to airdrop tokens to other accounts, while allowing individual account holders to maintain control over what shows up in their account balances.
+
+## Motivation
+
+The current implementation of the Hedera Token Service does not allow airdrops of arbitrary tokens to any account. [HIP-23](https://hips.hedera.com/hip/hip-23) lists several disadvantages of arbitrary airdrops - such as exposing an innocent account holder to reputational or legal or spam risk of being associated with unwanted/unsolicited tokens, as well as DDoS risks for the network. And it proposes opt-in token associations. Further, [HIP-367](https://hips.hedera.com/hip/hip-367) removes the limit on token associations. Even with these enhancements, users still cannot airdrop tokens using the Hedera network today.
+
+## Rationale
+
+Token airdrops are very common in the blockchain industry and many legitimate use cases require airdropping of tokens. This HIP attempts to provide a mechanism to enable these airdrops while still protecting the account owners, and imposing dis-incentivizing costs to the senders of the airdropped tokens.
+
+## User Stories
+
+### Terminology
+
+The following terminology is used in the rest of this Specification
+
+- Airdrop-Sender: the owner of a token that they wish to send to somebody without the explicit association/permission from the intended recipient
+- Airdrop-Recipient: the intended recipient of the above airdrop
+- Node-Operator: the operator of a node in the Hedera network
+    
+### User stories
+    
+- As an Airdrop-Sender, I want to send arbitrary tokens (Fungible and/or Non-fungible) to Airdrop-Recipients so that I can create interesting business use cases
+    1. I understand that the recipients of the airdrop may not wish to accept these tokens and I am willing to pay for the network resources used while they make their decision.
+    2. If the intended Airdrop-Recipients do not accept my transfer, I want to be able to restore those tokens to my account so that I can do whatever I wish with those tokens.
+- As an Airdrop-Recipient, I want to receive arbitrary tokens (Fungible and/or Non-fungible) from the Airdrop-Senders so that I can accumulate those in my account.
+    1. I want to achieve the above while having explicit control over what tokens actually show up in my account.
+    2. I want to achieve the above without being subject to the reputational/legal/spam risk of being associated with unwanted tokens
+    3. I want to achieve the above without having to be forced to pay for the storage/renewal of these unwanted tokens unless I explicitly accept those.
+- As a node operator in the network, I want to make sure that the network security is not compromised and that somebody pays for the network resources that are used. The design of this HIP is partially inspired by how we handle spam emails in today's world, but with an added safeguard of ensuring that there is an economic disincentive for an Airdrop-Sender from sending indiscriminate spam. Through this HIP, we will create a new concept of unsolicited-token-outbox/inbox that maintain a record of intended transfers of airdrops.
+    
+## Specification
+    
+- Airdrop-Sender sends (i.e. airdrops) tokens to a list of Airdrop-Recipients using a regular `CryptoTransfer` call. For this discussion, let us assume that none of the intended Airdrop-Recipients have associated this token with their accounts.
+- During token transfer validation, the network finds that the receivers have not associated this token with their accounts. Instead of rejecting this call with a failure code, the new behavior will store these tokens in the Airdrop-Sender's account in a new data structure called the `unsolicited-tokens-outbox`. Similarly, there is a concept of an `unsolicited-tokens-inbox` (or the incoming spam inbox) in the Airdrop-Recipients' accounts. And an entry is added in each of these recipient accounts registering the proposed transfers.
+- Network resources are used for storing these entries in both of these accounts (sender and receiver). The `CryptoTransfer` call will have an additional fee to cover the rent for these resources for one auto-renewal cycle. And the Airdrop-Sender will have to pay for the renewal of these resources in their normal auto-renewal process while these tokens remain in the unsolicited-outbox.
+- This unsolicited-inbox information is available on the mirror nodes for the Airdrop-Recipients. And Wallets and Explorers can optionally show the content of these in their user interfaces.
+- If the Airdrop-Recipient wants to accept the airdrop, they will invoke a new HAPI API - say, `AcceptUnsolicitedToken` - to indicate their acceptance of this airdrop. Wallets and third-party dApps can facilitate this process through intuitive user journeys for the users.
+- Upon receiving this `AcceptUnsolicitedToken` HAPI command, the network will actually move the token from Airdrop-Sender's account to the Airdrop-Receiver's account and also add a token-association entry for this token on the receiver's account automatically. From this point onwards, the token behaves exactly as if the Airdrop-Recipient had manually created a token association and then received the token to the account.
+- The Airdrop-Recipient is responsible for renewal of the token association as part of their normal renewal after this point. Please note that the tokens are in the Airdrop-Sender's control until the Airdrop-Recipient calls the `AcceptUnsolicitedToken` API. As a result, they can also delete or burn these tokens while they are in the outbox. Doing so will remove the entries from the Unsolicited-inbox and Unsolicited-outbox automatically. Please note that these are conceptual names and the actual APIs/protobufs and REST APIs (mirror node) will be designed as this HIP develops further.
+
+### New APIs/UIs:
+
+- Services:
+    - `AcceptUnsolicitedToken` API
+- Mirror node:
+    - GET `unsolicitedInbox` query for the Airdrop-Recipient to get content of their unsolicited-inbox.
+    - GET `unsolicitedOutbox` query for the Airdrop-Sender to get content of their unsolicited-outbox.
+- Wallets and Explorers
+    - Wallets and Explorers should provide a way for users to be able to see the unsolicited-inbox and accept the tokens that they wish to accept
+
+### Other considerations
+
+- Auto-association: if the recipient of the token has *open* auto-association slots, then none of the mechanisms described in this document apply. That is treated as a regular transfer. The airdropped token will be auto-associated with the recipient and the transfer will succeed as it does today
+- Already associated token type: if the airdropped token type is already associated with the recipient’s account, then none of the mechanisms described in this document apply. That is treated as a regular transfer. The airdropped token will simply be transferred to the recipient's account as it does today.
+- Receiver-signature-required: if the Airdrop-Recipient has receiver-signature-required set on their account, then the airdrop will only succeed if they also sign the `AcceptUnsolicitedToken` API with their receiver-signature.
+- Custom fees on the token: The Airdrop-Sender will pay for the custom-fees levied on the token transfer at the time of the transfer (i.e. the time at which the Airdrop-Receiver signed the `AcceptUnsolicitedToken` transaction). Note that the custom-fees may change from the time the Airdrop-sender attempted to send the tokens to the time the actual transfer takes place, and it is a risk that the Airdrop-Sender will have to assume.
+- Token deletion: if the token is deleted before the Airdrop-Receiver accepts the token, the `AcceptUnsolicitedToken` call will simply fail with an appropriate error message. This proposal is compatible with the concept of token associations as implemented on the network today. It builds on that concept but does not violate any of the existing concepts of token associations. Therefore, existing applications will not be adversely affected due to the implementation of this HIP.
+- Information to the user: With this mechanism described in this document, the Airdrop-Sender will have to check their unsolicited-outbox to see which tokens have not been deposited to the Airdrop-Recipients’ accounts; and the airdrop-Recipient will have to check their unsolicited-inbox to see which tokens are pending their acceptance.
+- Wallets, Exchanges, and mirror-node explorers will have to create visibility and notification mechanisms for the users.
+        
+## Backward Compatibility
+TBD
+## Security Implications
+        
+- User security: Since no tokens show up in a user's account without their explicit approval, their security is not compromised in any way.
+- Network security: Since the cost of the operations and usage of network resources such as storage of the tokens in the unsolicited-inbox is paid for by the sender of the airdrop tokens, the network security is not compromised either. These are not 'rejected' ideas *per se*. Instead, these ideas were considered and we felt that these do not qualify to be the highest priority feature and that these can be implemented in the future.
+    
+## How To Teach This
+TBD
+## Reference Implementation
+TBD
+## Rejected Ideas
+    
+- Wallet-based/Mirror-node-based state: Implement this functionality primarily on the mirror node as follows. Allow all token transfers to go through - even if the user has not associated the token. When the user (Airdrop-Recipient) sees these unwanted tokens in their accounts, then they register with the wallet or mirror node that they don't want to see the tokens in their account. And the mirror nodes never report those tokens after receiving that request. This idea doesn't work because if the user uses a different wallet or a different mirror node, then they will still see all objectionable tokens. Also, they will have to pay for the renewal of these token associations even if they don't want the tokens.
+- Maintain the spam folder only on the Airdrop-recipient's side. In other words, allow anybody to send any tokens to a recipient's account, but the tokens go into a spam folder. And if they don't accept it for a given period of time, then delete or return the tokens to the sender. This approach was not accepted because this will put the burden of deleting the token as well as the temporary storage/renewal fees on the innocent recipient without providing any disincentives to the Airdrop-Sender. The proposed scheme makes the sender pay for these charges.
+    
+## Open Issues/FAQ
+Q1: Expected behavior when the user is not associated with tokens but the wallet has auto-associate slots available ? Does the receiver pay for association ? If the auto-associate slot is used for air-drop. does the spammer still pay for a return token ? Can the airdrop tokens received against associated slot be returned ? Can all token be returned ?
+
+Q2: Would we then suggest that receiver never have auto-associate enabled.
+
+### Interesting ideas for the future
+    
+- Auto-deletion of mailbox after a few days: If a token sits in the unsolicited-inbox for a pre-specified period (say 3 months) without the user accepting it, then delete these tokens automatically.
+- Allow-list of trusted Airdrop-Senders: A user could optionally configure a list of reputed airdrop senders that they trust. If any of these trusted airdrop-senders sends an unsolicited token, then that token is automatically accepted. The senders could be identified by their account-ids or their keys.
+- It may also be possible to extend this concept for hbar transfers into an account that has receiver-signature-required flag set. This allow-list can be used to override the receiver-signature-required flag.
+
+## Copyright/License
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
