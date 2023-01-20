@@ -1,8 +1,8 @@
 ---
-hip: xxxx 
+hip: 000 
 title: Token airdrops without explicit associations 
 author: Richard Bair <@rbair23> 
-working-group: Jasper Potts <@jasperpotts>, Atul Mahamuni <@atul-hedera>, Michael Tinker <@tinker-michaelj>, Leemon Baird <@lbaird> 
+working-group: Jasper Potts <@jasperpotts>, Atul Mahamuni <@atul-hedera>, Michael Tinker <@tinker-michaelj>, Leemon Baird <@lbaird>
 type: Standards Track 
 category: Service
 needs-council-approval: Yes 
