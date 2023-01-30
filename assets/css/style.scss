@@ -12,6 +12,27 @@
   }
 }
 
+#search-input {
+  border: solid #5DCA5D 2px;
+  padding: 1px;
+  float: right;
+}
+#results-container {
+  float: right;
+  margin-top: 20px;
+}
+
+@media (max-width: 650px){
+  #search-input {
+    border: solid #5DCA5D 2px;
+    padding: 1px;
+    float: left;
+  }
+  #results-container {
+    float: left;
+  }
+}
+
 main.page-content {
   div.wrapper {
     max-width: unset;
