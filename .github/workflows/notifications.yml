@@ -19,6 +19,4 @@ jobs:
       - name: Get status changes and hipnames then dispatch jobs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-            gh workflow run send-email.yml -f "filename=hip-210" -f "status=Last Call"
-            done
+        run: gh workflow run send-email.yml -f "filename=test-hip" -f "status=Last Call"
