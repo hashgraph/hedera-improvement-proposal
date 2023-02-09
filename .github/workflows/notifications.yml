@@ -5,7 +5,7 @@ permissions:
 on:
   push:
     branches:
-      - main
+      - test
 
 jobs:
   DispatchNotifications:
@@ -20,21 +20,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            arrayOfFiles=()
-            while IFS= read -r; do
-                arrayOfFiles+=("${REPLY}")
-            done < <(git diff HEAD~1..HEAD -G'status:' --name-only | grep .md)
-            arrayOfStatuses=()
-            while IFS= read -r; do
-                arrayOfStatuses+=("${REPLY}")
-            done < <(git diff HEAD~1..HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
-
-            for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
-              echo "Initiating Discord workflow"
-              gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
-
-              if [[ ${arrayOfStatuses[$i]} == " Last Call" ]]; then
-                echo "Initiating Last Call workflow"
-                gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
-              fi
+            gh workflow run send-email.yml -f "filename=hip-210" -f "status=Last Call"
             done
