@@ -2,11 +2,15 @@
 layout: none
 ---
 [
-  {% for page in site.pages %}
-    {
-      "title"    : "{{ page.title | escape }}",
-      "category" : "{{ page.category }}",
-      "url"      : "{{ site.baseurl }}{{ page.url }}"
-    } {% unless forloop.last %},{% endunless %}
+  {% for p in site.pages %}
+    {% if p.url contains '404' or p.url contains '.css' or p.url contains '.json' %}
+    {% else %}
+      {
+        "title"    : "{{ p.title }}",
+        "category" : "{{ p.category }}",
+        "content": {{ p.content | jsonify }},
+        "url"      : "{{ site.baseurl }}{{ p.url }}"
+      } {% unless forloop.last %},{% endunless %}
+    {% endif %}
   {% endfor %}
 ]
