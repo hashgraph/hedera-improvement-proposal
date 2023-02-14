@@ -6,9 +6,10 @@ type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Final
+release: v0.19.0
 created: 2021-08-09
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/126
-updated: 2021-10-27
+updated: 2021-10-27, 2023-02-01
 ---
 
 ## **Abstract**
