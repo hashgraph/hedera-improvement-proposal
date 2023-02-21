@@ -18,11 +18,11 @@ superseded by: HIP number(s)
 
 The proposed rent implementation for entities on the Hedera network impacts upon the persistence of data on chain as items can now be removed from the ledger through actions other than the actions of the actor owning those items. Given that Hedera has the ability to delete data from chain, it will need to have publicly available SOC2 report which has been conducted by an external auditor on an annual (usually) basis. The SOC report will ensure that there are adequate controls in place so that:
 
-In relation to the rent deletion script:
-- The rent deletion script only deletes content where no rent has been paid
-- There is a change management control process in place to ensure there are no unauthorised changes made to the deletion script
-- Changes to the script are tested prior to being deployed on Mainnnet
-- Only authorised users have access to modify the script and to deploy changes
+In relation to the rent deletion code:
+- The rent deletion code only deletes content where no rent has been paid
+- There is a change management control process in place to ensure there are no unauthorised changes made to the deletion code
+- Changes to the code are tested prior to being deployed on Mainnnet
+- Only authorised users have access to modify the code and to deploy changes
 
 In relation to any other deletion abilities (e.g., the removal of illegal content from Mainnet):
 - Only authorised users have the ability to delete content
@@ -43,7 +43,7 @@ The audit report will likely need to cover:
   - Access management (who can access provision access to tools, modify tools, deploy tools, etc.)
   - Change management (change management process related to any tools which can delete data from Mainnet)
 
-While this document focuses primarily on the tool/script which will be used for the deletion of assets which have not had rent paid for, these controls will need to be tested for any methods/tools/scripts which Hedera can use to delete data from Mainnet.
+While this document focuses primarily on the tool/code which will be used for the deletion of assets which have not had rent paid for, these controls will need to be tested for any methods/tools/code which Hedera can use to delete data from Mainnet.
 
 ## User stories
 
