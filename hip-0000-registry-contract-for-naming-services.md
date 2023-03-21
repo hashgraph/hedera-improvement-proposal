@@ -1,14 +1,14 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
-title: REGISTRY CONTRACT containing default naming structure format for HTLDs & SLDs ever minted over Hedera network
-author: som-web23,(somkirann@web23.io)
-working-group: (somkirann@web23.io),(rahul@web23.io),(del@web23.io)
+hip: HIP-534
+title: REGISTRY CONTRACT for naming structure
+author: Som Kirann(somkirann@web23.io), Rahul Pandey(rahul@web23.io)
+working-group: Som Kirann(somkirann@web23.io), Rahul Pandey(rahul@web23.io), Delfin Iglesia(del@web23.io)
 type: Process
 category: Service
 needs-council-approval: No
 status: Draft
 created: 2022-07-29 
-updated: 2022-07-29
+updated: 2023-03-22
 ---
 
 ## Table of Contents
@@ -30,16 +30,12 @@ updated: 2022-07-29
 Fostering overall growth of Hedera, minting of HTLDs (Hedera based -Top-Level-Domains) & SLDs (Second-Level-Domains) within Hedera are open. Any entity, person could mint of the HTLDs & SLDs which could eventually create issues like:
 a.	Duplication of TLDs; .hbar (for example) by one contract & .hbarby the other contract
 b.	Duplication of SLDs; for example, minted SLD user.tld by one contract & user.tld by the other contract
-c.	Phishing attempts and inconvenience amongst the community owing to the duplication of names
+c.	Inconvenience amongst the community owing to the duplication of names
 d.	Challenges for the wallets providers to choose one contract over the other
-e.	Complete chaos within the Hedera ecosystem
 
 ## Motivation
 
-Hedera public ledger is comparatively new in comparison to other existing L1 chains. Hedera wins over the other chains through higher TPS leading to scalable solutions, negligible cost to execute the transactions to name a few. 
-In the beginning, ICANN (The Internet Corporation for Assigned Names and Numbers) responsible for web2 domains had started with thirteen TLDs. Today, we have hundreds of gTLD (generic Top Level Domains) like .biz, .capital etc. At the same time, no two SLD within a TLD match or so to say, duplication of domain names within a TLDs does not exist across the globe although buying of domains is administered by hundreds of domain registrars, resellers etc.
-Riding on the exceptional capabilities of Hedera & following the design philosophy of ICANN where no two SLDs are identical, proposed default structured format of TLDs & SLDs in the form of registry contract within Hedera would allow multi-parties to co-exist without leading to the confusion. 
-This approach of proposed registry contract containing default structure format of TLDs & SLDs would possibly make Hedera a natural fit for decentralized ICANN allowing inter-chain dialogues too.
+To develop a naming standard in registry contracts to prohibit duplicate Hedera specific TLDs and their corresponding Second-Level-Domains, thus allowing multiple parties to mint the routes without worrying of duplicates leading to a healthier ecosystem and new use cases.
 
 ## Rationale
 
@@ -58,12 +54,12 @@ Architecture of the proposed registry contract over Hedera would be, as follows:
 ## Detailed note on the flow
 
 **1. What is Registry Contract Suite?**<br />
-Registry Contract Suite is a group of smart Contracts developed over Solidity. These smart contracts are intended to register HTLDs (Hedera Top-Level-Domains) and Second-Level-Domains (SLDs) in a hierarchical manner. Domains and HTLDs once registered could be queried and looked up to avoid duplication.<br />
+Registry Contract Suite is a group of smart Contracts developed over Solidity. These smart contracts are intended to register HTLDs (Hedera Top-Level-Domains) and Second-Level-Domains (SLDs) in a hierarchical manner. SLDs and HTLDs once registered could be queried and looked up to avoid duplication.<br />
 **2. How does Registry Contract Suite Works?**<br />
-Registry Contract Suite is an intelligent group of smart contract that maintains an alphabetical hierarchy to register HTLDs and is smart enough to create and store HTLDs in their respective Alphabetical Registry Component.<br />
+Registry Contract Suite is a well structured group of smart contract that maintains an alphabetical hierarchy to register HTLDs and is structured to create and store HTLDs in their respective Alphabetical Registry Component.<br />
 	Once a HTLD is registered by the provider, an entry in respective alphabetical hierarchy smart contract is made. All further domains and subdomains under that hierarchy would be stored in that structure. So that for future, queries for that registered domain names or HTLD/s could be appropriately handled.<br />
 **3. Who are providers and how could someone become a provider of domains/HTLDs?**<br />
-Providers for Registry Contracts are the account addresses of Mainnet of entities who have access to register and update HTLD/s and domains. These providers could do a handful of operations and are provisioned to register a domain/HTLD. <br />
+Providers for Registry Contracts are the account addresses of Mainnet of entities who have access to register and update HTLD/s and domains. These providers could do a handful of operations and are provisioned to register a domain/HTLD. All these would be handled by Swirlds Lab or Hbar Foundation.(So that no Provider controls or gate keeps the process) <br />
 To become a provider, entities need to raise a request to the admin of Registry Contracts, who have the privilege to add addresses as providers for the Registry Smart Contract Suite. Initially this would be done through a form accessible via the website of Web23 at web23.io with a goal of moving to a fully decentralized approach.<br />
 **4. Structure of Smart Contracts**<br />
 The structure of smart contracts are as follows:
@@ -74,7 +70,7 @@ b.	**AlphaRegistry:** This solidity file is responsible for doing all the jobs a
 
 c.	**UTools:** This smart contract empowers the suite with a handful of utility functions like substring and all.
 
-d.	**AToZRegistry:** This solidity file is responsible for creating a hierarchical alphabetical order of smart contracts
+d.	**AToZRegistry:** This solidity file is responsible for creating an alphabetical order of smart contracts
 
 e. **Exposed Functionalities and Functions** (may not be in the order)
 
