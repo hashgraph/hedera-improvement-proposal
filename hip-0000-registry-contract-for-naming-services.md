@@ -1,7 +1,7 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
 title: REGISTRY CONTRACT for naming structure
-author: Som Kirann(somkirann@web23.io)
+author: Som Kirann(somkirann@web23.io), Rahul Pandey(rahul@web23.io)
 working-group: Som Kirann(somkirann@web23.io), Rahul Pandey(rahul@web23.io), Delfin Iglesia(del@web23.io)
 type: Process
 category: Service
