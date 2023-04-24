@@ -69,7 +69,7 @@ introduces the software version in serialized events may have to handle versions
 format until all nodes have upgraded.
 
 At the application layer, new code paths which key off the software version value can be created. The application
-developer will need to consider how to process events and transactions from different software versions and. The same
+developer will need to consider how to process events and transactions from different software versions. The same
 security practices against malicious nodes sending events would apply and the application developer would need to
 ensure they are not introducing bugs or attack vectors if the application receives events from older or future
 software versions.
