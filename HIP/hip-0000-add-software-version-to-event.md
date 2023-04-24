@@ -76,8 +76,7 @@ software versions.
 
 ## How to Teach This
 
-No additional teaching would be required. Javadoc will be provided on the new interface method. The primary impacted
-developers are the Hedera app developers.
+Javadoc will be provided on the new interface method. The impacted developers are the Hedera app developers that use the platform's Event interface and anyone that consumes the serialized event data without using the platform software. 
 
 ## Reference Implementation
 
