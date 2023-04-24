@@ -25,7 +25,8 @@ this functionality to include the HTS `associate` and `dissociate` functions.
 
 There are some functions that are unique to Hedera HTS tokens that are not part of the ERC standard.
 A mechanism should be provided to enable developers to call these functions on HTS tokens in a way that is familiar
-to users of ERC-20 and ERC-721 tokens.
+to users of ERC-20 and ERC-721 tokens.  Additionally, these token functions should be callable by both EOAs
+and contracts.
 
 ## Rationale
 
@@ -35,6 +36,7 @@ that is only available to HTS tokens can be included to the available capabiliti
 ## User stories
 
 1. As a developer, I want to be able to call the `associate` and `dissociate` functions on HTS tokens in a way that is similar to calling functions on the IERC20 and IERC721 interfaces.
+2. As a DApp, I want to be able to enable users to call the `associate` and `dissociate` functions without having to have intermediary contracts.
 
 ## Specification
 
