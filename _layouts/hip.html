@@ -3,75 +3,138 @@ layout: default
 ---
 
 {% if page.status == "Draft" %}
-  <div class="draft">
-    ⚠️ This is a draft HIP - it's not recommended for general use or implementation as it is likely to change.
-  </div>
+<div class="draft">
+  ⚠️ This is a draft HIP - it's not recommended for general use or implementation as it is likely to change.
+</div>
 {% elsif page.status == "Review" %}
-  <div class="review">
-    📖 This HIP is in the review stage. It is subject to changes and feedback is appreciated.
-  </div>
+<div class="review">
+  📖 This HIP is in the review stage. It is subject to changes and feedback is appreciated.
+</div>
 {% elsif page.status == "Last Call" %}
-  <div class="lastcall">
-    📢 This HIP is in the last call for review stage. The authors wish to finalize the HIP and appreciate feedback.
-  </div>
+<div class="lastcall">
+  📢 This HIP is in the last call for review stage. The authors wish to finalize the HIP and appreciate feedback.
+</div>
 {% elsif page.status == "Stagnant" %}
-  <div class="stagnant">
-    🚧 This HIP had no activity for at least 6 months.
-  </div>
+<div class="stagnant">
+  🚧 This HIP had no activity for at least 6 months.
+</div>
 {% elsif page.status == "Withdrawn" %}
-  <div class="withdrawn">
-    🛑 This HIP has been withdrawn.
-  </div>
+<div class="withdrawn">
+  🛑 This HIP has been withdrawn.
+</div>
 {% endif %}
 
 <div class="home">
   <h1 class="page-heading">
     <a href="{{site.github.repository_url}}/blob/master/{{page.path}}" target="_blank"><img
-      src="/assets/images/gitHub-mark.png" alt="GitHub Logo" width="30" height="30"> HIP-{{ page.hip | xml_escape
-  }}:</a> {{ page.title | xml_escape }}
+        src="/assets/images/gitHub-mark.png" alt="GitHub Logo" width="30" height="30"> HIP-{{ page.hip | xml_escape
+      }}:</a> {{ page.title | xml_escape }}
   </h1>
   <h3>{{ page.description | xml_escape }}</h3>
   <table>
-    <tr><th>Author</th><td>{% include authorslist.html authors=page.author %}</td></tr>
+    <tr>
+      <th>Author</th>
+      <td>{% include authorslist.html authors=page.author %}</td>
+    </tr>
     {% if page["working-group"] != undefined %}
-      <tr><th>Working Group</th><td>{{ page.working-group }}</td></tr>
+    <tr>
+      <th>Working Group</th>
+      <td>{{ page.working-group }}</td>
+    </tr>
     {% endif %}
     {% if page["discussions-to"] != undefined %}
-      <tr><th>Discussions-To</th><td><a href="{{ page["discussions-to"] | uri_escape }}">{{ page["discussions-to"] | xml_escape }}</a></td></tr>
+    <tr>
+      <th>Discussions-To</th>
+      <td><a href="{{ page[" discussions-to"] | uri_escape }}">{{ page["discussions-to"] | xml_escape }}</a></td>
+    </tr>
     {% endif %}
-    <tr><th>Status</th><td>{{ page.status | xml_escape }}</td></tr>
+    <tr>
+      <th>Status</th>
+      <td>
+        {{ page.status | xml_escape }}
+        <span class="tooltip" data-tooltip="{{ page.status }}" style="text-decoration:none">ⓘ</span>
+      </td>
+    </tr>
     {% if page.needs-council-approval != undefined %}
-    {% if page.needs-council-approval == true %}
-    <tr><th>Needs Council Approval</th><td>Yes</td></tr>
-    {% else %}
-    <tr><th>Needs Council Approval</th><td>No</td></tr>
-    {% endif %}
+    <tr>
+      <th>
+        Needs Council Approval
+      </th>
+      <td>
+        {% if page.needs-council-approval %}
+        Yes <span class="tooltip" data-tooltip="{{ page.needs-council-approval | jsonify }}"
+          style="text-decoration:none">ⓘ</span>
+        {% else %}
+        No <span class="tooltip" data-tooltip="{{ page.needs-council-approval | jsonify }}"
+          style="text-decoration:none">ⓘ</span>
+        {% endif %}
+      </td>
+    </tr>
     {% endif %}
     {% if page.last-call-date-time != undefined %}
-      <tr><th>Review period ends</th><td>{{ page.last-call-date-time | date_to_rfc822 }}</td></tr>
+    <tr>
+      <th>Review period ends <span class="tooltip" data-tooltip="reviewPeriodEnds" style="text-decoration:none">ⓘ</span></th>
+      <td>
+        {{ page.last-call-date-time | date_to_rfc822 }}
+      </td>
+    </tr>
     {% endif %}
-    <tr><th>Type</th><td>{{ page.type | xml_escape }}</td></tr>
+    <tr>
+      <th>Type</th>
+      <td>
+        {{ page.type | xml_escape }}
+        <span class="tooltip" data-tooltip="{{ page.type }}" style="text-decoration:none">ⓘ</span>
+      </td>
+    </tr>
     {% if page.category != undefined %}
-      <tr><th>Category</th><td>{{ page.category | xml_escape }}</td></tr>
+    <tr>
+      <th>Category</th>
+      <td>
+        {{ page.category | xml_escape }}
+        <span class="tooltip" data-tooltip="{{ page.category }}" style="text-decoration:none">ⓘ</span>
+      </td>
+    </tr>
     {% endif %}
-    <tr><th>Created</th><td>{{ page.created | xml_escape }}</td></tr>
+    <tr>
+      <th>Created</th>
+      <td>{{ page.created | xml_escape }}</td>
+    </tr>
     {% if page.updated != undefined %}
-    <tr><th>Updated</th><td>{{ page.updated | xml_escape }}</td></tr>
+    <tr>
+      <th>Updated</th>
+      <td>{{ page.updated | xml_escape }}</td>
+    </tr>
     {% endif %}
     {% if page.requires != undefined %}
-      <tr><th>Requires</th><td>{% include hipnums.html hips=page.requires %}</td></tr>
+    <tr>
+      <th>Requires</th>
+      <td>{% include hipnums.html hips=page.requires %}</td>
+    </tr>
     {% endif %}
     {% if page.replaces != undefined %}
-      <tr><th>Replaces</th><td>{% include hipnums.html hips=page.replaces %}</td></tr>
+    <tr>
+      <th>Replaces</th>
+      <td>{% include hipnums.html hips=page.replaces %}</td>
+    </tr>
     {% endif %}
     {% if page["superseded-by"] != undefined %}
-      <tr><th>Superseded by</th><td>{{ page.superseded-by | xml_escape }}</td></tr>
+    <tr>
+      <th>Superseded by</th>
+      <td>{{ page.superseded-by | xml_escape }}</td>
+    </tr>
     {% endif %}
     {% if page.release != undefined %}
-      <tr><th>Release</th><td><a href="https://github.com/hashgraph/hedera-services/releases/tag/{{page.release}}">{{ page.release | xml_escape }}</a></td></tr>
+    <tr>
+      <th>Release</th>
+      <td><a href="https://github.com/hashgraph/hedera-services/releases/tag/{{page.release}}">{{ page.release |
+          xml_escape }}</a></td>
+    </tr>
     {% endif %}
     {% if page.resolution != undefined %}
-      <tr><th>Resolution</th><td><a href="{{page.resolution | uri_escape }}">{{ page.resolution | xml_escape }}</a></td></tr>
+    <tr>
+      <th>Resolution</th>
+      <td><a href="{{page.resolution | uri_escape }}">{{ page.resolution | xml_escape }}</a></td>
+    </tr>
     {% endif %}
   </table>
 
@@ -83,7 +146,7 @@ layout: default
   {% include anchor_headings.html html=content anchorClass="anchor-link" beforeHeading=true %}
 
 
-<h2>Citation</h2>
+  <h2>Citation</h2>
   <p>Please cite this document as:</p>
   {% comment %}
   IEEE specification for reference formatting:
@@ -111,3 +174,101 @@ https://schema.org/TechArticle
     "copyrightYear": "{{ page.created | date: "%Y" }}"
   }
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tooltipData = {
+      status: {
+        Draft: "⚠️ This is a draft HIP - it's not recommended for general use or implementation as it is likely to change.",
+        Review: "📖 This HIP is in the review stage. It is subject to changes and feedback is appreciated.",
+        "Last Call": "📢 This HIP is in the last call for review stage. The authors wish to finalize the HIP and appreciate feedback.",
+        Stagnant: "🚧 This HIP had no activity for at least 6 months.",
+        Withdrawn: "🛑 This HIP has been withdrawn.",
+        Active: "🌟 Informational or Process HIPs have a status of 'Active' after the last call period"
+          + ". This is the last stage for these two HIPs unless they are replaced by another hip",
+        Final: "✅ This HIP means the feature has been implemented in code and has been released.",
+        Replaced: "🔄 'Replaced' HIPs are overwritten by a newer standard or implementation.",
+        Accepted: "👍 An accepted HIP is a HIP that went through the 'Last Call' status period without changes to the content and is considered ready for implementation.",
+        Rejected: "❌ This HIP has been rejected, and the proposed idea will not be implemented or pursued further.",
+      },
+      type: {
+        "Standards Track": "📜 Standards Track HIPs describe protocol changes or new features.",
+        Informational: "📚 Informational HIPs describe a design issue or provide general guidelines.",
+        Process: "⚙️ Process HIPs propose changes to the HIP process or environment.",
+      },
+      category: {
+        Core: "💠 Core HIPs relate to the core protocol or infrastructure.",
+        Service: "🌐 Service HIPs address Hedera Services",
+        Mirror: "🔍 Mirror HIPs relate to the Hedera Mirror Node",
+        Application: "📱 Application HIPs are specific to applications built on top of the Hedera platform.",
+      },
+      "needs-council-approval": {
+        true: "👥 This HIP requires council approval for implementation because it makes changes at the protocol level.",
+        false: "✅ This HIP does not require council approval for implementation.",
+      },
+      "reviewPeriodEnds": "⏳ The last call review period ends on this date, after which the HIP's status may change.",
+    };
+
+    const tooltipElements = document.querySelectorAll(".tooltip");
+    tooltipElements.forEach((tooltipElement) => {
+      const tooltipValue = tooltipElement.getAttribute("data-tooltip");
+      const tooltipContent = getTooltipContent(tooltipValue);
+      tooltipElement.setAttribute("data-tooltip", tooltipContent);
+    });
+
+    function getTooltipContent(value) {
+      if (tooltipData[value]) {
+        return tooltipData[value];
+      }
+      for (const key in tooltipData) {
+        if (tooltipData[key][value]) {
+          return tooltipData[key][value];
+        }
+      }
+      return "";
+    }
+  });
+</script>
+
+
+<script>
+  const tooltipElements = document.querySelectorAll('.tooltip');
+  tooltipElements.forEach(tooltip => {
+    tooltip.addEventListener('mouseover', () => {
+      const tooltipText = tooltip.getAttribute('data-tooltip');
+      const tooltipBox = document.createElement('div');
+      tooltipBox.classList.add('tooltip-box');
+      tooltipBox.innerText = tooltipText;
+      tooltip.appendChild(tooltipBox);
+    });
+
+    tooltip.addEventListener('mouseout', () => {
+      const tooltipBox = tooltip.querySelector('.tooltip-box');
+      if (tooltipBox) tooltip.removeChild(tooltipBox);
+    });
+  });
+</script>
+
+<style>
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: underline;
+    color: #069;
+  }
+
+  .tooltip-box {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+    z-index: 1000;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+</style>
