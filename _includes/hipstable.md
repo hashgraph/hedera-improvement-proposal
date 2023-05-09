@@ -21,6 +21,7 @@
         border: none;
         border-bottom: 1px solid #eee; 
         position: relative;
+        css-mobile
         padding-left: 60%; 
         word-break: break-word;
         padding-top: 0px; /* added this line */
