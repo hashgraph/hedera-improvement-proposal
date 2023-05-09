@@ -1,22 +1,46 @@
 <style type="text/css">
-.hipstable .last-call-date-time {
-    width: 21%;
+.hipstable {
+    width: 100%;
+    table-layout: auto;
 }
 
-.hipstable .title {
-    width: 45%;
+@media screen and (max-width: 600px) {
+    .hipstable, .hipstable thead, .hipstable tbody, .hipstable th, .hipstable td, .hipstable tr { 
+        display: block; 
+    }
+
+    .hipstable thead tr { 
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .hipstable tr { border: 1px solid #ccc; }
+
+    .hipstable td { 
+        border: none;
+        border-bottom: 1px solid #eee; 
+        position: relative;
+        padding-left: 50%; 
+    }
+
+    .hipstable td:before { 
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%; 
+        padding-right: 10px; 
+        white-space: nowrap;
+    }
+
+    .hipstable .hip-number:before { content: "Number"; }
+    .hipstable .title:before { content: "Title"; }
+    .hipstable .author:before { content: "Author"; }
+    .hipstable .council-approval:before { content: "Needs Council Approval"; }
+    .hipstable .last-call-date-time:before { content: "Review Period Ends"; }
+    .hipstable .release:before { content: "Release"; }
 }
 
-.hipstable .author {
-    width: 25%;
-}
-.hipstable .council-approval {
-width: 5%;
-}
-
-.hipstable .hip-number {
-    width: 2%;
-}
 
 .status-tooltip {
     margin-left: 5px;
