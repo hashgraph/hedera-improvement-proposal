@@ -21,7 +21,10 @@
         border: none;
         border-bottom: 1px solid #eee; 
         position: relative;
-        padding-left: 50%; 
+        padding-left: 60%; 
+        word-break: break-word;
+        padding-top: 0px; /* added this line */
+        min-height: 50px; /* added this line */
     }
 
     .hipstable td:before { 
@@ -31,6 +34,7 @@
         width: 45%; 
         padding-right: 10px; 
         white-space: nowrap;
+        word-break: break-word;
     }
 
     .hipstable .hip-number:before { content: "Number"; }
