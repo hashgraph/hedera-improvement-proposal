@@ -7,8 +7,13 @@
 .site-header {
   .wrapper {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    padding: 1em;
+    .site-title {
+      margin-left: 100px
+    }
   }
 }
 
@@ -62,6 +67,13 @@
     margin-top: 5px;
     padding: 0 25px;
     text-align: left;
+  }
+  .site-header {
+    .wrapper {
+      .site-title {
+        margin-left: 0
+      }
+    }
   }
 }
 
