@@ -1,6 +1,6 @@
 ---
 hip: 0000
-title: Waived association requirement for atomic transfers for smart contracts
+title: Optimstic token association for smart contracts
 author: Matthew DeLorenzo <mdelore.ufl@gmail.com>, Vae Vecturne <vea.vecturne@gmail.com>
 type: Standards Track
 category: Service
@@ -19,6 +19,10 @@ We propose that association not be required for Hedera entities that only custod
 ## Motivation
 
 Currently, a smart contract attempting to custody an unassociated token will be immediately rejected by the network. This presents a problem in some decentralized finance (DeFi) applications that use smart contracts to atomically custody tokens. Decentraliztion may be achieved by allowing contracts to remain token agnostic, but also prevent spamming attacks by allowing any user to associate tokens to a DeFi smart contract. 
+
+`MAX_AUTOMATIC_ASSOCIATION` would not be sufficient for technical and some practical reasons. A decentralized contract that mediates transfers between two parties using auto-association slots would have to dissociate the token to free a slot for the next transfer upon completion. However, this process can be corrupted by a third party by sending tokens directly to the contract (without the execution of contract code), thereby requiring another party to dissociate the undesired tokens from the contract. 
+
+Another example is the contract caller would need to pay for dissociation of the token each time. For contracts that self-custody a variable number of tokens in a contract call (for example, UniswapV3 Swap Router), the burden of calculating how much gas to send is placed on the front end application. Due to the relatively high cost of associating and dissociating tokens using smart contract precompiles, a comparatively low upper limit is placed on the number of tokens that can be custodied by the contract. If instead tokens could optimistically be associated to contracts, the gas cost of association/disociation is not needed, and contracts are instead bounded primarily by computation and transfer costs.
 
 ## Rationale
 
@@ -46,7 +50,7 @@ This would be backward compatible.
 
 ## Security Implications
 
-Increased complexity of Hedera Smart Contract Service may lead to vulnerabilities.
+Incorrect implementation of optimistic token association could result in expansion of global token state for very little cost, resulting in a potentially large storage burden.
 
 ## How to Teach This
 
@@ -68,6 +72,7 @@ Example of a transfer transaction that should be allowed:
         // assumes msg.sender approved an allowance to address(this)
         HederaTokenService.transferToken(token, msg.sender, address(this), 1);
         int respCode = HederaTokenService.transferToken(token, address(this), recipient, 1);
+        assert(respCode == 22);
      }
 ```
 Example of a transfer transaction that should not be allowed:
@@ -97,7 +102,12 @@ None as of yet.
 
 ## References
 
-None.
+- 1 - https://eips.ethereum.org/EIPS/eip-20
+- 2 - https://hips.hedera.com/hip/hip-23
+- 3 - https://hips.hedera.com/hip/hip-367
+- 4 - https://github.com/LimeChain/HeliSwap-contracts/blob/13ba01b9ed89201888283c56e76a4e266489a7ff/contracts/periphery/UniswapV2Router02.sol#L141
+- 5 - https://github.com/Uniswap/v3-periphery/blob/6cce88e63e176af1ddb6cc56e029110289622317/contracts/SwapRouter.sol#L147
+
 
 ## Copyright/license
 
