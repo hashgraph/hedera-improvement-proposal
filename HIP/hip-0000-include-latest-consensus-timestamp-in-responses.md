@@ -1,0 +1,146 @@
+---
+hip: 0000
+title: Include Latest Consensus Timestamp in HAPI Responses
+author: Nick Poorman <@nickpoorman>
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Draft
+last-call-date-time: TBD
+created: 2023-05-18
+discussions-to: 
+updated:
+---
+
+
+## Abstract
+
+Currently, when a user submits a transaction on the Hedera API (HAPI), they supply two properties: a consensus timestamp at which the transaction will be valid `transactionID.transactionValidStart` and a duration for which the transaction remains valid as `transactionBody.transactionValidDuration`. For users to provide an accurate consensus timestamp for `transactionValidStart`, they need to be aware of the latest consensus timestamp of the network. Also, when a user resubmits a transaction to the network, it may be necessary under some circumstances for the user to have the latest consensus timestamp of the network.
+
+
+## Motivation
+
+Historically, users may have supplied a `transactionValidStart` as a local wall clock timestamp. Due to clock accuracy, drift, and the distributed nature of the network, it would be preferable for users when crafting transactions to have the latest consensus timestamp from the network instead of the local time of the user's machine. When resubmitting transactions, for example, upon receiving a `BUSY` response, a user may also wish to check the consensus timestamp of the network to ensure they have waited some amount of consensus time before retrying.
+
+
+## Rationale
+
+To address these issues, the proposed solution is to add a recent `ConsensusTimestamp` to the `TransactionResponse` of all HAPI gRPC endpoints. 
+
+
+## User stories
+
+- As a user, I want to submit a transaction to the network and use the more accurate network consensus timestamp instead of the wall clock time of my machine.
+
+- As an SDK, I want to provide a better user experience for users of the SDK by abstracting away complicated details around crafting valid transaction durations and resubmitting transactions during periods of exhausted rate limits and upgrade windows using the latest consensus timestamp instead of the wall clock time of the machine I am running on.
+
+- As a developer building applications and making requests to HAPI, I want to avoid the logical overhead of clock drift between consensus timestamps and the wall clock time of my machine.
+
+
+## Specification
+
+
+The` consensusTimestamp` key will be a new property on the `Response` [1] and `TransactionResponse` [2] ProtoBuf messages. It will include the latest consensus timestamp from the network. 
+
+
+Example transaction:
+
+```js
+const transaction = new TransactionReceiptQuery()
+  .setTransactionId(transactionId);
+
+const txResponse = await transaction.execute(client);
+
+// Get the consensus timestamp of the node from the response.
+const consensusTimestamp = txResponse.consensusTimestamp
+```
+
+For a `Transaction` request, the `consensusTimestamp` is included as a property on the `TransactionResponse`.
+
+``` Protobuf
+message TransactionResponse {
+  /**
+   * The response code that indicates the current status of the transaction.
+   */
+  ResponseCodeEnum nodeTransactionPrecheckCode = 1;
+
+  /**
+     * If the response code was INSUFFICIENT_TX_FEE, the actual transaction fee that would be
+     * required to execute the transaction.
+   */
+  uint64 cost = 2;
+
+  /**
+   * The latest consensus timestamp from the netwrok as of crafting this response.
+   */
+   Timestamp consensusTimestamp = 3;
+}
+```
+
+For a `Query` request, the `consensusTimestamp` is included a property the `Response`.
+
+```protobuf
+message Response {
+  oneof response {
+      /**
+       * Get all entities associated with a given key
+       */
+      GetByKeyResponse getByKey = 1;
+      // ... omitted for brevity
+      /**
+      * Gets all information about an account including allowances granted by the account
+      */
+      GetAccountDetailsResponse accountDetails = 158;
+  }
+
+  /**
+   * The latest consensus timestamp from the netwrok as of crafting this response.
+   */
+   Timestamp consensusTimestamp = 159;
+
+}
+```
+
+
+## Backwards Compatibility
+
+The addition of the `consensusTimestamp` in the `Response` and `TransactionResponse` will not affect the functionality of existing code written to work with HAPI as ProtoBuf is backwards and forwards compatible. The SDKs may wish to take advanate of the property and/or expose it to developers using the SDKs. This property will be available on the `Response` and `TransactionResponse` messages should users wish to take advantage of it.
+
+## Security Implications
+
+The use of the `consensusTimestamp` will not introduce any new security concerns.
+
+
+## How to Teach This
+
+In distributed computing, the time reported by the local machine is commonly referred to as the "local time" or "local system time." It represents the time according to the clock on that particular machine. Each machine in a distributed system may have its own local time, which can differ from the time on other machines due to variations in clock accuracy, drift, or differences in time synchronization mechanisms. It's important to note that relying solely on local time in a distributed system can lead to inconsistencies and challenges in coordination. [1]
+
+The hashgraph consensus algorithm calculates the consensus timestamp, and while closely related to local system time, consensus time, by its very nature, may not be in sync with a user's local system time. [2]
+
+
+## Reference Implementation
+
+The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+
+
+## Rejected Ideas
+
+Implementing an API specifically responsible for querying the latest consensus timestamp was discussed and rejected. Due to the nature of HAPI, mechanisms such as rate limiting make it preferable to return the consensus timestamp on the result of every  `Response` and `TransactionResponse`.
+
+
+## Open Issues
+
+There are currently no open issues with this proposal.
+
+
+## References
+
+1. https://github.com/hashgraph/hedera-protobufs/blob/3fa0f5e6e3d30f5945410fdedaddf8c7064b5911/services/response.proto#L68
+2. https://github.com/hashgraph/hedera-protobufs/blob/3fa0f5e6e3d30f5945410fdedaddf8c7064b5911/services/transaction_response.proto#L39
+3. Coulouris, G.; Dollimore, J. & Kindberg, T. (2005) p. #64, _Distributed Systems: Concepts and Design (International Computer Science)_ , Addison-Wesley Longman, Amsterdam.
+4. https://docs.hedera.com/hedera/core-concepts/hashgraph-consensus-algorithms#section-fair-timestamps
+
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
