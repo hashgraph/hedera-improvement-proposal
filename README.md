@@ -53,7 +53,7 @@ You can run a local version of the HIPs dashboard site:
 
 ```shell
 bundle install
-jekyll serve --livereload
+bundle exec jekyll serve --livereload
 ```
 
 The site will be available on `http://localhost:4000`.
