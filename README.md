@@ -4,6 +4,7 @@
 [![](https://img.shields.io/badge/view-published-blue)](https://hips.hedera.com)
 
 ## Submit a HIP
+
 1. Fork this repository
 2. Fill out this template: [hip template](hip-0000-template.md)
 3. Create a pull request against hashgraph/hedera-improvement-proposal main
@@ -41,7 +42,12 @@ Each HIP should only be one single key proposal and/or idea. The idea should be 
 4. Reevaluate your proposal to ensure sure the idea is applicable to the entire community and not just to one particular author, application, project, or protocol.
 
 ## Local Jekyll Site
-Prereq - make sure you have bundler for Ruby
+
+Pre-requisites:
+
+- `ruby`: `2.7.8p225`
+- `gem`: `3.4.10`
+- `bundler`: `1.17.3`
 
 You can run a local version of the HIPs dashboard site:
 
