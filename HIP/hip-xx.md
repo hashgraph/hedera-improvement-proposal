@@ -1,15 +1,15 @@
 ---
-hip: TBD
+hip: 000
 title: Optionally send transaction data without required transaction fields
 author: Greg Scullard <greg@swirldslabs.com>
 working-group: Simi Hunjan, Ognyan Chikov, Peter Tonev
-type: Standards
+type: Standards Track
 category: Application
 needs-council-approval: No
 status: Draft
 last-call-date-time: 
 created: 2023-05-30
-discussions-to:
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/746
 updated:
 ---
 
