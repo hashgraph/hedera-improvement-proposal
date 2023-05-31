@@ -1,0 +1,87 @@
+---
+hip: TBD
+title: Optionally send transaction data without required transaction fields
+author: Greg Scullard <greg@swirldslabs.com>
+working-group: Simi Hunjan, Ognyan Chikov, Peter Tonev
+type: Standards
+category: Application
+needs-council-approval: No
+status: Draft
+last-call-date-time: 
+created: 2023-05-30
+discussions-to:
+updated:
+---
+
+## Abstract
+
+Freezing a transaction using the SDK is currently necessary in order to serialise it or to add signatures other than the operator to it.
+
+## Motivation
+
+It should be possible to serialise a transaction without freezing it and in addition, it should be possible to serialise an incomplete transaction (e.g. missing node_account_id and transaction_id as a minimum, maybe others).
+It should also be possible to add signatures to a transaction without freezing it.
+
+## Rationale
+
+- The SDK manages a list of nodes and marks unreachable nodes when it encounters one.
+- Dapps using wallets such as Hashpack construct a transaction using the SDK and need to serialise it in order to submit it to the wallet for signing
+- This requires the dapp to set the TransactionId and NodeAccountId in order to freeze the transaction to serialise
+- The wallet signs and submits, given the node accountId is set, the SDK cannot override it.
+- The dApp SDK isn't submitting to the network, so it is not aware of nodes that are unavailable and may keep selecting the same incorrect node
+
+The freeze feature in itself doesn't appear to add much value in any case, failure to complete a transaction before serialisation or execution will result an error that would be caught in testing. In fact, as a developer it's more confusing and unnecessary additional coding steps and complexity.
+
+Freezing a transaction in a dApp merely sets a flag against the transaction object, the network is not aware of the transaction at this point. Developers are sometimes confused, believing that if the transaction is frozen, it can’t ever be modified, but this isn’t strictly true. A wallet (or anyone receiving the serialised transaction) can deserialise the transaction and create a new one from the serialised data, this new transaction will be unfrozen and subject to being modified by the wallet.
+When the purpose of freezing a transaction is misunderstood, it leads to a false sense of security.
+
+## User stories
+
+- As a dApp developer, I should be able to create a transaction object missing the transaction_id and/or node_account_id, serialise it and send to a wallet or other third party without freezing the transaction.
+- As a dApp developer, I should be able to create a transaction object containing both the transaction_id and node_account_id, serialise it and send to a wallet or other third party without freezing the transaction.
+- As a dApp developer, I should be able to create an incomplete transaction (e.g. containing a single transfer), serialise it, send it to a wallet or third party without freezing the transaction.
+- As a dApp developer, I should be able to create a transaction and add many additional signatures without freezing the transaction.
+- As a wallet developer, I should be able to accept a complete serialised transaction, de-serialise it and execute it.
+- As a wallet developer, I should be able to receive an incomplete transaction (node_account_id and/or transaction_id), de-serialise it, complete the missing information, sign and execute the transaction
+- As a third party, I should be able to receive an incomplete transaction (e.g. cryptoTransfer missing transfers, tokenCreate missing token name, etc…), de-serialise it, complete the missing information, serialise and send to a wallet, or sign and execute
+  
+## Specification
+
+Remove the need to freeze a transaction, suggest deprecating and making the method a no operation during the deprecation period.
+
+Allow any transaction to be serialised/de-serialised, the receiver or the serialised transaction can fill in the blanks before submitting (likely done automatically by the sdk at .execute()).
+
+## Backwards Compatibility
+
+Wallets receiving incomplete transactions from dApps will need to ensure they complete the missing information prior to submitting to the network, as a result a dApp sending incomplete transactions to a wallet that’s not up to date will result in transaction execution errors.
+
+## Security Implications
+
+Given the wallets sign transactions, they are trusted to ensure the transaction being executed matches the intent of the application or user triggering the application.
+
+Freezing a transaction doesn’t prevent a malicious wallet from modifying the intent (see rationale).
+
+If a transaction missing data is signed, changes to the transaction data (node_account_id and/or transaction_id) will modify the transaction such that the signature is rendered invalid, so there is no security risk.
+
+If a transaction is complete and signed, modification to the transaction data (node_account_id, transaction_id and / or any other data) will modify the transaction such that the signature is rendered invalid, so there is no security risk.
+## How to Teach This
+
+- SDK examples
+
+## Reference Implementation
+
+None.
+
+## Rejected Ideas
+
+None
+
+## Open Issues
+
+## References
+
+- https://github.com/hashgraph/hedera-sdk-js/issues/1445
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
