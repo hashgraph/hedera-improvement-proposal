@@ -2,7 +2,7 @@
 hip: 000
 title: Optionally send transaction data without required transaction fields
 author: Greg Scullard <greg@swirldslabs.com>
-working-group: Simi Hunjan, Ognyan Chikov, Peter Tonev
+working-group: Simi Hunjan <@SimiHunjan>, Ognyan Chikov <@ochikov>, Peter Tonev <@petreze>
 type: Standards Track
 category: Application
 needs-council-approval: No
