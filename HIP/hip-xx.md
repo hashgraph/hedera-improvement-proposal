@@ -7,10 +7,9 @@ type: Standards Track
 category: Application
 needs-council-approval: No
 status: Draft
-last-call-date-time: 
 created: 2023-05-30
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/746
-updated:
+updated: 2023-06-01
 ---
 
 ## Abstract
