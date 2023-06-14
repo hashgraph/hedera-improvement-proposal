@@ -7,6 +7,7 @@ layout: none
     {% else %}
       {
         "title"    : "{{ p.title }}",
+        "hipnum"   : "{{ p.hip }}",
         "category" : "{{ p.category }}",
         "content": {{ p.content | jsonify }},
         "url"      : "{{ site.baseurl }}{{ p.url }}"
