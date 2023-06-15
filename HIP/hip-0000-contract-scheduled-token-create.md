@@ -9,10 +9,6 @@ needs-council-approval: Yes
 status: Draft
 created: 2023-06-14
 discussions-to: 
-updated: 
-requires: 
-replaces: 
-superseded-by: 
 ---
 
 ## Abstract
