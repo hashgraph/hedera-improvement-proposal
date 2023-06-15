@@ -9,10 +9,6 @@ needs-council-approval: Yes
 status: Draft
 created: 2023-06-14
 discussions-to: 
-updated: 
-requires: 
-replaces: 
-superseded-by: 
 ---
 
 ## Abstract
@@ -52,12 +48,12 @@ To achieve this a new Hedera Schedule Service (HSS) system contract will need to
 
 A new `IHederaScheduleService` interface will be implemented to allow accounts to authorize a pre-existing scheduled transaction via smart contracts
 
-|   Hash        |   Selector                                |   In contract support |
-|---------------|-------------------------------------------|-----------------------|
-| `0xf0637961`  | `authorizeSchedule(address)`              | Y                     |
-| `0x5e147101`  | `getScheduledTransactionInfo(address)`    | Y                     |
-| `0xd797b304`  | `signSchedule(address)`                   | N                     |
-| `0x358eeb03`  | `signSchedule(address,bytes)`             | Y                     |
+|   Hash        |   Selector                                                                                        |   In contract support |
+|---------------|---------------------------------------------------------------------------------------------------|-----------------------|
+| `0xf0637961`  | `authorizeSchedule(address) external returns (int64 responseCode)`                                | Y                     |
+| `0x5e147101`  | `getScheduledTransactionInfo(address) external returns (bytes memory transactionProtobufBytes)`   | Y                     |
+| `0xd797b304`  | `signSchedule(address) external returns (int64 responseCode)`                                     | N                     |
+| `0x358eeb03`  | `signSchedule(address, bytes) external returns (int64 responseCode)`                              | Y                     |
 
 Since `signSchedule(address scheduleAddress) returns (int64 responseCode)` relies on an implicit signature it will only callable by EOA’s via the IHRC facade.
 In this case the signature will be the inner ECDSA signature found in the RLP encoded `EthereumTransaction`. 
@@ -89,21 +85,16 @@ Gas collections should encompass the following aspects of the network
 
 ## How to Teach This
 
-For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
+
 
 ## Reference Implementation
 
-The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
 
 ## Rejected Ideas
 
-Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
-
-In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
 
 ## Open Issues
 
-While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
 
 ## References
 
