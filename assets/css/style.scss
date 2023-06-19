@@ -7,8 +7,80 @@
 .site-header {
   .wrapper {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    margin-right: 265px;
+    padding: 1em;
+    .site-title {
+      margin-left: 100px
+    }
+  }
+}
+
+#search-container {
+  position: absolute;
+  top: 78px;
+  right: 15px;
+}
+
+#search-input {
+  border: solid #5DCA5D 2px;
+  padding: 1px;
+  float: right;
+}
+#results-container {
+  background: white;
+  list-style: none;
+  text-align: right;
+  margin-top: 35px;
+  border: 1px solid #eee;
+  //padding: 10px;
+}
+#results-container>li {
+  padding: 0 20px;
+}
+@media (max-width: 930px){
+  #search-container {
+    width: 100%;
+    position: relative;
+    top: auto;
+    right: auto;
+  }
+  #search-input-wrapper {
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  #search-input {
+    border: solid #5DCA5D 2px;
+    padding: 1px;
+    width: 400px;
+    margin: auto;
+    position: relative;
+  }
+
+  #results-container {
+    background: white;
+    list-style: none;
+    margin-top: 5px;
+    padding: 0 25px;
+    text-align: left;
+  }
+  .site-header {
+    .wrapper {
+      .site-title {
+        margin-left: 0
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  #search-input {
+    width: 100%;
   }
 }
 

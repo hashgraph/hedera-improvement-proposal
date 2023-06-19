@@ -1,0 +1,28 @@
+name: Send status email
+on:
+  workflow_dispatch:
+     inputs:
+       filename:
+          type: string
+          required: true
+       status:
+          type: string
+          required: true
+
+jobs:
+  StatusChangeNotifications:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: hips@hedera.com
+          password: ${{ secrets.GOOGLE_APP_PASS }}
+          subject: ${{ github.event.inputs.filename }} moved into ${{ github.event.inputs.status }}
+          to: ${{ secrets.LAST_CALL_EMAILS }}
+          from: The HIPs repository
+          body: This is an automated message, please do not reply. Check https://hips.hedera.com/hip/${{ github.event.inputs.filename }} for more info. Thank you.
+          secure: true
+          priority: medium

@@ -1,12 +1,13 @@
 ---
 hip: 33
 title: Add Network ID Field to Info Responses
-author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds.com>, Leemon Baird <leemon@hedera.com, Mark Williamson <mark.williamson@hedera.com, Alex Popowycz <a@hedera.com>
-type: Standards
+author: Simi Hunjan <simi@hedera.com>, David Matusevich <davidmatusevich@swirlds.com>, Leemon Baird <leemon@hedera.com>, Mark Williamson <mark.williamson@hedera.com>, Alex Popowycz <a@hedera.com>
+type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Final
 last-call-date-time: 2021-11-30T07:00:00Z
+release: v0.22.0
 created: 2021-10-19
 updated: 2021-11-30, 2022-04-26
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/159
