@@ -1,0 +1,20 @@
+<!-- HTML search field -->
+<div id="search-container">
+    <div id="search-input-wrapper">
+        <input type="text" id="search-input" placeholder="Search HIPs..." autofocus>
+    </div>
+    <ul id="results-container"></ul>
+</div>
+
+<!-- Grab search-script.js -->
+<script src="/assets/js/search-script.min.js" type="text/javascript"></script>
+
+<!-- Configuration -->
+<script>
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: "{{ './search.json' | relative_url }}",
+        searchResultTemplate: '<li><a href="{url}"><b>HIP-{hipnum}:</b> {title}</a></li>'
+    })
+</script>

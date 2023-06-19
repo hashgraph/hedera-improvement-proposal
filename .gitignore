@@ -4,6 +4,9 @@
 *.idea
 *.iml
 
+# VSCode
+.vscode/
+
 ## Jekyll
 _site/
 .sass-cache/
@@ -14,3 +17,6 @@ _site/
 /.bundle/
 /vendor/bundle
 .idea
+
+## Node
+/node_modules/
