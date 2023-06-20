@@ -1,15 +1,15 @@
 ---
-hip: 
+hip: 758
 title: Unify ContractInfo and AccountInfo Queries
 author: Nana Essilfie-Conduah (@nana-ec)
 working-group: Richard Bair (@rbair23), Jasper Potts (@jasperpotts), Nick Poorman (@nickpoorman), Stoyan Panayotov (stoyan.panayotov@limechain.tech), Miroslav Gatsanoga (miroslav.gatsanoga@limechain.tech), Greg Scullard (gregscullard@hedera.com), Steven Sheehy (@steven-sheehy), Michael Tinker (@tinker-michaelj), Neeha Sompalli (@Neeharika-Sompalli)
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2023-06-15
-discussions-to: 
-
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/758
+updated: 2023-06-20
 ---
 
 ## Abstract
