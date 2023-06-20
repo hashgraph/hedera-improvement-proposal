@@ -1,14 +1,15 @@
 ---
-hip: 
+hip: 756
 title: Contract Scheduled Token Create
 author: Nana Essilfie-Conduah (@nana-ec)
 working-group: Richard Bair (@rbair23), Jasper Potts (@jasperpotts)
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2023-06-14
-discussions-to: 
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/756
+updated: 2023-06-20
 ---
 
 ## Abstract
