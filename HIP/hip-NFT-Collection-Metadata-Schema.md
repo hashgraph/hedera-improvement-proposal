@@ -1,13 +1,14 @@
 ---
-hip: ???
+hip: 766
 title: NFT Collection Metadata JSON Schema
 author: Ashe Oro <@Ashe-Oro>
+working-group: TBD TBD <@tbd>
 type: Informational
 needs-council-approval: No
 status: Active
-created: 2023-06-30
-discussions-to: 
-updated: 2023-06-30
+created: 2023-07-11
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/766
+updated: 2023-07-11
 ---
 
 ## Abstract
