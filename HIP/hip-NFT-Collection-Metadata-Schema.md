@@ -206,6 +206,6 @@ Wallet and token explorer implementations interrogate HTS tokens using this stan
 
 This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
 
-## Acknoledgements
+## Acknowledgements 
 Big thanks to the author and working group of HIP-405 which was used extensively in both the content and formatting of this HIP. 
 
