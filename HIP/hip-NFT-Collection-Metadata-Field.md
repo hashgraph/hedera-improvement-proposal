@@ -1,15 +1,15 @@
 ---
-hip: 
+hip: 765
 title: NFT Collection Token Metadata Field
 author: Ashe Oro (@Ashe-Oro)
-working-group: 
+working-group: TBD TBD (@TBD)
 type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Active
-created: 2023-06-30
-discussions-to: 
-updated: 2023-06-30
+created: 2023-07-11
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/765
+updated: 2023-07-11
 ---
 
 ## Abstract
