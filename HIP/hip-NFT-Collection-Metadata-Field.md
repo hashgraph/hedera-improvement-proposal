@@ -131,10 +131,10 @@ Should EVM system precompile contracts for TokenCreate, TokenUpdate, and GetToke
 
 A collections of URLs used as references through the HIP.
 
-https://hips.hedera.com/hip/hip-17 - Non-Fungible Tokens
-https://hips.hedera.com/hip/hip-xxx - NFT Collection Metadata JSON Schema
-https://hips.hedera.com/hip/hip-412 - NFT Token Metadata JSON Schema
-https://hips.hedera.com/hip/hip-646 - Fungible Token Metadata Field
+- https://hips.hedera.com/hip/hip-17 - Non-Fungible Tokens
+- https://hips.hedera.com/hip/hip-766 - NFT Collection Metadata JSON Schema
+- https://hips.hedera.com/hip/hip-412 - NFT Token Metadata JSON Schema
+- https://hips.hedera.com/hip/hip-646 - Fungible Token Metadata Field
 
 ## Copyright/license
 
