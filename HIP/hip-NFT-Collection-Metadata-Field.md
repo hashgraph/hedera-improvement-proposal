@@ -14,7 +14,7 @@ updated: 2023-07-11
 
 ## Abstract
 
-This HIP proposes the addition of the metadata field to Non-Fungible TokenID, taking after the individual Non-Fungible Token (NFT) metadata field which was added in HIP-17. While HIP-17 metadata is scoped to a single NFT, here we propose adding metadata scoped to an entire token type.
+This HIP proposes the addition of the metadata field to Non-Fungible Token Class, taking after the individual Non-Fungible Token (NFT) metadata field which was added in HIP-17. While HIP-17 metadata is scoped to a single NFT, here we propose adding metadata scoped to an entire token class.
 
 ## Motivation
 
