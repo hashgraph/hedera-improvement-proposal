@@ -75,7 +75,7 @@
 </style>
 
 {% for status in site.data.statuses %}
-    {% assign hips = include.hips|where:"status",status|where:"category",category|where:"type",type %}
+    {% assign hips = include.hips|where:"status",status|where:"category",category|where:"type",type|sort:"hip"|reverse %}
     {% assign count = hips|size %}
     {% if count > 0 %}
         <h2 id="{{status|slugify}}">{{status}} <span class="status-tooltip" data-tooltip="{{status}}" style="text-decoration:none">ⓘ</span></h2>
