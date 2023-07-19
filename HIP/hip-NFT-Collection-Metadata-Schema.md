@@ -1,21 +1,21 @@
 ---
 hip: 766
 title: NFT Collection Metadata JSON Schema
-author: Ashe Oro <@Ashe-Oro>
+author: Ashe Oro <@Ashe-Oro>, Michiel Mulders <@michielmulders>
 working-group: TBD TBD <@tbd>
 type: Informational
 needs-council-approval: No
 status: Active
 created: 2023-07-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/766
-updated: 2023-07-11
+updated: 2023-07-11, 2023-07-19
 ---
 
 ## Abstract
 
 This specification provides a standard scheme for NFT Collection token metadata on Hedera Token Service (HTS).  
 
-NFT Collection tokens minted to this specification will be able to be served by explorers, wallets and other applications, allowing those applications to display information about the token that is additional to that stored directly on-ledger in the token.
+NFT Collection tokens minted to this specification will be able to be served by explorers, wallets, and other applications, allowing those applications to display information about the token that is additional to that stored directly on-ledger in the token.
 
 ## Motivation
 
@@ -23,9 +23,9 @@ Metadata is typically associated with indivdiual non-fungible tokens (NFTs), for
 
 [HIP-412](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-412.md) normalizes a metadata model for individual NFTs on Hedera where the `metadata` value defined on the individual NFT asset points to a JSON file that itself carries information about the characteristics of the token such as links to media, attribute and property descriptors, creator information, etc.
 
-As is the case for individual NFTs, it may be useful to provide information about an NFT Collection beyond that which is stored on-ledger. This specification follows the HIP-412 model to allow a NFT Collection HTS token (ie tokenID, token class) to point to a JSON file carrying that additional information. The key difference between this proposal and HIP-412 is that this specification defines a JSON schema specifically optimized for NFT Collections rather than for each individual NFT token itself. 
+As is the case for individual NFTs, it may be helpful to provide information about an NFT Collection beyond that which is stored on-ledger. This specification follows the HIP-412 model to allow a NFT Collection HTS token (ie tokenID, token class) to point to a JSON file carrying that additional information. The key difference between this proposal and HIP-412 is that this specification defines a JSON schema specifically optimized for NFT Collections rather than for each individual NFT token itself. 
 
-At the time of writing, NFT Collections do not yet have such a `metadata` field and it is advised to to utilize the `memo` field on the NFT Collection token to define the metadata "pointer". An additional HIP will be submited to address its absense and help align the usage of a `metadata` field across token types on HTS. When this is resolved, and a proper `metadata` field exists on NFT Collections, we expect this field will be used to capture the pointer to the JSON object adhering to the schema specified here.
+At the time of writing, NFT Collections do not yet have such a `metadata` field and it is advised to utilize the `memo` field on the NFT Collection token to define the metadata "pointer". An additional HIP will be submitted to address its absence and help align the usage of a `metadata` field across token types on HTS. When this is resolved and a proper `metadata` field exists on NFT Collections, we expect this field will be used to capture the pointer to the JSON object adhering to the schema specified here.
 
 ## Rationale
 
@@ -37,76 +37,78 @@ This design is expected to
 
 ## User Stories
 
-As an NFT Collection creator, I want to provide more information about my NFT Colletion than what is made available on-chain.
+As an NFT Collection creator, I want to provide more information about my NFT Collection than what is made available on-chain.
 
-As a wallet developer, network explorer, systems integrator, or NFT marketplace, I want to be able to query the metadata for an NFT Collection, in a consistent manner so that I can display that information to my users in a consistent & intuitive interface. This is far easier than manually requesting NFT Collection specific information and media for each.
+As a wallet developer, network explorer, systems integrator, or NFT marketplace, I want to be able to query the metadata for an NFT Collection consistently so that I can display that information to my users in a consistent & intuitive interface. This is far easier than manually requesting NFT Collection-specific information and media for each.
 
 ## Specification
 
-## Schema
+The HTS token schema allows for the name and symbol for an NFT Collection token to be carried on-ledger. To avoid redundancy & potential conflict, the JSON metadata does not include these two attributes. Instead, the JSON metadata holds additional attributes of the NFT Collection that may be useful for its interpretation, evaluation, and display.
 
-The HTS token schema allows for the name and symbol for a NFT Collection token to be carried on-ledger. To avoid redundancy & potential conflict, the JSON metadata does not include these two attributes. Instead, the JSON metadata holds additional attributes of the NFT Collection that may be useful for its interpretation, evaluation, and display.
+The JSON for a fungible token includes the following information.
 
-The JSON for a fungible token includes the following information
-
-- description - human readable description of the NFT Collection and corresponding project
-- creator - the entity that created the token 
-- creatorDID - the decentralized identifier of the creator
-- admin - if the token has an admin key, the entity that manages that key
-- website address -the address at which additional information on the token or corresponding project
-- chat/discord address - the address at which the project's community holds discussion
-- whitepaper address - the address at which the project's whitepaper can be found
-- social links - container for social links
-- properties - container for arbitrary token attributes not specifically listed above
+- `description` - human-readable description of the NFT Collection and corresponding project
+- `creator` - the entity that created the token 
+- `creatorDID` - the decentralized identifier of the creator
+- `admin` - if the token has an admin key, the entity that manages that key
+- `website` -the address at which additional information on the token or corresponding project
+- `whitepaper` - the address at which the project's whitepaper can be found
+- `socials` - JSON container for social links - Expected social link labels include `discord`, `twitter`, `linkedin`, `reddit`, `telegram`, `facebook`, and `youtube`
+- `properties` - JSON container for arbitrary token attributes not specifically listed above
 
 Light Backgrounds
-- lightLogo - a logo for the Collection designed for light backgrounds. 350×350 pixels recommended
-- lightLogoType - lightLogo mime type
-- lightBanner - a banner for the Collection designed for light backgrounds. 2800×1000 pixels recommended
-- lightBannerType - lightBanner mime type
-- lightFeaturedImage - a featured image for the NFT Collection designed for light backgrounds. 600×400 pixels recommended
-- lightFeaturedImageType - lightFeaturedImage mime type
+- `lightLogo` - a logo for the Collection designed for light backgrounds. 350×350 pixels recommended
+- `lightLogoType` - lightLogo mime type
+- `lightBanner` - a banner for the Collection designed for light backgrounds. 2800×1000 pixels recommended
+- `lightBannerType` - lightBanner mime type
+- `lightFeaturedImage` - a featured image for the NFT Collection designed for light backgrounds. 600×400 pixels recommended
+- `lightFeaturedImageType` - lightFeaturedImage mime type
 
 Dark Backgrounds
-- darkLogo - a logo for the Collection designed for light backgrounds. 350×350 pixels recommended
-- darkLogoType - darkLogo mime type
-- darkBanner - a banner for the Collection designed for light backgrounds. 2800×1000 pixels recommended
-- darkBannerType - darkBanner mime type
-- darkFeaturedImage - a featured image for the NFT Collection designed for light backgrounds. 600×400 pixels recommended
-- darkFeaturedImageType - darkFeaturedImage mime type
+- `darkLogo` - a logo for the Collection designed for light backgrounds. 350×350 pixels recommended
+- `darkLogoType` - darkLogo mime type
+- `darkBanner` - a banner for the Collection designed for light backgrounds. 2800×1000 pixels recommended
+- `darkBannerType` - darkBanner mime type
+- `darkFeaturedImage` - a featured image for the NFT Collection designed for light backgrounds. 600×400 pixels recommended
+- `darkFeaturedImageType` - darkFeaturedImage mime type
 
+## Schema
 
-Below is the human-readable schema 
+Below is the human-readable schema: 
 
 ```json
 {
-    "description": "description of NFT Collection - RECOMMENDED - max. of 500 characters",
+    "description": "description of NFT Collection - max. of 500 characters - RECOMMENDED",
     "creator": "creator(s) - RECOMMENDED",
-    "creatorDID": "DID  - OPTIONAL ",
+    "creatorDID": "DID  - OPTIONAL",
     "admin": "admin(s) - OPTIONAL",
     "website": "link to website -  OPTIONAL", 
     "discussion": "link to discussion/discord -  OPTIONAL", 
     "whitepaper": "link to whitepaper -  OPTIONAL",
-    "properties": "arbitrary additional data relevant to the token - OPTIONAL",
+    "properties": {
+        // arbitrary additional JSON data relevant to the token - OPTIONAL
+    },
+    "socials": [ // Array acting as a container for social links
+        {
+            "url": "link to social - REQUIRED",
+            "label": "textual identifier for social url - REQUIRED",
+            "info": "additional information about the social URL - OPTIONAL"
+        }
+    ],
     "lightLogo": "IPFS CID or path to the token's light background logo file - RECOMMENDED",
-    "lightLogotype": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
+    "lightLogotype": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL",
     "lightBanner": "IPFS CID or path to the token's light banner file - RECOMMENDED",
-    "lightBannerType": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
+    "lightBannerType": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL",
     "lightFeaturedImage": "IPFS CID or path to the token's light featured image file - RECOMMENDED",
-    "lightFeaturedImageType": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
+    "lightFeaturedImageType": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL",
     "darkLogo": "IPFS CID or path to the token's dark background logo file - RECOMMENDED",
     "darkLogotype": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
     "darkBanner": "IPFS CID or path to the token's dark banner file - RECOMMENDED",
-    "darkBannerType": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
+    "darkBannerType": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL",
     "darkFeaturedImage": "IPFS CID or path to the token's dark featured image file - RECOMMENDED",
-    "darkFeaturedImageType": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL ",
-
+    "darkFeaturedImageType": "mime type - i.e. image/jpeg - CONDITIONALLY OPTIONAL"
 }
 ```
-
-
-
-### Formatting Notes
 
 #### URI Formatting
 
@@ -118,13 +120,13 @@ For resources that are on IPFS, the protocol must be `ipfs://` and the resource 
 
 For resources that stored are on the Hedera file service, the protocol is `hedera:mainnet//0.0.123456`
 
-A more complete list of URI’s can be found here: https://en.wikipedia.org/wiki/List_of_URI_schemes
+A complete list of URIs can be found here: https://en.wikipedia.org/wiki/List_of_URI_schemes
 
 ### Mime Formatting
 
 Mime formatting shall follow the following format: `type/subtype`
 
-As a rule, mime types are all lower case. However apps should be programmed to accept any case for robustness.
+As a rule, mime types are all lowercase. However, apps should be programmed to accept any case for robustness.
 
 A list of common mime types can be found here: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
@@ -137,12 +139,27 @@ Note that mime types for directories are not uniformly defined. Some IPFS CIDs p
 This is an example of a basic JSON metadata file for an NFT Collection token as described by this schema.
 ```json
 {
-    "description": "ClankCats is an NFT Collection  made up of 10,000 unique cats from different backgrounds and life stories. While they are all different, they all share one common experience; they all grew up in The Clank.",
+    "description": "ClankCats is an NFT Collection comprising 10,000 unique cats from different backgrounds and life stories. While they are all different, they all share one common experience; they all grew up in The Clank.",
     "creator": "ClankCats LLC",
     "website": "www.clankcats.com",
     "admin": "ClankCats DAO",
     "discussion": "https://discord.com/invite/HnSgaGWy69",
     "whitepaper": "www.clankcats.com/whitepaper.pdf",
+    "properties": {
+        "creationDate": "2023-07-28"
+    },
+    "socials": [
+        {
+            "url": "https://hedera.com/discord",
+            "label": "Discord",
+            "info": "Chat with other developers"
+        },
+        {
+            "url": "https://linkedin.com/profile-xyz",
+            "label": "LinkedIn",
+            "info": "Connect with me via LinkedIn"
+        }
+    ],
     "lightLogo": "ipfs://bafkreihic3gwjsekbuvte2dquonz7wl2u3evztledvobntfdt575ludtcm",
     "lightLogotype": "image/jpg",
     "lightBanner": "ipfs://bafkreigwu2co2425csky7ebney4cv46rs4fpsrcgcfzic5gueo6d2dxd4q",
@@ -154,15 +171,13 @@ This is an example of a basic JSON metadata file for an NFT Collection token as 
     "darkBanner": "ipfs://bafkreigwu2co2425csky7ebney4cv46rs4fpsrcgcfzic5gueo6d2dxd4q",
     "darkBannerType": "image/jpg",
     "darkFeaturedImage": "ipfs://bafkreigwu2co2425csky7ebney4cv46rs4fpsrcgcfzic5gueo6d2dxd4q",
-    "darkFeaturedImageType": "image/jpg",
-    
-
+    "darkFeaturedImageType": "image/jpg"
 }
 ```
 
 ## Backwards Compatibility
 
-This HIP is entirely opt-in, and does not break any existing functionality. It simply provides standards to facilitate integration for the display of metadata for NFT Collection HTS tokens throughout the ecosystem.
+This HIP is entirely opt-in and does not break any existing functionality. It simply provides standards to facilitate integration for the display of metadata for NFT Collection HTS tokens throughout the ecosystem.
 
 ## Security Implications
 
@@ -171,23 +186,15 @@ Mutability of the metadata for a token will depend on
 - whether the storage location of the JSON metadata file guarantees immutability (e.g. IPFS of HFS)
 - whether the storage location of any media the JSON references guarantees immutability. 
 
-In the future, if a proper `metadata` field exists on the NFT Collection, if an associated metadataKey is availalbe which offers mutability.
-
-
-```
+In the future, if a proper `metadata` field exists on the NFT Collection, an associated metadataKey is available which offers mutability.
 
 ## How to Teach This
 
 Wallet and token explorer implementations interrogate HTS tokens using this standard to display additional metadata for NFT Collection tokens such as logos and descriptions.
 
-## Rejected Ideas
-
-
-
 ## Open Issues
 
-
-- What is the appropriate maximum lenght for a token's description? Wallets, exchanges, explorers, etc., will need to display these within their UI, and there needs to be some restrictions to ensure consistent display lengths.
+- What is the appropriate maximum length for a token's description? Wallets, exchanges, explorers, etc., will need to display these within their UI, and there need to be some restrictions to ensure consistent display lengths.
 
 ## References
 
