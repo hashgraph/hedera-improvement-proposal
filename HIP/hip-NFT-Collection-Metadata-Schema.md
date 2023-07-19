@@ -1,8 +1,8 @@
 ---
 hip: 766
 title: NFT Collection Metadata JSON Schema
-author: Ashe Oro <@Ashe-Oro>, Michiel Mulders <@michielmulders>
-working-group: TBD TBD <@tbd>
+author: Ashe Oro <@Ashe-Oro>
+working-group: Michiel Mulders <@michielmulders>
 type: Informational
 needs-council-approval: No
 status: Active
