@@ -1,13 +1,15 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 777
 title: Pending Token Transfers
 author: Nana Essilfie-Conduah (@nana-ec)
-working-group: Luke Lee, Ali Katamjani, Ashe Oro, Brady Gentile, Serg Metelin, Atul Mahamuni, Richard Bair, David Bakin, Nick Portman, Steven Sheehy
+working-group: Luke Lee <@lukelee-sl>, Ali Katamjani, Ashe Oro <@Ashe-Oro>, Brady Gentile, Serg Metelin, Atul Mahamuni <@atul-hedera>, Richard Bair (@rbair23), David Bakin, Nick Poorman <@nickpoorman>, Steven Sheehy (@steven-sheehy)
 type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Draft
 created: 2023-08-03
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/777
+updated: 2023-08-05
 ---
 
 ## Abstract
@@ -281,6 +283,10 @@ In an account page or section a DApp may
 - token association - `HRC719.associate()`
 - token airdrop rejection via `HRC.rejectAirDrops(address[])`
 - token listing in a compatible wallet e.g. **[wallet_watchAsset](https://docs.metamask.io/wallet/reference/wallet_watchasset/)** if supported
+
+***
+The following sequence diagram shows an end to end flow illustration how multiple components are involved in a pending transfer creation and completion.
+![Pending Token Transfer Flow](../assets/hip-777/pendingTokenTransfer.png)
 
 ## Backwards Compatibility
 
