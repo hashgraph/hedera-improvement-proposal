@@ -1,5 +1,5 @@
 ---
-hip: XXX
+hip: 782
 title: Smoothing Staking Rewards
 author: Leemon Baird <leemon@swirldslabs.com>
 type: Standards Track
