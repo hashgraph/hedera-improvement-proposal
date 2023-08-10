@@ -1,8 +1,8 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 000
 title: Enriched staking metadata exports
 author: Michael Tinker <michael.tinker@swirldslabs.com>
-working-group: Leemon Baird <leemon@swirldslabs.com>, Alex Popowycz <a@hedera.com> 
+working-group: Leemon Baird <leemon@swirldslabs.com> Alex Popowycz <a@hedera.com> 
 type: Standards Track
 category: Core
 needs-council-approval: Yes
