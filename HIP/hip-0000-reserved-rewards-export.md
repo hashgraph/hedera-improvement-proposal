@@ -6,7 +6,7 @@ working-group: Leemon Baird <leemon@swirldslabs.com>, Alex Popowycz <a@hedera.co
 type: Standards Track
 category: Core
 needs-council-approval: Yes
-status: Draft
+status: Review
 created: 2023-08-10
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/785
 updated: 2023-08-10
