@@ -9,7 +9,7 @@ needs-council-approval: Yes
 status: Review
 created: 2023-08-10
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/785
-updated: 2023-08-10
+updated: 2023-08-11
 ---
 
 ## Abstract
@@ -34,6 +34,12 @@ Hence we propose adding four fields to the `NodeStakeUpdateTransactionBody` tran
   2. `unreserved_staking_reward_balance` - the funds available for future staking rewards at the close of the previous period.
   3. `reward_balance_threshold` - as defined in [HIP-782](https://hips.hedera.com/hip/hip-782).
   4. `max_stake_rewarded` - as defined in [HIP-782](https://hips.hedera.com/hip/hip-782).
+
+We also propose deprecating the [`staking_reward_rate`](https://github.com/hashgraph/hedera-protobufs/blob/main/services/node_stake_update.proto#L82)
+field, and replacing it with a new field `total_reward`. This replacement field will have the same information---that is, the total 
+number of tinybars to be paid as staking rewards for the just-ended period. But its new name will avoid confusing readers who are 
+not familiar with the revision history of HIP-406. (The legacy `staking_reward_rate` field will continue to be populated for an
+appropriate time.)
 
 We recommend that relevant mirror node APIs (such as the Hedera public mirror node endpoint `/api/v1/network/stake`) expand to 
 include these new fields.
@@ -67,6 +73,11 @@ with a field that the consensus nodes can use to export the reserved `0.0.800` b
 ```
 message NodeStakeUpdateTransactionBody {
   ...
+  /**
+   * (DEPRECATED) The total number of tinybars to be distributed as staking rewards each period.
+   * Please consult the total_reward field instead.
+   */
+  int64 staking_reward_rate = 9 [deprecated = true];
 
   /**
    * The amount of the staking reward funds (account 0.0.800) reserved to pay pending rewards that 
@@ -91,12 +102,19 @@ message NodeStakeUpdateTransactionBody {
    * per-hbar reward rate; please see HIP-782 for details.
    */
   int64 max_stake_rewarded = 13;
+
+  /**
+   * The total tinybars to be paid as staking rewards in the ending period, after applying
+   * the settings for the 0.0.800 balance threshold and the maximum stake rewarded.
+   */
+  int64 total_reward = 14;
 }
 ``` 
 
 ### Mirror nodes
 
-If a mirror node API exposes network staking properties, it _should_ expand to include this new information. For example,
+If a mirror node API exposes network staking properties, it _should_ expand to include this new information
+and _should_ replace the `staking_reward_rate` field with `total_reward`. For example,
 the Hedera public mirror node currently exposes a `/api/v1/network/stake` endpoint with sample response,
 ```
 {
@@ -115,22 +133,24 @@ the Hedera public mirror node currently exposes a `/api/v1/network/stake` endpoi
 }
 ```
 
-This response should expand to include,
+This response should remove the `staking_reward_rate_` mapping and expand include,
 ```
 {
   ...
   "reserved_staking_rewards": 111111111,
   "unreserved_staking_reward_balance": 222222222,
   "reward_balance_threshold": 333333333,
-  "max_stake_rewarded": 444444444
+  "max_stake_rewarded": 444444444,
+  "total_reward": 273972602739726
 }
 ```
 
 
 ## Backwards Compatibility
 
-This HIP only adds new information that mirror node operators and other record stream consumers can simply ignore if 
-they do not need. It will not break any existing record stream consumers.
+This HIP primarily adds new information that mirror node operators and other record stream consumers can simply ignore if 
+they do not need it. However, consumers of the `staking_reward_rate` field should migrate to use `total_reward` within 
+an appropriate time interval.
 
 ## Security Implications
 
