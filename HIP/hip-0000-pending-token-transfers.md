@@ -2,14 +2,14 @@
 hip: 777
 title: Pending Token Transfers
 author: Nana Essilfie-Conduah (@nana-ec)
-working-group: Luke Lee <@lukelee-sl>, Ali Katamjani, Ashe Oro <@Ashe-Oro>, Brady Gentile, Serg Metelin, Atul Mahamuni <@atul-hedera>, Richard Bair (@rbair23), David Bakin, Nick Poorman <@nickpoorman>, Steven Sheehy (@steven-sheehy)
+working-group: Luke Lee <@lukelee-sl>, Ali Katamjani <ali@swirldslabs.com>, Ashe Oro <@Ashe-Oro>, Brady Gentile <@Bmgentile>, Serg Metelin, Atul Mahamuni <@atul-hedera>, Richard Bair (@rbair23), David Bakin, Nick Poorman <@nickpoorman>, Steven Sheehy (@steven-sheehy)
 type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Draft
 created: 2023-08-03
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/777
-updated: 2023-08-05
+updated: 2023-08-17
 ---
 
 ## Abstract
@@ -98,7 +98,7 @@ Airdrop transfers will resemble normal transfers and are therefore already suppo
          * The account to be associated with the provided tokens
          * Tokens with no airdrop will be ignored with a no-op
          */
-    		repeated TokenId = 2;
+        repeated TokenId = 2;
     }
     ```
     
@@ -108,23 +108,10 @@ To expose an intended airdrop the TransactionRecord proto can be expanded
 
 ```protobuf
 message TransactionRecord {
-	/**
-   * The crypto transfer was an airdrop. With this flag mirror nodes can capture the intended transfer in the transaction body and update the users outbox detail
-   */
-  bool airdrop = 22;
-}
-```
-
-To expose a rejected airdrop a CryptoTransfer may be labelled with the new response code 
-
-```protobuf
-enum ResponseCodeEnum {
-	...
-
-  /**
-   * An attempted airdrop was rejected by the network.
-   */
-  REJECTED_AIRDROP = 333;
+    /**
+    * The crypto transfer was an airdrop. With this flag mirror nodes can capture the intended transfer in the transaction body and update the users outbox detail
+    */
+    bool airdrop = 22;
 }
 ```
 
@@ -133,10 +120,10 @@ Should an account reach the max outbox capacity the sender will receive a new re
 enum ResponseCodeEnum {
 	...
 
-  /**
-   * The senders outbox size has reached its capacity
-   */
-  MAX_OUTBOX_SIZE = 334;
+    /**
+    * The senders outbox size has reached its capacity
+    */
+    MAX_OUTBOX_SIZE = 333;
 }
 ```
 
@@ -207,51 +194,64 @@ The SDKs must support the new HAPI transaction to reject an airdrop
 
 ### Mirror Node
 
-In line with its role as the historical source the Mirror Node will serve as the main source of outbox details. To provide visibility to pending transfer details the Mirror Node will require extensions to existing token tables, and APIs
+In line with its role as the historical source the Mirror Node will serve as the main source of outbox details. To provide visibility to pending transfer details the Mirror Node will require extensions to existing REST APIs
 
-#### Database Tables
-*New Tables*
-- `token_airdrop` - captures the current state of token outboxes
-    - consensus_timestamp
-    - sender_entity_id
-    - recipient_entity_id
-    - token_class
-    - token_amount_or_serial - fungible amount or NFT serial
-    - status - PENDING, ACCEPTED, REJECTED
-- `token_airdrop_history` - captures accepted and rejected airdrops
-
-Suggested indexes: 
-
-- consensus_timestamp, sender_entity_id - outbox query by sender
-- consensus_timestamp, sender_entity_id, recipient_entity - outbox query by sender and recipient
-- consensus_timestamp, recipient_entity, (status=PENDING) - recipient airdrop query (pending by default)
-- consensus_timestamp, recipient_entity, token_class, (status=PENDING) - recipient token airdrop balance query
-
-*Existing table*
-
-- token_account
-    
-    ```sql
-    -- capture outstanding pending transfers
-    create table if not exists token_account
-    (
-        ...
-        pending_transfers  bool null,
-    )
-    ```
-    
-#### REST APIs
 *New Endpoints*
 - `api/v1/accounts/{senderIdOrEvmAddress}/outbox` - getOutboxList
     - potential query filters - `token`, `recipientIdOrEvmAddress`, (`status` - if support for rejected)
+    ```json
+    "outbox": [
+        {
+            "token_id": "0.0.111", 
+            "recipient_account": "0.0.222",
+            "amount": 333
+        },
+        {
+            "token_id": "0.0.444", 
+            "recipient_account": "0.0.222",
+            "amount": 555
+        },
+        {
+            "token_id": "0.0.666", 
+            "recipient_account": "0.0.777",
+            "amount": 888
+        }
+    ]
+    ```
 - `api/v1/accounts/{senderIdOrEvmAddress}/outbox/{recipientIdOrEvmAddress}` - getOutboxByRecipientId
     - potential query filters - `token`, `recipientIdOrEvmAddress`, (`status` - if support for rejected)
-- `api/v1/accounts/{recipientIdOrEvmAddress}/airdrops` - getPendingTransferList
+    ```json
+    {
+        "token_id": "0.0.123", 
+        "recipient_account": "0.0.456",
+        "amount": 789
+    }
+    ```
+- `api/v1/accounts/{recipientIdOrEvmAddress}/pendingtransfers` - getPendingTransferList
     - potential query filters - token
+    ```json
+    "pending_transfers": [
+        {
+            "token_id": "0.0.111", 
+            "sender_account": "0.0.222",
+            "amount": 333
+        },
+        {
+            "token_id": "0.0.444", 
+            "sender_account": "0.0.222",
+            "amount": 555
+        },
+        {
+            "token_id": "0.0.666", 
+            "sender_account": "0.0.777",
+            "amount": 888
+        }
+    ]
+    ```
 
 *Existing Endpoints*
 - `api/v1/accounts/{senderIdOrEvmAddress}/tokens` - It may be possible to extend the API to display a users pending airdrops
-    - potential query filters - pending = (true|false). Entries with `airdrop_status is not null` would be filtered out from normal queries and users would have to explicitly set `airdrop_status = PENDING` to get their airdrops
+    - potential query filters - pending = (true|false). `token_account` entries with pending status would be filtered out from normal queries and users would have to explicitly set `pending=true` to see pending token classes.
 
 #### Web3 Module
 *ERC Balance Queries*
@@ -285,8 +285,14 @@ In an account page or section a DApp may
 - token listing in a compatible wallet e.g. **[wallet_watchAsset](https://docs.metamask.io/wallet/reference/wallet_watchasset/)** if supported
 
 ***
-The following sequence diagram shows an end to end flow illustration how multiple components are involved in a pending transfer creation and completion.
-![Pending Token Transfer Flow](../assets/hip-777/pendingTokenTransfer.png)
+The following sequence diagram illustrates the components involved in supporting the initial pending transfer creation from Ama to Bob.
+![Create Pending Token Transfer](../assets/hip-777/createPendingTokenTransfers.png)
+
+The following sequence diagram illustrates the components involved in supporting the observance of the pending transfer from Ama to Bob through DApps or Wallet like tools (e.g. Metamask, Hashpack, Blade, ethersjs…). Queries may be made via the JSON RPC API or via the Mirror Node API (MAPI)
+![Observe Pending Token Transfers](../assets/hip-777/observingPendingTokenTransfers.png)
+
+The following sequence diagram illustrates the components involved in final state of a the pending transfer from Ama to Bob. Note, the implementation of rent in the future will slightly modify the pathways. One such completion flow is where Bob sends some token value to another EOA Carol without first associating.
+![Complete Pending Token Transfers](../assets/hip-777/completePendingTokenTransfers.png)
 
 ## Backwards Compatibility
 
