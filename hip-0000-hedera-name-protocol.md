@@ -1,0 +1,185 @@
+---
+hip: <HIP number (this is determined by the HIP editor)>
+title: Hedera Name Protocol
+author: Taylor Nielson <taylor.nielson3000@gmail.com>, Boston McClary <boston.mcclary@gmail.com>
+working-group: Brian Coleman <brian@ubeu.io>
+type: Standards Track
+category: Application
+needs-council-approval: No
+status: Draft
+created: 2023-08-18
+discussions-to: <a URL pointing to the official discussion thread>
+updated: <comma separated list of dates>
+requires: <HIP number(s)>
+replaces: <HIP number(s)>
+superseded-by: <HIP number(s)>
+---
+
+## Abstract
+
+This proposal outlines the implementation of the Hedera Name Protocol (HNP), which aims to enhance the Hedera network by introducing a unified and decentralized approach to domain naming, resolution, and governance. The HNP consists of three main components: the HNP Registry, the Resolver, and the Governance/Protocol Management system.
+
+## Motivation
+
+Currently, naming services within the Hedera ecosystem operate with isolated registries and resolvers. This approach leads to issues such as duplicate names, vendor lock-in, and centralized control over top-level domains. The HNP aims to address these challenges as well as those listed below by establishing a single source of truth for naming records and introducing a decentralized resolver mechanism with community Governance.
+Centralization of the top level domains (TLDs).
+- Failed Mints with no refund
+- Large quantity of compute executed off chain
+- Centralized Wallet Resolver (Owned by a single naming service)
+- Insufficient or absent support for delegation and sub-names/sub-domains.
+- Overlapping responsibilities: name resolution, registration, and registry information.
+- Vendor Lock (Can’t renew names/migrate names from one naming service to another)
+- No Community/Stakeholder voting power
+- Duplicate NFT’s in the current registry system when purchasing expired names
+- No data standards resulting in only partial parity of core functionality between naming services
+
+## Rationale
+
+The Hedera Name Protocol (HNP) targets the critical flaws in Hedera's existing centralized and gated domain naming system, particularly the mishandling of expired names and the resulting loss of utility in secondary markets. An alternative of creating a new naming service was considered but dismissed, as it would merely perpetuate centralization. The HNP's innovative design, with a community-driven smart contract infrastructure, directly addresses these challenges, offering a unified, transparent, and decentralized solution. This proposal represents a vital and thoughtful response to existing problems, aligning with Hedera's core principles and reflecting community consensus for a more robust and transparent network.
+
+## User stories
+
+N/A
+  
+## Specification
+
+To address these issues, we propose the Hedera Name Protocol with the following features:
+
+- A community owned (via governance) smart contract infrastructure to act as a single source of truth for all naming services
+- Support for Top Level domain registry, Second Level Domain registry,  and Subdomains
+- A decentralized governance model executed through smart contracts for community management of the protocol and proper stewardship of the HNP treasury
+
+### HNP Registry
+The HNP Registry will serve as the central repository for all naming records, including top-level domains, second-level domains, and subdomains. The primary objectives of the registry are:
+
+- Eliminate duplicate names: By maintaining a single global registry, the HNP ensures that naming conflicts are prevented.
+- Support multiple naming services: The HNP Registry allows various naming services to access and utilize naming records, promoting competition and user choice.
+- Decentralized ownership: The centralized ownership of top-level domains will be replaced with a community-driven governance model.
+
+### Resolver
+The Resolver component of the HNP replaces the existing resolver system. Key features of the HNP Resolver include:
+
+- Decentralization: The HNP Resolver operates based on a community-led protocol registry, eliminating gatekeeping for second-level domains and subdomains.
+- Open access: Any naming service can participate in resolving domain names without requiring approval from a single entity.
+- Community-driven gatekeeping: Top-level domain ownership will be managed through a decentralized governance model, ensuring fairness and inclusivity.
+
+### Governance/Protocol Management
+The Governance/Protocol Management aspect of the HNP will be facilitated through a governance token system. Key points regarding this governance system are:
+
+- Inclusive representation: Governance tokens will be distributed to stakeholders within the community, including wallet providers, naming services, and name purchasers.
+- Decision-making authority: Token holders will have the power to propose and vote on protocol features, updates, and treasury allocations.
+- Sustainable funding: A controlled minting mechanism will fund the protocol, with the primary goal of supporting maintenance, new feature development, contract, and record rent.
+
+## Backwards Compatibility
+
+Backward compatibility in the HNP ensures a seamless transition to the new decentralized framework by referencing the existing registry. This vital feature allows current name providers and users to migrate without disruption or loss, preserving ownership and trust. By honoring existing investments and maintaining continuity, the HNP strikes a powerful balance between innovation and respect for the community's history, setting a precedent for responsible evolution in the Hedera ecosystem.
+
+## Security Implications
+
+N/A
+
+## How to Teach This
+
+N/A
+
+## Reference Implementation
+
+The HNP implementation will involve the following steps:
+
+1. Smart Contracts: Develop and deploy the necessary smart contracts to enable the HNP Registry, Resolver, and Governance functionalities on the Hedera network.
+2. Token Distribution: Distribute governance tokens to eligible community stakeholders, ensuring a fair and inclusive representation.
+3. Governance Interface: Create an intuitive interface through which token holders can submit proposals, vote, and manage protocol-related decisions.
+4. Migration Plan: Establish a clear migration plan for existing naming services to transition to the HNP, ensuring a smooth transition for users and services.
+
+### Technical Architecture Reference
+https://share.getcloudapp.com/lluXK4ER
+
+### Technical Interface Reference
+#### TLD Factory
+createTld - Only by Owner or Governance Protocol - A TLD name (e.g hbar, boo, h) is hashed and sent in as a parameter. If the tld doesn’t exist then a new TLD node is created and a map of the hash => Node Address is added to the factory contract
+
+getTlds - Public - Returns the hashes of all TLD’s
+#### TLD Node
+canMint -Internal - Iterates over all SLD Nodes to verify that the name is available
+
+mintSld- Public - The orchestrator for name minting. It verifies that the name is available for mint, checks that the correct hbar amount (name price/yer * year) is correct, and then executes the mint
+
+verifiedMintSld - internal - adds the name mapping and ownership to the SLD contract and mints the name NFT to the purchaser
+
+createSldNode - internal - creates a new SLD node (used when the previous node is full). Adds the address to the list of SLD node addresses and sets the new SLD node address as the current SLD node address.
+
+getSldNodes - public - returns a list of SLD node addresses
+
+getSldContract - public - returns the contract address of a specific SLD
+
+getCurrentSldNode - public - returns the address of the current SLD Node
+#### SLD Node
+getSldData -public - gets all of the records/mappings/data for an SLD
+
+addNewSld- owner(of name)- adds a new SLD with the base/initial record values
+
+updateSld - owner(of name) - add new records/info to a name or updates existing ones
+#### Subdomain Factory
+createSubdomainNode - internal - creates a new SLD node (used when the previous node is full). Adds the address to the list of SLD node addresses and sets the new SLD node address as the current SLD node address.
+
+getSubdomainNodes - public - returns a list of SLD node addresses
+
+getSubdomainContract - public - returns the contract address of a specific SLD
+
+getCurrentSubdomainContract - public - returns the address of the current Subdomain Node
+#### SLD Node
+getSubdomainData -public - gets all of the records/mappings/data for an SLD
+
+addNewSubdomain- owner(of name)/owner of contract (in case it is delegated to another contract) - adds a new SLD with the base/initial record values
+
+updateSubdomain - owner(of name)/owner of contract (in case it is delegated to another contract) - add new records/info to a name or updates existing ones
+
+### Technical Explanation of Benefits
+The pure smart contract architecture allows for a few upgrades:
+- Auto reverts
+  - Auto refunds upon any failure
+  - No false payments
+  - No half mints
+- First come First serve
+  - Due to hederas consensus mechanisms there is guaranteed first minter is the recipient
+- No duplicates
+- Built in community control/governance
+  - Values such as cost to mint, whether to add a top level domain, etc can be immediately and programmatically updated upon governance vote and approval
+### Technical Overview of Functionality
+##### TLD Factory
+The TLD Factory is in charge of keeping track of existing TLD’s and minting new ones. Only the owner of the contract (The HNP Council), and an approved governance proposal  can create new TLD’s. 
+
+##### TLD Node
+The TLD Node is in charge of keeping track of SLD Nodes, the mint price of a domain in USD, what SLD Node is currently writing the new sld’s, verifying that a desired mint sld isn’t already taken, and minting slds.
+
+##### SLD Node
+The SLD Node is in charge of storing minted SLD data
+
+##### Subdomain Factory
+The Subdomain Factory is in charge of keeping track of existing Subdomains that belong to an SLD and minting new ones. Only the owner of the contract, the SLD owner, can mint.
+
+##### Subdomain Node
+The Subdomain Node is in charge of storing Subdomain data
+
+## Rejected Ideas
+
+The creation of a new naming service with updated smart contract architecture was considered but rejected in the HNP's development. Though seemingly promising, it was recognized that this approach would merely perpetuate centralization and fail to resolve the existing system's core issues, such as mishandling expired names. The rejection emphasized a commitment to true decentralization and innovation, leading to the HNP's transformative design that aligns with Hedera's principles and addresses the real challenges within the ecosystem.
+
+## Open Issues
+
+1. Does HNP create the NFT? Does it create an image overlay?
+   - Does a subdomain get an NFT?
+2. What are the initial criteria for a new TLD?
+3. What happens to subdomains when the owning SLD expires or is transferred/sold
+4. Can people mint directly from the protocol?
+   - If so, what is the purpose of a naming service?
+5. Who will be on the foundational council to own governance starting out?
+
+
+## References
+
+A collections of URLs used as references through the HIP.
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
