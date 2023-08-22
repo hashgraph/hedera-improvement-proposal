@@ -9,7 +9,7 @@ status: Final
 release: v0.17.2
 created: 2021-04-22
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/74
-updated: 2021-10-27, 2023-02-01, 2023-02-01
+updated: 2023-02-01
 ---
 
 ## Abstract

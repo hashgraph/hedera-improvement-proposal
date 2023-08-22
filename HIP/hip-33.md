@@ -9,7 +9,7 @@ status: Final
 last-call-date-time: 2021-11-30T07:00:00Z
 release: v0.22.0
 created: 2021-10-19
-updated: 2021-11-30, 2022-04-26
+updated: 2022-04-26
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/159
 ---
 
