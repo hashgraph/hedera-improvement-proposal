@@ -1,15 +1,15 @@
 ---
 hip: 777
 title: Pending Token Transfers
-author: Nana Essilfie-Conduah (@nana-ec)
-working-group: Luke Lee <@lukelee-sl>, Ali Katamjani <ali@swirldslabs.com>, Ashe Oro <@Ashe-Oro>, Brady Gentile <@Bmgentile>, Serg Metelin, Atul Mahamuni <@atul-hedera>, Richard Bair (@rbair23), David Bakin, Nick Poorman <@nickpoorman>, Steven Sheehy (@steven-sheehy)
+author: Nana Essilfie-Conduah <@nana-ec>
+working-group: Luke Lee <@lukelee-sl>, Ali Katamjani <ali@swirldslabs.com>, Ashe Oro <@Ashe-Oro>, Brady Gentile <@Bmgentile>, Serg Metelin, Atul Mahamuni <@atul-hedera>, Richard Bair <@rbair23>, David Bakin <david-bakin-sl>, Nick Poorman <@nickpoorman>, Steven Sheehy <@steven-sheehy>
 type: Standards Track
 category: Service
 needs-council-approval: Yes
 status: Draft
 created: 2023-08-03
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/777
-updated: 2023-08-25
+updated: 2023-08-26
 ---
 
 ## Abstract
@@ -398,10 +398,8 @@ System transactions
 
 ## Open Issues
  
-- [ ] How should rents be managed? We want to avoid potential recipients observing a pending transfer and it disappearing, however, it's not clear how to charge enough rent up front or ensure enough balance is maintained to pay rent until expiry is designed. Should the default expiry period be charged up front at the least to ensure an accounts presense i.e 90 days?
-- [ ] Have all token name query scenarios of a pending token transfer been covered for consistency.
-- [ ] Are there any outstanding token airgrab or swap scenarios that are not satisfied by this?
-- [ ] Timed offers - should pending offers ("airdrop attempts) be valid for a period of time? Might this alleviate the possibility of maxed outboxes but also incentivize users to act on pending transfers. It would reduce the memory state also. In this case should a pending transfer expire the outbox entry would be removed and no longer should up in recipient balanes as Pending. Token name would need to adopt "EXPIRES DD//MM/YYYY" as a suffix.
+- [ ] How should rents truly be managed? We want to avoid potential recipients observing a pending transfer and it disappearing, however, that means enforcing the sender account remains valid until we design rent?
+- [ ] Timed offers - should pending offers ("airdrop attempts) be valid for a period of time? Might this alleviate the possibility of maxed outboxes but also incentivize users to act on pending transfers. It would reduce the memory state also. In this case should a pending transfer expire the outbox entry would be removed and no longer show up in recipient balances as Pending. Token name would need to adopt "EXPIRES DD//MM/YYYY" as a suffix.
 - [ ] Should `TokenDissociate` be reused instead of adding a new `TokenPendingTransferReject` transaction type
 
 
