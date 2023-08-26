@@ -2,7 +2,7 @@
 hip: 777
 title: Pending Token Transfers
 author: Nana Essilfie-Conduah <@nana-ec>
-working-group: Luke Lee <@lukelee-sl>, Ali Katamjani <ali@swirldslabs.com>, Ashe Oro <@Ashe-Oro>, Brady Gentile <@Bmgentile>, Serg Metelin, Atul Mahamuni <@atul-hedera>, Richard Bair <@rbair23>, David Bakin <david-bakin-sl>, Nick Poorman <@nickpoorman>, Steven Sheehy <@steven-sheehy>
+working-group: Luke Lee <@lukelee-sl>, Ali Katamjani <ali@swirldslabs.com>, Ashe Oro <@Ashe-Oro>, Brady Gentile <@Bmgentile>, Serg Metelin <@sergmetelin>, Atul Mahamuni <@atul-hedera>, Richard Bair <@rbair23>, David Bakin <@david-bakin-sl>, Nick Poorman <@nickpoorman>, Steven Sheehy <@steven-sheehy>
 type: Standards Track
 category: Service
 needs-council-approval: Yes
@@ -56,7 +56,8 @@ An end to end pending transfer flow would take the following form in an EVM nati
 3. Account `B` using an EVM native (JSON RPC API consuming) tool to query for Token `ESWT` balance will observe a pending token listing they can act upon (Accept or Transfer). 
     - A pending transfer may surface up to a user in a manner similar to the following illustration, indicating a “PENDING” status to the token.
 
-        ![metamask-pending-transfer](./../assets/hip-0000/metamaskPendingTransfer.png)
+        ![Metamask Pending Transfer Mock](./../assets/hip-0000/metamaskPendingTransfer.png)
+
     - From here account `B` could take standard steps to view token details on an explorer of choice. Explorers can then take the step to showcase TokenAssociate functionality to allow a user to accept or reject the token thus removing the PENDING nature of the listing.
 4. Account `B` may 
     1. Do nothing, in which case the token remains in account `A`’s outbox.
@@ -340,12 +341,15 @@ In an account page or section a DApp may
 
 ***
 The following sequence diagram illustrates the components involved in supporting the initial pending transfer creation from Ama to Bob.
+
 ![Create Pending Token Transfer](../assets/hip-777/createPendingTokenTransfers.png)
 
 The following sequence diagram illustrates the components involved in supporting the observance of the pending transfer from Ama to Bob through DApps or Wallet like tools (e.g. Metamask, Hashpack, Blade, ethersjs…). Queries may be made via the JSON RPC API or via the Mirror Node API (MAPI)
+
 ![Observe Pending Token Transfers](../assets/hip-777/observingPendingTokenTransfers.png)
 
 The following sequence diagram illustrates the components involved in final state of a the pending transfer from Ama to Bob. Note, the implementation of rent in the future will slightly modify the pathways. One such completion flow is where Bob sends some token value to another EOA Carol without first associating.
+
 ![Complete Pending Token Transfers](../assets/hip-777/completePendingTokenTransfers.png)
 
 ## Backwards Compatibility
