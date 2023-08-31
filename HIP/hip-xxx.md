@@ -1,5 +1,5 @@
 ---
-hip: xxx
+hip: 801
 title: Add support for debugging EVM transactions
 author: Ivan Kavaldzhiev <ivan.kavaldzhiev@limechain.tech>, Stoyan Panayotov <stoyan.panayotov@limechain.tech>
 working-group: Steven Sheehy <steven.sheehy@swirldslabs.com>, Nana Essilfie-Conduah <nana@swirldslabs.com>, Danno Ferrin <danno.ferrin@swirldslabs.com>, David Bakin <david.bakin@swirldslabs.com>, Georgi Lazarov <georgi.lazarov@limechain.tech>
@@ -8,14 +8,14 @@ needs-council-approval: Yes
 category: Service
 status: Review
 created: 2023-08-31
-discussions-to: 
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/802
 replaces: 
 updated: 
 ---
 
 ## Abstract
 
-This HIP describes the mechanism of adding initial support of JSON-RPC Relay and Mirror Node APIs for handling DEBUG requests for historical EVM transaction.
+This HIP describes the mechanism of adding initial support in the JSON-RPC Relay and the Hedera Mirror Node for handling DEBUG requests for historical EVM transaction.
 
 ## Motivation
 
