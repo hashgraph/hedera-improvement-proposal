@@ -9,8 +9,6 @@ category: Service
 status: Review
 created: 2023-08-31
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/802
-replaces: 
-updated: 
 ---
 
 ## Abstract
