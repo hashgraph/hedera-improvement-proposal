@@ -13,7 +13,7 @@ discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discuss
 
 ## Abstract
 
-This HIP describes the mechanism of adding initial support in the JSON-RPC Relay and the Hedera Mirror Node for handling DEBUG requests for historical EVM transaction.
+This HIP describes the mechanism of adding initial support for handling DEBUG requests for historical EVM transaction to the JSON-RPC Relay and the Hedera Mirror Node.
 
 ## Motivation
 
@@ -33,7 +33,7 @@ Enhancing the JSON-RPC Relay and the Mirror Archive Node with debug APIs will al
 
 Add support of `debug_traceTransaction` in the JSON-RPC Relay which returns detailed information for a historical transaction that was executed in the past.
 
-The JSON-RPC Relay will in turn make a request to the Mirror Node REST API which will be enhanced with a couple of new endpoints that return debug logs.
+The JSON-RPC Relay will in turn make a request to the Mirror Node REST API which will be enhanced with a new endpoint that returns opcode logs. The Mirror node already has an endpoint that returns call traces.
 
 ## User stories
 
@@ -76,25 +76,15 @@ Example payload:
 
 ### Mirror node Trace REST API
 
-Two Mirror Node GET REST API endpoints will be added to handle the debug requests.
+The JSON-RPC Relay will in turn call the Mirror Node REST API. Depending on the `tracer` that was provided as an input parameter to the `debug_traceTransaction` RPC endpoint, one of two Mirror node endpoints will be called:
+1. For `debug_traceTransaction` called with `callTracer`, the Mirror Node `/api/v1/contracts/results/{transactionIdOrHash}/actions` endpoint will be called.
+2. For `debug_traceTransaction` called with `opcodeLogger`, the Mirror Node `/api/v1/contracts/results/{transactionIdOrHash}/opcodes` endpoint will be called.
 
-#### **Endpoint 1:** `/api/v1/contracts/results/{transactionIdOrHash}/traceCall`
+The `/actions` endpoint is already implemented. 
 
-**Input parameters**: none
+This section will specify the `/opcodes` endpoint.
 
-**Output:** detailed information about the top-level call and each internal call that was made as part of the transaction:
-
-- The type of action performed, e.g. `CALL`, `CREATE`, `PRECOMPILE`, `SYSTEM`
-- The specific operation type of a call, e.g. `OP_CALL`, `OP_DELEGATECALL`, `OP_CREATE`, etc
-- Detailed information for each call, e.g. `caller`, `recipient`, `gas`, `input`, etc
-- Information about the result of each call: `output`, `revert_reason`, `error`
-- Information about the depth of each call that can be used to reconstruct the transaction execution. The original action is at depth=0.
-
-Debug transaction with `callTracer`.
-
-The Hedera Consensus nodes produce these traces for each transaction and externalise them in the `CONTRACT_ACTION` sidecar record files. The Mirror nodes that have DEBUG support enabled should ingest the sidecar records. When a DEBUG request with `callTracer` is handled by the Mirror node, it will rely on the data saved in DB, which is the `contract_result` table for information related to the top level transaction and `CONTRACT_ACTION` sidecars info for the nested calls.
-
-#### **Endpoint 2:** `/api/v1/contracts/results/{transactionIdOrHash}/traceOpcodes`
+#### `/api/v1/contracts/results/{transactionIdOrHash}/opcodes`
 
 **Input parameters:** The endpoint will accept three optional parameters:
 
@@ -115,8 +105,44 @@ storage: <bool>
 Disabling stack, memory and storage traces will significantly reduce the size of the opcode related data. This would be helpful for reducing the network bandwidth. 
 
 **Output**: detailed information for each executed op code.
-
-Debug transaction with `opcodeLogger`.
+Example output:
+```
+{
+    "jsonrpc": "2.0",
+    "id": 0,
+    "result": {
+        "gas": 52139,
+        "failed": false,
+        "returnValue": "0000000000000000000000000000000000000000000000000000000000000001",
+        "structLogs": [
+            {
+                "pc": 0,
+                "op": "PUSH1",
+                "gas": 978428,
+                "gasCost": 3,
+                "depth": 1,
+                "stack": [],
+                "memory": [],
+                "storage": {},
+                "reason": null
+            },
+            {
+                "pc": 2,
+                "op": "PUSH1",
+                "gas": 978425,
+                "gasCost": 3,
+                "depth": 1,
+                "stack": [
+                    "0000000000000000000000000000000000000000000000000000000000000080"
+                ],
+                "memory": [],
+                "storage": {},
+                "reason": null
+            },
+			[...]
+        }
+    }
+```
 
 For providing output formatted by `opcodeLogger`, the Mirror node will re-execute the transaction using the state from the `contract_state_changes` sidecars produced by the consensus nodes. In this way, we can have a track on all of the storage/memory information and the entire trace of opcodes that were executed during the replay.
 
