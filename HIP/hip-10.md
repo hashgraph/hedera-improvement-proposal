@@ -8,7 +8,7 @@ status: Replaced
 last-call-date-time: 2021-11-23T07:00:00Z
 created: 2021-02-18
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/50
-updated: 2021-05-12, 2021-12-06, 2022-04-19
+updated: 2022-04-19
 superseded-by: 412
 ---
 

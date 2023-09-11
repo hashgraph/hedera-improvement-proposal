@@ -9,7 +9,7 @@ status: Accepted
 last-call-date-time: 2021-11-23T07:00:00Z
 created: 2021-02-23
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/49
-updated: 2021-05-12, 2021-11-30
+updated: 2021-11-30
 ---
 
 ## Abstract
