@@ -106,7 +106,11 @@
                 {% if status == "Last Call" %}
                 <td  class="last-call-date-time">{{page.last-call-date-time | date_to_rfc822 }}</td>
                 {% else %}
-                <td class="release"><a href="https://github.com/hashgraph/hedera-services/releases/tag/{{page.release}}">{{page.release|xml_escape}}</a></td>
+                    {% if page.category == "Mirror" %}
+                    <td class="release"><a href="https://github.com/hashgraph/hedera-mirror-node/releases/tag/{{page.release}}">{{page.release|xml_escape}}</a></td>
+                    {% else %}
+                    <td class="release"><a href="https://github.com/hashgraph/hedera-services/releases/tag/{{page.release}}">{{page.release|xml_escape}}</a></td>
+                    {% endif %}
                 {% endif %}
             </tr>
         {% endfor %}
