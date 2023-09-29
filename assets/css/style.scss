@@ -19,7 +19,8 @@
 }
 
 #search-container {
-  position: absolute;
+  position: relative;
+  z-index: 1;
   top: 78px;
   right: 15px;
 }
