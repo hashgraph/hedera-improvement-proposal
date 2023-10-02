@@ -19,8 +19,9 @@
 }
 
 #search-container {
-  position: absolute;
-  top: 78px;
+  position: relative;
+  z-index: 1;
+  top: 95px;
   right: 15px;
 }
 
