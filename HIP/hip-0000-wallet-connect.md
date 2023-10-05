@@ -91,7 +91,7 @@ The controller is allowed to retry submitting the signed transaction to the Hede
 
 Note: the CAIP-217 Scope property of the RPC call shall be used to identify which network shall be assumed when sending the transaction if multiple chainids were authorized in the pairing process.  It is not necessary to transmit that value as a method parameter.
 
-### Returns
+#### Returns
 `precheckCode` – an integer representing the response code returned from the Hedera Node, which may indicate success or failure.  A response code indicating success does not necessarily indicate the transaction will reach consensus nor succeed, it solely indicates whether the submitted transaction passed initial validation to warrant further processing.
 
 ### hip000_getNodeAddresses
