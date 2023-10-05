@@ -10,8 +10,8 @@ status: Draft
 created: 2023-10-05
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/819
 updated: 2023-10-05
-requires: HIP-30
-replaces: HIP-179
+requires: 30
+replaces: 179
 ---
 
 ## Abstract
