@@ -1,18 +1,17 @@
 ---
 hip: 0000
 title: Integration of Wallet Connect 2.0 Protocol for Wallets and dApps on Hedera
-author: Calaxy, Inc.
-working-group: tbd
+author: Jason Fabritz (@bugbytesinc)
+working-group: Jason Fabritz (@bugbytesinc)
 type: Standards Track
 category: Application
 needs-council-approval: No
 status: Draft
-created: October 5, 2023
+created: 2023-10-05
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/819
-updated: October 5, 2023
-requires: HIP-30, CAIP Identifiers for the Hedera Network
-replaces: HIP-179, External Transaction Signing for SDK and other clients
-superseded-by: n/a
+updated: 2023-10-05
+requires: HIP-30
+replaces: HIP-179
 ---
 
 ## Abstract
