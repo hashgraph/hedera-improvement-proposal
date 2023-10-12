@@ -1,6 +1,6 @@
 ---
 hip: 801
-title: Add support for debugging EVM transactions
+title: Add support for debug_traceTransaction RPC API
 author: Ivan Kavaldzhiev <ivan.kavaldzhiev@limechain.tech>, Stoyan Panayotov <stoyan.panayotov@limechain.tech>
 working-group: Steven Sheehy <steven.sheehy@swirldslabs.com>, Nana Essilfie-Conduah <nana@swirldslabs.com>, Danno Ferrin <danno.ferrin@swirldslabs.com>, David Bakin <david.bakin@swirldslabs.com>, Georgi Lazarov <georgi.lazarov@limechain.tech>
 type: Standards Track
