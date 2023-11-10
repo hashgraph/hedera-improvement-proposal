@@ -661,10 +661,10 @@ Example output:
 
 ```
 {
-    "contract_id": "0x8fa74f0a79112c8c46c8e6739eb8cc929083298c",
+    "contractId": "0x8fa74f0a79112c8c46c8e6739eb8cc929083298c",
     "gas": 52139,
     "failed": false,
-    "return_value": "0x0000000000000000000000000000000000000000000000000000000000000001",
+    "returnValue": "0x0000000000000000000000000000000000000000000000000000000000000001",
     "opcodes": [
         {
                 "pc": 1273,
@@ -752,18 +752,18 @@ Example output:
 
 ```
 {
-        "contract_id": "0x8fa74f0a79112c8c46c8e6739eb8cc929083298c",
+        "contractId": "0x8fa74f0a79112c8c46c8e6739eb8cc929083298c",
         "gas": 24116,
         "failed": false,
-        "return_value": "",
+        "returnValue": "",
         "opcodes": [
             {
                 "pc": 541,
                 "op": "SLOAD",
                 "gas": 4519,
-                "gas_cost": 100,
+                "gasCost": 100,
                 "depth": 1,
-                "stack": null,
+                "stack": [],
                 "memory": [
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -778,9 +778,9 @@ Example output:
                 "pc": 542,
                 "op": "SWAP2",
                 "gas": 4419,
-                "gas_cost": 3,
+                "gasCost": 3,
                 "depth": 1,
-                "stack": null,
+                "stack": [],
                 "memory": [
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -795,9 +795,9 @@ Example output:
                 "pc": 543,
                 "op": "POP",
                 "gas": 4416,
-                "gas_cost": 2,
+                "gasCost": 2,
                 "depth": 1,
-                "stack": null,
+                "stack": [],
                 "memory": [
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -812,9 +812,9 @@ Example output:
                 "pc": 544,
                 "op": "PUSH1",
                 "gas": 4414,
-                "gas_cost": 3,
+                "gasCost": 3,
                 "depth": 1,
-                "stack": null,
+                "stack": [],
                 "memory": [
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -829,9 +829,9 @@ Example output:
                 "pc": 546,
                 "op": "SLOAD",
                 "gas": 4411,
-                "gas_cost": 2100,
+                "gasCost": 2100,
                 "depth": 1,
-                "stack": null,
+                "stack": [],
                 "memory": [
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -858,11 +858,11 @@ Since this API would use a lot of resources like memory, CPU usage or requests t
 
 ## Backward Compatibility
 
-Mirror Nodes that will support the new REST APIs should have enabled importing of CONTRACT_BYTECODE , CONTRACT_STATE_CHANGE and CONTRACT_ACTION sidecar types. Otherwise, executing the endpoints would result in missing runtime bytecode for execution or using stale contract storage data. In addition, the mirror node should have full historical support (keeping state from the first block), so that it could replay transactions from the entire lifetime of the system.
+Mirror Nodes that will support the new REST APIs should have enabled importing of CONTRACT_BYTECODE , CONTRACT_STATE_CHANGE and CONTRACT_ACTION sidecar types. Otherwise, executing the endpoints would result in missing runtime bytecode, contract storage data or contract actions information. In addition, the mirror node should have full historical support (keeping state from the first block), so that it could replay transactions from the entire lifetime of the system.
 
 ## Security Implications
 
-There would be some security implementations for Mirror Nodes. Since the debug_trace RPC calls would be free of charge and the Mirror Nodes don’t have throttle mechanism, some attack vectors would be possible. The Nodes could be overloaded with huge amount of calls or calls invoking smart contract methods with huge gas usage, both of which might take more system usage and slow down the network for other users. A rate limit mechanism will be implemented, so that the load put on Mirror Nodes to be balanced.
+There would be some security implementations for Mirror Nodes. Since the debug_trace RPC calls would be free of charge and the Mirror Nodes don’t have gas based throttle mechanism, some attack vectors would be possible. The Nodes could be overloaded with huge amount of calls or invoke smart contract methods with huge gas usage, both of which might take more system usage and slow down the network for other users. A rate limit per IP address and rate limit per Kubernetes pod will be implemented, so that the load put on Mirror Nodes to be balanced.
 
 ## How to Teach This
 
