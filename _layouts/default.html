@@ -5,7 +5,13 @@
 
 <body>
 {%- include header.html -%}
-{%- include search-form.html -%}
+
+{%- if page.url contains 'hip-' -%}
+  
+{%- else -%}
+  {%- include search-form.html -%}
+{%- endif -%}
+
 <main class="page-content" aria-label="Content">
     <div class="wrapper">
         {{ content }}
