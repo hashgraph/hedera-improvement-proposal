@@ -126,8 +126,13 @@ layout: default
     {% if page.release != undefined %}
     <tr>
       <th>Release</th>
-      <td><a href="https://github.com/hashgraph/hedera-services/releases/tag/{{page.release}}">{{ page.release |
-          xml_escape }}</a></td>
+      <td>
+        {% if page.category == "Mirror" %}
+          <a href="https://github.com/hashgraph/hedera-mirror-node/releases/tag/{{page.release}}">{{ page.release | xml_escape }}</a>
+        {% else %}
+          <a href="https://github.com/hashgraph/hedera-services/releases/tag/{{page.release}}">{{ page.release | xml_escape }}</a>
+        {% endif %}
+      </td>
     </tr>
     {% endif %}
     {% if page.resolution != undefined %}
@@ -271,5 +276,9 @@ https://schema.org/TechArticle
     z-index: 1000;
     font-size: 12px;
     line-height: 1.2;
+  }
+
+  .wrapper {
+    margin-top: -15px;
   }
 </style>

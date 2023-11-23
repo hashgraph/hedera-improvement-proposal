@@ -3,7 +3,7 @@ layout: none
 ---
 [
   {% for p in site.pages %}
-    {% if p.url contains '404' or p.url contains '.css' or p.url contains '.json' or p.url contains 'application' or p.url contains 'core' or p.url contains 'all' or p.url contains 'mirror' or p.url contains 'informational' or p.url contains 'process' %}
+    {% if p.url contains '404' or p.url contains '.css' or p.url contains '.json' or p.url contains 'application' or p.url contains 'core' or p.url contains 'all' or p.url contains 'mirror' or p.url contains 'informational' or p.url contains 'process' or p.url contains 'HIP-15-pseudocode' %}
     {% else %}
       {
         "title"    : "{{ p.title }}",
