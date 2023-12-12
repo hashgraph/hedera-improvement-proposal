@@ -1,0 +1,87 @@
+---
+hip: xxx
+title: Handling and externalisation improvements for account nonce updates
+author: Stoyan Panayotov <stoyan.panayotov@limechain.tech>
+working-group: Nana Essilfie-Conduah <nana@swirldslabs.com>, Danno Ferrin <danno.ferrin@swirldslabs.com>, Steven Sheehy <steven.sheehy@swirldslabs.com>
+type: Standards Track
+needs-council-approval: Yes
+category: Service
+status: Review
+last-call-date-time: 
+created: 2023-12-12
+discussions-to: 
+---
+
+## Abstract
+
+Introduce rules for when to update an Ethereum transaction signer's nonce and a new field for externalising the nonce update in the record stream. This will help resolve issues where the Consensus nodes and the Mirror nodes are out of sync in regards to what the current value of an account's nonce is.
+
+## Motivation
+
+Unclear rules for when the nonce of an EthereumTransaction signer account should be updated result in discrepancies between the Consensus nodes' and Mirror nodes' states. This leads to users experiencing issues when reading the account nonce from the Mirror node and trying to use it in a transaction sent to the Consensus node.
+
+## Rationale
+
+The nonce of a signer of an Ethereum transaction should be increased for all transactions that are executed in the EVM.
+
+Transactions that have reached consensus and are handled by the node but have failed additional validations performed by the node prior to being executed in the EVM should have no effect on the Ethereum transaction signer nonce.
+
+A new protobuf field in the record stream - signerNonce - should be populated by the node with the current value of the signer account nonce after executing the transaction. This value should be used by the Mirror nodes when importing record stream files.
+
+## User stories
+
+1. As a Mirror node operator, I would like to receive information about incremented account nonces from the record stream produced by the consensus nodes.
+2. As a web3 user of the network, I would like to be able to more easily submit transactions without having to change the transaction nonce manualy.
+
+## Specification
+
+###Protobuf update
+
+Add a new protobuf field to contract_call_local.proto:
+
+```
+message ContractFunctionResult {
+    
+    [...]
+
+    /**
+     * If not null this field specifies what the value of the signer account nonce is post transaction execution. 
+     * For transactions that don't update the signer nonce, this field should be null.
+     */
+    Int64Value signer_nonce = 15;
+}
+```
+
+### Services update
+
+1. Move the signer nonce update to be right before this code block that starts the transaction execution in the EVM:
+```
+while (!messageFrameStack.isEmpty()) {
+   process(messageFrameStack.peekFirst(), tracer);
+}
+```
+2. Populate the new protobuf field when externalising the transaction.
+
+### Mirror node update
+
+When importing transactions from the record stream, update the value of the signer account's nonce that's persisted on the mirror node side with the value externalised in the new protobuf field.
+
+## Backward Compatibility
+
+When importing legacy transactions that don't have this field, the Mirror node should consider whether the transaction result is SUCCESS or CONTRACT_REVERT_EXECUTED and increment the signer nonce in these cases. Some statuses such as INSUFFICIENT_GAS can be returned both before and after entering the EVM, there is no way for the Mirror node to know whether the signer nonce should be updated. This was the root cause of multiple issues and the reason for the new protobuf field.
+
+## Security Implications
+
+Having consistency between Mirror node and Consensus node states will improve the overall network security and improve the user experience.
+
+## How to Teach This
+
+Respective documentation will be added.
+
+## References
+
+## Open Issues
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
