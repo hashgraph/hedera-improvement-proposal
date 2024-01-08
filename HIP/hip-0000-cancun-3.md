@@ -1,0 +1,126 @@
+---
+hip: <HIP number (this is determined by the HIP editor)>
+title: Add Smart Contract Services Support for KZG Point Evaluation Precompiled Function
+author: Danno Ferrin (@shemnon)
+working-group: // TBD
+type: Standards Track
+category: Core
+needs-council-approval: Yes
+status: Draft
+created: // TBD
+discussions-to: // TBD
+updated: <comma separated list of dates>
+requires: <HIP number(s)>
+replaces: <HIP number(s)>
+superseded-by: <HIP number(s)>
+---
+
+## Abstract
+
+Add the Ethereum KZG Point Evaluation Precompile from EIP-4844: Shard Blob
+Transactions.
+
+## Motivation
+
+One part of [EIP-4844](https://eips.ethereum.org/EIPS/eip-4844) is the KZG Point
+Evaluation function, a cryptographic precompile that can be used un zero
+knowledge proofs as well as proving that certain subsections of a blob are
+present without introducing the entire blob. This precompile adds value to the
+other parts of EIP-4844, but it does not require them. Hedera will expose
+support for this precompile without introducing other parts of the EIP.
+
+## Rationale
+
+While Hedera will not be supporting most EIP-4844 features the KZG Point
+Evaluation Precompile is cleanly severable from the other integrated features.
+This precompile, when accompanied by the associated trusted setup, can be viewed
+as a cryptographic primitive similar to ECDSA. The ability to proved subsets of
+hashed data provides unique functionality not found in other cryptographic
+precompiles. Ethereum apps may use the KZG features without any interation with
+blob varying transactions, and it makes sense to allow Hedera Smart Contract
+apps the same latitude.
+
+This precompile will be brought in with the same semantics and calling
+conventions as Ethereum Mainnet. The trusted setup from Ethereum Mainnet will
+also be used.
+
+## User stories
+
+* As a smart contract developer I want to use the EIP-4844 Point Evaluation
+  Precompile in my smart contract applications.
+
+## Specification
+
+There are no changes needed to Hedera Services and the JSON-RPC relay.
+
+### EVM Implementation
+
+The [KZG Point Evaluation precompile](https://eips.ethereum.org/EIPS/eip-4844#point-evaluation-precompile)
+will be implemented as it is in EIP-4844.
+
+The address for the precompile will be the same as Ethereum
+Mainnet (`0x000000000000000000000000000000000000000A`).
+
+The point evaluation will use teh
+same [trusted setup](https://github.com/ethereum/c-kzg-4844/blob/main/src/trusted_setup.txt)
+as Ethereum Mainnet.
+
+### Hedera Activation
+
+The precompile will be added into a new EVM version of Hedera (notionally
+version 0.50, but subject to change), like the versions added for Shanghai
+support (v 0.38) and Paris support (v 0.34). There will be multiple HIPs rolled
+into this EVM version.
+
+## Backwards Compatibility
+
+The core EVM library shipping with Hedera as of version 0.46 already contains
+the needed EVM support. The activation will add a new Hedera EVM version that
+will activate all the Cancun support in one release. The precompile should
+automatically be part of the Besu EVM Library implementation.
+
+## Security Implications
+
+It is expected the gas cost of the precompile will fall in line with compute
+usage during the execution. Performance tests will need to be executed to
+validate that heavy use of the precompile matches this expectation.
+
+## How to Teach This
+
+User documentation that discusses available precompiled contracts will need to
+be updated to reflect the presence of this precompile. Because this is a feature
+using cutting edge cryptography there should be no need for tutorials.
+References to Ethereum specifications may be useful, but it is expected users
+using this feature will already be familiar with the function.
+
+## Reference Implementation
+
+The Besu EVM Library uses
+the [Java bindings for c-kzg-4844](https://github.com/ethereum/c-kzg-4844/blob/main/bindings/java/README.md).
+
+## Rejected Ideas
+
+The only two ideas granted serious consideration were either full inclusion of
+the feature or full exclusion of the feature. The idea of doing our own trusted
+setup would (a) provide incompatibilities with developer tools, (b) be
+time-consuming or (c) lack credible neutrality.
+
+The decision to include the precompile over exclusion is predicated on the
+anticipation that some zero knowledge systems will be able to use the
+precompile.
+
+## Open Issues
+
+// none
+
+## References
+
+* [c-kgz-4844](https://github.com/ethereum/c-kzg-4844) reference implementation
+* [EIP-4844](https://eips.ethereum.org/EIPS/eip-4844): Shard Blob Transactions
+
+A collections of URLs used as references through the HIP.
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 --
+see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
