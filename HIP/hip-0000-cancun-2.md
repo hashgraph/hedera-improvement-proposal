@@ -2,7 +2,7 @@
 hip: <HIP number (this is determined by the HIP editor)>
 title: Add EVM compatibility for non-supported Cancun blob features.
 author: Danno Ferrin (@shemnon)
-working-group: // TBD
+working-group: Nana Essilfie-Conduah <@nana-ec>, Jasper Potts <@jasperpotts>, Richard Bair <@rbair23>
 type: Standards Track
 category: Core
 needs-council-approval: Yes
@@ -72,6 +72,11 @@ For `BLOBBASEFEE` this will result in returning `1` at all times, as the blob
 gas cost cannot adjust below 1. This will require updating the `TxValues` object
 with a blob fee of `1`.
 
+Proper handling of the `TxValues` object in EVM transaction execution should
+allow us to use the Besu opcodes without modification. This would consist of
+always setting the `versionedHashes` to an empty list and setting
+the `blobGasPrice` to 1 Gwei.
+
 ### Hedera Services Implementation
 
 The `EthereumTransaction` transaction type in Hedera will need to reject all
@@ -97,13 +102,6 @@ APIs (`eth_estimateGas`, `eth_call`) that may include fields indicating it is a
 blob transaction. In those cases we should similarly detect that a blob
 transaction is being simulated and reject the transaction before sending it to
 the simulation and estimation engines.
-
-### Hedera Activation
-
-The operations will be added into a new EVM version of Hedera (notionally
-version 0.50, but subject to change), like the versions added for Shanghai
-support (v 0.38) and Paris support (v 0.34). There will be multiple HIPs rolled
-into this EVM version.
 
 ## Backwards Compatibility
 

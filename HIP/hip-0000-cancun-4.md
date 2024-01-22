@@ -2,7 +2,7 @@
 hip: <HIP number (this is determined by the HIP editor)>
 title: Support Cancun Self-Destruct Semantics in Smart Contract Services
 author: Danno Ferrin (@shemnon)
-working-group: // TBD
+working-group: Nana Essilfie-Conduah <@nana-ec>, Jasper Potts <@jasperpotts>, Richard Bair <@rbair23>, Stoyan Panayotov <stoyan.panayotov@limechain.tech>
 type: Standards Track
 category: Core
 needs-council-approval: Yes
@@ -22,7 +22,7 @@ account model.
 
 ## Motivation
 
-Ethereum Equivalence requires that Hedera add features supported by Ethereum
+EVM Equivalence requires that Hedera add features supported by Ethereum
 Mainnet (mapped to Hedera semantics). This effort also spans to the rare
 occasion that Ethereum removes features from the EVM.
 
@@ -63,17 +63,20 @@ destroyed as per prior behavior.
 
 However, since Hedera places "ownership" of token balances with the account
 holding the balance we will need to extend the behavior of the sweep mode to
-also transfer all HTS tokens to the beneficiary. This is consistent with current
-self-destruct behavior and consistent with the spirit of the Ethereum change in
-that code and the account are no longer deleted.
+also transfer all HTS tokens to the beneficiary. Notably, for a successful
+transaction beneficiary accounts must support the receiving of HTS tokens via
+association configuration. This is consistent with current self-destruct
+behavior and consistent with the spirit of the Ethereum change in that code and
+the account are no longer deleted.
 
 When the self-destruct is invoked on a contract within a transaction the
-behavior of Hedere will remain as it currently is in all respects.
+behavior of Hedera will remain as it currently is in all respects.
 
 ## User stories
 
 * As a smart contract developer I want to use the "sweep" semantics of EIP-6780
-  in my contracts to sweep out hbar while not destroying the contract.
+  in my contracts to sweep out value (HBAR and HTS token balance) while not
+  destroying the contract.
 * As a smart contract developer I want to be able to continue to use the
   transient contract pattern and have it behave the same way prior to this HIP.
 * As a HAPI user I want to be able to control my contract account in the same
@@ -100,13 +103,6 @@ Hedera services may need to be changed to ensure that the transaction processing
 does not leave a "shadow" account number for transient self-destructs. Such
 transient self-destructs will also need to be tested to ensure all HTS tokens
 are properly swept during the sweep as well as the transient contract modes.
-
-### Hedera Activation
-
-The operation will be added into a new EVM version of Hedera (notionally
-version 0.50, but subject to change), like the versions added for Shanghai
-support (v 0.38) and Paris support (v 0.34). There will be multiple HIPs rolled
-into this EVM version.
 
 ## Backwards Compatibility
 

@@ -1,8 +1,8 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
-title: Add EVM Support for new non-blob Cancun opcodes
+title: Add EVM Support for transient storage and memory copy Cancun opcodes
 author: Danno Ferrin (@shemnon)
-working-group: // TBD
+working-group: Nana Essilfie-Conduah <@nana-ec>
 type: Standards Track
 category: Core
 needs-council-approval: Yes
@@ -22,7 +22,7 @@ Ethereum Mainnet, namely TSTORE, TLOAD, and MCOPY
 
 ## Motivation
 
-Hedera's goal of Ethereum Equivalence also includes the requirement to stay
+Hedera's goal of EVM Equivalence also includes the requirement to stay
 up-to-date with the current state of Ethereum Mainnet. This HIP addresses new
 opcodes added to the EVM that do not address any features relating to Blobs, or
 the Consensus Layer, or changes to existing opcodes.
@@ -30,8 +30,9 @@ the Consensus Layer, or changes to existing opcodes.
 ## Rationale
 
 The opcodes discussed in this HIP only exist within the EVM and do not interact
-with any novel features of ethereum mainnet. It is expected that future versions
-of solidity will support both implicit and explicit use of these opcodes.
+with any novel features of ethereum mainnet (such as blobs and CL beacon root).
+It is expected that future versions of solidity, Vyper, and other languages
+targeting the EVM will support both implicit and explicit use of these opcodes.
 Because of that we need to support them as specified.
 
 ## User stories
@@ -58,13 +59,6 @@ The specified opcodes are to be implemented identically to Ethereum Mainnet and
 as specified in their respective EIPs. This includes opcode numbers, gas
 schedules, stack semantics, and new facilities such as transient storage added
 to the execution frame.
-
-### Hedera Activation
-
-The operations will be added into a new EVM version of Hedera (notionally
-version 0.50, but subject to change), like the versions added for Shanghai
-support (v 0.38) and Paris support (v 0.34). There will be multiple HIPs rolled
-into this EVM version.
 
 ## Backwards Compatibility
 

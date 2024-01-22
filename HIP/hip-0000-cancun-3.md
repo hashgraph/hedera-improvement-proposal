@@ -2,7 +2,7 @@
 hip: <HIP number (this is determined by the HIP editor)>
 title: Add Smart Contract Services Support for KZG Point Evaluation Precompiled Function
 author: Danno Ferrin (@shemnon)
-working-group: // TBD
+working-group: Nana Essilfie-Conduah <@nana-ec>. David Bakin <@david-bakin-sl>
 type: Standards Track
 category: Core
 needs-council-approval: Yes
@@ -23,7 +23,7 @@ Transactions.
 ## Motivation
 
 One part of [EIP-4844](https://eips.ethereum.org/EIPS/eip-4844) is the KZG Point
-Evaluation function, a cryptographic precompile that can be used un zero
+Evaluation function, a cryptographic precompile that can be used with zero
 knowledge proofs as well as proving that certain subsections of a blob are
 present without introducing the entire blob. This precompile adds value to the
 other parts of EIP-4844, but it does not require them. Hedera will expose
@@ -41,8 +41,9 @@ blob varying transactions, and it makes sense to allow Hedera Smart Contract
 apps the same latitude.
 
 This precompile will be brought in with the same semantics and calling
-conventions as Ethereum Mainnet. The trusted setup from Ethereum Mainnet will
-also be used.
+conventions as Ethereum Mainnet. It also requires a customizable data file known
+as the trusted setup. For maximum compatibility the same trusted setup from
+Ethereum Mainnet will be used.
 
 ## User stories
 
@@ -61,16 +62,12 @@ will be implemented as it is in EIP-4844.
 The address for the precompile will be the same as Ethereum
 Mainnet (`0x000000000000000000000000000000000000000A`).
 
-The point evaluation will use teh
+The point evaluation will use the
 same [trusted setup](https://github.com/ethereum/c-kzg-4844/blob/main/src/trusted_setup.txt)
 as Ethereum Mainnet.
 
-### Hedera Activation
-
-The precompile will be added into a new EVM version of Hedera (notionally
-version 0.50, but subject to change), like the versions added for Shanghai
-support (v 0.38) and Paris support (v 0.34). There will be multiple HIPs rolled
-into this EVM version.
+This is the same out-of-the-box setup provided by the Besu EVM library, there
+should be little to zero Hedera code needed to enable this.
 
 ## Backwards Compatibility
 
