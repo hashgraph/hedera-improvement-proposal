@@ -343,7 +343,11 @@ If there are security concerns in relation to the HIP, those concerns should be 
 
 ## How to Teach This
 
-For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
+To educate and facilitate a great customer experience, the following will be required:
+
+- Documentation - Updates to blogs, playbooks, and technical documentation will be required. Additionally previous descriptions of Address Book functionality should be deprecated across existing content.
+- Tooling - Updates to tooling to facilitate node operation or transaction construction and submittal will be required to facilitate a great customer experience.
+- Transition plan - Since this is transferring responsibility to council members, a formal transition plan should be implemented to ensure a successful hand-off.
 
 ## Reference Implementation
 
@@ -351,17 +355,15 @@ The reference implementation must be complete before any HIP is given the status
 
 ## Rejected Ideas
 
-Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
-
-In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
+TBD
 
 ## Open Issues
 
-While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
+Stage 2 - Full Dynamic Book Implementation
 
 ## References
 
-A collections of URLs used as references through the HIP.
+TBD
 
 ## Copyright/license
 
