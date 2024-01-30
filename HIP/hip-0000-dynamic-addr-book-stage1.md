@@ -1,5 +1,5 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 000
 title: Dynamic Address Book - Stage 1 - HAPI Endpoints
 author: Iris Simon (iris.simon@swirldslabs.com)
 working-group: Kelly Greco (kelly@swirldslabs.com) Michael Heinrichs (michael@swirldslabs.com), Mark Blackman (mark@swirldslabs.com)
@@ -7,19 +7,19 @@ type: Standards Track
 category: Core 
 needs-council-approval: Yes 
 status: Draft 
-created: 01/24/2024
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
+created: 2024-01-22 
+discussions-to: discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/000
+updated: 2024-01-30
+requires: 000
+replaces: 000
+superseded-by: 000
 ---
 
 ## Abstract
 
-Change the currently manually administered address book for Hedera into an HAPI managed configuration, updatable via signed Hedera transactions on a daily basis without the need to restart the consensus nodes to apply changes across the network.
+The Dyanmic Address Book will change the currently manually administered address book for Hedera into an HAPI managed configuration, updatable via signed Hedera transactions on a daily basis without the need to restart the consensus nodes to apply changes across the network.
 
-*Feature Summary*
+*Dynamic Address Book - Feature Summary*
 
 - HAPI APIs to facilitate changes to the address book used across the Hedera network
 - Automated daily updates to node consensus weighting and SDK service requests
@@ -31,12 +31,10 @@ Given the size of the work, the feature will be broken into 2 stages:
 
 **Stage 2 -** **Full Implementation** - Full implementation of feature enabling daily changes to a new dynamic Address Book implementation through HAPI endpoints at 24 hour cycles matching Hedera’s staking period. 
 
-This HIP is focused on the HAPI Endpoints phase of the project only, another HIP will be released for the Full Implementation stage of the project
+This HIP is focused on the HAPI Endpoints phase of the project only.   A second HIP will be released for the Full Implementation stage of the project.
 
 
 ## Motivation
-
-Upon completion of both stages, the Dynamic Address Book (DAB) further supports Hedera’s path to decentralization by eliminating manual management of the file. It proposes a transparent mechanism for adding or removing consensus nodes, changing staking weights, and making configuration changes to the network, supporting eventual decentralized management of the address book.
 
 *Problems to Solve*
 
@@ -53,10 +51,9 @@ Upon completion of both stages, the Dynamic Address Book (DAB) further supports 
 - Staking delegations within a single staking period directly contribute to a node’s consensus weight
 
 ## Rationale
+The architectural design of Hedera's transaction-driven system was strategically implemented to empower the Hedera council members in overseeing network node participation. Furthermore this framework paves the way for the incorporation of community-led and permissionless nodes in the future. Under this design, independent node operators have the capability to autonomously submit transactions, thus efficiently managing the metadata related to their self-governed nodes.
 
-The rationale fleshes out the specification by describing why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
-
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
+Adopting a two-phase strategy, this approach facilitated the earlier release of HAPI endpoints, setting the stage for the subsequent deployment of a more automated solution. This phased implementation was key in accelerating both the delivery and utilization of the system.
 
 ## User stories
 
@@ -70,31 +67,31 @@ The rationale should provide evidence of consensus within the community and disc
 
 ***User Story:*** As a council member, I want the ability to submit signed HAPI transactions to add a new consensus node to the Hedera network upon the next maintenance window, so that I can perform operations independently.
 
-***Acceptance:*** When a valid council member initiates a HAPI transaction to add a new node, then the network should acknowledge the transaction and perform update the network’s Address Book at the next maintenance window.
+***Acceptance:*** When a valid council member initiates a HAPI transaction to add a new node, then the network should acknowledge the transaction and perform an update to the network’s Address Book at the next maintenance window.
 
 **Remove Node from Address Book**
 
 ***User Story:*** As a council member, I want the ability to submit signed HAPI transactions to remove a new consensus node to the Hedera network upon the next maintance window, so that I can perform operations independently.
 
-***Acceptance:*** When a council member submits a HAPI transaction to remove a node, then the network should acknowledge the transaction and perform update the network’s Address Book at the next maintenance window.
+***Acceptance:*** When a council member submits a HAPI transaction to remove a node, then the network should acknowledge the transaction and perform an update to the network’s Address Book at the next maintenance window.
 
 **Update Node IP Address(s) and Port(s)**
 
 ***User Story:*** As a council member, I value the ability to submit a signed HAPI transaction that modifies one or both of an existing node's IP addresses and/or ports.
 
-***Acceptance:*** When a council member submits a HAPI transaction to modify a node's primary IP address:port or secondary IP address:port, network should acknowledge the transaction and perform update the network’s Address Book at the next maintenance window.
+***Acceptance:*** When a council member submits a HAPI transaction to modify a node's primary IP address:port or secondary IP address:port, network should acknowledge the transaction and perform an update to the network’s Address Book at the next maintenance window.
 
 **Update GRPC Proxy Endpoint(s)**
 
 ***User Story:*** As a council member, I value the ability to submit a signed HAPI transaction that modifies a list of GRPC proxy endpoints supporting both IP and FQDN address formats.
 
-***Acceptance:*** When a council member submits a HAPI transaction to modify a node's IP address:port or FQDN:port, then network should acknowledge the transaction and perform update the network’s Address Book at the next maintenance window.
+***Acceptance:*** When a council member submits a HAPI transaction to modify a node's IP address:port or FQDN:port, then network should acknowledge the transaction and perform an update to the network’s Address Book at the next maintenance window.
 
 **Update Node Description**
 
 ***User Story:*** As a council member, I value the ability to submit a signed HAPI transaction that modifies a node’s description within the Address Book.
 
-***Acceptance:*** When a council member submits a HAPI transaction to modify a node's associated Description Field, then the network should acknowledge the transaction and perform update the network’s Address Book at the next maintenance window.
+***Acceptance:*** When a council member submits a HAPI transaction to modify a node's associated Description Field, then the network should acknowledge the transaction and perform an update to the network’s Address Book at the next maintenance window.
 
 **Update Node’s Public Key**
 
@@ -325,13 +322,13 @@ enum ResponseCodeEnum {
 	/**
 	 * A node is not found
 	 */
-	INVALID_NODE_ID* = 334;
+	INVALID_NODE_ID = 334;
 }
 ```
 
 Each transaction made through NodeService will have a corresponding transaction record. This record will be included in the record stream file for Mirror Nodes to consume.
 
-During stage1, node changes will not be active until the network is upgraded. When the node starts, the Platform still uses config.txt to create an AddressBook, which is then passed to Services. This AddressBook contains the activated nodes in the network. Services use the activated nodes to calculate stake and weight.
+During stage1, node changes will not be active until the network is upgraded. When the node starts, the Platform still uses config.txt to create an AddressBook, which is then passed to Services. This AddressBook contains the activated nodes in the network. Services use the activated nodes to calculate weight.
 
 During the *PREPARE_UPGRADE* freeze period, Services will generate a new config.txt and public.pfx file based on all the NodeService transactions since the last upgrade. These two files will be added to the location where file 0.0.150 is unzipped. Once the *FREEZE_UPGRADE* is completed, the freeze_scheduled.mf mark file is generated. This file will trigger DevOp to run NMT.## Backwards Compatibility
 
@@ -339,7 +336,7 @@ All HIPs that introduce backward incompatibilities must include a section descri
 
 ## Security Implications
 
-If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
+No security issues identified as of yet
 
 ## How to Teach This
 
