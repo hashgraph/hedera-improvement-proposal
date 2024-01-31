@@ -3,6 +3,7 @@ hip: <HIP number (this is determined by the HIP editor)>
 title: <HIP title>
 author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
 working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
+requested-by: the name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP
 type: <Standards Track | Informational | Process>
 category: <Core | Service | Mirror | Application>
 needs-council-approval: <Yes | No>

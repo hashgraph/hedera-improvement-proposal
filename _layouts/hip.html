@@ -42,6 +42,12 @@ layout: default
       <td>{{ page.working-group }}</td>
     </tr>
     {% endif %}
+    {% if page["requested-by"] != undefined %}
+    <tr>
+      <th>Requested By</th>
+      <td>{{ page.requested-by }}</td>
+    </tr>
+    {% endif %}
     {% if page.discussions-to != undefined %}
     <tr>
       <th>Discussions-To</th>
