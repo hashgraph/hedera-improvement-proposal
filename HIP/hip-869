@@ -6,7 +6,8 @@ working-group: Kelly Greco (kelly@swirldslabs.com) Michael Heinrichs (michael@sw
 type: Standards Track
 category: Core 
 needs-council-approval: Yes 
-status: Review 
+status: Last Call
+last-call-date-time: 2023-02-14T07:00:00Z
 created: 2024-01-22 
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/869
 updated: 2024-01-31
@@ -14,7 +15,7 @@ updated: 2024-01-31
 
 ## Abstract
 
-The Dyanmic Address Book will change the currently manually administered address book for Hedera into an HAPI managed configuration, updatable via signed Hedera transactions on a daily basis without the need to restart the consensus nodes to apply changes across the network.
+The Dynamic Address Book will change the currently manually administered address book for Hedera into an HAPI managed configuration, updatable via signed Hedera transactions on a daily basis without the need to restart the consensus nodes to apply changes across the network.
 
 *Dynamic Address Book - Feature Summary*
 
