@@ -90,6 +90,10 @@ async function captureHeaderValidation(hipPath) {
       '"discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/xxx"'));
     }
 
+    if (!/requested-by:/.test(headers)) {
+      errs.push(Error('header must include "requested-by" with the requester\'s name and contact information'));
+    }
+
     if (/needs-council-approval: Yes/.test(headers) && 
       (/category: Application/.test(headers) || /type: Informational/.test(headers) || /type: Process/.test(headers))) {
       errs.push(Error('Application Standards Track/Informational/Process HIPs do not need council approval'));
