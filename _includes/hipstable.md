@@ -34,7 +34,7 @@
                 {% if status == "Last Call" %}
                     <th>Review Period Ends</th>
                 {% else %}
-                <th class="numeric">Release</th>
+                <th class="numeric version">Release</th>
                 {% endif %}
                 </tr>
             </thead>
@@ -120,37 +120,44 @@ function getTooltipContent(status) {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll('.hipstable').forEach((table) => {
-    let sortDirection = {}; // Object to keep track of each table's sort directions
+  document.querySelectorAll('.hipstable th').forEach(header => {
+    header.addEventListener('click', function () {
+      const table = header.closest('.hipstable');
+      const tbody = table.querySelector('tbody');
+      const index = Array.from(header.parentNode.children).indexOf(header);
+      const isAscending = header.classList.contains('asc');
+      const isNumeric = header.classList.contains('numeric');
+      const isVersion = header.classList.contains('version'); // Add 'version' class to your Release header
 
-    table.querySelectorAll('th').forEach((header, index) => {
-      header.addEventListener('click', () => {
-        const isAscending = sortDirection[index] || false; // Get current sort direction, default to false
-        sortDirection[index] = !isAscending; // Toggle sort direction
+      Array.from(tbody.querySelectorAll('tr'))
+        .sort((rowA, rowB) => {
+          let cellA = rowA.querySelectorAll('td')[index].textContent;
+          let cellB = rowB.querySelectorAll('td')[index].textContent;
 
-        const rowsArray = Array.from(table.querySelectorAll('tbody tr'));
-        const isNumeric = header.classList.contains('numeric'); // Determine if column is numeric for sorting
+          if (isVersion) {
+            cellA = cellA.replace('v', '').split('.').map(Number);
+            cellB = cellB.replace('v', '').split('.').map(Number);
+            for (let i = 0; i < Math.max(cellA.length, cellB.length); i++) {
+              if ((cellA[i] || 0) < (cellB[i] || 0)) return isAscending ? -1 : 1;
+              if ((cellA[i] || 0) > (cellB[i] || 0)) return isAscending ? 1 : -1;
+            }
+            return 0;
+          }
 
-        rowsArray.sort((a, b) => {
-          const cellA = a.querySelectorAll('td')[index].innerText;
-          const cellB = b.querySelectorAll('td')[index].innerText;
+          if (isNumeric) {
+            return (isAscending ? 1 : -1) * (parseFloat(cellA) - parseFloat(cellB));
+          }
 
-          const valueA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
-          const valueB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+          return (isAscending ? 1 : -1) * cellA.toString().localeCompare(cellB);
+        })
+        .forEach(tr => tbody.appendChild(tr));
 
-          if (valueA < valueB) return isAscending ? -1 : 1;
-          if (valueA > valueB) return isAscending ? 1 : -1;
-          return 0;
-        });
+      header.classList.toggle('asc', !isAscending);
+      header.classList.toggle('desc', isAscending);
 
-        // Re-append rows in sorted order
-        const tbody = table.querySelector('tbody');
-        rowsArray.forEach(row => tbody.appendChild(row));
-
-        // Update header classes for visual indication
-        table.querySelectorAll('th').forEach(th => th.classList.remove('asc', 'desc'));
-        header.classList.add(isAscending ? 'desc' : 'asc');
-      });
+      Array.from(header.parentNode.children)
+        .filter(th => th !== header)
+        .forEach(th => th.classList.remove('asc', 'desc'));
     });
   });
 });
