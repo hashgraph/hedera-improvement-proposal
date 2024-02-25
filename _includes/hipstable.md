@@ -1,76 +1,25 @@
 <style type="text/css">
-.hipstable {
-    width: 100%;
-    table-layout: auto;
-}
-
-@media screen and (max-width: 600px) {
-    .hipstable, .hipstable thead, .hipstable tbody, .hipstable th, .hipstable td, .hipstable tr { 
-        display: block; 
-    }
-
-    .hipstable thead tr { 
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    .hipstable tr { border: 1px solid #ccc; }
-
-    .hipstable td { 
-        border: none;
-        border-bottom: 1px solid #eee; 
-        position: relative;
-        padding-left: 60%; 
-        word-break: break-word;
-        padding-top: 0px;
-        min-height: 50px;
-    }
-
-    .hipstable td:before { 
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        width: 45%; 
-        padding-right: 10px; 
-        white-space: nowrap;
-        word-break: break-word;
-    }
-
-    .hipstable .hip-number:before { content: "Number"; }
-    .hipstable .title:before { content: "Title"; }
-    .hipstable .author:before { content: "Author"; }
-    .hipstable .council-approval:before { content: "Needs Council Approval"; }
-    .hipstable .last-call-date-time:before { content: "Review Period Ends"; }
-    .hipstable .release:before { content: "Release"; }
-}
-
-
-.status-tooltip {
-    margin-left: 5px;
+.hipstable th {
     position: relative;
-    display: inline-block;
     cursor: pointer;
-    text-decoration: underline;
-    color: #069;
-    font-size: 14px;
+    padding-right: 30px; /* Ensure there's space for the arrow */
 }
 
-.status-tooltip-box {
+.hipstable th::after {
+    content: "\2195"; /* Default: double arrow for neutral */
     position: absolute;
-    left: 50%;
-    top: 100%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 5px;
-    border-radius: 3px;
-    white-space: nowrap;
-    z-index: 1000;
-    font-size: 12px;
-    line-height: 1.2;
-    max-width: 300px;
-    word-wrap: break-word;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8em;
+}
+
+.hipstable th.asc::after {
+    content: "\25BC";
+}
+
+.hipstable th.desc::after {
+    content: "\25B2";
 }
 </style>
 
@@ -81,11 +30,11 @@
         <h2 id="{{status|slugify}}">{{status}} <span class="status-tooltip" data-tooltip="{{status}}" style="text-decoration:none">ⓘ</span></h2>
         <table class="hipstable">
             <thead>
-                <tr><th>Number</th><th>Title</th><th>Author</th><th>Needs Council Approval</th>
+                <tr><th class="numeric">Number</th><th>Title</th><th>Author</th><th>Needs Council Approval</th>
                 {% if status == "Last Call" %}
                     <th>Review Period Ends</th>
                 {% else %}
-                <th>Release</th>
+                <th class="numeric">Release</th>
                 {% endif %}
                 </tr>
             </thead>
@@ -168,4 +117,43 @@ function getTooltipContent(status) {
   return statusMeanings[status] || "No information available for this status.";
 }
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.hipstable').forEach((table) => {
+    let sortDirection = {}; // Object to keep track of each table's sort directions
+
+    table.querySelectorAll('th').forEach((header, index) => {
+      header.addEventListener('click', () => {
+        const isAscending = sortDirection[index] || false; // Get current sort direction, default to false
+        sortDirection[index] = !isAscending; // Toggle sort direction
+
+        const rowsArray = Array.from(table.querySelectorAll('tbody tr'));
+        const isNumeric = header.classList.contains('numeric'); // Determine if column is numeric for sorting
+
+        rowsArray.sort((a, b) => {
+          const cellA = a.querySelectorAll('td')[index].innerText;
+          const cellB = b.querySelectorAll('td')[index].innerText;
+
+          const valueA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
+          const valueB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+
+          if (valueA < valueB) return isAscending ? -1 : 1;
+          if (valueA > valueB) return isAscending ? 1 : -1;
+          return 0;
+        });
+
+        // Re-append rows in sorted order
+        const tbody = table.querySelector('tbody');
+        rowsArray.forEach(row => tbody.appendChild(row));
+
+        // Update header classes for visual indication
+        table.querySelectorAll('th').forEach(th => th.classList.remove('asc', 'desc'));
+        header.classList.add(isAscending ? 'desc' : 'asc');
+      });
+    });
+  });
+});
+</script>
+
 

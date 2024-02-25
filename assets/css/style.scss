@@ -18,6 +18,78 @@
   }
 }
 
+.hipstable {
+  width: 100%;
+  table-layout: auto;
+}
+
+@media screen and (max-width: 600px) {
+  .hipstable, .hipstable thead, .hipstable tbody, .hipstable th, .hipstable td, .hipstable tr { 
+      display: block; 
+  }
+
+  .hipstable thead tr { 
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+  }
+
+  .hipstable tr { border: 1px solid #ccc; }
+
+  .hipstable td { 
+      border: none;
+      border-bottom: 1px solid #eee; 
+      position: relative;
+      padding-left: 60%; 
+      word-break: break-word;
+      padding-top: 0px;
+      min-height: 50px;
+  }
+
+  .hipstable td:before { 
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 45%; 
+      padding-right: 10px; 
+      white-space: nowrap;
+      word-break: break-word;
+  }
+
+  .hipstable .hip-number:before { content: "Number"; }
+  .hipstable .title:before { content: "Title"; }
+  .hipstable .author:before { content: "Author"; }
+  .hipstable .council-approval:before { content: "Needs Council Approval"; }
+  .hipstable .last-call-date-time:before { content: "Review Period Ends"; }
+  .hipstable .release:before { content: "Release"; }
+}
+
+.status-tooltip {
+  margin-left: 5px;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #069;
+  font-size: 14px;
+}
+
+.status-tooltip-box {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 12px;
+  line-height: 1.2;
+  max-width: 300px;
+  word-wrap: break-word;
+}
 #search-container {
   position: relative;
   z-index: 1;
