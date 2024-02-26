@@ -1,72 +1,122 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
-title: <HIP title>
-author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
-working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
-requested-by: the name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP
-type: <Standards Track | Informational | Process>
-category: <Core | Service | Mirror | Application>
-needs-council-approval: <Yes | No>
+title: Proxy Redirect Contract for Hbar Allowance and Approval
+author: Luke Lee <@lukelee-sl>
+working-group: Nana Essilfie-Conduah <@nana-ec>
+type: Standards Track 
+category: Service
+needs-council-approval: Yes
 status: <Draft | Review | Last Call | Active | Inactive | Deferred | Rejected | Withdrawn | Accepted | Final | Replaced>
-created: <date created on>
+created: 2024-02-23
 discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
+updated: 
+requires: 632
 ---
 
 ## Abstract
 
-Please provide a short (~200 word) description of the issue being addressed.
+The Smart Contract service provides for functionality to grant allowance and approve for tokens from the owner account to a spender account.
+However, currently there is no functionality to grant allowance and approve for hbars from an owner account via the Smart Contract service.
+This HIP proposes to remedy this omission.
 
 ## Motivation
 
-The motivation is critical for HIPs that want to change the Hedera codebase or ecosystem. It should clearly explain why the existing specification is inadequate to address the problem that the HIP solves. HIP submissions without sufficient motivation may be rejected outright.
+Smart Contracts developers have obstructions on implementing certain potential use cases for transferring hbar between accounts because there is no way to grant allowance and approve for them from an owner account without using HAPI.
+Providing this functionality will remove these obstructions for developers and provide for a better developer experience.
 
 ## Rationale
 
-The rationale fleshes out the specification by describing why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
-
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
+This HIP proposes to add the needed functionality via a new interface `IHRC632` which will act on an account address.  The account will be the actor in view with respect to the allowance to the `spender` account for the specified amount.  
+An alternative approach would be to introduce a new interface which a contract can implement.  This would necessitate that a contract be deployed which may always be desired.  In addition, taking this approach would potentially require violating the
+smart contracts security model as the sender of the frame when executing the system contract would be the deployed contract and not the EOA which would not be desire in most cases.
 
 ## User stories
 
-Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
-  
+1. As a smart contract developer, I want to be able to grant approve an allowance for hbars from an EOA to a spender account or contract.
+2. As a smart contract developer, I want to be able to grant approve an allowance for hbars from a contract to a spender account or contract.
+3. As a smart contract developer, I want to be able to get the allowance of hbars from an owner account to a spender account or contract.
+
 ## Specification
 
-The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
+HIP-632 proposes an introduction of a new system contract for accessing Hedera account functionality (Hedera Account Service - HAS).
+This HIP extends the new system contract to another related interface `IHRC632` to support the `hbarAllowance` and `hbarApprove` functions.
+The `hbarAllowance` function will be used to retrieve information about allowance granted to a spender and the `hbarApprove` function will allow the sender to grant to the `spender` an allowance of hbars.
+
+
+Similar to the way redirection to a proxy contract during EVM execution for tokens works [see HIP-719](https://github.com/hashgraph/hedera-improvement-proposal/blob/main/HIP/hip-719.md),
+this HIP proposes to introduce a new proxy contract for accounts.  During EVM execution, if the target of the current frame is an account, a call to a proxy contract will be created and the current calldata will be injected into 
+the proxy contract for processing by the Hedera Account Service system contract.
+
+The bytecode for the proxy contract can be created by compiling the following contract:
+
+```solidity
+// SPDX-License-Identifier: Apache-2.0
+pragma solidity ^0.8.0;
+contract Assembly {
+	fallback() external {
+		address precompileAddress = address(0x167);
+		assembly {
+			mstore(0, 0xFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE)
+			calldatacopy(32, 0, calldatasize())
+			let result := delegatecall(gas(), precompileAddress, 8, add(24, calldatasize()), 0, 0)
+			let size := returndatasize()
+			returndatacopy(0, 0, size)
+			switch result
+				case 0 { revert(0, size) }
+				default { return(0, size) }
+		}
+	}
+}
+```
+
+The following table describes the function selector for the new `hbarAllownace` and `hbarApprove` functions and the associated function signature and response.
+
+| Function Selector Hash | Function Signature                          | Response                                                                  | 
+|------------------------|---------------------------------------------|---------------------------------------------------------------------------|
+| 0xbbee989e             | hbarAllowance(address spender)              | (ResponseCode, int256 - amount of hbar allowances granted to the spender) | 
+| 0x86aff07c             | hbarApprove(spender address, amount int256) | ResponseCode                                                              |
+
+The solidity interface for IHRC632 will be the following
+
+```
+interface IHRC632 {
+    function hbarAllowance(address spender) external returns (responseCode, int256);
+    function hbarApprove(spender address, amount int256) external returns (responseCode);
+}
+```
+
+Once the above functionality has been implemented in services, an EOA will be able to call the `hbarAllownace` and `hbarApprove` functions as follows:
+
+```
+IHRC(accountAddress).hbarAllowance(address spender)
+IHRC(accountAddress).hbarApprove(spender address, amount int256)
+```
+
 
 ## Backwards Compatibility
 
-All HIPs that introduce backward incompatibilities must include a section describing these incompatibilities and their severity. The HIP must explain how the author proposes to deal with these incompatibilities. HIP submissions without a sufficient backward compatibility treatise may be rejected outright.
+As this is new functionality there is no concern for backwards compatibility.
 
 ## Security Implications
 
-If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
+Granting an allowance to a spender account or contract opens up the owner to possible unwanted loss of hbars and thus security considerations must be paramount 
+when implementing this functionality.  Thorough testing will be required to ensure that only the intended spender account or contract can spend the owners hbars.
 
 ## How to Teach This
 
-For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
-
-## Reference Implementation
-
-The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+The `hbarAllowance` and `hbarApprove` functions can be accessed by an EOA or a contract by calling the `IHRC` interface as described above.  This enhances the functionality and use cases
+available to the smart contract developer.
 
 ## Rejected Ideas
 
-Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
-
-In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
+The idea of introducing this functionality to the IHederaAccountService interface directly was discarded as this would require that a contract be deployed which may not always be desired.  Due to security considerations, doing so would make the functionality less than useful.
 
 ## Open Issues
 
-While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
-
 ## References
 
-A collections of URLs used as references through the HIP.
+[HIP-632](https://github.com/hashgraph/hedera-improvement-proposal/blob/main/HIP/hip-632.md)
+[HIP-719](https://github.com/hashgraph/hedera-improvement-proposal/blob/main/HIP/hip-719.md)
 
 ## Copyright/license
 
