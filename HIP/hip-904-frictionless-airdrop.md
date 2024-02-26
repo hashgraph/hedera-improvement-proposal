@@ -5,11 +5,11 @@ author: Richard Bair <@rbair23>, Nana Essilfie-Conduah <@nana-ec>
 working-group: Jasper Potts <@jasperpotts>, Atul Mahamuni <@atul-hedera>, Michael Tinker <@tinker-michaelj>, Leemon Baird <@lbaird>, Ty Smith <@ty-swirldslabs>, Nick Poorman <@nickpoorman>, Ali Nikan <@alinik4n>, Steven Sheehy <@steven-sheehy>
 requested-by: DEXs, Wallets, External Web3 Users
 type: Standards Track
-category: Service, Mirror, Application
+category: Core, Service, Mirror
 needs-council-approval: Yes
 status: Draft
-created: 2024-2-23
-discussions-to: 
+created: 2024-2-25
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/905
 updated: 
 requires: 
 replaces: 655, 777
@@ -74,13 +74,13 @@ This HIP changes this behavior in the following ways:
 
 Normal crypto-transfers remain the same as today, with one difference. If Account A sends a token to Account B, and Account B is not associated with that token but has an available auto-association slot, then Account A will pay for that association and the first auto-renewal period’s rent, in addition to the typical transfer costs.
 
-![Crypto Transfer Transaction](../assets/hip-0000/frictionless-airdrop-cryptoTransferTransaction.png)
+![Crypto Transfer Transaction](../assets/hip-904/frictionless-airdrop-cryptoTransferTransaction.png)
 
 ### Airdrops
 
 Airdrops are similar to crypto transfers, but differ in one fundamental way - when an airdrop is performed and the receiver does not have available or automatic association slots, rather than failing, the transfer will be kept in state as a *pending transfer*. To represent this new semantic, there will be a new `TokenAirdropTransaction` meant for use specifically by those attempting an airdrop, with the following semantics:
 
-![Token Airdrop Transaction](../assets/hip-0000/frictionless-airdrop-tokenAirdropTransaction.png)
+![Token Airdrop Transaction](../assets/hip-904/frictionless-airdrop-tokenAirdropTransaction.png)
 
 > ⚠️ `TokenAirdropTransaction` will not support tokens with custom fallback fees that require the receiver to pay the fallback fee.
 
