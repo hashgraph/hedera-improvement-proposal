@@ -1,14 +1,15 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 000
 title: Proxy Redirect Contract for Hbar Allowance and Approval
 author: Luke Lee <@lukelee-sl>
 working-group: Nana Essilfie-Conduah <@nana-ec>
+requested-by: Smart contract developers
 type: Standards Track 
 category: Service
 needs-council-approval: Yes
-status: <Draft | Review | Last Call | Active | Inactive | Deferred | Rejected | Withdrawn | Accepted | Final | Replaced>
+status: Review
 created: 2024-02-23
-discussions-to: <a URL pointing to the official discussion thread>
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/906
 updated: 
 requires: 632
 ---
