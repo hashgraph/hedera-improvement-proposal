@@ -13,7 +13,7 @@
     margin-right: 265px;
     padding: 1em;
     .site-title {
-      margin-left: 100px
+      margin-left: 100px;
     }
   }
 }
@@ -21,39 +21,64 @@
 .hipstable {
   width: 100%;
   table-layout: auto;
+
+  th {
+    position: relative;
+    cursor: pointer;
+    padding-right: 30px; // Space for the sort arrow
+
+    &::after {
+      content: "\2195"; // Neutral sort indicator
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8em;
+    }
+
+    &.asc::after {
+      content: "\25B2"; // Ascending sort indicator
+    }
+
+    &.desc::after {
+      content: "\25BC"; // Descending sort indicator
+    }
+  }
 }
 
 @media screen and (max-width: 600px) {
-  .hipstable, .hipstable thead, .hipstable tbody, .hipstable th, .hipstable td, .hipstable tr { 
-      display: block; 
+  .hipstable, .hipstable thead, .hipstable tbody, .hipstable th, .hipstable td, .hipstable tr {
+    display: block;
   }
 
-  .hipstable thead tr { 
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
+  .hipstable thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
   }
 
-  .hipstable tr { border: 1px solid #ccc; }
-
-  .hipstable td { 
-      border: none;
-      border-bottom: 1px solid #eee; 
-      position: relative;
-      padding-left: 60%; 
-      word-break: break-word;
-      padding-top: 0px;
-      min-height: 50px;
+  .hipstable tr {
+    border: 1px solid #ccc;
   }
 
-  .hipstable td:before { 
+  .hipstable td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 60%;
+    word-break: break-word;
+    padding-top: 0px;
+    min-height: 50px;
+
+    &:before {
       position: absolute;
       top: 6px;
       left: 6px;
-      width: 45%; 
-      padding-right: 10px; 
+      width: 45%;
+      padding-right: 10px;
       white-space: nowrap;
       word-break: break-word;
+    }
   }
 
   .hipstable .hip-number:before { content: "Number"; }
@@ -69,85 +94,86 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
-  text-decoration: underline;
   color: #069;
   font-size: 14px;
+
+  .status-tooltip-box {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+    z-index: 1000;
+    font-size: 12px;
+    line-height: 1.2;
+    max-width: 300px;
+    word-wrap: break-word;
+  }
 }
 
-.status-tooltip-box {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  padding: 5px;
-  border-radius: 3px;
-  white-space: nowrap;
-  z-index: 1000;
-  font-size: 12px;
-  line-height: 1.2;
-  max-width: 300px;
-  word-wrap: break-word;
-}
 #search-container {
   position: relative;
   z-index: 1;
   top: 95px;
   right: 15px;
-}
-
-#search-input {
-  border: solid #5DCA5D 2px;
-  padding: 1px;
-  float: right;
-}
-#results-container {
-  background: white;
-  list-style: none;
-  text-align: right;
-  margin-top: 35px;
-  border: 1px solid #eee;
-  //padding: 10px;
-}
-#results-container>li {
-  padding: 0 20px;
-}
-@media (max-width: 930px){
-  #search-container {
-    width: 100%;
-    position: relative;
-    top: auto;
-    right: auto;
-  }
-  #search-input-wrapper {
-    width: 100%;
-    display: grid;
-    justify-content: center;
-    margin-top: 10px;
-  }
 
   #search-input {
     border: solid #5DCA5D 2px;
     padding: 1px;
-    width: 400px;
-    margin: auto;
-    position: relative;
+    float: right;
   }
 
   #results-container {
     background: white;
     list-style: none;
-    margin-top: 5px;
-    padding: 0 25px;
-    text-align: left;
+    text-align: right;
+    margin-top: 35px;
+    border: 1px solid #eee;
+    //padding: 10px;
+
+    > li {
+      padding: 0 20px;
+    }
   }
-  .site-header {
-    .wrapper {
-      .site-title {
-        margin-left: 0
+}
+
+@media (max-width: 930px) {
+  #search-container {
+    width: 100%;
+    position: relative;
+    top: auto;
+    right: auto;
+
+    #search-input-wrapper {
+      width: 100%;
+      display: grid;
+      justify-content: center;
+      margin-top: 10px;
+
+      #search-input {
+        border: solid #5DCA5D 2px;
+        padding: 1px;
+        width: 400px;
+        margin: auto;
+        position: relative;
+      }
+
+      #results-container {
+        background: white;
+        list-style: none;
+        margin-top: 5px;
+        padding: 0 25px;
+        text-align: left;
       }
     }
+  }
+
+  .site-header .wrapper .site-title {
+    margin-left: 0;
   }
 }
 
