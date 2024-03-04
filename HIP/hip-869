@@ -164,12 +164,17 @@ message NodeCreateTransactionBody {
 	string description = 2;
 
 	/**
-	 * Ip address or fully qualified domain name and port, mandatory field.
+	 * Ip address and port, mandatory field. Fully qualified domain name is 
+   	 * not allowed here. Maximum number of these endpoints is 10.
+	 * The first in the list is used as the Internal IP address in config.txt,
+         * the second in the list is used as the External IP address in config.txt,
+	 * the rest of IP addresses are ignored for DAB stage 1.
 	 */
 	ServiceEndpoint gossip_endpoint = 3;
 
 	/**
-	 * A node's service IP addresses and ports, IP:Port is mandatory, domain name is optional.
+	 * A node's grpc service IP addresses and ports, IP:Port is mandatory, 
+         * fully qualified domain name is optional. Maximum number of these endpoints is 8.
 	 */
 	repeated ServiceEndpoint service_endpoint = 4;
 
@@ -321,6 +326,10 @@ enum ResponseCodeEnum {
 	 * A node is not found
 	 */
 	INVALID_NODE_ID = 334;
+	/**
+	 * gossip_endpoint has a fully qualified domain name instead or ip
+	 */
+	INVALID_GOSSIP_ENDPOINT = 335;
 }
 ```
 
