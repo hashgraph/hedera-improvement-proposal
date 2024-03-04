@@ -551,6 +551,9 @@ The SDKs must support the new HAPI transactions
 - `TokenReject` transaction - exposes `TokenRejectTransactionBody` proto
 - `Token?Flow` that supports rejection and dissociation to make it easier for devs
 
+The SDKs must update the `TransactionRecord` to return the following information
+- `new_pending_airdrops`
+
 ### MAPI (Mirror Node API)
 
 - New `/api/v1/accounts/{senderIdOrEvmAddress}/airdrops/outstanding` - List of outstanding airdrops sent by `senderIdOrEvmAddress` which have not been claimed by recipients
