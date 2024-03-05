@@ -10,7 +10,7 @@ needs-council-approval: Yes
 status: Review
 created: 2024-02-23
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/906
-updated: 2024-02-26, 24-3-05
+updated: 2024-02-26, 2024-3-05
 requires: 632
 ---
 
