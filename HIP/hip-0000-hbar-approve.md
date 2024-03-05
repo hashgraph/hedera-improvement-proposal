@@ -16,36 +16,36 @@ requires: 632
 
 ## Abstract
 
-The Smart Contract service provides for functionality to grant allowance and approve for tokens from the owner account to a spender account.
-However, currently there is no functionality to grant allowance and approve for hbars from an owner account via the Smart Contract service.
+The Smart Contract service currently provides functionality to grant allowance and approval for tokens from an owner account to a spender account.
+However, currently there is no way to grant allowance and approval for hbars from an owner account from the Smart Contract service.
 This HIP proposes to remedy this omission.
 
 ## Motivation
 
-Smart Contracts developers have obstructions on implementing certain potential use cases for transferring hbar between accounts because there is no way to grant allowance and approve for them from an owner account without using HAPI.
-Providing this functionality will remove these obstructions for developers and provide for a better developer experience.
+Smart Contracts developers are obstructed in implementing certain potential use cases for transferring hbar between accounts and contracts because there is no way to grant allowance and approval for them without using HAPI.
+Providing this functionality will remove this obstruction for developers and provide for a better developer experience.
 
 ## Rationale
 
-This HIP proposes to add the needed functionality via a new interface `IHRC632` which will act on an account address.  The account will be the actor in view with respect to the allowance to the `spender` account for the specified amount.  
-An alternative approach would be to introduce a new interface which a contract can implement.  This would necessitate that a contract be deployed which may always be desired.  In addition, taking this approach would potentially require violating the
+This HIP proposes to add the missing functionality via a new interface `IHRC632` which will act on an account address.    
+An alternative approach would be to introduce a new interface which a contract can implement.  This would necessitate that a contract be deployed which may not always be desired.  In addition, taking this approach would potentially require violating the
 smart contracts security model as the sender of the frame when executing the system contract would be the deployed contract and not the EOA which would not be desire in most cases.
 
 ## User stories
 
-1. As a smart contract developer, I want to be able to grant approve an allowance for hbars from an EOA to a spender account or contract.
-2. As a smart contract developer, I want to be able to grant approve an allowance for hbars from a contract to a spender account or contract.
-3. As a smart contract developer, I want to be able to get the allowance of hbars from an owner account to a spender account or contract.
+1. As a smart contract developer, I want to be able to grant an allowance for hbars from an EOA to a spender account or contract.
+2. As a smart contract developer, I want to be able to grant an allowance for hbars from a contract to a spender account or contract.
+3. As a smart contract developer, I want to be able to get the current allowance of hbars from an owner account to a spender account or contract.
 
 ## Specification
 
-HIP-632 proposes an introduction of a new system contract for accessing Hedera account functionality (Hedera Account Service - HAS).
-This HIP extends the new system contract to another related interface `IHRC632` to support the `hbarAllowance` and `hbarApprove` functions.
+HIP-632 proposes to introduce a new system contract for accessing Hedera account functionality (Hedera Account Service - HAS).
+This HIP extends the functionality of the new system contract by adding another related interface `IHRC632` to support the `hbarAllowance` and `hbarApprove` functions.
 The `hbarAllowance` function will be used to retrieve information about allowance granted to a spender and the `hbarApprove` function will allow the sender to grant to the `spender` an allowance of hbars.
 
 
 Similar to the way redirection to a proxy contract during EVM execution for tokens works [see HIP-719](https://github.com/hashgraph/hedera-improvement-proposal/blob/main/HIP/hip-719.md),
-this HIP proposes to introduce a new proxy contract for accounts.  During EVM execution, if the target of the current frame is an account, a call to a proxy contract will be created and the current calldata will be injected into 
+this HIP proposes to introduce a new proxy contract for accounts.  During EVM execution, if the target of the current frame is an account, a call to the new proxy contract will be created and the current calldata will be injected into 
 the proxy contract for processing by the Hedera Account Service system contract.
 
 The bytecode for the proxy contract can be created by compiling the following contract:
@@ -55,7 +55,7 @@ The bytecode for the proxy contract can be created by compiling the following co
 pragma solidity ^0.8.0;
 contract Assembly {
 	fallback() external {
-		address precompileAddress = address(0x167);
+		address precompileAddress = address(0x16a);
 		assembly {
 			mstore(0, 0xFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE)
 			calldatacopy(32, 0, calldatasize())
@@ -86,7 +86,7 @@ interface IHRC632 {
 }
 ```
 
-Once the above functionality has been implemented in services, an EOA will be able to call the `hbarAllownace` and `hbarApprove` functions as follows:
+Once the above functionality has been implemented in services, an EOA or contract with hbars will be able to call the `hbarAllownace` and `hbarApprove` functions as follows:
 
 ```
 IHRC(accountAddress).hbarAllowance(address spender)
