@@ -16,20 +16,21 @@ requires: 632
 
 ## Abstract
 
-The Smart Contract service currently provides functionality to grant allowance and approval for tokens from an owner account to a spender account.
-However, currently there is no way to grant allowance and approval for hbars from an owner account from the Smart Contract service.
-This HIP proposes to remedy this omission.
+The Smart Contract service currently provides functionality to grant allowance and approval for tokens from an owner account to a spender account. 
+However, there is currently no way to grant allowance and approval for hbars from an owner account using the Smart Contract service. This HIP proposes to remedy this omission.
 
 ## Motivation
 
-Smart Contracts developers are obstructed in implementing certain potential use cases for transferring hbar between accounts and contracts because there is no way to grant allowance and approval for them without using HAPI.
-Providing this functionality will remove this obstruction for developers and provide for a better developer experience.
+Smart Contracts developers face an obstacle when implementing certain use cases for transferring hbars between accounts and contracts. 
+The lack of a mechanism to grant allowance and approval for hbars without using HAPI hinders developers’ workflow. Providing this functionality will enhance the developer experience and remove this limitation.
 
 ## Rationale
 
-This HIP proposes to add the missing functionality via a new interface `IHRC632` which will act on an account address.    
-An alternative approach would be to introduce a new interface which a contract can implement.  This would necessitate that a contract be deployed which may not always be desired.  In addition, taking this approach would potentially require violating the
-smart contracts security model as the sender of the frame when executing the system contract would be the deployed contract and not the EOA which would not be desire in most cases.
+This HIP proposes adding the missing functionality via a new interface called `IHRC632`, which will act on an account address. 
+
+An alternative approach would be to introduce a new interface that a contract can implement. However, this would require deploying a contract, which may not always be desired. 
+Additionally, taking this approach could potentially violate the smart contracts security model, as the sender of the frame when executing the system contract would be the deployed contract rather than the EOA (Externally Owned Account), which would not be desirable in most cases.
+
 
 ## User stories
 
@@ -105,7 +106,7 @@ when implementing this functionality.  Thorough testing will be required to ensu
 
 ## How to Teach This
 
-The `hbarAllowance` and `hbarApprove` functions can be accessed by an EOA or a contract by calling the `IHRC` interface as described above.  This enhances the functionality and use cases
+The `hbarAllowance` and `hbarApprove` functions can be accessed by an EOA or a contract by calling the `IHRC632` interface as described above.  This enhances the functionality and use cases
 available to the smart contract developer.
 
 ## Rejected Ideas
