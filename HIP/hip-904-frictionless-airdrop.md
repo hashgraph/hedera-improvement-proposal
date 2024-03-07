@@ -3,14 +3,14 @@ hip:
 title: Frictionless Airdrops
 author: Richard Bair <@rbair23>, Nana Essilfie-Conduah <@nana-ec>
 working-group: Jasper Potts <@jasperpotts>, Atul Mahamuni <@atul-hedera>, Michael Tinker <@tinker-michaelj>, Leemon Baird <@lbaird>, Ty Smith <@ty-swirldslabs>, Nick Poorman <@nickpoorman>, Ali Nikan <@alinik4n>, Steven Sheehy <@steven-sheehy>
-requested-by: DEXs, Wallets, External Web3 Users
+requested-by: DEXs, Wallets, External Web3 Users. Notably Reality+, Liithos, Dropper/TheRealm, VRJAM, Rarible, MIOO, Lokkaroom, Vaultik
 type: Standards Track
 category: Core, Service, Mirror
 needs-council-approval: Yes
 status: Draft
 created: 2024-2-25
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/905
-updated: 
+updated: 2024-3-7
 requires: 
 replaces: 655, 777
 superseded-by: 
@@ -42,7 +42,8 @@ Users who wish to receive airdrops:
 
 Retail users from other EVM chains are surprised because other chains do not have the concept of token association. As such, users are accustomed to receiving unsolicited tokens and viewing them in their wallet. Non-Hedera wallets have no native method for understanding token association. Similarly, senders are not used to coordinating token association in advance. This currently provides friction and may serve as a blocker to adoption by developers coming from other chains.
 
-At the same time, many users have no desire to see their wallets flooded with unwanted tokens. For some users the legal and financial implications of these unrequested tokens is undesirable and the management of the tokens is an unwanted burden. An unwanted airdrop is referred to as *spam*.
+Equally there are many voices in the web3 community and from other networks that want to be able to be in control of what lands in their wallet.
+Many users have no desire to see their wallets flooded with unwanted tokens. For some users the legal and financial implications of these unrequested tokens is undesirable and the management of the tokens is an unwanted burden. An unwanted airdrop is referred to as *spam*.
 
 ## Rationale
 
@@ -50,7 +51,7 @@ This HIP improves the user experience by enabling airdrops and enhancing token a
 
 ### Terminology
 
-- **Airdrop**: Sending an unsolicited token to one or more accounts, often without the account owner having pre-associated with the token.
+- **Token Airdrop**: Sending an unsolicited token to one or more accounts, often without the account owner having pre-associated with the token.
 - **Sender**: The account sending tokens
 - **Receiver**: The account receiving tokens
 - **Slot**: Each account may define the number of auto-associations it will accept. Each of these is referred to as a “slot”.
@@ -71,11 +72,12 @@ This HIP changes this behavior in the following ways:
 
 - The value `-1` is now permitted for `max_auto_associations`, and this value means “unlimited”.
 - The account holder no longer prepays for unused slots regardless of the setting for `max_auto_associations`. Slots are only paid for when used, and are initially paid for by the sender during automatic associations. The account is responsible for covering rent for each association after the first auto-renewal period. `used_auto_associations` is incremented every time an auto-association is made.
-- The default value for automatically-created accounts will now be `-1`. This means, if an account is created automatically (by performing a token transfer to an alias that does not yet exist, see [HIP-583](https://hips.hedera.com/hip/hip-583)), then the automatically created account is configured with unlimited automatic token associations. Accounts created via the normal flow will continue to have a `used_auto_associations` default of 0.
+- The default value for used_auto_associations for new automatically-created accounts will now be -1. This means, if an account is created automatically (by performing a token transfer to an alias that does not yet exist, see [HIP-583](https://hips.hedera.com/hip/hip-583)), then the automatically created account is configured with unlimited automatic token associations. Accounts created by using the [AccountCreateTransaction](https://docs.hedera.com/hedera/sdks-and-apis/sdks/accounts-and-hbar/create-an-account) (HAPI: [CryptoCreate](https://github.com/hashgraph/hedera-protobufs/blob/main/services/crypto_create.proto))
+will continue to have a used_auto_associations default of 0. Accounts created before this feature is released will remain unchanged.
 
 ### Crypto Transfers
 
-Normal crypto-transfers remain the same as today, with one difference. If Account A sends a token to Account B, and Account B is not associated with that token but has an available auto-association slot, then Account A will pay for that association and the first auto-renewal period’s rent, in addition to the typical transfer costs. In summary previously the reciever would pay for an association in advance, not the payer of the transaction pays.
+Normal crypto-transfers remain the same as today, with one difference. If Account A sends a token to Account B, and Account B is not associated with that token but has an available auto-association slot, then Account A will pay for that association and the first auto-renewal period’s rent, in addition to the typical transfer costs. In summary previously the reciever would pay for an association in advance, not the payer of the transaction.
 
 ![Crypto Transfer Transaction](../assets/hip-904/frictionless-airdrop-cryptoTransferTransaction.png)
 
@@ -85,23 +87,16 @@ Airdrops are similar to crypto transfers, but differ in one fundamental way - wh
 
 ![Token Airdrop Transaction](../assets/hip-904/frictionless-airdrop-tokenAirdropTransaction.png)
 
-> ⚠️ `TokenAirdropTransaction` will not support tokens with custom fallback fees that require the receiver to pay the fallback fee.
+> ⚠️ `TokenAirdropTransaction` from accounts will not support tokens with custom fallback fees that require the receiver to pay the fallback fee. An exception exists for treasury accounts for which custom fees are not assessed and thereofre fallback fees are not applicable.
 
 
-When a sender airdrops a token, if the receiver’s account is already associated with the token, then it is effectively treated as a normal crypto transfer, except that an *airdrop fee* is assessed. This fee exists for all uses of `TokenAirdropTransaction` as a spam-deterrent fee.
+When a sender airdrops a token, if the receiver’s account is already associated with the token, then it is effectively treated as a normal crypto transfer, except that an airdrop transaction fee is assessed. This fee exists for all uses of `TokenAirdropTransaction` as a spam-deterrent fee.
 
 If the receiver’s account is **not** associated with the token, but has available auto-association slots, then one of the slots is taken (i.e. `used_auto_associations` is incremented) and the transaction payer will pay for the association fee. They also pay a fee representing the price of a full auto-renewal period’s rent. This is done to make sure the receiver has time to dissociate from the token before renewal takes place. For example, if the airdrop were to happen the minute before account renewal, the token would not included in renewal because it has already been pre-paid by the sender for one full renewal period. Thus, the receiver always has at least one full renewal period to dissociate from any tokens they do not want to own.
 
-If the receiver’s account is **not** associated with the token, and they have **no** free auto-association slots, then the airdrop transfer neither succeeds nor fails, but is held in state as a *pending transfer*.
+If the receiver’s account is **not** associated with the token, and they have **no** free auto-association slots, then the airdrop transfer neither succeeds nor fails.
 
-### Pending Transfers
-
-When a `TokenAirdropTransaction` is handled for a receiver that has no free auto-association slots, a *pending transfer* is created and held in state. Tokens in the pending transfer are not deducted from the sender, nor are they credited to the receiver, until the receiver *claims* the airdrop. If the receiver never claims the airdrop, then the sender continues to pay for it forever, or until their account expires, is deleted, or the sender *cancels* the pending transfer.
-
-To support a users ability to claim a pending transfer a new `TokenClaimAirdrop` transaction will be introduced.
-When a receiver claims a token, the `TokenClaimAirdrop` transaction **must** be signed by the receiver, in addition to the transaction payer (who may be the same as the receiver). In essence, if an account has no free auto-association slots, then it behaves as though receiver-sig-required were true *for airdrops*. That is, the receiver must sign the transaction to receive the airdrop.
-
-A sender may cancel pending transfers for a low nominal fee using the new `TokenCancelAirdrop` transaction. A receiver can also choose to just ignore pending transfers. It is expected that wallets may build special user workflows into their apps to allow customers to ignore pending transfers without having to actually issue a transaction to the network to cancel them. Since pending transfers are paid for by the sender, the receiver may choose not to simply filter them out in their wallet software.
+In this case a *pending transfer* is created and held in state. Tokens in the pending transfer are not deducted from the sender, nor are they credited to the receiver, until the receiver *claims* the airdrop. If the receiver never claims the airdrop, then the sender continues to pay for it forever, or until their account expires, is deleted, or the sender *cancels* the pending transfer.
 
 All pending transfers sent by an account must be canceled before the account can be deleted.
 
@@ -109,9 +104,24 @@ At the time a token transfer is stored as a *pending transfer*, any custom fees 
 
 When the sender’s account is renewed, each pending transfer owned by the sender is taken into account and paid for as part of the renewal process. This is in addition to the regular rent due as a result of the token balance owned by the sender. If the sender’s account expires and cannot be renewed, then all pending transfers for that sender are canceled. Any attempt to claim a missing or canceled pending transfer, or a pending transfer from an expired or deleted sender account, will fail. Conceptually, each pending transaction is immediately canceled at the time the account expired.
 
+### Token Claim Airdrop
+
+To support a users ability to claim a pending transfer a new `TokenClaimAirdrop` transaction will be introduced.
+When a receiver claims a token, the `TokenClaimAirdrop` transaction **must** be signed by the receiver, in addition to the transaction payer (who may be the same as the receiver). In essence, if an account has no free auto-association slots, then it behaves as though receiver-sig-required were true *for airdrops*. That is, the receiver must sign the transaction to receive the airdrop.
+
+![Token Claim Airdrop Transaction](../assets/hip-904/frictionless-airdrop-tokenClaim.png)
+
+### Token Cancel Airdrop
+
+A sender may cancel pending transfers for a low nominal fee using the new `TokenCancelAirdrop` transaction. A receiver can also choose to just ignore pending transfers. It is expected that wallets may build special user workflows into their apps to allow customers to ignore pending transfers without having to actually issue a transaction to the network to cancel them. Since pending transfers are paid for by the sender, the receiver may choose not to simply filter them out in their wallet software.
+
+![Token Cancel Airdrop Transaction](../assets/hip-904/frictionless-airdrop-tokenCancel.png)
+
+
 ### Zero-Balance Accounts
 
-Accounts with zero HBAR balance must be able to receive tokens. This can be done in the following ways:
+The ability for account with 0 cryptocurrency value to receive token transfers is an import DeFi experience.
+Post this HIP zero balance accounts could recieve tokens in the following ways:
 
 - A sender may send a token to an unused EVM address (alias) and the account will be auto-created without any HBAR balance. It will also be created with `max_auto_associations` set to `-1`, permitting unlimited auto-associations. Subsequent transfers of any token to this account with no hbars will succeed.
 - A wallet or other entity can create an account with `max_auto_associations` set to `-1`. Tokens can then be transferred into the account without the account owning any hbars.
@@ -125,6 +135,9 @@ Today, if an account holds no balance (or no serial) of a token type, then the a
 This can be a significant security concern. A token with custom fees could  be used by a token spammer to airdrop a token to all users with a custom fee that will charge the users some HBAR or other tokens in order to get rid of the token — essentially creating a “ransom” token. To prevent this, we introduce the new `TokenRejectTransaction`.
 
 Any token (fungible or non-fungible) can be rejected, whether it was created through automatic or manual association, and no matter how long the token was held. A rejected token is transferred back to the token treasury, and all custom fees on the token are waived. The payer of the transaction will only pay the appropriate fees for the HAPI transaction type.
+
+
+![Token Reject Transaction](../assets/hip-904/frictionless-airdrop-tokenReject.png)
 
 > ⚠️ When a token is rejected, we **do not** decrement `used_auto_associations`. That field tracks the total number of times auto-associations have been made, not the current number of token types on the account that were auto-associated.
 
@@ -171,13 +184,13 @@ At any time after they've received GameNFT token value, Alice, Bob, Carol or Dav
 #### Sender
 
 1. As an hts-token-airdrop-sender, I want to airdrop a token to a receiver who has already associated with the token. I expect this should work exactly like the crypto transfer.
-2. As an hts-token-airdrop-sender,  I want to airdrop a token using to a receiver who has not associated with the token but has an open autoAssociation slot. I expect this should work exactly like the cryptoTransfer.
-3. As an hts-token-airdrop-sender,  I want to airdrop a token to a receiver who has not associated with the token and has no open autoAssociation slots. I expect this transfer will be marked as pending that the receiver can claim at any time if it is still available at that time.
+2. As an hts-token-airdrop-sender,  I want to airdrop a token to a receiver who has not associated with the token but has an open autoAssociation slot. I expect this should work exactly like the cryptoTransfer.
+3. As an hts-token-airdrop-sender,  I want to airdrop a token to a receiver who has not associated with the token and has no open autoAssociation slots. I expect this transfer will be marked as pending so that the receiver can claim at any time if it is still available at that time.
 4. As an hts-token-airdrop-sender I want to cover the custom fees (fixed, fractional, and royalty excluding fallback) of an airdrop to an account that is already associated with a token to reduce the friction by a receiving account
 5. As an hts-token-airdrop-sender I want to cover the fees (custom, association & rent until the end of the first full auto renewal period) of an airdrop that consumes an automatic token slot to reduce the friction for a receiving account
 6. As an hts-token-airdrop-sender I want to cover the fees (airdrop, custom, association & rent until the end of the first full auto renewal period) of an airdrop that results in a pending transfer to reduce the friction by the intended receiving account.
 7. As an airdrop-sender I want to cancel pending token transfers that I initiated and are still unclaimed by the receiver.
-8. As a token treasury account holder, I want to airdrop tokens with custom fallback fees
+8. As a token treasury account holder, I want to airdrop tokens with custom fallback fees. I understand as the token treasure that custom fees are not accessed me and therefore the fallback fee will be non-applicable.
 
 #### Receiver
 
@@ -219,6 +232,7 @@ From the user perspective, this HIP introduces the following concepts:
 - Implement new airdrop HAPIs, `TokenAirdrop`, `TokenCancelAirdrop` used by airdrop sender’s to send airdrops and reclaim pending airdrops, and `TokenClaimAirdrop` used by an account to claim a pending airdrop.
 - Implement new `TokenReject` transaction that allows a token-holder to reject a token and send it back to the token's treasury without any extraordinary fees such as custom fees and disassociate from the token.
 - Maintenance of the number of token-association-credits in an account so that an account is not charged for the token-association during the first full auto-renewal period. The network will award a rent credit for a token holder for at least one full auto renewal period upon automatic association.
+- Maintenance of a state including the collection of pending token transfers issued by token airdroppers.
 
 
 ### HAPI (Hedera API)
@@ -234,7 +248,7 @@ message CryptoCreateTransactionBody {
 
     /**
     * The maximum number of tokens that an Account can be implicitly associated
-    * with. Defaults to 0. Any non-negative number indicates the maximum number
+    * with. Defaults to 0 for non-automatic account creations. Any non-negative number indicates the maximum number
     * of such automatic associations. -1 indicates an unlimited number of
     * automatic associations.
     *
