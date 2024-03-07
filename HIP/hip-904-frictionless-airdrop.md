@@ -247,8 +247,9 @@ message CryptoCreateTransactionBody {
     ...
 
     /**
-    * The maximum number of tokens that an Account can be implicitly associated
-    * with. Defaults to 0 for non-automatic account creations. Any non-negative number indicates the maximum number
+    * The maximum number of tokens that an Account can be implicitly associated with.
+    * Defaults to 0 for non-automatic account creations. 
+    * Any non-negative number indicates the maximum number
     * of such automatic associations. -1 indicates an unlimited number of
     * automatic associations.
     *
@@ -269,7 +270,7 @@ message CryptoUpdateTransactionBody {
 
     /**
     * The maximum number of tokens that an Account can be implicitly associated
-    * with. Defaults to 0. Any non-negative number indicates the maximum number
+    * with. Any non-negative number indicates the maximum number
     * of such automatic associations. -1 indicates an unlimited number of
     * automatic associations.
     */
@@ -281,10 +282,11 @@ message CryptoUpdateTransactionBody {
 
 ```protobuf
 /**
-* A token airdrop transactions change on state is dependent on teh recieving accounts assocaition with a token or the presence of avialable automatics associations.
-* Air drops that resuly in transfers will see the transfers populated in the record token_transfer_list.
-* Airdrops that consume an assocaition slot will eb represented in the record automatioc_association field.
-* Airdrops that result in pending trasnfers will see the intended trasnfer captures in the record pending_airdrops field.
+* A token airdrop transaction's change on state is dependent on the recieving accounts
+* association with a token or the presence of available automatics associations.
+* Airdrops that result in transfers will see the transfers populated in the record token_transfer_list.
+* Airdrops that consume an association slot will be represented in the record automatioc_association field.
+* Airdrops that result in pending transfers will see the intended transfer captures in the record pending_airdrops field.
 */ 
 message TokenAirdropTransactionBody {
     /**
@@ -303,9 +305,11 @@ message TokenAirdropTransactionBody {
     * but will create a `pending airdrop` instead, with the receiver account
     * listed on the `pending airdrop`. The payer will pay for the transfer,
     * association, one renewal credit, and airdrop fee.
-    * All tokenTransferList items must succeed (transfer of pedning state) for the transaction to succeed.
+    * All token_transfers must succeed (result in transfer or pending state) for the transaction to succeed.
+    *
+    * A max list of up to 10 tokens maybe be proposed for airdrop.
     */
-    repeated TokenTransferList tokenTransfers = 1;
+    repeated TokenTransferList token_transfers = 1;
 }
 ```
 
@@ -333,7 +337,7 @@ message TokenPendingAirdrop {
 	AccountID sender_id = 1;
 
 	/**
-    * Account that was the intended reciever of the airdrop
+    * Account that was the intended receiver of the airdrop
     */
     AccountID receiver_id = 2;
 
@@ -394,7 +398,7 @@ message TransactionRecord {
     /**
     * All Token transfers as a result of this transaction
     */
-    repeated TokenTransferList tokenTransferLists = 11;
+    repeated TokenTransferList token_transfer_lists = 11;
 
     ...
 
@@ -413,7 +417,11 @@ message TransactionRecord {
 }
 ```
 
-The TransactionRecord proto will expose the state changes regarding pending airdrops that have been added or removed from state due to a TokenAirdrop or TokenCancelAirdrop transaction. 
+> The TransactionRecord proto will expose the state changes regarding pending airdrops that have been added to state due to a `TokenAirdrop` transaction.
+Claimed tokens from a `TokenClaimAirdrop` transaction will appear in the transaction record in the existing `tokenTransferLists` property.
+Canceled pending tokens from a `TokenCancelAirdrop` transaction will not be exposed in the transaction record as they are captured in the `TokenCancelAirdrop` transaction body. 
+
+Below are a some example scenarios to highlight how the tranaction record will expose state changes across `TokenAirdrop`, `TokenClaim` and `TokenCancel`.
 
 Scenario 1: If Alice airdrops with the following transfer breakout
 
@@ -711,7 +719,7 @@ In a way, this section can be thought of as a breakout section of the Rationale 
 
 ## Open Issues
 
-- Should we expose pending transfers through the RPC utilizing custom endpoints?
+- Should we expose pending transfers through the JSON RPC Relay through custom endpoints?
 - Should we enable TokenAirdrops via EVM transfers for web3 parity
     - We could change the default IERC.transfer() when applied to an HTS token to be TokenAirdrop
 
