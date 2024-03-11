@@ -1,5 +1,5 @@
 ---
-hip: 
+hip: 904
 title: Frictionless Airdrops
 author: Richard Bair <@rbair23>, Nana Essilfie-Conduah <@nana-ec>
 working-group: Jasper Potts <@jasperpotts>, Atul Mahamuni <@atul-hedera>, Michael Tinker <@tinker-michaelj>, Leemon Baird <@lbaird>, Ty Smith <@ty-swirldslabs>, Nick Poorman <@nickpoorman>, Ali Nikan <@alinik4n>, Steven Sheehy <@steven-sheehy>
@@ -8,9 +8,9 @@ type: Standards Track
 category: Core, Service, Mirror
 needs-council-approval: Yes
 status: Draft
-created: 2024-2-25
+created: 2024-02-25
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/905
-updated: 2024-3-7
+updated: 2024-03-07
 requires: 
 replaces: 655, 777
 superseded-by: 
@@ -346,8 +346,8 @@ mind and reject the token back to the GameNFT token treasury account.
 7. As an airdrop-sender I want to cancel pending token transfers that I initiated and are still
    unclaimed by the receiver.
 8. As a token treasury account holder, I want to airdrop tokens with custom fallback fees. I
-   understand as the token treasure that custom fees are not accessed me and therefore the fallback
-   fee will be non-applicable.
+   understand as the token treasury that custom fees are not assessed me and therefore the fallback
+   fee will not be applicable.
 
 #### Receiver
 
@@ -395,7 +395,8 @@ mind and reject the token back to the GameNFT token treasury account.
   instead of transferring the token in the event an association was required. The user still has to
   pay node and network fees for the transaction, but the transfer itself will not go through and the
   client will not be charged for the crypto transfer itself.</dd>
-<dt>Q: If I have `maxAutomaticTokenAssociations` set to `0`, and someone airdrops me an NFT, have I received it?</dt>
+<dt>Q: If I have `maxAutomaticTokenAssociations` set to `0`, and someone airdrops me an NFT, have
+    I received it?</dt>
 <dd>A: No. In this case, it is *pending*, and you can only receive it by sending a “claim” transaction.
   When you claim it, the record stream will contain a claim transaction and a token association record
   entry and a crypto transfer record entry, so that in the record stream, the association and token
@@ -422,7 +423,7 @@ From the user perspective, this HIP introduces the following concepts:
   award a rent credit for a token holder for at least one full auto renewal period upon automatic
   association.
 - Maintenance of a state including the collection of pending token transfers issued by token
-  airdroppers.
+  airdrops.
 
 ### HAPI (Hedera API)
 
@@ -433,7 +434,7 @@ Note: the only change to this API is in the specification, which now allows for 
 ```protobuf
 message CryptoCreateTransactionBody {
 
-    ...
+//    ...
 
     /**
      * The maximum number of tokens that can be auto-associated with the account.<br/>
@@ -453,7 +454,7 @@ Note: the only change to this API is in the specification, which now allows for 
 ```protobuf
 message CryptoUpdateTransactionBody {
 
-    ...
+//    ...
 
     /**
      * The maximum number of tokens that can be auto-associated with the account.<br/>
@@ -480,23 +481,23 @@ message CryptoUpdateTransactionBody {
  *
  * ### Effects
  * This distributes tokens from the balance of one or more sending account(s) to the balance
- * of one or more recipient accounts. Accounts will receive the tokens in one of four ways.
+ * of one or more recipient accounts. Accounts MAY receive the tokens in one of four ways.
  *
- *  - An account already associated to the token to be distributed will receive the
+ *  - An account already associated to the token to be distributed SHALL receive the
  *    airdropped tokens immediately to the recipient account balance.<br/>
  *    The fee for this transfer SHALL include the transfer, the airdrop fee, and any custom fees.
- *  - An account with available automatic association slots will be automatically
- *    associated to the token, and immediately receive the airdropped tokens to the
+ *  - An account with available automatic association slots SHALL be automatically
+ *    associated to the token, and SHALL immediately receive the airdropped tokens to the
  *    recipient account balance.<br/>
  *    The fee for this transfer SHALL include the transfer, the association, the cost to renew
  *    that association once, the airdrop fee, and any custom fees.
- *  - An account with "receiver signature required" set will have a "Pending Airdrop" created
+ *  - An account with "receiver signature required" set SHALL have a "Pending Airdrop" created
  *    and must claim that airdrop with a `claimAirdrop` transaction.<br/>
  *    The fee for this transfer SHALL include the transfer, the association, the cost to renew
  *    that association once, the airdrop fee, and any custom fees. If the pending airdrop is not
  *    claimed immediately, the `sender` SHALL pay the cost to renew the token association, and
  *    the cost to maintain the pending airdrop, until the pending airdrop is claimed or cancelled.
- *  - An account with no available automatic association slots will have a "Pending Airdrop"
+ *  - An account with no available automatic association slots SHALL have a "Pending Airdrop"
  *    created and must claim that airdrop with a `claimAirdrop` transaction.<br/>
  *    The fee for this transfer SHALL include the transfer, the association, the cost to renew
  *    that association once, the airdrop fee, and any custom fees. If the pending airdrop is not
@@ -538,21 +539,28 @@ message TokenAirdropTransactionBody {
 }
 ```
 
-TokenAirdrop transaction will support the transfers of value in a similar manner to CryptoTransfer with the difference of only supporting tokens (no HBAR transfer support) and supporting the resulting pending transfer state where a CryptoTransfer would have failed due to the lack of association options.
+TokenAirdrop transaction will support the transfers of value in a similar manner to CryptoTransfer
+with the difference of only supporting tokens (no HBAR transfer support) and supporting the
+resulting pending transfer state where a CryptoTransfer would have failed due to the lack of
+association options.
 
 However, it is important to have a separate HAPI transaction type for a few reasons
 
-- the ability to call out the potential separate behaviours based on maxAutomaticAssociation, whereby transfer can end up in a pending transfer state or a consumption of an association slot.
+- the ability to call out the potential separate behaviours based on maxAutomaticAssociation,
+  whereby transfer can end up in a pending transfer state or a consumption of an association slot.
 - cleaner conceptual understanding
-- naming allows the grouping of functionality with Cancel and Claim which complete the pending state a TokenAirdrop may creates
+- naming allows the grouping of functionality with Cancel and Claim which complete the pending
+  state a TokenAirdrop may creates
 - explicit specification in record stream.
 - improved developer experience
 
-Similar restrictions around transfer list and aggregation across sender and receiver from CryptoTransfer will be applied to TokenAirdop e.g. max 10 transfers per transaction
+Similar restrictions around transfer list and aggregation across sender and receiver from
+CryptoTransfer will be applied to TokenAirdop e.g. max 10 transfers per transaction
 
-At the time of this HIP `TokenAirdropTransaction` will not be supported by the Scheduled Transaction Service. A future HIP may explore this support.
+At the time of this HIP `TokenAirdropTransaction` will not be supported by the Scheduled
+Transaction Service. A future HIP may explore this support.
 
-#### Cancel
+#### Pending Airdrop
 
 ```protobuf
 /**
@@ -598,41 +606,53 @@ message TokenPendingAirdrop {
     PendingAirdropId pending_airdrop_id = 1;
 
     /**
-     * The sending account.<br/>
-     * This is the account that initiated, and funded, this pending airdrop.
+     * A sending account.<br/>
+     * This is the account that initiated, and SHALL fund, this pending airdrop.
      */
     AccountID sender_id = 2;
 
     /**
-     * The receiving account.<br/>
-     * This is the ID of the account that is to receive the airdrop.
+     * A receiving account.<br/>
+     * This is the ID of the account that SHALL receive the airdrop.
      */
     AccountID receiver_id = 3;
+
+    /**
+     * An instant in time when this pending airdrop will expire.<br>
+     * The sender SHALL be automatically charged a renewal fee if this `TokenPendingAirdrop`
+     * is not claimed prior to this instant.<br>
+     * A sender MAY avoid this fee by cancelling this pending airdrop with a `cancelAirdrop`
+     * transaction.<br>
+     * If the sender lacks sufficient HBAR balance to pay the renewal fee, this pending
+     * airdrop SHALL expire, and be subsequently removed.
+     */
+    Timestamp expiration_time = 4;
 
     /**
      * A token ID.<br/>
      * This is the type of token for this pending airdrop.
      */
-    TokenID token_type = 4;
+    TokenID token_type = 5;
 
     oneof transfer_value {
         /**
          * An amount to transfer for fungible/common tokens.<br/>
          * This is expressed in the smallest available units for that token
          * (i.e. 10<sup>-`decimals`</sup> whole tokens).<br/>
-         * This amount SHALL be transferred from the sender to the receiver if claimed.
+         * This amount SHALL be transferred from the sender to the receiver, if claimed.
          */
-        int64 amount = 5;
+        int64 amount = 6;
 
         /**
          * A non-fungible/unique token serial number.<br/>
          * This individual unique token SHALL be transferred from the sender to the
-         * receiver if claimed.
+         * receiver, if claimed.
          */
-        int64 serial_number = 6;
+        int64 serial_number = 7;
     }
 }
 ```
+#### Cancel
 
 ```protobuf
 /**
@@ -640,9 +660,9 @@ message TokenPendingAirdrop {
  * Remove one or more pending airdrops from state on behalf of the sender(s)
  * for each airdrop.<br/>
  * 
- * Each pending airdrop canceled is removed from state and no longer available to claim.
+ * Each pending airdrop canceled SHALL be removed from state and SHALL NOT be available to claim.
  * 
- * Each cancellation will be represented in the transaction body and will not need restating
+ * Each cancellation SHALL be represented in the transaction body and SHALL NOT be restated
  * in the record file.
  * All cancellations MUST succeed for this transaction to succeed.
  */
@@ -665,11 +685,14 @@ message TokenCancelAirdropTransactionBody {
 /**
  * Token claim airdrop<br/>
  * Complete one or more pending transfers on behalf of the recipient(s) for each airdrop.<br/> 
+ * The sender MUST have sufficient balance to fulfill the airdrop at the time of claim. If the
+ * sender does not have sufficient balance, the claim SHALL fail.
  * 
- * Each pending airdrop successfully claimed is removed from state and no longer available to claim.
+ * Each pending airdrop successfully claimed SHALL be removed from state and SHALL NOT be available
+ * to claim again.
  * 
- * Each claim will be represented in the transaction body and will not need restating
- * in the record file.
+ * Each claim SHALL be represented in the transaction body and SHALL NOT be restated
+ * in the record file.<br/>
  * All claims MUST succeed for this transaction to succeed.
  */
 message TokenClaimAirdropTransactionBody {
@@ -714,10 +737,11 @@ message TransactionRecord {
      * Each pending airdrop represents a single requested transfer from a
      * sending account to a recipient account. These pending transfers are
      * issued unilaterally by the sending account, and MUST be claimed by the
-     * recipient account before the transfer SHALL complete.<br/>
+     * recipient account before the transfer MAY complete.<br/>
      * An airdrop SHALL emit a pending airdrop when the recipient has no
      * available automatic association slots available or when the recipient
-     * has set `receiver_sig_required`.
+     * has set `receiver_sig_required`.<br/>
+     * An airdrop MAY emit a pending airdrop under other, unspecified, circumstances.
      */
     repeated TokenPendingAirdrop new_pending_airdrops = 22;
 }
@@ -736,13 +760,20 @@ Scenario 1: If Alice airdrops with the following transfer breakout
 
 - 5 FTs of token T1 to Bob, where Bob is already associated with T1
 - NFT serial 1 & 2 of T2 to Bob who is associated with token T2
-- 10 FTs of token T3 to Carol, where Carol is not associated with T3 but has available association slots
-- NFT serials 3 & 4 of T4 to Carol, where Carol is not associated with T4 but has available association slots
-- 10 FTs of token T5 to Dave, where Dave is not associated with T5 and has no available association slots
-- 5 FTs of token T5 to Dave, where Dave is not associated with T5 and has no available association slots
-- NFT serial 5 & 6 of T6 to Dave, where Dave is not associated with T6 and has no available association slots
-- 20 FTs of token T7 to Eric, where Eric is not associated with T7 and has no available association slots
-- NFT serials 7 & 8 of T8 to Eric, where Eric is not associated with T8 and has no available association slots
+- 10 FTs of token T3 to Carol, where Carol is not associated with T3 but has available
+  association slots
+- NFT serials 3 & 4 of T4 to Carol, where Carol is not associated with T4 but has available
+  association slots
+- 10 FTs of token T5 to Dave, where Dave is not associated with T5 and has no available
+  association slots
+- 5 FTs of token T5 to Dave, where Dave is not associated with T5 and has no available
+  association slots
+- NFT serial 5 & 6 of T6 to Dave, where Dave is not associated with T6 and has no available
+  association slots
+- 20 FTs of token T7 to Eric, where Eric is not associated with T7 and has no available
+  association slots
+- NFT serials 7 & 8 of T8 to Eric, where Eric is not associated with T8 and has no available
+  association slots
 
 The record file emitted from a consensus node will contain
 
@@ -781,7 +812,8 @@ Scenario 2: If Dave submits a TokenClaim for token T5 and a Token claim of seria
 
 `pending_airdrops` will be empty
 
-Note: NFT serial 6 of T6 is left in pending airdrop, but all of the pending fungible amount of T5 was transferred 
+Note: NFT serial 6 of T6 is left in pending airdrop, but all of the pending fungible amount of T5
+was transferred.
 
 Scenario 3: Alice submits a TokenCancelAirdrop for token T7 and a TokenCancelAirdrop of serial 7 of T8
 
@@ -791,7 +823,8 @@ Scenario 3: Alice submits a TokenCancelAirdrop for token T7 and a TokenCancelAir
 
 `pending_airdrops` will be empty, details are in transaction body
 
-Note: NFT serial 8 of T8 is left in pending airdrop, but all of the pending fungible amount of T7 was transferred 
+Note: NFT serial 8 of T8 is left in pending airdrop, but all of the pending fungible amount of T7
+was transferred.
 
 #### Reject
 
@@ -830,7 +863,7 @@ message TokenRejectTransactionBody {
 
 ```protobuf
 /**
- * Reject undesired tokens.<br/>
+ * Reject undesired token(s).<br/>
  * Transfer one or more token balances held by the requesting account to the treasury for each
  * token type.<br/>
  * Each transfer SHALL be one of the following
@@ -862,7 +895,6 @@ message TokenRejection {
 }
 ```
 
-
 #### Token Service
 
 ```protobuf
@@ -871,19 +903,20 @@ service TokenService {
 //    ...
 
     /**
-     * Airdrops one or more tokens to one or more accounts.<br/>
+     * Airdrop one or more tokens to one or more accounts.<br/>
      * This distributes tokens from the balance of one or more sending account(s) to the balance
      * of one or more recipient accounts. Accounts will receive the tokens in one of four ways.
      * <ul>
-     *   <li>An account already associated to the token to be distributed will receive the
+     *   <li>An account already associated to the token to be distributed SHALL receive the
      *       airdropped tokens immediately to the recipient account balance.</li>
-     *   <li>An account with available automatic association slots will be automatically
-     *       associated to the token, and immediately receive the airdropped tokens to the
+     *   <li>An account with available automatic association slots SHALL be automatically
+     *       associated to the token, and SHALL immediately receive the airdropped tokens to the
      *       recipient account balance.</li>
-     *   <li>An account with "receiver signature required" set will have a "Pending Airdrop" created
-     *       and must claim that airdrop with a `claimAirdrop` transaction.</li>
-     *   <li>An account with no available automatic association slots will have a "Pending Airdrop"
-     *       created and must claim that airdrop with a `claimAirdrop` transaction. </li>
+     *   <li>An account with "receiver signature required" set SHALL have a "Pending Airdrop"
+     *       created and MUST claim that airdrop with a `claimAirdrop` transaction.</li>
+     *   <li>An account with no available automatic association slots SHALL have a
+     *       "Pending Airdrop" created and MUST claim that airdrop with a `claimAirdrop`
+     *       transaction. </li>
      * </ul>
      * Any airdrop that completes immediately SHALL be irreversible. Any airdrop that results in a
      * "Pending Airdrop" MAY be canceled via a `cancelAirdrop` transaction.<br/>
@@ -901,21 +934,25 @@ service TokenService {
 
     /**
      * Claim one or more pending airdrops.<br/>
-     * This transaction MUST be signed by _each_ account *receiving* an airdrop to be claimed.
+     * This transaction MUST be signed by _each_ account *receiving* an airdrop to be claimed.<br>
+     * If a Sender lacks sufficient balance to fulfill the airdrop at the time the claim is made,
+     * that claim SHALL fail.
      */
     rpc claimAirdrop (Transaction) returns (TransactionResponse);
 
     /**
      * Reject one or more tokens.<br/>
-     * This transaction SHALL transfer the full balance of one ore more tokens from the requesting
+     * This transaction SHALL transfer the full balance of one or more tokens from the requesting
      * account to the treasury for each token. This transfer SHALL NOT charge any custom fee or
      * royalty defined for the token(s) to be rejected.<br/>
      * <h3>Effects on success</h3>
      * <ul>
      *   <li>If the rejected token is fungible/common, the requesting account SHALL have a balance
-     *       of 0 for the rejected token.</li>
+     *       of 0 for the rejected token. The treasury balance SHALL increase by the amount that
+     *       the requesting account decreased.</li>
      *   <li>If the rejected token is non-fungible/unique the requesting account SHALL NOT hold
-     *       the specific serialized token that is rejected.</li>
+     *       the specific serialized token that is rejected. The treasury account SHALL hold each
+     *       specific serialized token that was rejected.</li>
      * </li>
      */
     rpc rejectToken (Transaction) returns (TransactionResponse);
@@ -924,7 +961,8 @@ service TokenService {
 
 ### Account Airdrop Defaults
 
-The introduction of airdrop support status requires accounts to specify their level of appetite for airdrops at account creation time.
+The introduction of airdrop support status requires accounts to specify their level of appetite for
+airdrops at account creation time.
 
 To support potential varied DeFi personas the default status will rely on the account creation type
 
@@ -937,9 +975,9 @@ To support potential varied DeFi personas the default status will rely on the ac
       choose conservatively to make these accounts `spam-free`.
 - Auto-created accounts
     - Any auto-created account (such as a hollow account) will default to
-      be `frictionles-airdrop enabled` in which `maxAutomaticAssociations` is set to -1.
+      be `frictionless-airdrop enabled` in which `maxAutomaticAssociations` is set to -1.
 
-Contracts by default will be spam-free in nature. To create a `frictionles-airdrop enabled`
+Contracts by default will be spam-free in nature. To create a `frictionless-airdrop enabled`
 contract, the `maxAutomaticAssociations` can be set during a `ContractCreate` HAPI transaction and
 will require a valid admin key to ensure balance and associations can be managed.
 
@@ -1016,7 +1054,6 @@ The SDKs must update the `TransactionRecord` to return the following information
           }
             }
     ```
-
     - `limit` - The maximum number of airdrops to return in the response. Defaults to `25` with a
       max of `100`.
     - `order` - The direction to sort the items in the response. Can be `asc` or `desc` with a
@@ -1026,9 +1063,10 @@ The SDKs must update the `TransactionRecord` to return the following information
       Supports `eq`, `gt`, `gte`, `lt`, and `lte` operators. Only one occurrence is allowed.
     - `token.id` - The token ID this airdrop is associated with. Supports `eq`, `gt`, `gte`, `lt`,
       and `lte` operators. Only one occurrence is allowed.
+
+
 - New `/api/v1/accounts/{receiverIdOrEvmAddress}/airdrops/pending`) - List of pending airdrops
   that `receiverIdOrEvmAddress` has not yet claimed.
-
     ```json
        {
                 "airdrops": [
@@ -1059,7 +1097,6 @@ The SDKs must update the `TransactionRecord` to return the following information
           }
             }
     ```
-
     - `limit` - The maximum number of airdrops to return in the response. Defaults to `25` with a
       max of `100`.
     - `order` - The direction to sort the items in the response. Can be `asc` or `desc` with a
@@ -1076,7 +1113,8 @@ As one of the main UIs for users on the network, explorers have the opportunity 
 properties and provide easy management functionality. Explorers may consider
 
 - supporting the ability to set `maxAutomaticAssociations` via a `CryptoUpdate` across multiple wallets
-- highlighting a users current airdrop account status (unlimited, limited or no airdrops) on the account page
+- highlighting a users current airdrop account status (unlimited, limited or no airdrops) on the
+  account page
 - exposing pending airdrops on the account page. Explorers could add additional logic to inform
   potential recipient if the sender can support the pending transfer
 - supporting the ability to execute `TokenClaim` transaction via multiple wallets
