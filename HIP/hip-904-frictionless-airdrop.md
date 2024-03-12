@@ -53,7 +53,7 @@ Users who wish to *airdrop* (send unsolicited) tokens encounter friction in seve
 Users who wish to receive airdrops:
 
 - Must prepay for auto association slots, which are expensive, even when not filled.
-- Users must hold hbars in order to accept an airdrop (to pay for the association), making it
+- Users must hold HBAR in order to accept an airdrop (to pay for the association), making it
   difficult in many workflows to create and pre-populate accounts with tokens.
 
 Retail users from other EVM chains are surprised because other chains do not have the concept of
@@ -85,12 +85,12 @@ on Hedera, while still protecting users and network nodes against security attac
 - **Association renewal credit**: When computing fees for account renewal, a *renewal credit* is
   worth 1 auto-renew period of payment for an association.
 - **Airdrop-fee**: An additional airdrop specific fee, used to deter indiscriminate spam
-- **Token Airdrop claim**: An additional tranaction type enabling a receiver to obtain tokens in
+- **Token Airdrop claim**: An additional transaction type enabling a receiver to obtain tokens in
   pending state from a sender
-- **Token Airdrop cancel**: An additional tranaction type enabling a sender to remove a previously
+- **Token Airdrop cancel**: An additional transaction type enabling a sender to remove a previously
   intended transfer from state
 - **Token reject**: An additional transaction allowing any user to send a token balance back to the
-  token treasury without paying custom fess
+  token treasury without paying custom fees
 
 ### Receiver’s Automatic Token Association Choice: Zero, Limited, or Unlimited
 
@@ -122,12 +122,12 @@ This HIP changes this behavior in the following ways:
   sender during automatic associations. The account is responsible for covering rent for each
   association after the first auto-renewal period. `used_auto_associations` is incremented every
   time an auto-association is made.
-- The default value for used_auto_associations for new automatically-created accounts will now be
+- The default value for `max_auto_associations` for new automatically-created accounts will now be
   -1. This means, if an account is created automatically (by performing a token transfer to an alias
   that does not yet exist, see [HIP-583](https://hips.hedera.com/hip/hip-583)), then the automatically created account is configured
   with unlimited automatic token associations. Accounts created by using the
   [AccountCreateTransaction](https://docs.hedera.com/hedera/sdks-and-apis/sdks/accounts-and-hbar/create-an-account) (HAPI: [CryptoCreate](https://github.com/hashgraph/hedera-protobufs/blob/main/services/crypto_create.proto))
-  will continue to have a used_auto_associations default of 0. Accounts created before this feature
+  will continue to have a `max_auto_associations` default of 0. Accounts created before this feature
   is released will remain unchanged.
 
 ### Crypto Transfers
@@ -135,7 +135,7 @@ This HIP changes this behavior in the following ways:
 Normal crypto-transfers remain the same as today, with one difference. If Account A sends a token to
 Account B, and Account B is not associated with that token but has an available auto-association
 slot, then Account A will pay for that association and the first auto-renewal period’s rent, in
-addition to the typical transfer costs. In summary previously the reciever would pay for an
+addition to the typical transfer costs. In summary previously the receiver would pay for an
 association in advance, not the payer of the transaction.
 
 ![Crypto Transfer Transaction](../assets/hip-904/frictionless-airdrop-cryptoTransferTransaction.png)
@@ -162,10 +162,10 @@ If the receiver’s account is **not** associated with the token, but has availa
 slots, then one of the slots is taken (i.e. `used_auto_associations` is incremented) and the
 transaction payer will pay for the association fee. They also pay a fee representing the price of a
 full auto-renewal period’s rent. This is done to make sure the receiver has time to dissociate from
-the token before renewal takes place. For example, if the airdrop were to happen the minute before
-account renewal, the token would not included in renewal because it has already been pre-paid by the
-sender for one full renewal period. Thus, the receiver always has at least one full renewal period
-to dissociate from any tokens they do not want to own.
+the token before renewal takes place. For example, if the airdrop was to happen the minute before
+account renewal, the token would not be included in renewal because it has already been pre-paid by
+the sender for one full renewal period. Thus, the receiver always has at least one full renewal
+period to dissociate from any tokens they do not want to own.
 
 If the receiver’s account is **not** associated with the token, and they have **no** free
 auto-association slots, then the airdrop transfer neither succeeds nor fails.
@@ -346,8 +346,8 @@ mind and reject the token back to the GameNFT token treasury account.
 7. As an airdrop-sender I want to cancel pending token transfers that I initiated and are still
    unclaimed by the receiver.
 8. As a token treasury account holder, I want to airdrop tokens with custom fallback fees. I
-   understand as the token treasury that custom fees are not assessed me and therefore the fallback
-   fee will not be applicable.
+   understand as the token treasury that custom fees are not assessed to me and therefore the
+   fallback fee will not be applicable.
 
 #### Receiver
 
@@ -457,8 +457,9 @@ message CryptoUpdateTransactionBody {
 //    ...
 
     /**
-     * The maximum number of tokens that can be auto-associated with the account.<br/>
-     * If this is less than or equal to `used_auto_associations`, or 0, then this account
+     * If set, modify the maximum number of tokens that can be auto-associated with the
+     * account.<br/>
+     * If this is set and less than or equal to `used_auto_associations`, or 0, then this account
      * MUST manually associate with a token before transacting in that token.<br/>
      * This value MAY also be `-1` to indicate no limit.<br/>
      * This value MUST NOT be less than `-1`.
@@ -562,28 +563,6 @@ Transaction Service. A future HIP may explore this support.
 
 #### Pending Airdrop
 
-```protobuf
-/**
- * An Identifier for a Pending Airdrop within the network.
- */
-message PendingAirdropId {
-    /**
-     * A whole number shard number
-     */
-    int64 shard_num = 1;
-
-    /**
-     * A whole number realm number
-     */
-    int64 realm_num = 2;
-
-    /**
-     * A whole number pending airdrop number, unique within its realm and shard
-     */
-    int64 pending_num = 3;
-}
-```
-
 > REVIEW NOTE
 >> This is a rewrite of the original; taking query, record stream, and other representations into
 >> consideration.
@@ -600,12 +579,6 @@ message PendingAirdropId {
 ```protobuf
 message TokenPendingAirdrop {
     /**
-     * An ID for this pending airdrop.<br/>
-     * This ID may be used to reference this pending airdrop for claim or cancel transactions.
-     */
-    PendingAirdropId pending_airdrop_id = 1;
-
-    /**
      * A sending account.<br/>
      * This is the account that initiated, and SHALL fund, this pending airdrop.
      */
@@ -616,17 +589,6 @@ message TokenPendingAirdrop {
      * This is the ID of the account that SHALL receive the airdrop.
      */
     AccountID receiver_id = 3;
-
-    /**
-     * An instant in time when this pending airdrop will expire.<br>
-     * The sender SHALL be automatically charged a renewal fee if this `TokenPendingAirdrop`
-     * is not claimed prior to this instant.<br>
-     * A sender MAY avoid this fee by cancelling this pending airdrop with a `cancelAirdrop`
-     * transaction.<br>
-     * If the sender lacks sufficient HBAR balance to pay the renewal fee, this pending
-     * airdrop SHALL expire, and be subsequently removed.
-     */
-    Timestamp expiration_time = 4;
 
     /**
      * A token ID.<br/>
@@ -652,6 +614,7 @@ message TokenPendingAirdrop {
     }
 }
 ```
+
 #### Cancel
 
 ```protobuf
@@ -675,7 +638,7 @@ message TokenCancelAirdropTransactionBody {
      * This list MUST contain between 1 and 10 entries, inclusive.
      * This list MUST NOT have any duplicate entries.<br/>
      */
-    repeated PendingAirdropId pending_airdrops = 1;
+    repeated PendingAirdrop pending_airdrops = 1;
 }
 ```
 
@@ -704,7 +667,7 @@ message TokenClaimAirdropTransactionBody {
      * This list MUST contain between 1 and 10 entries, inclusive.<br/>
      * This list MUST NOT have any duplicate entries.
      */
-    repeated PendingAirdropId pending_airdrops = 1;
+    repeated PendingAirdrop pending_airdrops = 1;
 }
 ```
 
@@ -793,6 +756,8 @@ The record file emitted from a consensus node will contain
 
 - Alice intent to transfer 15 T5 tokens to Dave
 - Alice intent to transfer NFT serials 5 & 6 of token T6 to Dave
+- Alice intent to transfer 20 T7 tokens to Eric
+- Alice intent to transfer NFT serials 7 & 8 of token T8 to Eric
 
 Note: In the transaction body Alice had split her intended transfers to Dave in two but in the
 result exposed by the record they were combined. TokenAirdrops may be combined in an additive
@@ -810,7 +775,7 @@ Scenario 2: If Dave submits a TokenClaim for token T5 and a Token claim of seria
 - Dave's automatic association with token T5
 - Dave's automatic association with token T6
 
-`pending_airdrops` will be empty
+`pending_airdrops` will be empty, details are in transaction body
 
 Note: NFT serial 6 of T6 is left in pending airdrop, but all of the pending fungible amount of T5
 was transferred.
@@ -823,7 +788,7 @@ Scenario 3: Alice submits a TokenCancelAirdrop for token T7 and a TokenCancelAir
 
 `pending_airdrops` will be empty, details are in transaction body
 
-Note: NFT serial 8 of T8 is left in pending airdrop, but all of the pending fungible amount of T7
+Note: NFT serial 8 of T8 is left in pending airdrop, and none of the pending fungible amount of T7
 was transferred.
 
 #### Reject
