@@ -2,7 +2,7 @@
 hip: 0000
 title: Extending HIP-412 to Establish a Music Metadata Standard
 author: Brandon Davenport (@itsbrandondev)
-working-group: Ty Smith (@ty-swirldslabs), Brandon Davenport (@itsbrandondev), Andrew Antar (@andrewantar), VCente, Tyler Cote (@teacoat), Ashe Oro (@Ashe-Oro), Milan Wiercx van Rhijn (@MilanWR), Joshua Doerksen (@JoshuaDoerksen)
+working-group: Ty Smith (@ty-swirldslabs), Andrew Antar (@andrewantar), VCente, Tyler Cote (@teacoat), Ashe Oro (@Ashe-Oro), Milan Wiercx van Rhijn (@MilanWR), Joshua Doerksen (@JoshuaDoerksen)
 type: Informational
 needs-council-approval: No
 status: Draft
