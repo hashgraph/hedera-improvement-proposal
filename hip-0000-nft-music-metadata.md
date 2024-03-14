@@ -2,10 +2,8 @@
 hip: 0000
 title: Extending HIP-412 to Establish a Music Metadata Standard
 author: 
-working-group: 
-requested-by: the name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP
+working-group: Ty Smith, Brandon Davenport, Andrew Antar, VCente, Tyler Cote, Ashe Oro, Milan Wiercx van Rhijn, Joshua Doerksen, 
 type: Informational
-category: Application
 needs-council-approval: No
 status: Draft
 created: 2024-03-14
@@ -16,19 +14,19 @@ requires: 412
 
 ## Abstract
 
-This HIP proposes an extension to the existing HIP-412, establishing a comprehensive Music Metadata Standard for non-fungible tokens (NFTs) within the Hedera ecosystem. This standard outlines detailed metadata attributes specific to music-related NFTs, enhancing the representation, utility, and interoperability of these digital assets.
+This HIP suggests expanding the current HIP-412 to introduce a detailed Music Metadata Standard for non-fungible tokens (NFTs) in the Hedera ecosystem. It aims to improve how music-related NFTs are represented, used, and interacted with by defining specific metadata attributes for them.
 
 ## Motivation
 
-The growth of NFTs in the music industry highlights a need for a standardized metadata framework that caters specifically to music-related assets. This standardization will enable clearer representation, rights management, and utilization of music NFTs, fostering a more robust and efficient marketplace.
+The expansion of Non-Fungible Tokens (NFTs) within the music industry underscores the necessity for a uniform metadata framework tailored for music-related assets. Such standardization would improve the clarity, rights management, and use of music NFTs, leading to a stronger and more effective marketplace.
 
 ## Rationale
 
-The Music Metadata Standard extends HIP-412 by adding music-specific attributes such as artist, album, genre, duration, and more. This ensures a comprehensive representation of music NFTs, addressing the unique needs of the music industry within the Hedera ecosystem.
+The Music Metadata Standard enhances the HIP-412 protocol by incorporating attributes tailored to music, including artist name, album title, genre, track length, and others. This enhancement ensures that music NFTs are represented thoroughly, catering specifically to the requirements of the music sector within the Hedera network.
 
 ## User stories
 
-Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
+As a musician, record label, or NFT creator, my goal is to use a music-focused metadata standard to structure information about my tokenized music so it aligns with the music industry's current metadata conventions. I aim to incorporate elements like ISRC or UPC codes into my NFT metadata, enabling connections to established music databases. Additionally, I seek the flexibility to effectively navigate and categorize the intricacies of digital music.
   
 ## Specification
 
@@ -234,7 +232,7 @@ Educational materials will be developed to assist artists, record labels, and NF
 
 ## Reference Implementation
 
-The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+Multiple projects and artists have already incorporated this working music metadata standard.
 
 ## Rejected Ideas
 
@@ -242,11 +240,11 @@ These NFT music metadata standards were originailly thought of as an update to H
 
 ## Open Issues
 
-N/A
+This work has highlighted the need for an update to HIP-412: an optional "category" type identifier.
 
 ## References
 
-N/
+N/A
 
 ## Copyright/license
 
