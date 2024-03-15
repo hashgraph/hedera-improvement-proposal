@@ -1,0 +1,251 @@
+---
+hip: 0000
+title: Extending HIP-412 to Establish a Music Metadata Standard
+author: Brandon Davenport (@itsbrandondev)
+working-group: Ty Smith (@ty-swirldslabs), Andrew Antar (@andrewantar), VCente VcenteWorldwide@gmail.com, Tyler Cote (@teacoat), Ashe Oro (@Ashe-Oro), Milan Wiercx van Rhijn (@MilanWR), Joshua Doerksen (@JoshuaDoerksen)
+type: Informational
+needs-council-approval: No
+status: Draft
+created: 2024-03-15
+discussions-to: 
+updated: 
+requires: 412
+---
+
+## Abstract
+
+This HIP suggests expanding the current HIP-412 to introduce a detailed Music Metadata Standard for non-fungible tokens (NFTs) in the Hedera ecosystem. It aims to improve how music-related NFTs are represented, used, and interacted with by defining specific metadata attributes for them.
+
+## Motivation
+
+The expansion of Non-Fungible Tokens (NFTs) within the music industry underscores the necessity for a uniform metadata framework tailored for music-related assets. Such standardization would improve the clarity, rights management, and use of music NFTs, leading to a stronger and more effective marketplace.
+
+## Rationale
+
+The Music Metadata Standard enhances the HIP-412 protocol by incorporating attributes tailored to music, including artist name, album title, genre, track length, and others. This enhancement ensures that music NFTs are represented thoroughly, catering specifically to the requirements of the music sector within the Hedera network.
+
+## User stories
+
+As a musician, record label, or NFT creator, my goal is to use a music-focused metadata standard to structure information about my tokenized music so it aligns with the music industry's current metadata conventions. I aim to incorporate elements like ISRC or UPC codes into my NFT metadata, enabling connections to established music databases. Additionally, I seek the flexibility to effectively navigate and categorize the intricacies of digital music.
+  
+## Specification
+
+The proposed Music Metadata Standard includes the following attributes:
+
+- **Top Level Metadata:** Name, Description, Image, Creator, Format, Type, Category.
+- **Properties:** Artist, Album, Creator Account, Compilation, Royalty Type, Sort Name, Artist Type, Duration, UPC.
+- **Genre:** Root Genre, Sub Genres.
+- **Unlockables:** Unlockable Name, Description, Locked Content, Token Gating.
+- **Files:** URI, Type.
+- **File Metadata:** Name, Description, Properties.
+- **File Metadata Properties:** Streaming Royalties, Royalty Token, Token Gating, Track Number, BPM, Duration, Key, Location Created, Recording Studio, License, Copyright, Label, Master Rights, Publisher Rights, PRO Rights, Release Date, ISRC, Lyrics, Album, UPC, Artist.
+- **Credits:** Producer, Mix and Mastering, Composer, Performers, Songwriter.
+
+Below is a detailed breakdown of all elements:
+
+| Nesting                                 | Attribute               | Required | Property                | Expected Type         | Description                                                                                                        |
+| --------------------------------------- | ----------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| \>                                      | token                   | Yes      | Top Level Metadata      | N/A                   | This is the top level metadata of the non-fungible token.                                                          |
+|                                         | name                    | Yes      | Name                    | String                | The title of the item being described.                                                                             |
+|                                         | description             | Yes      | Description             | String                | A brief summary of the item.                                                                                       |
+|                                         | image                   | Yes      | Image                   | String (URI)          | The URI of the main image associated with the item, usually hosted on IPFS or decentralized servers.               |
+|                                         | creator                 | Yes      | Creator                 | String                | The creator or artist responsible for the item.                                                                    |
+|                                         | format                  |          |                         |                       | add format                                                                                                         |
+|                                         | type                    | Yes      | Type                    | String (MIME type)    | The MIME type of the primary asset, ex: an image in PNG format (image/png).                                        |
+|                                         | category                |          | Category                | String                | An update to HIP-412 to specify a category of NFT within format, ex: music.                                        |
+| token >                                 | properties              | Yes      | Properties              | Object Array          | An object array containing various attributes describing the item's metadata including genre and unlockables.      |
+|                                         | artist                  | Yes      | Artist                  | String Array          | The name of the music artist who created the item.                                                                 |
+|                                         | album                   |          | Album                   | String                | The name of the music album the item belongs to.                                                                   |
+|                                         | creator_account         |          | Creator Account         | Array                 | The creator hedera account that minted the item and accounts that receive proceeds from initial sale.              |
+|                                         | compilation             |          | Compilation             | Boolean               | Indicates whether the music album is a compilation.                                                                |
+|                                         | royalty_type            |          | Royalty                 | String                | The type of royalty destination: "account" or "smart_contract "                                                    |
+|                                         | sort_name               |          | Sort Name               | String                | A variant of the artist name for sorting.                                                                          |
+|                                         | artist_type             |          | Artist Type             | String                | Person, Group, Orchestra, Choir, Character, Other                                                                  |
+|                                         | duration                |          | Duration                | Integer               | The duration of the item in seconds.                                                                               |
+|                                         | upc                     |          | UPC                     | String                | The Universal Product Code (UPC) associated with the item.                                                         |
+| token > properties >                    | genre                   |          | Genre                   | Object                | Genre and an array of sub genres that the item belongs to.                                                         |
+|                                         | root                    |          | Genre                   | String                | Root genre                                                                                                         |
+|                                         | sub                     |          | Genre                   | String Array          | Sub genre                                                                                                          |
+| token > properties >                    | unlockables             |          | Unlockables             | Object                | An object containing various attributes describing the item's unlockable content.                                  |
+|                                         | name                    |          | Unlockable Name         | String                | Public name of unlockable.                                                                                         |
+|                                         | description             |          | Unlockable Description  | String                | Public description of unlockable.                                                                                  |
+|                                         | locked_content          |          | Locked Content          | Object                | Private locked content (can be multimedia, text, and/or encrypted content).                                        |
+|                                         | gated_token_ids         |          | Unlockable Token Gating | Array                 | Array of token IDs necessary to unlock the private content.                                                        |
+| token >                                 | files                   |          | Files                   | Object Array          | An object array that contains uri, type, metadata and music specific properties.                                   |
+|                                         | uri                     | Yes      | URI                     | String (URI)          | The URI where the file is located,usually hosted on IPFS or decentralized servers.                                 |
+|                                         | type                    | Yes      | Type                    | String (MIME type)    | The MIME type of the file, ex: a song in WAV format (audio/wav).                                                   |
+| token > files >                         | metadata                | Yes      | Metadata                | Object                | An object containing various attributes describing the file's metadata.                                            |
+|                                         | name                    | Yes      | Name                    | String                | The title of the file being described.                                                                             |
+|                                         | description             |          | Description             | String                | A brief summary of the file.                                                                                       |
+| token > files > metadata >              | properties              | Yes      | Properties              | Object Array          | An object array containing various attributes describing the item's metadata including genre and credits.          |
+|                                         | streaming_royalties     |          | Royalty Percent         | Integer               | A percentage of streaming royalties allocated to token holders.                                                    |
+|                                         | streaming_royalty_token |          | Royalty Token           | String                | HTS token used for streaming royalty payments.                                                                     |
+|                                         | token_gated             |          | Token Gating            | Boolean               | Indicates whether file is gated by the token (eg. In order to stream song, must buy NFT)                           |
+|                                         | track_number            |          | Track Number            | Integer               | The track number within an album or release.                                                                       |
+|                                         | bpm                     |          | BPM                     | Integer               | The beats per minute (tempo) of the audio track.                                                                   |
+|                                         | duration                |          | Duration                | Integer               | The duration of the audio track in seconds.                                                                        |
+|                                         | key                     |          | Key                     | String                | The musical key of the audio track.                                                                                |
+|                                         | location_created        |          | Location Created        | String                | The location where the audio track was created                                                                     |
+|                                         | recording_studio        |          | Record Studio           | String                | The recording studio where the track was recorded                                                                  |
+|                                         | license                 |          | License                 | String                | The type of license associated with the audio track.                                                               |
+|                                         | copyright               |          | Copyright               | String                | The type of license copyright with the audio track.                                                                |
+|                                         | label                   |          | Label                   | String                | The name of the record label that released the audio track.                                                        |
+|                                         | master                  |          | Master (Rights)         | Array                 | The name of the company holding the master recording rights                                                        |
+|                                         | publisher               |          | Publisher (Rights)      | Array                 | The name of the publishing company that holds publishing and performance rights                                    |
+|                                         | pro                     |          | PRO (Rights)            | Array                 | Performance Rights Organization(s) or society(s) associated with mechanical rights                                 |
+|                                         | release_date            |          | Release Date            | String                | The release date of the audio track.String (date format: "UTC timestamp")                                          |
+|                                         | isrc                    |          | ISRC                    | String                | The International Standard Recording Code (ISRC) associated with the audio track.                                  |
+|                                         | lyrics                  |          | Lyrics                  | String                | The time-stamped lyrics for the audio track (symbols in UNICODE), ex: [00:00:00] lyric here [00:00:05] lyric there |
+|                                         | album                   |          | Album                   | String                | The name of the album or compilation the item belongs to.                                                          |
+|                                         | upc                     |          | UPC                     | String                | The Universal Product Code (UPC) associated with the item.                                                         |
+|                                         | artist                  |          | Artist                  | String                | The name of the artist who created the item.                                                                       |
+| token > files > metadata > properties > | genre                   |          | Genre                   | Object Array          | Genre and an array of sub genres that the item belongs to.                                                         |
+|                                         | root                    |          | Genre                   | String                | Root genre                                                                                                         |
+|                                         | sub                     |          | Genre                   | String Array          | Sub genre                                                                                                          |
+| token > files > metadata > properties > | credits                 |          | Credits                 | Key Value Pairs Array | An object containing information about individuals who contributed to the creation of the audio track.             |
+|                                         | producer                |          | Producer                | String                | Name of Producer                                                                                                   |
+|                                         | mix                     |          | Mix and Mastering       | String                | Name of the person who mixed and mastered the audio track                                                          |
+|                                         | composer                |          | Composer                | String                | The name of the composer of the musical score                                                                      |
+|                                         | performers              |          | Performers              | String                | Names of orchestra, musicians, and/or band performing the track                                                    |
+|                                         | songwriter              |          | Songwriter              | String                | Name of Songwriter                                                                                                 |
+
+JSON Visualization Example:
+
+Here's a sample JSON object representing a 3-song album by the band "MetaHeads," with each attribute filled in according to the Music Metadata Standard being proposed:
+
+```json
+{
+  "token": {
+    "name": "Echoes of the Digital Age",
+    "description": "A groundbreaking album by MetaHeads that blends digital soundscapes with classic rock.",
+    "image": "ipfs://example-image-uri",
+    "creator": "MetaHeads",
+    "format": "audio/mpeg",
+    "type": "album",
+    "category": "music",
+    "properties": {
+      "artist": "MetaHeads",
+      "album": "Echoes of the Digital Age",
+      "creator_account": ["0.0.123456", "0.0.654321"],
+      "compilation": false,
+      "royalty_type": "account",
+      "sort_name": "MetaHeads",
+      "artist_type": "Group",
+      "duration": 720,
+      "upc": "123456789012",
+      "genre": {
+        "root": "Rock",
+        "sub": ["Electronic", "Alternative"]
+      },
+      "unlockables": {
+        "name": "Behind the Scenes Footage",
+        "description": "Exclusive backstage and studio footage of MetaHeads.",
+        "locked_content": {
+          "uri": "ipfs://example-locked-content-uri",
+          "type": "video/mp4"
+        },
+        "token_gated": ["12345", "67890"]
+      }
+    },
+    "files": [
+      {
+        "uri": "ipfs://track1-uri",
+        "type": "audio/mpeg",
+        "metadata": {
+          "name": "Digital Dreams",
+          "description": "The opening track setting the theme of the album.",
+          "properties": {
+            "streaming_royalties": 5,
+            "streaming_royalty_token": "0.0.988765",
+            "token_gated": true,
+            "track_number": 1,
+            "bpm": 120,
+            "duration": 240,
+            "key": "A Minor",
+            "location_created": "London, UK",
+            "recording_studio": "Digital Sound Studios",
+            "license": "CC BY-NC-ND 4.0",
+            "copyright": "MetaHeads, 2024",
+            "label": "Digital Rock Records",
+            "master": ["Digital Mastering Services"],
+            "publisher": ["MetaMusic Publishing"],
+            "pro": ["ASCAP"],
+            "release_date": "2024-01-01T00:00:00Z",
+            "isrc": "QMJMT2047001",
+            "lyrics": "[00:00:00] Echoes in the circuitry... [00:00:30] A digital awakening...",
+            "album": "Echoes of the Digital Age",
+            "upc": "123456789012",
+            "artist": "MetaHeads",
+            "genre": {
+              "root": "Rock",
+              "sub": ["Electronic"]
+            },
+            "credits": {
+              "producer": "Max Soundwave",
+              "mix": "Eddie Echo",
+              "composer": "MetaHeads",
+              "performers": ["Max Soundwave", "Eddie Echo", "Tina Tempo", "Bassline Ben"],
+              "songwriter": "MetaHeads"
+            }
+          }
+        }
+      },
+      {
+        "uri": "ipfs://track2-uri",
+        "type": "audio/mpeg",
+        "metadata": {
+          "name": "Circuit Breaker",
+          "description": "A powerful track about breaking free from digital constraints.",
+          "properties": {
+            // Similar metadata as for Track 1, with relevant changes for track number, ISRC, etc.
+          }
+        }
+      },
+      {
+        "uri": "ipfs://track3-uri",
+        "type": "audio/mpeg",
+        "metadata": {
+          "name": "Virtual Horizon",
+          "description": "The closing track reflecting on the digital journey.",
+          "properties": {
+            // Similar metadata as for Track 1, with relevant changes for track number, ISRC, etc.
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+
+## Backwards Compatibility
+
+This proposal aims to extend HIP-412 without disrupting existing standards. It ensures backward compatibility with current NFT metadata structures.
+
+## Security Implications
+
+The standard does not directly impact security but emphasizes the importance of accurate and immutable metadata for NFTs, which is crucial for rights and royalty management in music assets.
+
+## How to Teach This
+
+Educational materials will be developed to assist artists, record labels, and NFT creators in understanding and implementing the new Music Metadata Standard in their digital assets.
+
+## Reference Implementation
+
+Multiple projects and artists have already incorporated this working music metadata standard.
+
+## Rejected Ideas
+
+These NFT music metadata standards were originailly thought of as an update to HIP-412, but it was determined that it's better to consider these standards a child of HIP-412.
+
+## Open Issues
+
+This work has highlighted the need for an update to HIP-412: an optional "category" type identifier.
+
+## References
+
+N/A
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
