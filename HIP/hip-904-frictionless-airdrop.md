@@ -469,13 +469,6 @@ message CryptoUpdateTransactionBody {
 ```
 #### Airdrop
 
-> REVIEW NOTE
->> Account Amounts is double-entry.  By reusing the TokenTransferList, we are expecting the
->> caller to always create balanced entries in the accountAmounts list; one entry for
->> recipient and a matched entry for the sender. We will have to strictly enforce zero-sum
->> rules for these, which may lead to unexpected failures if clients misunderstand and just
->> fill in the outbound, particularly as non-fungible transfers include both sender and
->> receiver, so those are _not_ double-entry.
 ```protobuf
 /**
  * Airdrops one or more tokens to one or more accounts.
@@ -505,16 +498,17 @@ message CryptoUpdateTransactionBody {
  *    claimed immediately, the `sender` SHALL pay the cost to renew the token association, and
  *    the cost to maintain the pending airdrop, until the pending airdrop is claimed or cancelled.
  *
- * If an airdrop would create a pending airdrop, and a pending airdrop for the same sender,
- * receiver, and token already exists, the existing pending airdrop MAY be updated, rather
- * than creating a new pending airdrop.
+ * If an airdrop would create a pending airdrop for a fungible/common token, and a pending airdrop
+ * for the same sender, receiver, and token already exists, the existing pending airdrop
+ * SHALL be updated to add the new amount to the existing airdrop, rather than creating a new
+ * pending airdrop.
  *
  * Any airdrop that completes immediately SHALL be irreversible. Any airdrop that results in a
  * "Pending Airdrop" MAY be canceled via a `cancelAirdrop` transaction.<
  *
  * All transfer fees (including custom fees and royalties), as well as the rent cost for the
  * first auto-renewal period for any automatic-association slot occupied by the airdropped
- * tokens, SHALL be charged to the account submitting this transaction.
+ * tokens, SHALL be charged to the account paying for this transaction.
  *
  * ### Record Stream Effects
  * - Each successful transfer SHALL populate that transfer in `token_transfer_list` for the record.
@@ -533,7 +527,7 @@ message TokenAirdropTransactionBody {
      * This list MUST contain between 1 and 10 transfers, inclusive.
      * <p>
      * <blockquote>Note that each transfer of fungible/common tokens requires both a debit and
-     * a credit, so each _fungible_ token transfer MUST have two _matching_ entries in the
+     * a credit, so each _fungible_ token transfer MUST have _balanced_ entries in the
      * TokenTransferList for that transfer.</blockquote>
      */
     repeated TokenTransferList token_transfers = 1;
@@ -563,55 +557,81 @@ Transaction Service. A future HIP may explore this support.
 
 #### Pending Airdrop
 
-> REVIEW NOTE
->> This is a rewrite of the original; taking query, record stream, and other representations into
->> consideration.
-> 
->> Would it make sense to allow serial_number to be repeated?  If we do that then we only need
->> one pending airdrop for an arbitrary number of NFT between one sender and one recipient for
->> a given token type. That may improve space efficiency, and reduce the number of claim or cancel
->> transactions needed (though we'd probably still have the fees increase per serial number).
->
->> Note, above I've left open the _option_ to consolidate pending airdrops; so at least for
->> fungible tokens, we could have a single pending airdrop for an arbitrary number of airdrops
->> as long as the sender, receiver, and token all match.
-
 ```protobuf
-message TokenPendingAirdrop {
+/**
+ * A unique, composite, identifier for a pending airdrop.
+ *
+ * Each pending airdrop SHALL be uniquely identified by a PendingAirdropId.
+ * A PendingAirdropId SHALL be recorded when created and MUST be provided in any transaction
+ * that would modify that pending airdrop (such as a `claimAirdrop` or `cancelAirdrop`).
+ */
+message PendingAirdropId {
     /**
      * A sending account.<br/>
-     * This is the account that initiated, and SHALL fund, this pending airdrop.
+     * This is the account that initiated, and SHALL fund, this pending airdrop.<br/>
+     * This field is REQUIRED.
      */
-    AccountID sender_id = 2;
+    AccountID sender_id = 1;
 
     /**
      * A receiving account.<br/>
-     * This is the ID of the account that SHALL receive the airdrop.
+     * This is the ID of the account that SHALL receive the airdrop.<br/>
+     * This field is REQUIRED.
      */
-    AccountID receiver_id = 3;
+    AccountID receiver_id = 2;
+
+    oneof token_reference {
+        /**
+         * A token ID.<br/>
+         * This is the type of token for a fungible/common token airdrop.<br/>
+         * This field is REQUIRED for a fungible/common token and MUST NOT be used for a
+         * non-fungible/unique token.
+         */
+        TokenID fungible_token_type = 3;
+        
+        /**
+         * The id of a single NFT, consisting of a Token ID and serial number.<br/>
+         * This is the type of token for a non-fungible/unique token airdrop.<br/>
+         * This field is REQUIRED for a non-fungible/unique token and MUST NOT be used for a
+         * fungible/common token.
+         */
+        NftID non_fungible_token = 4;
+    }
+}
+
+/**
+ * A single pending airdrop amount.
+ * 
+ * This SHALL record the airdrop amount for a fungible/common token.<br/>
+ * The amount MUST be `0` for a non-fungible/unique token.
+ */
+message PendingAirdrop {
+    /**
+     * An amount to transfer for fungible/common tokens.<br/>
+     * This is expressed in the smallest available units for that token
+     * (i.e. 10<sup>-`decimals`</sup> whole tokens).<br/>
+     * This amount SHALL be transferred from the sender to the receiver, if claimed.<br/>
+     * If the token is a non-fungible/unique token, this value MUST be `0`.
+     * If the token is a fungible/common token, this value MUST be strictly greater than `0`.
+     */
+    int64 amount = 1;
+}
+
+/**
+ * A record of a new pending airdrop.
+ */
+message PendingAirdropRecord {
+    /**
+     * A unique, composite, identifier for a pending airdrop.
+     * This field is REQUIRED.
+     */
+    PendingAirdropId pending_airdrop_id = 1;
 
     /**
-     * A token ID.<br/>
-     * This is the type of token for this pending airdrop.
+     * A single pending airdrop amount.<br/>
+     * This field MUST be present, but MAY contain an amount of `0` for non-fungible/unique tokens.
      */
-    TokenID token_type = 5;
-
-    oneof transfer_value {
-        /**
-         * An amount to transfer for fungible/common tokens.<br/>
-         * This is expressed in the smallest available units for that token
-         * (i.e. 10<sup>-`decimals`</sup> whole tokens).<br/>
-         * This amount SHALL be transferred from the sender to the receiver, if claimed.
-         */
-        int64 amount = 6;
-
-        /**
-         * A non-fungible/unique token serial number.<br/>
-         * This individual unique token SHALL be transferred from the sender to the
-         * receiver, if claimed.
-         */
-        int64 serial_number = 7;
-    }
+    PendingAirdrop pending_airdrop_value = 2;
 }
 ```
 
@@ -631,14 +651,14 @@ message TokenPendingAirdrop {
  */
 message TokenCancelAirdropTransactionBody {
     /**
-     * A list of pending airdrop items to cancel.<br/>
+     * A list of one or more pending airdrop identifiers.<br/>
      * This transaction MUST be signed by the account referenced by a `sender_id` for
      * each entry in this list.
      * <p>
      * This list MUST contain between 1 and 10 entries, inclusive.
      * This list MUST NOT have any duplicate entries.<br/>
      */
-    repeated PendingAirdrop pending_airdrops = 1;
+    repeated PendingAirdropId pending_airdrops = 1;
 }
 ```
 
@@ -660,14 +680,14 @@ message TokenCancelAirdropTransactionBody {
  */
 message TokenClaimAirdropTransactionBody {
     /**
-     * A list of one or more pending airdrops.<br/>
+     * A list of one or more pending airdrop identifiers.<br/>
      * This transaction MUST be signed by the account referenced in the `receiver_id` for
      * each entry in this list.
      * <p>
      * This list MUST contain between 1 and 10 entries, inclusive.<br/>
      * This list MUST NOT have any duplicate entries.
      */
-    repeated PendingAirdrop pending_airdrops = 1;
+    repeated PendingAirdropId pending_airdrops = 1;
 }
 ```
 
@@ -701,12 +721,12 @@ message TransactionRecord {
      * sending account to a recipient account. These pending transfers are
      * issued unilaterally by the sending account, and MUST be claimed by the
      * recipient account before the transfer MAY complete.<br/>
-     * An airdrop SHALL emit a pending airdrop when the recipient has no
+     * A sender MAY cancel a pending airdrop before it is claimed.<br/>
+     * An airdrop transaction SHALL emit a pending airdrop when the recipient has no
      * available automatic association slots available or when the recipient
      * has set `receiver_sig_required`.<br/>
-     * An airdrop MAY emit a pending airdrop under other, unspecified, circumstances.
      */
-    repeated TokenPendingAirdrop new_pending_airdrops = 22;
+    repeated PendingAirdropRecord new_pending_airdrops = 22;
 }
 ```
 
@@ -955,19 +975,19 @@ HTS system contracts will need to support the new airdrop related transactions t
 is exposed via smart contract functions. Additionally, redirect functions will be provided to ensure
 optimal UX in which EOAs can initiate transactions through a DApp that affect their account.
 
-| selector | function | IHRC |
-| --- | --- | --- |
-| 0x… | <htsSystemContractAddress>.airdropTokens(TokenTransferList[] memory tokenTransfers) |  |
-| 0x… | <htsTokenAddress>.cancelAirdropFT(address receiverAddress) | Y |
-| 0x… | <htsTokenAddress>.cancelAirdropNFT(address receiverAddress, int64 serialNumber) | Y |
-| 0x… | <htsSystemContractAddress>.cancelAirdrops(TokenPendingAirdrop[] memory pendingAirdrops) |  |
-| 0x… | <htsTokenAddress>.claimAirdropFT(address senderAddress) | Y |
-| 0x… | <htsTokenAddress>.claimAirdropNFT(address senderAddress, int64 serialNumber) | Y |
-| 0x… | <htsSystemContractAddress>.claimAirdrops(TokenPendingAirdrop[] memory pendingAirdrops) |  |
-| 0x… | <htsTokenAddress>.rejectTokenFT() | Y |
-| 0x… | <htsTokenAddress>.rejectTokensNFT(int64[] serialNumber) | Y |
+| selector | function                                                                                     | IHRC |
+| --- |----------------------------------------------------------------------------------------------| --- |
+| 0x… | <htsSystemContractAddress>.airdropTokens(TokenTransferList[] memory tokenTransfers)          |  |
+| 0x… | <htsTokenAddress>.cancelAirdropFT(address receiverAddress)                                   | Y |
+| 0x… | <htsTokenAddress>.cancelAirdropNFT(address receiverAddress, int64 serialNumber)              | Y |
+| 0x… | <htsSystemContractAddress>.cancelAirdrops(PendingAirdropId[] memory pendingAirdrops)         |  |
+| 0x… | <htsTokenAddress>.claimAirdropFT(address senderAddress)                                      | Y |
+| 0x… | <htsTokenAddress>.claimAirdropNFT(address senderAddress, int64 serialNumber)                 | Y |
+| 0x… | <htsSystemContractAddress>.claimAirdrops(PendingAirdropId[] memory pendingAirdrops)          |  |
+| 0x… | <htsTokenAddress>.rejectTokenFT()                                                            | Y |
+| 0x… | <htsTokenAddress>.rejectTokensNFT(int64[] serialNumber)                                      | Y |
 | 0x… | <htsSystemContractAddress>.rejectTokens(address[] memory ftAddresses, NftId[] memory nftIds) |  |
-| 0x… | <hasSystemContractAddress>.setAutomaticAssociations(boolean enableAutoAssociations) | Y |
+| 0x… | <hasSystemContractAddress>.setAutomaticAssociations(boolean enableAutoAssociations)          | Y |
 
 To increase API reuse and for consistency the input objects will closely match the HAPI protobuf objects.
 
