@@ -1,14 +1,14 @@
 ---
 hip: 0000
 title: Extending HIP-412 to Establish a Music Metadata Standard
-author: Brandon Davenport (@itsbrandondev)
-working-group: Ty Smith (@ty-swirldslabs), Andrew Antar (@andrewantar), VCente VcenteWorldwide@gmail.com, Tyler Cote (@teacoat), Ashe Oro (@Ashe-Oro), Milan Wiercx van Rhijn (@MilanWR), Joshua Doerksen (@JoshuaDoerksen)
+author: Brandon Davenport <@itsbrandondev>
+working-group: Ty Smith <@ty-swirldslabs>, Andrew Antar <@andrewantar>, VCente <VcenteWorldwide@gmail.com>, Tyler Cote <@teacoat>, Ashe Oro <@Ashe-Oro>, Milan Wiercx van Rhijn <@MilanWR>, Joshua Doerksen <@JoshuaDoerksen>
 type: Informational
 needs-council-approval: No
 status: Draft
 created: 2024-03-15
-discussions-to: 
-updated: 
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/921
+updated: 2024-03-15
 requires: 412
 ---
 
