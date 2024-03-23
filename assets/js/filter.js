@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const typeCategoryCheckboxes = document.querySelectorAll('.hip-filters .filter:not(.check-all)');
     const checkAllCheckbox = document.querySelector('.hip-filters .check-all');
     const statusSelect = document.getElementById('status-filter');
+    $('#status-filter').select2({
+        placeholder: "Select statuses",
+        allowClear: true
+    });
 
     function filterRows() {
         const selectedTypesCategories = Array.from(typeCategoryCheckboxes)

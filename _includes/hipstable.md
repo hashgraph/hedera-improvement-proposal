@@ -1,28 +1,34 @@
-<div class="hip-filters">
-    <label><input type="checkbox" class="filter check-all" value="all" checked> All</label>
-    <label><input type="checkbox" class="filter" value="core" checked> Core</label>
-    <label><input type="checkbox" class="filter" value="service" checked> Service</label>
-    <label><input type="checkbox" class="filter" value="mirror" checked> Mirror</label>
-    <label><input type="checkbox" class="filter" value="application" checked> Application</label>
-    <label><input type="checkbox" class="filter" value="informational" checked> Informational</label>
-    <label><input type="checkbox" class="filter" value="process" checked> Process</label>
+<div class="hip-filters filter-wrap">
+    <div class="filter-group">
+        <h4>HIP Type</h4>
+        <label><input type="checkbox" class="filter check-all" value="all" checked> All</label>
+        <label><input type="checkbox" class="filter" value="core" checked> Core</label>
+        <label><input type="checkbox" class="filter" value="service" checked> Service</label>
+        <label><input type="checkbox" class="filter" value="mirror" checked> Mirror</label>
+        <label><input type="checkbox" class="filter" value="application" checked> Application</label>
+        <label><input type="checkbox" class="filter" value="informational" checked> Informational</label>
+        <label><input type="checkbox" class="filter" value="process" checked> Process</label>
+    </div>
+    <div class="filter-group">
+        <h4>Status</h4>
+        <!-- Status Filter Dropdown -->
+        <label for="status-filter" class="status-filter-label">Select Status:</label>
+        <select id="status-filter" class="status-filter" multiple>
+            <option value="all" selected>All</option>
+            <option value="draft">Draft</option>
+            <option value="withdrawn">Withdrawn</option>
+            <option value="review">Review</option>
+            <option value="stagnant">Stagnant</option>
+            <option value="deferred">Deferred</option>
+            <option value="last-call">Last Call</option>
+            <option value="accepted">Accepted</option>
+            <option value="rejected">Rejected</option>
+            <option value="final">Final</option>
+            <option value="active">Active</option>
+            <option value="replaced">Replaced</option>
+        </select>
+    </div>
 </div>
-<!-- Status Filter Dropdown -->
-<label for="status-filter">Status:</label>
-<select id="status-filter" multiple>
-    <option value="all" selected>All</option>
-    <option value="draft">Draft</option>
-    <option value="withdrawn">Withdrawn</option>
-    <option value="review">Review</option>
-    <option value="stagnant">Stagnant</option>
-    <option value="deferred">Deferred</option>
-    <option value="last-call">Last Call</option>
-    <option value="accepted">Accepted</option>
-    <option value="rejected">Rejected</option>
-    <option value="final">Final</option>
-    <option value="active">Active</option>
-    <option value="replaced">Replaced</option>
-</select>
 {% for status in site.data.statuses %}
 {% assign hips = include.hips | where: "status", status | where: "category", category | where: "type", type | sort: "hip" | reverse %}
 {% assign count = hips.size %}

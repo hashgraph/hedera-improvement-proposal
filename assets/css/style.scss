@@ -47,6 +47,19 @@
 }
 
 @media screen and (max-width: 600px) {
+  .site-header {
+    .wrapper {
+      margin-right: 0;
+      padding: 1em;
+      .site-title {
+        margin-left: 0;
+        font-size: 1.5em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
   .hipstable, .hipstable thead, .hipstable tbody, .hipstable th, .hipstable td, .hipstable tr {
     display: block;
   }
@@ -133,7 +146,6 @@
     text-align: right;
     margin-top: 35px;
     border: 1px solid #eee;
-    //padding: 10px;
 
     > li {
       padding: 0 20px;
@@ -157,7 +169,7 @@
       #search-input {
         border: solid #5DCA5D 2px;
         padding: 1px;
-        width: 400px;
+        width: 300px;
         margin: auto;
         position: relative;
       }
@@ -191,4 +203,47 @@ main.page-content {
 
 .ol-lower-latin {
   list-style-type: lower-latin;
+}
+
+
+.filter-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filter-label input[type="checkbox"] {
+  display: none; /* Hide the default checkbox */
+}
+
+.filter-label span.custom-checkbox {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  border: 2px solid #333;
+  border-radius: 3px;
+  background-color: #fff;
+  position: relative;
+}
+
+.filter-label input[type="checkbox"]:checked + span.custom-checkbox::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #333;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
