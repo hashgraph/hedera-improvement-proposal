@@ -4,18 +4,23 @@
 
 @import 'minima';
 
-.site-header {
-  .wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-right: 265px;
-    padding: 1em;
-    .site-title {
-      margin-left: 100px;
-    }
-  }
+.site-header .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1em;
+}
+
+.site-header .wrapper .site-title {
+  margin-left: 0;
+  font-size: 2em;
+  text-align: center;
+}
+
+.hips-home-link-container {
+  width: 100%;
+  text-align: center;
 }
 
 .hipstable {
@@ -25,10 +30,10 @@
   th {
     position: relative;
     cursor: pointer;
-    padding-right: 30px; // Space for the sort arrow
+    padding-right: 30px;
 
     &::after {
-      content: "\2195"; // Neutral sort indicator
+      content: "\2195";
       position: absolute;
       right: 5px;
       top: 50%;
@@ -37,28 +42,22 @@
     }
 
     &.asc::after {
-      content: "\25B2"; // Ascending sort indicator
+      content: "\25B2";
     }
 
     &.desc::after {
-      content: "\25BC"; // Descending sort indicator
+      content: "\25BC";
     }
   }
 }
 
 @media screen and (max-width: 600px) {
-  .site-header {
-    .wrapper {
-      margin-right: 0;
-      padding: 1em;
-      .site-title {
-        margin-left: 0;
-        font-size: 1.5em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
+  .site-header .wrapper {
+    margin-right: 0;
+    padding: 1em;
+  }
+  .site-header .wrapper .site-title {
+    font-size: 1.5em;
   }
   .hipstable, .hipstable thead, .hipstable tbody, .hipstable th, .hipstable td, .hipstable tr {
     display: block;
@@ -278,8 +277,8 @@ main.page-content {
   }
 
   .filter-group label {
-    flex: 1 1 auto; /* checkboxes will grow and wrap as needed */
-    margin-right: 5px; /* Adjust space between checkboxes */
+    flex: 1 1 auto;
+    margin-right: 5px;
     white-space: nowrap;
   }
 
@@ -297,5 +296,19 @@ main.page-content {
   }
 }
 
+.hips-home-link-container {
+  text-align: center;
+  background-color: #f5f5f5;
+  padding: 10px 0;
+}
 
+.hips-home-link {
+  font-size: 1.5em;
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.hips-home-link:hover {
+  text-decoration: underline;
+}
 
