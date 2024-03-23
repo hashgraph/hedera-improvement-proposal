@@ -20,7 +20,7 @@
             <option value="review">Review</option>
             <option value="stagnant">Stagnant</option>
             <option value="deferred">Deferred</option>
-            <option value="last-call">Last Call</option>
+            <option value="last call">Last Call</option>
             <option value="accepted">Accepted</option>
             <option value="rejected">Rejected</option>
             <option value="final">Final</option>

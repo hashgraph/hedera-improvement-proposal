@@ -1,94 +1,73 @@
 document.addEventListener('DOMContentLoaded', () => {
     const typeCategoryCheckboxes = document.querySelectorAll('.hip-filters .filter:not(.check-all)');
     const checkAllCheckbox = document.querySelector('.hip-filters .check-all');
-    const statusSelect = document.getElementById('status-filter');
+    const statusSelect = $('#status-filter');
+
     $('#status-filter').select2({
         placeholder: "Select statuses",
         allowClear: true
-    });
+    }).on('change', filterRows);
 
     function filterRows() {
         const selectedTypesCategories = Array.from(typeCategoryCheckboxes)
             .filter(checkbox => checkbox.checked)
-            .map(checkbox => checkbox.value);
+            .map(checkbox => checkbox.value.toLowerCase());
 
-        const selectedStatuses = Array.from(statusSelect.options)
-            .filter(option => option.selected)
-            .map(option => option.value.toLowerCase());
+        const selectedStatuses = statusSelect.val() || [];
 
-        // Keep track of which statuses have visible rows
-        let visibleStatuses = {};
+        document.querySelectorAll('.hipstable tbody tr').forEach(row => {
+            const rowType = row.getAttribute('data-type');
+            const rowCategory = row.getAttribute('data-category');
+            const rowStatus = row.getAttribute('data-status');
 
-        // Filter rows
-        document.querySelectorAll('.hipstable tbody').forEach(tbody => {
-            let hasVisibleRow = false;
-            const tableStatus = tbody.closest('table').previousElementSibling.id.toLowerCase();
+            // Special handling for 'informational' and 'process' types
+            let typeCategoryMatch = selectedTypesCategories.includes(rowType);
+            if (rowType !== 'informational' && rowType !== 'process') {
+                typeCategoryMatch = typeCategoryMatch || selectedTypesCategories.includes(rowCategory);
+            }
 
-            tbody.querySelectorAll('tr').forEach(row => {
-                const rowType = row.getAttribute('data-type');
-                const rowCategory = row.getAttribute('data-category');
+            const statusMatch = selectedStatuses.includes('all') || selectedStatuses.includes(rowStatus);
 
-                const typeMatch = selectedTypesCategories.includes(rowType);
-                const categoryMatch = selectedTypesCategories.includes(rowCategory);
-                const statusMatch = selectedStatuses.includes('all') || selectedStatuses.includes(tableStatus);
+            const displayRow = typeCategoryMatch && statusMatch;
 
-                // Show or hide the row based on type, category, and status match
-                if ((typeMatch || categoryMatch) && statusMatch) {
-                    row.style.display = '';
-                    hasVisibleRow = true;
-                } else {
-                    row.style.display = 'none';
+            console.log(`Row Type: ${rowType}, Category: ${rowCategory}, Status: ${rowStatus}, Display: ${displayRow}`);
+            
+            row.style.display = displayRow ? '' : 'none';
+        });
+
+        document.querySelectorAll('.hipstable').forEach(table => {
+            const status = table.previousElementSibling;
+            let hasVisibleRows = false;
+    
+            table.querySelectorAll('tbody tr').forEach(row => {
+                if (row.style.display !== 'none') {
+                    hasVisibleRows = true;
                 }
             });
-
-            // Record the status based on the visibility of the rows
-            visibleStatuses[tableStatus] = hasVisibleRow;
-        });
-
-        // Show or hide the status headers and tables
-        document.querySelectorAll('.hipstable').forEach(table => {
-            const statusHeaderId = table.previousElementSibling.id.toLowerCase();
-            if (visibleStatuses[statusHeaderId]) {
-                table.style.display = '';
-                table.previousElementSibling.style.display = '';
-            } else {
+    
+            // If no visible rows, hide the status header and table
+            if (!hasVisibleRows) {
+                status.style.display = 'none';
                 table.style.display = 'none';
-                table.previousElementSibling.style.display = 'none';
+            } else {
+                status.style.display = 'block'; // or whatever display style it should have
+                table.style.display = 'table'; // or whatever display style it should have
             }
         });
     }
 
-    // Toggle all checkboxes based on the "Check all" checkbox
-    function toggleCheckAll(isChecked) {
+    // Bind event listeners to checkboxes and initialize filters
+    bindEventListeners();
+    filterRows();
+
+    function bindEventListeners() {
         typeCategoryCheckboxes.forEach(checkbox => {
-            checkbox.checked = isChecked;
+            checkbox.addEventListener('change', filterRows);
         });
-        filterRows();
-    }
 
-    // Event listener for the "Check all" checkbox
-    checkAllCheckbox.addEventListener('change', (event) => {
-        toggleCheckAll(event.target.checked);
-    });
-
-    // Event listeners for all other checkboxes
-    typeCategoryCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', (event) => {
-            // Uncheck "Check all" if any checkbox is unchecked
-            if (!event.target.checked) {
-                checkAllCheckbox.checked = false;
-            }
-            // If all individual checkboxes are checked, also check "Check all"
-            const allChecked = Array.from(typeCategoryCheckboxes).every(chk => chk.checked);
-            checkAllCheckbox.checked = allChecked;
-
+        checkAllCheckbox.addEventListener('change', function(event) {
+            typeCategoryCheckboxes.forEach(checkbox => checkbox.checked = event.target.checked);
             filterRows();
         });
-    });
-
-    // Event listener for the status select dropdown
-    statusSelect.addEventListener('change', filterRows);
-
-    // Initially call filterRows to apply filters with default selection
-    filterRows();
+    }
 });
