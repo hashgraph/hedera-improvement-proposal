@@ -1,6 +1,6 @@
 <div class="hip-filters filter-wrap">
     <div class="filter-group">
-        <h4>HIP Type</h4>
+        <h4>HIP Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
         <label><input type="checkbox" class="filter check-all" value="all" checked> All</label>
         <label><input type="checkbox" class="filter" value="core" checked> Core</label>
         <label><input type="checkbox" class="filter" value="service" checked> Service</label>
@@ -10,9 +10,8 @@
         <label><input type="checkbox" class="filter" value="process" checked> Process</label>
     </div>
     <div class="filter-group">
-        <h4>Status</h4>
+        <h4>HIP Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
         <!-- Status Filter Dropdown -->
-        <label for="status-filter" class="status-filter-label">Select Status:</label>
         <select id="status-filter" class="status-filter" multiple>
             <option value="all" selected>All</option>
             <option value="draft">Draft</option>
