@@ -2,7 +2,7 @@
   <div class="wrapper">
       <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
   </div>
-  {% if page.url == "/" %}
+  {% if page.url == '/' or page.url contains '/HIP/hip-' %}
       <div class="hips-home-link-container">
           <a class="hips-home-link" href="{{ '/hips.html' | relative_url }}">HIPs</a>
       </div>
