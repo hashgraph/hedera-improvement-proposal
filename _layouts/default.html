@@ -6,9 +6,7 @@
 <body>
 {%- include header.html -%}
 
-{%- if page.url contains 'hip-' -%}
-  
-{%- else -%}
+{%- if page.url == '/hips.html' -%}
   {%- include search-form.html -%}
 {%- endif -%}
 
