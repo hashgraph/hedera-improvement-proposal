@@ -57,7 +57,7 @@
     padding: 1em;
   }
   .site-header .wrapper .site-title {
-    font-size: 1.5em;
+    font-size: 1.8em;
   }
   .hipstable, .hipstable thead, .hipstable tbody, .hipstable th, .hipstable td, .hipstable tr {
     display: block;
@@ -130,67 +130,66 @@
 #search-container {
   position: relative;
   z-index: 1;
-  top: 95px;
-  right: 15px;
-
-  #search-input {
-    border: solid #5DCA5D 2px;
-    padding: 1px;
-    float: right;
-  }
-
-  #results-container {
-    background: white;
-    list-style: none;
-    text-align: right;
-    margin-top: 35px;
-    border: 1px solid #eee;
-
-    > li {
-      padding: 0 20px;
-    }
-  }
+  top: 10px;
+  width: 250px;
+  margin: auto;
 }
+
+#search-input {
+  border: 2px solid lightgray;
+  padding: 4px 20px;
+  width: calc(100% - 36px);
+  border-radius: 25px;
+  outline: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+#search-input:focus {
+  border-color: #5DCA5D;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#results-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  list-style: none;
+  text-align: left;
+  margin-top: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.results-visible {
+  border: 1px solid #eee;
+  display: block;
+}
+
+#results-container > li {
+  padding: 12px 20px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#results-container > li:last-child {
+  border-bottom: none;
+}
+
+#results-container > li:hover {
+  background-color: #f8f8f8;
+}
+
 
 @media (max-width: 930px) {
-  #search-container {
-    width: 100%;
-    position: relative;
-    top: auto;
-    right: auto;
-
-    #search-input-wrapper {
-      width: 100%;
-      display: grid;
-      justify-content: center;
-      margin-top: 10px;
-
-      #search-input {
-        border: solid #5DCA5D 2px;
-        padding: 1px;
-        width: 300px;
-        margin: auto;
-        position: relative;
-      }
-
-      #results-container {
-        background: white;
-        list-style: none;
-        margin-top: 5px;
-        padding: 0 25px;
-        text-align: left;
-      }
-    }
-  }
-
   .site-header .wrapper .site-title {
     margin-left: 0;
-  }
-}
-
-@media (max-width: 400px) {
-  #search-input {
-    width: 100%;
   }
 }
 
