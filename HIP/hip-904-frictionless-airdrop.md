@@ -7,7 +7,8 @@ requested-by: DEXs, Wallets, External Web3 Users. Notably Reality+, Liithos, Dro
 type: Standards Track
 category: Core, Service, Mirror
 needs-council-approval: Yes
-status: Review
+status: Last Call
+last-call-date-time: 2024-04-08T07:00:00Z
 created: 2024-02-25
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/905
 updated: 2024-03-25
