@@ -10,10 +10,8 @@ needs-council-approval: Yes
 status: Draft
 created: 2024-02-25
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/905
-updated: 2024-03-07
-requires: 
+updated: 2024-03-22
 replaces: 655, 777
-superseded-by: 
 ---
 
 ## Abstract
@@ -558,44 +556,117 @@ Transaction Service. A future HIP may explore this support.
 #### Pending Airdrop
 
 ```protobuf
-message TokenPendingAirdrop {
+/**
+ * A unique, composite, identifier for a pending airdrop.
+ *
+ * Each pending airdrop SHALL be uniquely identified by a PendingAirdropId.
+ * A PendingAirdropId SHALL be recorded when created and MUST be provided in any transaction
+ * that would modify that pending airdrop (such as a `claimAirdrop` or `cancelAirdrop`).
+ */
+message PendingAirdropId {
     /**
-    * Account that issue the airdrop trasnaction
-    */
+     * A sending account.<br/>
+     * This is the account that initiated, and SHALL fund, this pending airdrop.<br/>
+     * This field is REQUIRED.
+     */
     AccountID sender_id = 1;
 
     /**
-    * Account that was the intended receiver of the airdrop
-    */
+     * A receiving account.<br/>
+     * This is the ID of the account that SHALL receive the airdrop.<br/>
+     * This field is REQUIRED.
+     */
     AccountID receiver_id = 2;
 
-    /**
-    * The unique token identifier. If it's a FT then it's just the TokenID.
-    * If it's an NFT then NftID which captures both the TokenID and serial id
-    */
-    oneof token_id {
-        NftID non_fungible_token = 3;
-        TokenID fungible_token = 4;
+    oneof token_reference {
+        /**
+         * A token ID.<br/>
+         * This is the type of token for a fungible/common token airdrop.<br/>
+         * This field is REQUIRED for a fungible/common token and MUST NOT be used for a
+         * non-fungible/unique token.
+         */
+        TokenID fungible_token_type = 3;
+
+        /**
+         * The id of a single NFT, consisting of a Token ID and serial number.<br/>
+         * This is the type of token for a non-fungible/unique token airdrop.<br/>
+         * This field is REQUIRED for a non-fungible/unique token and MUST NOT be used for a
+         * fungible/common token.
+         */
+        NftID non_fungible_token = 4;
     }
 }
 
+/**
+ * A single pending airdrop value.
+ *
+ * This message SHALL record the airdrop amount for a fungible/common token.<br/>
+ * This message SHOULD be null for a non-fungible/unique token.<br/>
+ * If a non-null `PendingAirdropValue` is set for a non-fungible/unique token, the amount
+ * field MUST be `0`.
+ *
+ * It is RECOMMENDED that implementations store pending airdrop information as a key-value map
+ * from `PendingAirdropId` to `PendingAirdropValue`, with a `null` value used for non-fungible
+ * pending airdrops.
+ */
+message PendingAirdropValue {
+    /**
+     * An amount to transfer for fungible/common tokens.<br/>
+     * This is expressed in the smallest available units for that token
+     * (i.e. 10<sup>-`decimals`</sup> whole tokens).<br/>
+     * This amount SHALL be transferred from the sender to the receiver, if claimed.<br/>
+     * If the token is a fungible/common token, this value MUST be strictly greater than `0`.
+     * If the token is a non-fungible/unique token, this message SHOULD NOT be set, and if
+     * set, this field MUST be `0`.
+     */
+    int64 amount = 1;
+}
+
+/**
+ * A record of a new pending airdrop.
+ */
+message PendingAirdropRecord {
+    /**
+     * A unique, composite, identifier for a pending airdrop.
+     * This field is REQUIRED.
+     */
+    PendingAirdropId pending_airdrop_id = 1;
+
+    /**
+     * A single pending airdrop amount.<br/>
+     * If the pending airdrop is for a fungible/common token this field is REQUIRED
+     * and SHALL be the current amount of tokens offered.<br/>
+     * If the pending airdrop is for a non-fungible/unique token, this field SHALL NOT
+     * be set.
+     */
+    PendingAirdropValue pending_airdrop_value = 2;
+}
 ```
 
 #### Cancel
 
 ```protobuf
 /**
- * A token cancel will allow an airdrop sender to revert clear a pending transfer from state.
- * Afer this no pending transfer will exist for a potential receiver to claim.  
- * This transfer will be represented in the transaction body and will not need restating in the record file.
- * All cancellations must succeed for the transaction to succeed.
+ * Token cancel airdrop<br/>
+ * Remove one or more pending airdrops from state on behalf of the sender(s)
+ * for each airdrop.<br/>
+ *
+ * Each pending airdrop canceled SHALL be removed from state and SHALL NOT be available to claim.
+ *
+ * Each cancellation SHALL be represented in the transaction body and SHALL NOT be restated
+ * in the record file.
+ * All cancellations MUST succeed for this transaction to succeed.
  */
 message TokenCancelAirdropTransactionBody {
     /**
-    * A list of up to 10 pending airdrops that may be cancelled. If there are
-    * duplicate pending_airdrops, then the transaction will fail.
-    */
-    repeated TokenPendingAirdrop pending_airdrops = 1;
+     * A list of one or more pending airdrop identifiers.<br/>
+     * This transaction MUST be signed by the account referenced by a `sender_id` for
+     * each entry in this list.
+     * <p>
+     * This list MUST contain between 1 and 10 entries, inclusive.
+     * This list MUST NOT have any duplicate entries.<br/>
+     */
+    repeated PendingAirdropId pending_airdrops = 1;
 }
 ```
 
@@ -624,7 +695,7 @@ message TokenClaimAirdropTransactionBody {
      * This list MUST contain between 1 and 10 entries, inclusive.<br/>
      * This list MUST NOT have any duplicate entries.
      */
-    repeated TokenPendingAirdrop pending_airdrops = 1;
+    repeated PendingAirdropId pending_airdrops = 1;
 }
 ```
 
@@ -663,7 +734,7 @@ message TransactionRecord {
      * available automatic association slots available or when the recipient
      * has set `receiver_sig_required`.<br/>
      */
-    repeated TokenPendingAirdrop new_pending_airdrops = 22;
+    repeated PendingAirdropRecord new_pending_airdrops = 22;
 }
 ```
 
@@ -752,25 +823,43 @@ was transferred.
 
 ```protobuf
 /**
- * Reject undesired tokens.<br/>
+ * Reject undesired token(s).<br/>
  * Transfer one or more token balances held by the requesting account to the treasury for each
  * token type.<br/>
  * Each transfer SHALL be one of the following
  * - A single non-fungible/unique token.
  * - The full balance held for a fungible/common token type.
- * 
+ *
  * A single tokenReject transaction SHALL support a maximum of 10 transfers.
  */
 message TokenRejectTransactionBody {
     /**
-     * A list of zero of more fungible/common token types.
+     * A list of one or more token rejections.<br/>
+     * Each token rejection SHALL dissociate the requesting account from a single
+     * fungible/common token type or a single non-fungible/unique token
+     * serial number.<br/>
+     * On success each rejected token serial number or balance SHALL be transferred from
+     * the requesting account to the treasury account for that token type.
      */
-    repeated TokenID fungible_token_ids = 1;
+    repeated TokenReference rejections = 1;
+}
 
-    /**
-     * A list of zero or more specific serialized non-fungible/unique tokens.
-     */
-    repeated NftID nft_ids = 2;
+/**
+ * A union token identifier.<br/>
+ * Identify a fungible/common token type, or a single non-fungible/unique token serial.
+ */
+message TokenReference {
+    oneof token_identifier {
+        /**
+         * A fungible/common token type.
+         */
+        TokenID fungible_token = 1;
+
+        /**
+         * A single specific serialized non-fungible/unique token.
+         */
+        NftID nft = 2;
+    }
 }
 ```
 
@@ -869,19 +958,19 @@ HTS system contracts will need to support the new airdrop related transactions t
 is exposed via smart contract functions. Additionally, redirect functions will be provided to ensure
 optimal UX in which EOAs can initiate transactions through a DApp that affect their account.
 
-| selector | function                                                                                 | IHRC |
-| --- |------------------------------------------------------------------------------------------| --- |
-| 0x… | <htsSystemContractAddress>.airdropTokens(TokenTransferList[] memory tokenTransfers)      |  |
-| 0x… | <htsTokenAddress>.cancelAirdropFT(address receiverAddress)                               | Y |
-| 0x… | <htsTokenAddress>.cancelAirdropNFT(address receiverAddress, int64 serialNumber)          | Y |
-| 0x… | <htsSystemContractAddress>.cancelAirdrops(TokenPendingAirdrop[] memory pendingAirdrops)       |  |
-| 0x… | <htsTokenAddress>.claimAirdropFT(address senderAddress)                                  | Y |
-| 0x… | <htsTokenAddress>.claimAirdropNFT(address senderAddress, int64 serialNumber)             | Y |
-| 0x… | <htsSystemContractAddress>.claimAirdrops(TokenPendingAirdrop[] memory pendingAirdrops)        |  |
-| 0x… | <htsTokenAddress>.rejectTokenFT()                                                        | Y |
-| 0x… | <htsTokenAddress>.rejectTokensNFT(int64[] serialNumber)                                  | Y |
-| 0x… | <htsSystemContractAddress>.rejectTokens(address[] memory ftAddresses, NftId[] memory nftIds) |  |
-| 0x… | <hasSystemContractAddress>.setAutomaticAssociations(boolean enableAutoAssociations)      | Y |
+| selector | function                                                                                     | IHRC |
+|----------|----------------------------------------------------------------------------------------------|------|
+| 0x…      | <htsSystemContractAddress>.airdropTokens(TokenTransferList[] memory tokenTransfers)          |      |
+| 0x…      | <htsTokenAddress>.cancelAirdropFT(address receiverAddress)                                   | Y    |
+| 0x…      | <htsTokenAddress>.cancelAirdropNFT(address receiverAddress, int64 serialNumber)              | Y    |
+| 0x…      | <htsSystemContractAddress>.cancelAirdrops(PendingAirdropId[] memory pendingAirdrops)         |      |
+| 0x…      | <htsTokenAddress>.claimAirdropFT(address senderAddress)                                      | Y    |
+| 0x…      | <htsTokenAddress>.claimAirdropNFT(address senderAddress, int64 serialNumber)                 | Y    |
+| 0x…      | <htsSystemContractAddress>.claimAirdrops(PendingAirdropId[] memory pendingAirdrops)          |      |
+| 0x…      | <htsTokenAddress>.rejectTokenFT()                                                            | Y    |
+| 0x…      | <htsTokenAddress>.rejectTokensNFT(int64[] serialNumber)                                      | Y    |
+| 0x…      | <htsSystemContractAddress>.rejectTokens(address[] memory ftAddresses, NftId[] memory nftIds) |      |
+| 0x…      | <hasSystemContractAddress>.setAutomaticAssociations(boolean enableAutoAssociations)          | Y    |
 
 To increase API reuse and for consistency the input objects will closely match the HAPI protobuf objects.
 
