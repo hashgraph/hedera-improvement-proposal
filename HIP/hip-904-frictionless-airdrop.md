@@ -30,6 +30,16 @@ will be charged for those slots only when a token is actually associated with an
 This HIP also introduces the concept of token rejection. Here an undesired token class value is
 returned to the treasury with all custom fees waived.
 
+In summary
+- Accounts will no longer prepay for unused token association slots. 
+- Association fees will be charged for those slots only when a token is actually associated with an account.
+- Accounts can designate the desire to receive any airdrop by setting their account auto token association configuration to unlimited (-1).
+- Automatically created accounts using public keys or EVM addresses will be configured to recieve unlimited airdrops.
+- Token senders may avoid errors on airdrop transfer attempts by utilizing the `TokenAirdrop` transaction.
+- Intended airdrop receiver accounts can choose to accept a token airdrop by utilizing the `TokenClaimAirdrop` transaction.
+- Airdrop sender accounts can change their mind and cancel a pending airdrop transfer by utilizing the `TokenCancelAirdrop` transaction.
+- Token holders can get rid of unwanted tokens without paying exorbitant and potentially malicious fees regardless of how they acquired the token (manual or automatic association) by utilizing the `TokenReject` transaction.
+
 ## Motivation
 
 The concept of `token associations` was added to Hedera to protect the network and its
@@ -206,9 +216,8 @@ receive the airdrop.
 A sender may cancel pending transfers for a low nominal fee using the new `TokenCancelAirdrop`
 transaction. A receiver can also choose to just ignore pending transfers. It is expected that
 wallets may build special user workflows into their apps to allow customers to ignore pending
-transfers without having to actually issue a transaction to the network to cancel them. Since
-pending transfers are paid for by the sender, the receiver may choose not to simply filter them out
-in their wallet software.
+transfers. Since pending transfers are paid for by the sender, the receiver may choose to 
+simply filter them out in their wallet software.
 
 ![Token Cancel Airdrop Transaction](../assets/hip-904/frictionless-airdrop-tokenCancel.png)
 
@@ -258,6 +267,8 @@ will only pay the appropriate fees for the HAPI transaction type.
 > ⚠️ `receiver_sig_required` is ignored on the treasury account when the `TokenReject` is handled.
 > Reject will always work with no assessed custom fees.
 
+> ⚠️ Token rejection is supported even if a token is frozen or paused.
+
 ### Example
 
 A company called GameCo wants to airdrop tokens (e.g., unique NFTs to commemorate a specific event)
@@ -306,10 +317,10 @@ mind and reject the token back to the GameNFT token treasury account.
    open auto-association slot.
 4. As an hts-token-sender I want to cover the custom fees (fixed, fractional, and royalty excluding
    fallback) of a transfer to an account that is already associated with a token to reduce the
-   friction by a receiving account
+   friction by a receiving account.
 5. As an hts-token-sender I want to cover the fees (association & rent until the end of the first
    full auto renewal period) of a transfer that consumes an automatic token slot to reduce the
-   friction by a receiving account
+   friction by a receiving account.
 
 #### Receiver
 
@@ -361,27 +372,28 @@ mind and reject the token back to the GameNFT token treasury account.
 4. As a user with receiver signature required enabled any airdrops sent to me will result in a
    pending transfer, even with open slots.
 
-### General User Stories
+### General Airdrop User Stories
+1. As account owner for an account created by an EVM tool my experience with airdrops on Hedera is
+   identical to that on Ethereum
+2. As a network user I want to be able to accurately query the mirror node for all pending
+   transactions sent to an account
+3. As a network user I want to be able to accurately query the mirror node for all outstanding
+   airdrops sent by an account
+4. As an explorer user I want my explorer to show me search or view all pending transactions and
+   outstanding to my accounts
+5. As a DApp developer I want to expose airdrop HAPI functionality and pending transfers state
+   information to my users
+6. As a HAPI developer I want to be able to query the cost of an airdrop transactions in HBAR
+7. As a DApp developer I want to be able to query the cost of an airdrop transactions in gas
 
+### General User Stories
 1. As an hts-token-holder I want to be able to reject unwanted tokens (regardless of how they were
    obtained) by sending them back to the treasury account and not having to pay any custom fees.
 2. As a non-hedera-centric wallet user, I want to obtain an auto-created account (by EVM address or
    public key) that is able to receive unsolicited tokens. I understand this account will
    have `maxAutomaticAssociations` set to -1 implying unlimited automatic associations.
-3. As account owner for an account created by an EVM tool my experience with airdrops on Hedera is
-   identical to that on Ethereum
-4. As a network user I want to be able to accurately query the mirror node for all pending
-   transactions sent to an account
-5. As a network user I want to be able to accurately query the mirror node for all outstanding
-   airdrops sent by an account
-6. As a wallet user I want my wallet to show me all pending transactions to my account
-7. As an explorer user I want my explorer to show me search or view all pending transactions and
-   outstanding to my accounts
-8. As a DApp developer I want to expose airdrop HAPI functionality and pending transfers state
-   information to my users
-9. As a HAPI developer I want to be able to query the cost of an airdrop transactions in HBAR
-10. As a DApp developer I want to be able to query the cost of an airdrop transactions in gas
-11. As an account that has open auto association slots, I only pay for the fees and rent for used
+3. As a wallet user I want my wallet to show me all pending transactions to my account
+4. As an account that has open auto association slots, I only pay for the fees and rent for used
     association slots. I no longer pay for unused association slots.
 
 ### FAQ
@@ -994,33 +1006,33 @@ The SDKs must update the `TransactionRecord` to return the following information
 
     ```json
        {
-                "airdrops": [
-            {
-                "amount": 333,
-                "receiver_id": "0.0.999",
-                "sender_id": "0.0.222",
-                            "serial_number": null,
-                "token_id": "0.0.111"
-            },
-            {
-                "amount": 555,
-                "receiver_id": "0.0.999",
-                "sender_id": "0.0.222",
-                            "serial_number": null,
-                "token_id": "0.0.444"
-            },
-            {
-                "amount": null,
-                "receiver_id": "0.0.999",
-                "sender_id": "0.0.777",
-                "serial_number": 888,
-                "token_id": "0.0.666"
-            }
+            "airdrops": [
+                {
+                    "amount": 333,
+                    "receiver_id": "0.0.999",
+                    "sender_id": "0.0.222",
+                                "serial_number": null,
+                    "token_id": "0.0.111"
+                },
+                {
+                    "amount": 555,
+                    "receiver_id": "0.0.999",
+                    "sender_id": "0.0.222",
+                                "serial_number": null,
+                    "token_id": "0.0.444"
+                },
+                {
+                    "amount": null,
+                    "receiver_id": "0.0.999",
+                    "sender_id": "0.0.222",
+                    "serial_number": 888,
+                    "token_id": "0.0.666"
+                }
             ],
-          "links": {
-              "next": null
-          }
+            "links": {
+                "next": null
             }
+        }
     ```
     - `limit` - The maximum number of airdrops to return in the response. Defaults to `25` with a
       max of `100`.
@@ -1037,33 +1049,33 @@ The SDKs must update the `TransactionRecord` to return the following information
   that `receiverIdOrEvmAddress` has not yet claimed.
     ```json
        {
-                "airdrops": [
-            {
-                "amount": 333,
-                "receiver_id": "0.0.999",
-                "sender_id": "0.0.222",
-                            "serial_number": null,
-                "token_id": "0.0.111"
-            },
-            {
-                "amount": 555,
-                "receiver_id": "0.0.999",
-                "sender_id": "0.0.222",
-                            "serial_number": null,
-                "token_id": "0.0.444"
-            },
-            {
-                "amount": null,
-                "receiver_id": "0.0.999",
-                "sender_id": "0.0.777",
-                "serial_number": 888,
-                "token_id": "0.0.666"
-            }
+            "airdrops": [
+                {
+                    "amount": 333,
+                    "receiver_id": "0.0.999",
+                    "sender_id": "0.0.222",
+                    "serial_number": null,
+                    "token_id": "0.0.111"
+                },
+                {
+                    "amount": 555,
+                    "receiver_id": "0.0.999",
+                    "sender_id": "0.0.222",
+                    "serial_number": null,
+                    "token_id": "0.0.444"
+                },
+                {
+                    "amount": null,
+                    "receiver_id": "0.0.999",
+                    "sender_id": "0.0.222",
+                    "serial_number": 888,
+                    "token_id": "0.0.666"
+                }
             ],
-          "links": {
-              "next": null
-          }
+            "links": {
+                "next": null
             }
+        }
     ```
     - `limit` - The maximum number of airdrops to return in the response. Defaults to `25` with a
       max of `100`.
@@ -1084,7 +1096,7 @@ properties and provide easy management functionality. Explorers may consider
 - highlighting a users current airdrop account status (unlimited, limited or no airdrops) on the
   account page
 - exposing pending airdrops on the account page. Explorers could add additional logic to inform
-  potential recipient if the sender can support the pending transfer
+  potential recipients if the sender has the balance to support the pending transfer
 - supporting the ability to execute `TokenClaim` transaction via multiple wallets
 - supporting the ability to execute `TokenReject` transaction via multiple wallets
 
