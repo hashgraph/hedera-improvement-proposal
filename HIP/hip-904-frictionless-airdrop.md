@@ -5,7 +5,7 @@ author: Richard Bair <@rbair23>, Nana Essilfie-Conduah <@nana-ec>
 working-group: Jasper Potts <@jasperpotts>, Atul Mahamuni <@atul-hedera>, Michael Tinker <@tinker-michaelj>, Leemon Baird <@lbaird>, Ty Smith <@ty-swirldslabs>, Nick Poorman <@nickpoorman>, Ali Nikan <@alinik4n>, Steven Sheehy <@steven-sheehy>, Joseph Sinclair <@jsync-swirlds>
 requested-by: DEXs, Wallets, External Web3 Users. Notably Reality+, Liithos, Dropper/TheRealm, VRJAM, Rarible, MIOO, Lokkaroom, Vaultik
 type: Standards Track
-category: Core, Service, Mirror
+category: Core
 needs-council-approval: Yes
 status: Last Call
 last-call-date-time: 2024-04-08T07:00:00Z
