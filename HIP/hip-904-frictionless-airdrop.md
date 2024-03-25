@@ -10,7 +10,7 @@ needs-council-approval: Yes
 status: Draft
 created: 2024-02-25
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/905
-updated: 2024-03-22
+updated: 2024-03-25
 replaces: 655, 777
 ---
 
