@@ -78,16 +78,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function bindEventListeners() {
-        typeCategoryCheckboxes.forEach(checkbox => checkbox.addEventListener('change', () => {
-            const allChecked = Array.from(typeCategoryCheckboxes).every(cb => cb.checked);
-            checkAllCheckbox.checked = allChecked;
-            filterRows();
-        }));
-        typeCategoryCheckboxes.forEach(checkbox => checkbox.addEventListener('change', filterRows));
+        typeCategoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const allChecked = Array.from(typeCategoryCheckboxes).every(cb => cb.checked);
+                checkAllCheckbox.checked = allChecked;
+                filterRows();
+            });
+        });
+        
+        if (checkAllCheckbox) {
+            checkAllCheckbox.addEventListener('change', () => {
+                const isChecked = checkAllCheckbox.checked;
+                typeCategoryCheckboxes.forEach(cb => {
+                    cb.checked = isChecked;
+                });
+                filterRows();
+            });
+        }
+    
         if (councilApprovalFilters.length > 0) {
             councilApprovalFilters.forEach(filter => filter.addEventListener('change', filterRows));
         }
     }
+    
 
     bindEventListeners();
     filterRows();
