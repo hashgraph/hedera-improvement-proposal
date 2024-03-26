@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function getTooltipContent(status) {
     const statusMeanings = {
-        Draft: "⚠️ Initial stage. Formally tracked once merged by a HIP Editor when properly formatted.",
+        Draft: "⚠️ Initial stage of the HIP process.",
         Review: "📖 Ready for Editorial Review. Subject to changes; feedback appreciated.",
         Deferred: "⏸ Addressed in another HIP. Paused in progress.",
         Withdrawn: "🛑 Withdrawn by the Author(s), finality achieved. Can be resurrected as a new proposal.",
@@ -40,9 +40,9 @@ function getTooltipContent(status) {
         "Last Call": "📢 Final review window before 'Accepted'. Subject to change if issues found.",
         "Council Review": "⚖️ Under Council review. Awaiting approval, subject to feedback.",
         Accepted: "👍 Went through 'Last Call' without content changes. Ready for implementation.",
-        Final: "✅ Implemented in code and released. Represents a standard in a state of finality.",
-        Active: "🌟 Informational/Process HIPs not meant to be completed. Can be 'Withdrawn' or 'Replaced'.",
+        Final: "✅ Implemented in code and released.",
+        Active: "🌟 Informational/Process HIPs that made it through Last Call. Can be 'Withdrawn' or 'Replaced'.",
         Replaced: "🔄 Overwritten by a newer standard or implementation."
-      },;
+      };
     return statusMeanings[status] || "No information available for this status.";
 }
