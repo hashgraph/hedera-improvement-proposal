@@ -31,18 +31,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function getTooltipContent(status) {
     const statusMeanings = {
-        Draft: "⚠️ This is a draft HIP - it's not recommended for general use or implementation as it is likely to change.",
-        Review: "📖 This HIP is in the review stage. It is subject to changes and feedback is appreciated.",
-        "Last Call": "📢 This HIP is in the last call for review stage. The authors wish to finalize the HIP and appreciate feedback.",
-        "Council Review": "⚖️ This HIP is under review by the Council. Changes may occur based on their feedback and final approval.",
-        Stagnant: "🚧 This HIP had no activity for at least 6 months.",
-        Withdrawn: "🛑 This HIP has been withdrawn.",
-        Active: "🌟 Informational or Process HIPs have a status of 'Active' after the last call period"
-            + ". This is the last stage for these two HIPs unless they are replaced by another hip",
-        Final: "✅ This HIP means the feature has been implemented in code and has been released to mainnet.",
-        Replaced: "🔄 'Replaced' HIPs are overwritten by a newer standard or implementation.",
-        Accepted: "👍 An accepted HIP is a HIP that went through the 'Last Call' status period without changes to the content and is considered ready for implementation.",
-        Rejected: "❌ This HIP has been rejected, and the proposed idea will not be implemented or pursued further.",
-    };
+        Draft: "⚠️ Initial stage. Formally tracked once merged by a HIP Editor when properly formatted.",
+        Review: "📖 Ready for Editorial Review. Subject to changes; feedback appreciated.",
+        Deferred: "⏸ Addressed in another HIP. Paused in progress.",
+        Withdrawn: "🛑 Withdrawn by the Author(s), finality achieved. Can be resurrected as a new proposal.",
+        Stagnant: "🚧 No activity for 6+ months. Can return to Draft by Authors or Editors.",
+        Rejected: "❌ Not accepted. Rejected ideas are recorded with reasoning.",
+        "Last Call": "📢 Final review window before 'Accepted'. Subject to change if issues found.",
+        "Council Review": "⚖️ Under Council review. Awaiting approval, subject to feedback.",
+        Accepted: "👍 Went through 'Last Call' without content changes. Ready for implementation.",
+        Final: "✅ Implemented in code and released. Represents a standard in a state of finality.",
+        Active: "🌟 Informational/Process HIPs not meant to be completed. Can be 'Withdrawn' or 'Replaced'.",
+        Replaced: "🔄 Overwritten by a newer standard or implementation."
+      },;
     return statusMeanings[status] || "No information available for this status.";
 }

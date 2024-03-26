@@ -54,19 +54,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (heading) heading.style.display = isVisible ? '' : 'none';
         });
 
-        // Update the 'No HIPs match this filter' message visibility based on anyTableVisible
         noHipsMessage.textContent = anyTableVisible ? '' : 'No HIPs match this filter.';
     }
 
     function bindEventListeners() {
         typeCategoryCheckboxes.forEach(checkbox => checkbox.addEventListener('change', filterRows));
-        checkAllCheckbox.addEventListener('change', () => {
-            Array.from(typeCategoryCheckboxes).forEach(cb => cb.checked = checkAllCheckbox.checked);
-            filterRows();
-        });
-        councilApprovalFilters.forEach(filter => filter.addEventListener('change', filterRows));
+        if (checkAllCheckbox) {
+            checkAllCheckbox.addEventListener('change', () => {
+                Array.from(typeCategoryCheckboxes).forEach(cb => cb.checked = checkAllCheckbox.checked);
+                filterRows();
+            });
+        }
+        
+        if (councilApprovalFilters.length > 0) {
+            councilApprovalFilters.forEach(filter => filter.addEventListener('change', filterRows));
+        }
     }
 
     bindEventListeners();
-    filterRows(); // Apply initial filters.
+    filterRows();
 });
