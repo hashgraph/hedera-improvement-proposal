@@ -25,15 +25,6 @@ github_username: hashgraph
 markdown: kramdown
 theme: minima
 
-header_pages:
-  - all.html
-  - core.html
-  - service.html
-  - mirror.html
-  - application.html
-  - informational.html
-  - process.html
-
 defaults:
   -
     scope:

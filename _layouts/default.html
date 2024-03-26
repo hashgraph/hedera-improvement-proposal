@@ -6,12 +6,6 @@
 <body>
 {%- include header.html -%}
 
-{%- if page.url contains 'hip-' -%}
-  
-{%- else -%}
-  {%- include search-form.html -%}
-{%- endif -%}
-
 <main class="page-content" aria-label="Content">
     <div class="wrapper">
         {{ content }}
@@ -21,6 +15,8 @@
 {%- include footer.html -%}
 <script src="{{ '/assets/js/tooltip.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/hipstable.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/filter.js' | relative_url }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,40 @@
+<div class="hip-filters filter-wrap">
+    <div class="filter-group">
+        <h4>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        <label><input type="checkbox" class="filter check-all" value="all" checked> All</label>
+        <label><input type="checkbox" class="filter" value="core" checked> Core</label>
+        <label><input type="checkbox" class="filter" value="service" checked> Service</label>
+        <label><input type="checkbox" class="filter" value="mirror" checked> Mirror</label>
+        <label><input type="checkbox" class="filter" value="application" checked> Application</label>
+        <label><input type="checkbox" class="filter" value="informational" checked> Informational</label>
+        <label><input type="checkbox" class="filter" value="process" checked> Process</label>
+    </div>
+    <div class="filter-group">
+        <h4>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        <!-- Status Filter Dropdown -->
+        <select id="status-filter" class="status-filter" multiple>
+            <option value="all" selected>All</option>
+            <option value="draft">Draft</option>
+            <option value="withdrawn">Withdrawn</option>
+            <option value="review">Review</option>
+            <option value="stagnant">Stagnant</option>
+            <option value="deferred">Deferred</option>
+            <option value="last call">Last Call</option>
+            <option value="accepted">Accepted</option>
+            <option value="rejected">Rejected</option>
+            <option value="final">Final</option>
+            <option value="active">Active</option>
+            <option value="replaced">Replaced</option>
+        </select>
+    </div>
+        <div class="filter-group">
+        <h4>Council Approval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        <label><input type="radio" name="council-approval-filter" class="filter" value="true"> Yes</label>
+        <label><input type="radio" name="council-approval-filter" class="filter" value="false"> No</label>
+        <label><input type="radio" name="council-approval-filter" class="filter" value="all" checked> All</label>
+    </div>
+</div>
+<div class="no-hips-message" style="display: none;">No HIPs exist for this filter.</div>
 {% for status in site.data.statuses %}
 {% assign hips = include.hips | where: "status", status | where: "category", category | where: "type", type | sort: "hip" | reverse %}
 {% assign count = hips.size %}
@@ -19,7 +56,7 @@
     </thead>
     <tbody>
         {% for page in hips %}
-        <tr>
+        <tr data-type="{{ page.type | downcase }}" data-category="{{ page.category | downcase }}" data-status="{{ page.status | downcase }}" data-council-approval="{{ page.needs-council-approval | downcase }}">
             <td class="hip-number"><a href="{{ page.url | relative_url }}">{{ page.hip | xml_escape }}</a></td>
             <td class="title"><a href="{{ page.url | relative_url }}">{{ page.title | xml_escape }}</a></td>
             <td class="author">{% include authorslist.html authors=page.author %}</td>
