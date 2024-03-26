@@ -6,16 +6,22 @@
 
 .site-header .wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   padding: 1em;
+  max-width: 1200px;
+  margin: auto;
+}
+
+
+.site-header .wrapper > * {
+  margin: auto;
 }
 
 .site-header .wrapper .site-title {
   margin-left: 0;
   font-size: 2em;
-  text-align: center;
+  text-align: right;
 }
 
 .hips-home-link-container {
@@ -53,9 +59,17 @@
 
 @media screen and (max-width: 600px) {
   .site-header .wrapper {
-    margin-right: 0;
-    padding: 1em;
+    flex-direction: column;
   }
+  
+  // Remove auto margins for stacked layout
+  .site-header .wrapper > * {
+    margin: 0.5em 0; // Add some vertical space between items
+  }
+  // .site-header .wrapper {
+  //   margin-right: 0;
+  //   padding: 1em;
+  // }
   .site-header .wrapper .site-title {
     font-size: 1.8em;
   }
@@ -160,10 +174,15 @@
   list-style: none;
   text-align: left;
   margin-top: 5px;
+  margin-left: initial;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   z-index: 2;
+
+  @media (min-width: 601px) {
+    width: 500px; // This should be the same as the width of the search container
+  }
 }
 
 .results-visible {
@@ -292,6 +311,8 @@ main.page-content {
   .select2-container--default .select2-selection--multiple {
     flex-wrap: nowrap;
     overflow-x: auto;
+    max-width: 155px;
+    min-width: 100px;
   }
 }
 
