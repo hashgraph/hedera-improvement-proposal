@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkAllCheckbox = document.querySelector('.hip-filters .check-all');
     const statusSelect = $('#status-filter');
     const councilApprovalFilters = document.querySelectorAll('input[name="council-approval-filter"]');
+    const noHipsMessage = document.querySelector('.no-hips-message');
 
     $('#status-filter').select2({
         placeholder: "Select statuses",
@@ -10,30 +11,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }).on('change', filterRows);
 
     function filterRows() {
-        const selectedTypesCategories = Array.from(typeCategoryCheckboxes)
+        const selectedTypes = Array.from(typeCategoryCheckboxes)
             .filter(checkbox => checkbox.checked)
-            .map(checkbox => checkbox.value.toLowerCase());
-
+            .map(checkbox => checkbox.value.trim().toLowerCase());
+    
         const selectedStatuses = statusSelect.val() || [];
-        const selectedCouncilApproval = document.querySelector('input[name="council-approval-filter"]:checked')?.value;
-
-        const filtersApplied = selectedTypesCategories.length > 0 || selectedStatuses.length > 0 || selectedCouncilApproval !== 'all';
-
+        const selectedCouncilApproval = document.querySelector('input[name="council-approval-filter"]:checked')?.value || 'all';
+    
+        let anyRowVisible = false;
         document.querySelectorAll('.hipstable tbody tr').forEach(row => {
-            const rowType = row.getAttribute('data-type');
-            const rowCategory = row.getAttribute('data-category');
-            const rowStatus = row.getAttribute('data-status');
+            const rowTypes = [row.getAttribute('data-type').trim().toLowerCase(), row.getAttribute('data-category').trim().toLowerCase()];
+            const rowStatus = row.getAttribute('data-status').trim().toLowerCase();
             const rowCouncilApproval = row.getAttribute('data-council-approval');
-
-            const typeCategoryMatch = !filtersApplied || selectedTypesCategories.includes(rowType) || selectedTypesCategories.includes(rowCategory) || selectedTypesCategories.includes('all');
-            const statusMatch = !filtersApplied || selectedStatuses.includes(rowStatus) || selectedStatuses.includes('all');
-            const councilApprovalMatch = !filtersApplied || selectedCouncilApproval === rowCouncilApproval || selectedCouncilApproval === 'all';
-
-            row.style.display = typeCategoryMatch && statusMatch && councilApprovalMatch ? '' : 'none';
+    
+            const typeCategoryMatch = checkAllCheckbox.checked || selectedTypes.some(type => rowTypes.includes(type));
+            const statusMatch = selectedStatuses.includes('all') || selectedStatuses.includes(rowStatus);
+            const councilApprovalMatch = selectedCouncilApproval === 'all' || selectedCouncilApproval === rowCouncilApproval;
+    
+            if (typeCategoryMatch && statusMatch && councilApprovalMatch) {
+                row.style.display = '';
+                anyRowVisible = true;
+            } else {
+                row.style.display = 'none';
+            }
         });
-
+    
+        noHipsMessage.style.display = anyRowVisible ? 'none' : 'block';
+    
         updateTableVisibility();
     }
+    
 
     function updateTableVisibility() {
         let anyTableVisible = false;
@@ -42,40 +49,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const isVisible = Array.from(table.querySelectorAll('tbody tr')).some(row => row.style.display !== 'none');
             anyTableVisible = anyTableVisible || isVisible;
 
-            table.style.display = isVisible ? 'table' : 'none';
-            table.previousElementSibling.style.display = isVisible ? 'block' : 'none';
+            table.style.display = isVisible ? '' : 'none';
+            const heading = table.previousElementSibling;
+            if (heading) heading.style.display = isVisible ? '' : 'none';
         });
 
-        const noHipsMessage = document.querySelector('.no-hips-message');
-        if (!anyTableVisible) {
-            noHipsMessage.style.display = 'block';
-        } else {
-            noHipsMessage.style.display = 'none';
-        }
+        noHipsMessage.textContent = anyTableVisible ? '' : 'No HIPs match this filter.';
     }
 
     function bindEventListeners() {
-        typeCategoryCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                const allSelected = areAllSelected(typeCategoryCheckboxes);
-                checkAllCheckbox.checked = allSelected;
+        typeCategoryCheckboxes.forEach(checkbox => checkbox.addEventListener('change', filterRows));
+        if (checkAllCheckbox) {
+            checkAllCheckbox.addEventListener('change', () => {
+                Array.from(typeCategoryCheckboxes).forEach(cb => cb.checked = checkAllCheckbox.checked);
                 filterRows();
             });
-        });
-
-        checkAllCheckbox.addEventListener('change', () => {
-            const isChecked = checkAllCheckbox.checked;
-            typeCategoryCheckboxes.forEach(checkbox => checkbox.checked = isChecked);
-            filterRows();
-        });
-
-        councilApprovalFilters.forEach(filter => {
-            filter.addEventListener('change', filterRows);
-        });
-    }
-
-    function areAllSelected(checkboxes) {
-        return Array.from(checkboxes).every(checkbox => checkbox.checked);
+        }
+        
+        if (councilApprovalFilters.length > 0) {
+            councilApprovalFilters.forEach(filter => filter.addEventListener('change', filterRows));
+        }
     }
 
     bindEventListeners();
