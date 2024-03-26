@@ -39,7 +39,7 @@ layout: default
     {% if page["working-group"] != undefined %}
     <tr>
       <th>Working Group</th>
-      <td>{{ page.working-group }}</td>
+      <td>{% include workinggrouplist.html working-group=page.working-group %}</td>
     </tr>
     {% endif %}
     {% if page["requested-by"] != undefined %}
