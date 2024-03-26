@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedStatuses = statusSelect.val().length > 0 ? statusSelect.val() : ['all'];
         // If no council approval filter is selected, treat it as "all"
         const selectedCouncilApproval = document.querySelector('input[name="council-approval-filter"]:checked')?.value || 'all';
-
         let anyRowVisible = false;
         document.querySelectorAll('.hipstable tbody tr').forEach(row => {
             const rowTypes = [row.getAttribute('data-type').trim().toLowerCase(), row.getAttribute('data-category').trim().toLowerCase()];
@@ -59,9 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         noHipsMessage.style.display = anyRowVisible ? 'none' : 'block';
-
         updateTableVisibility();
     }
+    
 
     function updateTableVisibility() {
         let anyTableVisible = false;
@@ -84,13 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkAllCheckbox.checked = allChecked;
             filterRows();
         }));
-        if (checkAllCheckbox) {
-            checkAllCheckbox.addEventListener('change', () => {
-                Array.from(typeCategoryCheckboxes).forEach(cb => cb.checked = checkAllCheckbox.checked);
-                filterRows();
-            });
-        }
-
+        typeCategoryCheckboxes.forEach(checkbox => checkbox.addEventListener('change', filterRows));
         if (councilApprovalFilters.length > 0) {
             councilApprovalFilters.forEach(filter => filter.addEventListener('change', filterRows));
         }
