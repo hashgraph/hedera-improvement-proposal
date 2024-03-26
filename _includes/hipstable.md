@@ -27,7 +27,14 @@
             <option value="replaced">Replaced</option>
         </select>
     </div>
+        <div class="filter-group">
+        <h4>Council Approval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        <label><input type="radio" name="council-approval-filter" class="filter" value="true"> Yes</label>
+        <label><input type="radio" name="council-approval-filter" class="filter" value="false"> No</label>
+        <label><input type="radio" name="council-approval-filter" class="filter" value="all" checked> All</label>
+    </div>
 </div>
+<div class="no-hips-message" style="display: none;">No HIPs exist for this filter.</div>
 {% for status in site.data.statuses %}
 {% assign hips = include.hips | where: "status", status | where: "category", category | where: "type", type | sort: "hip" | reverse %}
 {% assign count = hips.size %}
@@ -49,7 +56,7 @@
     </thead>
     <tbody>
         {% for page in hips %}
-        <tr data-type="{{ page.type | downcase }}" data-category="{{ page.category | downcase }}" data-status="{{ page.status | downcase }}">
+        <tr data-type="{{ page.type | downcase }}" data-category="{{ page.category | downcase }}" data-status="{{ page.status | downcase }}" data-council-approval="{{ page.needs-council-approval | downcase }}">
             <td class="hip-number"><a href="{{ page.url | relative_url }}">{{ page.hip | xml_escape }}</a></td>
             <td class="title"><a href="{{ page.url | relative_url }}">{{ page.title | xml_escape }}</a></td>
             <td class="author">{% include authorslist.html authors=page.author %}</td>
