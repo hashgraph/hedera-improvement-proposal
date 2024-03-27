@@ -11,9 +11,7 @@
     </div>
     <div class="filter-group">
         <h4>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
-        <!-- Status Filter Dropdown -->
         <select id="status-filter" class="status-filter" multiple>
-            <option value="draft">Draft</option>
             <option value="withdrawn">Withdrawn</option>
             <option value="review">Review</option>
             <option value="stagnant">Stagnant</option>
