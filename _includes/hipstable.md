@@ -27,8 +27,8 @@
     </div>
     <div class="filter-group">
         <h4>Council Approval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
-        <label><input type="radio" name="council-approval-filter" class="filter" value="true"> Yes</label>
-        <label><input type="radio" name="council-approval-filter" class="filter" value="false"> No</label>
+        <label><input type="radio" name="council-approval-filter" class="council-filter" value="true"> Yes</label>
+        <label><input type="radio" name="council-approval-filter" class="council-filter" value="false"> No</label>
     </div>
 </div>
 <div class="no-hips-message" style="display: none;">No HIPs exist for this filter.</div>
