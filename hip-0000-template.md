@@ -9,7 +9,7 @@ category: Application
 needs-council-approval: No
 status: Review
 created: 27-03-2024
-discussions-to: <a URL pointing to the official discussion thread>
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/930
 updated: 27-03-2024
 requires: 412
 replaces: N/A
