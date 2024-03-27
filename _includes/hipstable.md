@@ -1,27 +1,28 @@
 <div class="hip-filters filter-wrap">
     <div class="filter-group">
         <h4>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
-        <label><input type="checkbox" class="filter check-all" value="all" checked> All</label>
-        <label><input type="checkbox" class="filter" value="core" checked> Core</label>
-        <label><input type="checkbox" class="filter" value="service" checked> Service</label>
-        <label><input type="checkbox" class="filter" value="mirror" checked> Mirror</label>
-        <label><input type="checkbox" class="filter" value="application" checked> Application</label>
-        <label><input type="checkbox" class="filter" value="informational" checked> Informational</label>
-        <label><input type="checkbox" class="filter" value="process" checked> Process</label>
+        <select id="type-filter" class="type-filter" multiple>
+            <option value="core">Core</option>
+            <option value="service">Service</option>
+            <option value="mirror">Mirror</option>
+            <option value="application">Application</option>
+            <option value="informational">Informational</option>
+            <option value="process">Process</option>
+        </select>
     </div>
     <div class="filter-group">
         <h4>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
         <select id="status-filter" class="status-filter" multiple>
-            <option value="withdrawn">Withdrawn</option>
             <option value="review">Review</option>
-            <option value="stagnant">Stagnant</option>
-            <option value="deferred">Deferred</option>
             <option value="last call">Last Call</option>
             <option value="accepted">Accepted</option>
             <option value="rejected">Rejected</option>
             <option value="final">Final</option>
             <option value="active">Active</option>
             <option value="replaced">Replaced</option>
+            <option value="stagnant">Stagnant</option>
+            <option value="deferred">Deferred</option>
+            <option value="withdrawn">Withdrawn</option>
         </select>
     </div>
     <div class="filter-group">
