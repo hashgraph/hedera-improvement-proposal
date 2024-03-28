@@ -19,14 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $('#status-filter').select2({
         placeholder: "Select statuses",
-        allowClear: true
+        allowClear: true,
+        width: 'style'
     }).on('change', () => {
         filterRows();
     });
 
     $('#type-filter').select2({
         placeholder: "Select types",
-        allowClear: true
+        allowClear: true,
+        width: 'style'
     }).on('change', () => {
         filterRows();
     });
