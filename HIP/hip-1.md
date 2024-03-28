@@ -7,7 +7,7 @@ needs-council-approval: No
 status: Active
 created: 2021-02-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
-updated: 2021-10-27
+updated: 2023-10-13
 ---
 
 ## What is a HIP?
@@ -168,10 +168,10 @@ The possible paths of the status of HIPs are as follows:
 - __Rejected__ - Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This helps record the thought process behind the final version of the HIP and prevents people from bringing up the same rejected idea again in subsequent discussions.
 - __Last Call__ - This is the final review window for a HIP before moving to "Accepted." A HIP editor will assign Last Call status and set a review end date (`last-call-date-time`), typically 14 days later. If this period results in necessary normative changes, it will revert the HIP to Review.
 - __Council Review__ - Some HIPs will have to be approved by the Governing Council before getting a `Accepted` status'. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service` and `Mirror` categories, but can expand to other HIPs as well. The HIP editors will double-check if the `Yes` flag on `needs-council-approval` header field needs to be set. If HIP needs Governing Council approval, it will have to go through a 'Council Review' status and be reviewed at the next Technical Committee meeting of the Governing Council.
-- __Accepted__ - An accepted HIP is a HIP that went through the "Last Call" status period without changes to the content and is considered ready for implementation. This is often a base HIP proposal for the development team to start implementing IP in code.
-- __Final__ - This HIP represents the final standard implemented in code. A Final HIP exists in a state of finality and should only be updated to correct errata and add non-normative clarifications.
+- __Accepted__ - An accepted HIP is a HIP that went through the "Last Call" status period without major changes to the content and is considered ready for specification and reference implementation refinement. The output of this state is an actionable artifact.
+- __Final__ - This HIP represents the final standard. A Final HIP exists in a state of finality and should only be updated to correct errata and add non-normative clarifications. Normative changes require a new HIP to supersede the HIP in question. A Final HIP is considered safe to implement in code.
 - __Active__ - Some Informational or Process HIPs may also have a status of "Active" if they are never meant to be completed. An "Active" HIP may be "Withdrawn" or "Replaced" by another HIP. If the idea is pursued at a later date - it is considered a new proposal.
-- __Replaced__ - "Replaced" HIPs are overwritten by a newer standard or implementation. 
+- __Replaced__ - "Replaced" HIPs are overwritten by a newer standard or implementation. A reference to the superseding HIP should be included using the `superseded-by` header field. 
 
 ### HIP Maintenance
 
