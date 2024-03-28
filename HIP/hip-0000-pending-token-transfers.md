@@ -6,10 +6,10 @@ working-group: Luke Lee <@lukelee-sl>, Ali Katamjani <ali@swirldslabs.com>, Ashe
 type: Standards Track
 category: Service
 needs-council-approval: Yes
-status: Draft
+status: Deferred
 created: 2023-08-03
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/777
-updated: 2023-08-26
+updated: 2024-03-28
 ---
 
 ## Abstract
