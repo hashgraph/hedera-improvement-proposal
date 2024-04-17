@@ -15,6 +15,7 @@
         <select id="status-filter" class="status-filter" multiple>
             <option value="review">Review</option>
             <option value="last call">Last Call</option>
+            <option value="council review">Council Review</option>
             <option value="accepted">Accepted</option>
             <option value="rejected">Rejected</option>
             <option value="final">Final</option>
