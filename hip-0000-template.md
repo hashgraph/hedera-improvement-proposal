@@ -1,6 +1,6 @@
 ---
 hip: <HIP number (assigned by the HIP editor)>
-title: <Brief title describing the purpose of the HIP. Ex: "Enhance Transaction Processing">
+title: <Brief title describing the purpose of the HIP. Ex: "Biometric Binding Codes">
 author: <Comma separated list of the authors' names and/or usernames, or names and emails. Ex: John Doe <@johnDoeGithub1778>, Jane Smith <jane@email.com>>
 working-group: <List of the technical and business stakeholders' names and/or usernames, or names and emails. Ex: John Doe <@johnDoeGithub1778>, Jane Smith <jane@email.com>>
 requested-by: <Name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP. Ex: Acme Corp <request@acmecorp.com>>
