@@ -1,5 +1,5 @@
 ---
-hip: 000
+hip: 945
 title: Improvements to Hedera DID Method
 author: Keith Kowal <keith.kowal@swirldslabs.com>
 working-group: Keith Kowal <keith.kowal@swirldslabs.com>, Derek Munneke <derek.munneke@meeco.me>
