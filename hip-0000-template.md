@@ -1,5 +1,5 @@
 ---
-hip: <HIP number (assigned by the HIP editor)>
+hip: <HIP number (assigned by the HIP editor), usually the PR number>
 title: <Brief title describing the purpose of the HIP. Ex: "Biometric Binding Codes">
 author: <Comma separated list of the authors' names and/or usernames, or names and emails. Ex: John Doe <@johnDoeGithub1778>, Jane Smith <jane@email.com>>
 working-group: <List of the technical and business stakeholders' names and/or usernames, or names and emails. Ex: John Doe <@johnDoeGithub1778>, Jane Smith <jane@email.com>>
