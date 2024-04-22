@@ -1,19 +1,19 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
-title: <HIP title>
-author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
-working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
-requested-by: the name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP
-type: <Standards Track | Informational | Process>
-category: <Core | Service | Mirror | Application>
-needs-council-approval: <Yes | No>
-status: <Draft | Review | Last Call | Active | Inactive | Deferred | Rejected | Withdrawn | Accepted | Final | Replaced>
-created: <date created on>
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
+hip: <HIP number (assigned by the HIP editor), usually the PR number>
+title: <Brief title describing the purpose of the HIP. Ex: "Biometric Binding Codes">
+author: <Comma separated list of the authors' names and/or usernames, or names and emails. Ex: John Doe <@johnDoeGithub1778>, Jane Smith <jane@email.com>>
+working-group: <List of the technical and business stakeholders' names and/or usernames, or names and emails. Ex: John Doe <@johnDoeGithub1778>, Jane Smith <jane@email.com>>
+requested-by: <Name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP. Ex: Acme Corp <request@acmecorp.com>>
+type: <"Standards Track" | "Informational" | "Process">
+category: <"Core" | "Service" | "Mirror" | "Application">
+needs-council-approval: <"Yes" | "No">
+status: <"Draft" | "Review" | "Last Call" | "Active" | "Inactive" | "Deferred" | "Rejected" | "Withdrawn" | "Accepted" | "Final" | "Replaced">
+created: <Date the HIP was created on, in YYYY-MM-DD format>
+discussions-to: <A URL pointing to the official discussion thread. Ex: https://github.com/hashgraph/hedera-improvement-proposal/discussions/xxx.>
+updated: <Latest date HIP was updated, in YYYY-MM-DD format.>
+requires: <HIP number(s) this HIP depends on, if applicable. Ex: 101, 102>
+replaces: <HIP number(s) this HIP replaces, if applicable. Ex: 99>
+superseded-by: <HIP number(s) that supersede this HIP, if applicable. Ex: 104>
 ---
 
 ## Abstract
