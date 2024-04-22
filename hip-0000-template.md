@@ -2,8 +2,8 @@
 hip: 000
 title: Improvements to Hedera DID Method
 author: Keith Kowal <keith.kowal@swirldslabs.com>
-working-group: Hedera Decentralized Identity Working Group
-requested-by: keith.kowal@swirldslabs.com, derek.munneke@meeco.me 
+working-group: Keith Kowal <keith.kowal@swirldslabs.com>, Derek Munneke <derek.munneke@meeco.me>
+requested-by: keith.kowal@swirldslabs.com
 type: Standards Track
 category: Application
 needs-council-approval: No
