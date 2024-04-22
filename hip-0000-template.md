@@ -10,7 +10,7 @@ needs-council-approval: No
 status: Accepted
 created: 2024-04-01
 discussions-to: https://github.com/hashgraph/did-method/pull/4
-requires: HIP-27
+requires: 27
 ---
 
 ## Abstract
