@@ -1,72 +1,98 @@
 ---
 hip: <HIP number (this is determined by the HIP editor)>
-title: <HIP title>
-author: <a list of the author’s or authors’ name(s) and/or username(s), or name(s) and email(s).>
-working-group: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s).
-requested-by: the name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP
-type: <Standards Track | Informational | Process>
-category: <Core | Service | Mirror | Application>
-needs-council-approval: <Yes | No>
-status: <Draft | Review | Last Call | Active | Inactive | Deferred | Rejected | Withdrawn | Accepted | Final | Replaced>
-created: <date created on>
-discussions-to: <a URL pointing to the official discussion thread>
-updated: <comma separated list of dates>
-requires: <HIP number(s)>
-replaces: <HIP number(s)>
-superseded-by: <HIP number(s)>
+title: Improvements to Hedera DID Method
+author: Keith Kowal
+working-group: Hedera Decentralized Identity Working group
+requested-by: keith.kowal@swirldslabs.com, derek.munneke@meeco.me 
+type: Standards Track
+category: Application
+needs-council-approval: No
+status: Accepted
+created: 2024-04-01
+discussions-to: https://github.com/hashgraph/did-method/pull/4
+requires: HIP-27
 ---
 
 ## Abstract
 
-Please provide a short (~200 word) description of the issue being addressed.
+This HIP describes additional features building on [HIP-27](https://hips.hedera.com/hip/hip-27)
+The main feature addition allows DID documents to be anchored on IPFS and enables the lookup of a DID document from IPFS via a CID reference in the DID Document HCS message(s).
 
 ## Motivation
 
-The motivation is critical for HIPs that want to change the Hedera codebase or ecosystem. It should clearly explain why the existing specification is inadequate to address the problem that the HIP solves. HIP submissions without sufficient motivation may be rejected outright.
+Additional functionality to improve the utility of the DID:Hedera method for the community.
 
 ## Rationale
 
-The rationale fleshes out the specification by describing why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
+The primary added feature is the ability of the DID:Hedera method to create a DID referencing a DID document that is anchored on IPFS via a CID reference. The method also then enables the lookup of a DID document from IPFS from the CID reference. 
 
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
+The addition of this capability to HIP-27 supports alignment with the [Guardian](https://hedera.com/guardian) approach to creating DIDs.
 
 ## User stories
 
-Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
+As a user I want to create a DID:Hedera identity where the DID document is anchored on IPFS.
+
+As an identity verifier I want to lookup with the DID document that is anchored on IPFS for verification of a received identity object.
   
 ## Specification
 
-The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
+The following additions were made to the updated DID:Hedera method.
+
+### DID Document
+
+A Hedera DID MAY be created by creating a reference to a DID document available in [IPFS](https://ipfs.io/).
+
+`DIDDocument` event value must have a JSON structure defined by a [DIDDocument-schema](DIDDocument.schema.json) and contains the following properties:
+
+- `DIDDocument` - The DIDOwner event with the following attributes:
+  - `id` - The DID id
+  - `type` - The document type, MAY include the DID document serialisation representation.
+  - `cid` - The Content Identifiers to point to DID document in IPFS.
+  - `url` - A URL to the IPFS document MAY be included for convenience.
+
+```json
+{
+  "DIDDocument": {
+    "id": "did:hedera:testnet:z6MknSnvSESWvijDEysG1wHGnaiZSLSkQEXMECWvXWnd1uaJ_0.0.1723780",
+    "type": "DIDDocument",
+    "cid": "bafybeifn6wwfs355md56nhwaklgr2uvuoknnjobh2d2suzsdv6zpoxajfa/did-document.json",
+    "url": "https://ipfs.io/ipfs/bafybeifn6wwfs355md56nhwaklgr2uvuoknnjobh2d2suzsdv6zpoxajfa/did-document.json"
+  }
+}
+```
+## Updates to CRUD Operations
+
+### Read
+Read, or Resolve, occurs by reading messages from the HCS topic set in the `did-topic-id` element of the DID namestring, and processing messages as below:
+
+1. If the most recent valid message has `operation` set to `delete`, the DID document returned MUST be empty.
+**2. If the most recent valid message has `operation` set to `create`, and event object is `DIDDocument`, the DID document returned is the document resolve from the IPFS CID reference.**
+3. Otherwise
+   1. Read valid message until one has `operation` set to `create`, and event object is `DIDOwner`.
+   2. Construct DID document by applying message `update` and `revoke` operations in order.
+   3. Return constructed DID document.
 
 ## Backwards Compatibility
 
-All HIPs that introduce backward incompatibilities must include a section describing these incompatibilities and their severity. The HIP must explain how the author proposes to deal with these incompatibilities. HIP submissions without a sufficient backward compatibility treatise may be rejected outright.
+These changes are part of the updates to the DID:Hedera method and not backwards compatible with previous DID:Hedera method versions. 
 
 ## Security Implications
 
-If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
+Individual implementers of the DID:Hedera method can decide if they wish to anchor DID documents on IPFS vs messages on Hedera Consensus Service. As part of this evaluation users should have a comprehensive understanding of IPFS, its security weaknesses, and the fact that documents on IPFS are not permanant.
 
 ## How to Teach This
 
-For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
+Documentation for updated DID Method.
 
 ## Reference Implementation
 
-The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
-
-## Rejected Ideas
-
-Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
-
-In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
-
-## Open Issues
-
-While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
+The implementation for this functionality can be found in the updated DID:Hedera method
 
 ## References
 
-A collections of URLs used as references through the HIP.
+[DID:Hedera method](https://github.com/hashgraph/did-method/blob/master/did-method-specification.md)
+
+[HIP 27](https://hips.hedera.com/hip/hip-27)
 
 ## Copyright/license
 
