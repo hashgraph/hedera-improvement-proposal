@@ -1,8 +1,8 @@
 ---
-hip: <HIP number (this is determined by the HIP editor)>
+hip: 000
 title: Improvements to Hedera DID Method
-author: Keith Kowal
-working-group: Hedera Decentralized Identity Working group
+author: Keith Kowal <keith.kowal@swirldslabs.com>
+working-group: Hedera Decentralized Identity Working Group
 requested-by: keith.kowal@swirldslabs.com, derek.munneke@meeco.me 
 type: Standards Track
 category: Application
