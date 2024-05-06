@@ -3,18 +3,31 @@ on:
   workflow_dispatch:
      inputs:
        filename:
-          type: string
-          required: true
+         description: "Filename"
+         type: string
+         required: true
        status:
-          type: string
-          required: true
+         description: "Status"
+         type: string
+         required: true
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   StatusChangeNotifications:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, medium, ephemeral]
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+
       - name: Send mail
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@2cea9617b09d79a095af21254fbcb7ae95903dde # v3.12.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
