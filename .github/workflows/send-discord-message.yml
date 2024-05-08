@@ -3,20 +3,34 @@ on:
   workflow_dispatch:
      inputs:
        filename:
-          type: string
-          required: true
+         description: "Filename"
+         type: string
+         required: true
        status:
-          type: string
-          required: true
+         description: "Status"
+         type: string
+         required: true
+
+permissions:
+  contents: read
+  actions: write
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   StatusChangeNotifications:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, medium, ephemeral]
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
 
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD }}
-        uses: Ilshidur/action-discord@master
+        uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9 # v0.3.2
         with:
           args:  "${{ github.event.inputs.filename }} moved into ${{ github.event.inputs.status }} status https://hips.hedera.com/hip/${{ github.event.inputs.filename }}"
