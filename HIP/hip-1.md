@@ -229,6 +229,7 @@ Each HIP must begin with a header preamble in a table format. The headers must a
 - title: HIP title
 - author: a list of the author's or authors' name(s) and/or username(s), or name(s) and email(s)
 - working-group\*: a list of the technical and business stakeholders' name(s) and/or username(s), or name(s) and email(s)
+- requested-by: the name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP
 - type: Standards Track | Informational | Process
 - category\*: Core | Service | API | Mirror | Application
 - needs-council-approval: Yes | No
