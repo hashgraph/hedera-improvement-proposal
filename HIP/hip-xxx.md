@@ -1,0 +1,140 @@
+## hip: <HIP number (assigned by the HIP editor), usually the PR number>
+title: Enhance mirror node rest API to query by token name
+author: Simi Hunjan <SimiHunjan>, Ali Nikan <@alinik4n>
+working-group: Steven Sheehy <@steven-sheehy> Eric <ericleponner> Simon <svienot>
+type: Standards Track
+category: Mirror
+needs-council-approval: Yes
+status: Draft
+created: 2024-04-19
+updated: 2024-05-14
+superseded-by: Hashport, Bonzo Finance
+
+## Abstract
+
+This HIP provides the capability of querying tokens by token name in mirror node REST API and getting the corresponding token ID information.
+
+## Motivation
+
+To enhance user experience and allow blockchain explorers such as Hashscan to enable the capability of searching by token name, we want to add this functionality to mirrornode to support querying tokens by token name.
+This is a very common use case across other explorers in the larger ecosystem, and will allow retail users and developers to be able to search for a token by token name instead of token ID.
+
+## Rationale
+
+Many times a user may not know the exact token ID when searching for a token, but they know the name. This capability allow users to search by the name and will return results when there is a partial match or exact match. Community members from bridges, Dexes, etc. have been requesting for this for a while.
+
+## User stories
+
+- As a user of mirror node, I want to be able to query with a token name (e.g Sauce) and get the corresponding token ID and information.
+- As a user of mirror node, I want to be able to see full match and partial match to my search. (e.g when querying for Sauce, I want to see result for $sauce and $xsauce)
+- As a user of a Hedera explorer, I want to look up a token by searching for token name.
+
+## Specification
+
+The proposed enhancement involves adding  query parameters `name` and `sortby` to the existing route `/api/v1/tokens` to return information about a token.
+
+**Multiple Query Results**
+
+Names assigned to tokens when tokens are created on the network are not unique. Therefore, many tokens with the same name can exist. Querying a token by a given name will return all the tokens that have the specified name defined in the token name.
+
+**Name Query Parameter**
+
+It enables to specify value that token names should match. The following form can be specified:
+
+- name={value}
+- name={op}:{value} where op is one of the usual operators (`eq`,`ne`,`lt`,`lte`,`gt`,`gte`)
+- name=`lk`:{value} where `lk` is a new operator
+
+`name`=`lk`:{value} returns all tokens whose name:
+
+- starts with {value}
+- ends with {value}
+- contains {value}
+
+Comparison performed by `lk` operator should be case insensitive.
+
+**Sortby Query Parameter**
+
+It enables to specify how resulting tokens are sorted.
+
+- `sortby`=`TOKEN_ID` will return tokens sorted by token id (the default)
+- `sortby`=`NAME` will return tokens sorted by name
+
+Note: `order` parameter semantic is unchanged
+
+**Request**
+```
+/api/v1/tokens?name=exampleToken
+```
+**Example Request** 
+
+```
+GET /api/v1/tokens?name=sauce
+```
+**Response** 
+[no change to the data provided in the response]
+```json
+{
+"admin_key": {
+"_type": "ED25519",
+"key": "0636cfc5037af7d2a7d4f17228a36bb6946ff011b12c1bd970963c6b4266b1ef"
+},
+"auto_renew_account": "0.0.730534",
+"auto_renew_period": 7776000,
+"created_timestamp": "1646042486.963194000",
+"custom_fees": {
+"created_timestamp": "1646042486.963194000",
+"fixed_fees": [],
+"fractional_fees": []
+},
+"decimals": "6",
+"deleted": false,
+"expiry_timestamp": 1.653818486963194e+18,
+"fee_schedule_key": null,
+"freeze_default": false,
+"freeze_key": null,
+"initial_supply": "0",
+"kyc_key": null,
+"max_supply": "1000000000000000",
+"memo": "",
+"modified_timestamp": "1700254529.054257687",
+"name": "SAUCE",
+"pause_key": null,
+"pause_status": "NOT_APPLICABLE",
+"supply_key": {
+"_type": "ProtobufEncoded",
+"key": "0a0418fbe241"
+},
+"supply_type": "FINITE",
+"symbol": "SAUCE",
+"token_id": "0.0.731861",
+"total_supply": "749994326408324",
+"treasury_account_id": "0.0.1077627",
+"type": "FUNGIBLE_COMMON",
+"wipe_key": null
+}
+```
+
+
+
+## **Backwards Compatibility**
+
+The change is backwards compatible as it is simply adding two query parameters to an existing route. The data required to filter by name is already stored in the mirror node.
+
+## Security Implications
+
+Full text search indices can slow down ingest performance if the same lexeme shows up in many token names.
+
+https://mainnet-public.mirrornode.hedera.com/api/v1/docs/#/tokens/listTokens
+
+## Rejected Ideas
+
+- Searching token by symbol.
+
+## References
+
+https://mainnet-public.mirrornode.hedera.com/api/v1/docs/#/tokens/listTokens
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](https://www.notion.so/LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
