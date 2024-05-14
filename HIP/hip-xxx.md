@@ -31,7 +31,7 @@ Many times a user may not know the exact token ID when searching for a token, bu
 
 ## Specification
 
-The proposed enhancement involves adding  query parameters `name` and `sortby` to the existing route `/api/v1/tokens` to return information about a token.
+The proposed enhancement involves adding  query parameters `name` to the existing route `/api/v1/tokens` to return information about a token.
 
 **Multiple Query Results**
 
@@ -42,7 +42,6 @@ Names assigned to tokens when tokens are created on the network are not unique. 
 It enables to specify value that token names should match. The following form can be specified:
 
 - name={value}
-- name={op}:{value} where op is one of the usual operators (`eq`,`ne`,`lt`,`lte`,`gt`,`gte`)
 - name=`lk`:{value} where `lk` is a new operator
 
 `name`=`lk`:{value} returns all tokens whose name:
@@ -53,14 +52,6 @@ It enables to specify value that token names should match. The following form ca
 
 Comparison performed by `lk` operator should be case insensitive.
 
-**Sortby Query Parameter**
-
-It enables to specify how resulting tokens are sorted.
-
-- `sortby`=`TOKEN_ID` will return tokens sorted by token id (the default)
-- `sortby`=`NAME` will return tokens sorted by name
-
-Note: `order` parameter semantic is unchanged
 
 **Request**
 ```
@@ -73,49 +64,49 @@ GET /api/v1/tokens?name=sauce
 ```
 **Response** 
 [no change to the data provided in the response]
+
+
 ```json
 {
-"admin_key": {
-"_type": "ED25519",
-"key": "0636cfc5037af7d2a7d4f17228a36bb6946ff011b12c1bd970963c6b4266b1ef"
-},
-"auto_renew_account": "0.0.730534",
-"auto_renew_period": 7776000,
-"created_timestamp": "1646042486.963194000",
-"custom_fees": {
-"created_timestamp": "1646042486.963194000",
-"fixed_fees": [],
-"fractional_fees": []
-},
-"decimals": "6",
-"deleted": false,
-"expiry_timestamp": 1.653818486963194e+18,
-"fee_schedule_key": null,
-"freeze_default": false,
-"freeze_key": null,
-"initial_supply": "0",
-"kyc_key": null,
-"max_supply": "1000000000000000",
-"memo": "",
-"modified_timestamp": "1700254529.054257687",
-"name": "SAUCE",
-"pause_key": null,
-"pause_status": "NOT_APPLICABLE",
-"supply_key": {
-"_type": "ProtobufEncoded",
-"key": "0a0418fbe241"
-},
-"supply_type": "FINITE",
-"symbol": "SAUCE",
-"token_id": "0.0.731861",
-"total_supply": "749994326408324",
-"treasury_account_id": "0.0.1077627",
-"type": "FUNGIBLE_COMMON",
-"wipe_key": null
+  "admin_key": {
+    "_type": "ED25519",
+    "key": "0636cfc5037af7d2a7d4f17228a36bb6946ff011b12c1bd970963c6b4266b1ef"
+  },
+  "auto_renew_account": "0.0.730534",
+  "auto_renew_period": 7776000,
+  "created_timestamp": "1646042486.963194000",
+  "custom_fees": {
+    "created_timestamp": "1646042486.963194000",
+    "fixed_fees": [],
+    "fractional_fees": []
+  },
+  "decimals": "6",
+  "deleted": false,
+  "expiry_timestamp": 1.653818486963194e+18,
+  "fee_schedule_key": null,
+  "freeze_default": false,
+  "freeze_key": null,
+  "initial_supply": "0",
+  "kyc_key": null,
+  "max_supply": "1000000000000000",
+  "memo": "",
+  "modified_timestamp": "1700254529.054257687",
+  "name": "SAUCE",
+  "pause_key": null,
+  "pause_status": "NOT_APPLICABLE",
+  "supply_key": {
+    "_type": "ProtobufEncoded",
+    "key": "0a0418fbe241"
+  },
+  "supply_type": "FINITE",
+  "symbol": "SAUCE",
+  "token_id": "0.0.731861",
+  "total_supply": "749994326408324",
+  "treasury_account_id": "0.0.1077627",
+  "type": "FUNGIBLE_COMMON",
+  "wipe_key": null
 }
 ```
-
-
 
 ## **Backwards Compatibility**
 
