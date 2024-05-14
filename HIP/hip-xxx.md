@@ -125,8 +125,6 @@ The change is backwards compatible as it is simply adding two query parameters t
 
 Full text search indices can slow down ingest performance if the same lexeme shows up in many token names.
 
-https://mainnet-public.mirrornode.hedera.com/api/v1/docs/#/tokens/listTokens
-
 ## Rejected Ideas
 
 - Searching token by symbol.
