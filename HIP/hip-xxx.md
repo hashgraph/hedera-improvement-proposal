@@ -8,7 +8,7 @@ needs-council-approval: Yes
 status: Draft
 created: 2024-04-19
 updated: 2024-05-14
-superseded-by: Hashport, Bonzo Finance
+requested-by: Hashport, Bonzo Finance
 
 ## Abstract
 
