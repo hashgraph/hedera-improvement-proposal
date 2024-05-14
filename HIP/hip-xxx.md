@@ -16,7 +16,7 @@ This HIP provides the capability of querying tokens by token name in mirror node
 
 ## Motivation
 
-To enhance user experience and allow blockchain explorers such as Hashscan to enable the capability of searching by token name, we want to add this functionality to mirrornode to support querying tokens by token name.
+To enhance user experience and allow blockchain explorers such as Hashscan to enable the capability of searching by token name, we want to add this functionality to the mirror node to support querying tokens by token name.
 This is a very common use case across other explorers in the larger ecosystem, and will allow retail users and developers to be able to search for a token by token name instead of token ID.
 
 ## Rationale
