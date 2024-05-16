@@ -197,7 +197,7 @@ The basic policy action requirements are:
 * a policy action must have an input, one or more process steps, and an output. This is just a well-known convention from business process management frameworks.
 * The input of a policy action must represent a new, proposed state of a policy workflow state object compliant with a policy.
 * The process steps in a policy action must represent a verification system comprised of the set, or subset, of policy rules and policy data such that an input can be validated to comply with the policy rules and policy data, or not.
-* The output of a policy action must represent the validated result of an input into a policy workflow as a correct new policy workflow state.
+* The output of a policy action must represent the processed result of an input into a policy workflow as a correct new policy workflow state.
 
 Note that a new policy workflow state after a correct policy action execution is defined as
 
