@@ -4,12 +4,27 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: write
+  checks: write
+
 jobs:
   assign-hip-number:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, medium, ephemeral]
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@a4aa98b93cab29d9b1101a6143fb8bce00e2eac4 # v2.7.1
+        with:
+          egress-policy: audit
+
       - name: Check out the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
         with:
           fetch-depth: 0
 
