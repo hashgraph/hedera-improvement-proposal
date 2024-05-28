@@ -563,7 +563,7 @@ new TokenCreateTransaction()
 
 In this example, the token created would require 100 tokens with entity ID 0.0.987 to be transferred into the account
 with entity ID 0.0.123. Account 0.0.123 could obviously be a single individual’s account, or it could be a
-multisignature account managed by an HCS based validator network, as we’ve recently seen in Greg Scullard’s NFT auction
+multisignature account managed by an HCS based consensus node network, as we’ve recently seen in Greg Scullard’s NFT auction
 demo ([10](https://www.youtube.com/watch?v=hCPXKR1e7Ro)).
 
 This could be expanded to include up to 10 custom fees per token.
