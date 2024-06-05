@@ -8,7 +8,7 @@ category: Mirror
 needs-council-approval: Yes
 status: Draft
 created: 2024-06-03
-requested-by: 
+requested-by: Solo Labs
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/981
 ---
 
