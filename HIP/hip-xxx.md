@@ -1,5 +1,5 @@
 ---
-hip: xxx
+hip: 980
 title: Enhance mirror node rest APIs with timestamp query parameter
 author: Ivan Kavaldzhiev <ivan.kavaldzhiev@limechain.tech>
 working-group: Steven Sheehy <@steven-sheehy>, Nana Essilfie-Conduah <nana@swirldslabs.com>
@@ -9,7 +9,7 @@ needs-council-approval: Yes
 status: Draft
 created: 2024-06-03
 requested-by: 
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/xxx
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/981
 ---
 
 ## Abstract
