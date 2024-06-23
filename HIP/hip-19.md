@@ -8,7 +8,7 @@ needs-council-approval: No
 status: Final
 created: 2021-06-07
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/101 
-updated: 2021-10-10
+updated: 2023-04-03
 ---
 
 ## Abstract
@@ -234,9 +234,9 @@ N/A
 
 ## References
 
-- [0] <https://www.w3.org/TR/did-core/>
-- [1] <https://github.com/hashgraph/did-method>
-- [2] <https://www.w3.org/TR/vc-data-model/>
+0. <https://www.w3.org/TR/did-core/>
+1. <https://github.com/hashgraph/did-method>
+2. <https://www.w3.org/TR/vc-data-model/>
 
 ## Copyright/license
 
