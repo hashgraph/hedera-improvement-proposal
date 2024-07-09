@@ -5,8 +5,9 @@ author: Maurizio Binello <maurizio@horizenlabs.io>, Tim McHale <@tim-mchale>
 type: Standards Track
 category: Application
 needs-council-approval: No
-status: Draft
-created: 2021-06-18
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/806
+status: Stagnant
+created: 2023-09-13
 ---
 
 ## Abstract

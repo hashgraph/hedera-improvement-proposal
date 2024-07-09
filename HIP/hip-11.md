@@ -9,7 +9,7 @@ status: Accepted
 last-call-date-time: 2021-11-23T07:00:00Z
 created: 2021-02-23
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/49
-updated: 2021-05-12, 2021-11-30
+updated: 2021-11-30
 ---
 
 ## Abstract
@@ -84,18 +84,18 @@ Source code of the standard Ethereum full node (e.g. geth node) is forked and mo
  . Reading of the balances of other accounts: the layer-2 node could listen to the mirror node transaction records to find out the balances, and calculate the balances accordingly. We could modify the `BALANCE` opcode of the EVM to fetch this information from a mirror node.
  
 ### Properties of this solution
-* Trust: End-users can trust this system as long as they can trust a configured number of community validators is honest.
-* Transparency: All validator signatures can be verified through the record of the scheduled transactions. The p2p gossip for transactions between these layer-2 nodes is logged on HCS and can be verified/audited.
+* Trust: End-users can trust this system as long as they can trust a configured number of community consensus nodes is honest.
+* Transparency: All consensus node signatures can be verified through the record of the scheduled transactions. The p2p gossip for transactions between these layer-2 nodes is logged on HCS and can be verified/audited.
 Ethereum tool chain: All existing Ethereum tools should continue to work without any modification, at least in theory.
-* State: the state is maintained by the validators and it does not add any tax on Hedera. The state is maintained in the layer-2 smart contracts. Hedera only executes the HAPI transactions (including scheduled transactions), and maintains the accounts and their hbar/token balances.
+* State: the state is maintained by the consensus nodes and it does not add any tax on Hedera. The state is maintained in the layer-2 smart contracts. Hedera only executes the HAPI transactions (including scheduled transactions), and maintains the accounts and their hbar/token balances.
 * Cost: Expected to be significantly cheaper than Ethereum gas costs, but slightly more expensive than native HAPI transactions. Very comparable to the cost of interoperability transactions through decentralized bridges.
 * Scale: The scale is really dependent on the number of parallel instances of these layer-2 nodes and the number of nodes in each of them. The scale from Hedera mainnet perspective is really the scale of the native cryptotransfer, HCS submit message transactions, and scheduled transactions.
 * Latency: overall latency will involve sending transactions through HCS, and then submitting the scheduled transaction. Assuming each of these takes around 5-10 seconds, the overall latency is likely to be around 15-25 seconds. 
 * Finality: Transactions notified by mirror node or HCS can be considered to be 100% final.
  
 ### Node incentives
-To bootstrap, Hedera could incentivize a set of validators. But Hedera does not really define the incentive model for this network. There could be multiple independent instances of these networks and the participants can decide on the incentive models and prices depending on the use cases they serve. The incentive model could be as simple as “everyone who participates gets a share of fees”, which would incentivize smaller networks, or “a selected subset of validators (e.g. determined by a hashing function using the latest consensus timestamp) will get compensated”. In both cases making sure that there is some skin in the game for validators (maybe staked HBAR) would be good to prevent Sybil Attacks.
-The validators are known to the smart contract, and the smart contract is coded to distribute the ‘fees’ to the validators equally between the validators who are “active” (defined as those who successfully signed the last m of n transactions). So, if a validator falls off the network, very quickly they will stop receiving payments. The community can write this logic so that this set of ‘active’ validators is deterministically calculated on each validator.
+To bootstrap, Hedera could incentivize a set of consensus nodes. But Hedera does not really define the incentive model for this network. There could be multiple independent instances of these networks and the participants can decide on the incentive models and prices depending on the use cases they serve. The incentive model could be as simple as “everyone who participates gets a share of fees”, which would incentivize smaller networks, or “a selected subset of consensus nodes (e.g. determined by a hashing function using the latest consensus timestamp) will get compensated”. In both cases making sure that there is some skin in the game for consensus nodes (maybe staked HBAR) would be good to prevent Sybil Attacks.
+The consensus nodes are known to the smart contract, and the smart contract is coded to distribute the ‘fees’ to the consensus nodes equally between the consensus nodes who are “active” (defined as those who successfully signed the last m of n transactions). So, if a consensus node falls off the network, very quickly they will stop receiving payments. The community can write this logic so that this set of ‘active’ consensus nodes is deterministically calculated on each consensus node.
 
 
 ### Deployment and configuration:

@@ -1,6 +1,8 @@
 <!-- HTML search field -->
 <div id="search-container">
-    <input type="text" id="search-input" placeholder="Search HIPs..." autofocus>
+    <div id="search-input-wrapper">
+        <input type="text" id="search-input" placeholder="Search HIPs..." autofocus>
+    </div>
     <ul id="results-container"></ul>
 </div>
 
@@ -12,7 +14,9 @@
     SimpleJekyllSearch({
         searchInput: document.getElementById('search-input'),
         resultsContainer: document.getElementById('results-container'),
-        json: '/search.json',
-        searchResultTemplate: '<li><a href="{url}">{title}</a></li>'
+        json: "{{ './search.json' | relative_url }}",
+        searchResultTemplate: '<li><a href="{url}"><b>HIP-{hipnum}:</b> {title}</a></li>',
+        noResultsText: 'No results found',
+        limit: 10,
     })
 </script>

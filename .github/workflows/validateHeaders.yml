@@ -2,28 +2,50 @@
 name: Validate HIP
 on: [pull_request]
 
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
 jobs:
   ValidateHIP:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, medium, ephemeral]
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@a4aa98b93cab29d9b1101a6143fb8bce00e2eac4 # v2.7.1
+        with:
+          egress-policy: audit
+
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
         with:
           fetch-depth: 0
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
-          node-version: '12.x'
+          node-version: "12.x"
+
+      - name: Install jq
+        run: sudo apt-get install jq
 
       - name: Validate HIPs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            arrayOfFiles=()
-            while IFS= read -r; do
-              arrayOfFiles+=("${REPLY}")
-            done < <(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} --name-only | grep .md)
-            for i in "${arrayOfFiles[@]}"
-            do
-                node "${{ github.workspace }}/scripts/validateHIP.js" "${{ github.workspace }}/HIP/"$(basename "$i")""
-                echo 
-            done
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+          PR_DATA=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files")
+          MD_FILES=$(echo "$PR_DATA" | jq -r '.[] | select(.filename | test(".md$")) | .filename')
+
+          for FILE in $MD_FILES; do
+            FULL_PATH="${{ github.workspace }}/$FILE"
+            if [[ -f "$FULL_PATH" ]]; then
+              node "${{ github.workspace }}/scripts/validateHIP.js" "$FULL_PATH"
+            else
+              echo "No file found for $FILE"
+              exit 1
+            fi
+          done

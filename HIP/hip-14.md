@@ -9,7 +9,7 @@ superseded-by: 24
 status: Replaced
 created: 2021-03-24
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/59
-updated: 2021-05-12, 2021-11-30
+updated: 2021-11-30
 ---
 
 ## Abstract
