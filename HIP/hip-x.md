@@ -1,0 +1,91 @@
+---
+hip: x
+title: Enhance Mirror Node Contract Log REST API with transaction hash query parameter
+author: Georgi Lazarov <georgi.lazarov@limechain.tech>
+working-group: Steven Sheehy <@steven-sheehy>, Nana Essilfie-Conduah <nana@swirldslabs.com>, Xin Li <@xin-hedera>
+type: Standards Track
+category: Mirror
+needs-council-approval: Yes
+status: Draft
+last-call-date-time: 2024-08-23T07:00:00Z
+created: 2024-07-12
+requested-by: ChainLink
+discussions-to:
+updated: 2024-07-12
+---
+
+## Abstract
+
+This HIP provides the capability of querying contract logs by transaction hash in Mirror Node REST API and getting the corresponding logs information.
+
+## Motivation
+
+To enhance user experience and allow ethereum tools, such as Hardhat and MetaMask to be able retrieve information in the form of transaction receipts for HTS operations, like transfer and approve. In order for this information to be available, we’d need to add this functionality to the mirror node to support querying contract logs by transaction hash. This is very common use case across other tools as well, like The Graph.
+
+## Rationale
+
+Every time a tool, like Hardhat sends a transaction, all they get back is the transaction hash. In an automated scenario, like a dapp flow, this hash is not enough to get the transaction receipt for HTS operation. All information about those operations in form of events is stored in the contract logs route. Enabling querying by transaction hash will allow constructing those transaction receipts in the json-rpc-relay and returning them to the requester.
+
+## User Stories
+
+- As a user of mirror node, I want to be able to query using transaction hash and get the corresponding contract log.
+- As a user of ethereum tools, I want to be able to request transaction receipt using `eth_getTransactionReceipt` and get corresponding HTS operation transaction receipt.
+
+## Specification
+
+The proposed enhancement involves adding query parameter `transaction.hash` to the existing route `/api/v1/contracts/results/logs` to return information about the contract log.
+
+### Transaction Hash Parameter
+
+A new transaction.hash parameter will be added to search for contracts logs by their hash. This transaction hash query parameter should be in hex format with optional leading `0x` prefix and will support both 32 byte Ethereum and 48 byte HAPI hashes.
+
+**`/api/v1/contracts/results/logs?transaction.hash={value}`**
+
+**Example Request**
+**`/api/v1/contracts/results/logs?transaction.hash=0xda1aee3c386763b2cb2e830765053e346d11deff1c343a5fefe84910f9dfe63b`**
+
+Note: if`limit` is not specified in the request, response will be limited to 25 by default
+
+**Response**
+
+```json
+{
+  "logs": [
+    {
+      "address": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "bloom": "0x549358c4c2e573e02410ef7b5a5ffa5f36dd7398",
+      "contract_id": "0.0.2",
+      "data": "0x00000000000000000000000000000000000000000000000000000000000000fa",
+      "index": 0,
+      "topics": [
+        "0xf4757a49b326036464bec6fe419a4ae38c8a02ce3e68bf0809674f6aab8ad300"
+      ],
+      "block_hash": "0x553f9311833391c0a3b2f9ed64540a89f2190a511986cd94889f1c0cf7fa63e898b1c6730f14a61755d1fb4ca05fb073",
+      "block_number": 10,
+      "root_contract_id": "0.0.2",
+      "timestamp": "1586567700.453054000",
+      "transaction_hash": "0xda1aee3c386763b2cb2e830765053e346d11deff1c343a5fefe84910f9dfe63b",
+      "transaction_index": 1
+    }
+  ],
+  "links": {
+    "next": null
+  }
+}
+```
+
+## Backwards Compatibility
+
+The change is backwards compatible as it is simply adding one query parameter to an existing route. The data required to filter by transaction hash is already stored in the mirror node.
+
+## Rejected Ideas
+
+None
+
+## References
+
+https://mainnet.mirrornode.hedera.com/api/v1/docs/#/contracts/getContractsLogs
+
+## Copyright/License
+
+This document is licensed under the Apache License, Version 2.0 – see [LICENSE](https://www.notion.so/LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
