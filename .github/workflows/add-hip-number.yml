@@ -1,7 +1,7 @@
 name: Assign HIP Number and Rename File
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize]
 
 defaults:
@@ -23,8 +23,14 @@ jobs:
         with:
           egress-policy: audit
 
-      - name: Check out the code
+      - name: Check out the code from the head repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        with:
+          fetch-depth: 0
+          path: head-repo
+
+      - name: Check out the code from the base repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -35,7 +41,7 @@ jobs:
           git fetch origin main
 
           # Get the modified files in the PR against the main branch
-          MODIFIED_FILES=$(git diff --name-only origin/main...$GITHUB_SHA)
+          MODIFIED_FILES=$(git diff --name-only origin/main...head-repo/${{ github.head_ref }})
           echo "Modified files in PR: $MODIFIED_FILES"
 
           # Directory path to check for HIP files
@@ -79,7 +85,7 @@ jobs:
           echo "Assigning HIP number to file: $HIP_FILE"
 
           if [ -n "$HIP_FILE" ]; then
-            sed -i "s/^hip:.*$/$HIP_HEADER/" "$HIP_FILE"
+            sed -i "s/^hip:.*$/$HIP_HEADER/" "head-repo/$HIP_FILE"
           else
             echo "No valid HIP file to assign a number."
             exit 1
@@ -94,7 +100,7 @@ jobs:
 
           if [ -n "$HIP_FILE" ]; then
             NEW_HIP_FILE="HIP/hip-$PR_NUMBER.md"
-            mv "$HIP_FILE" "$NEW_HIP_FILE"
+            mv "head-repo/$HIP_FILE" "head-repo/$NEW_HIP_FILE"
           else
             echo "No HIP file found to rename."
             exit 1
@@ -107,6 +113,7 @@ jobs:
           git config --global user.email 'action@github.com'
 
           PR_NUMBER=${{ github.event.pull_request.number }}
+          cd head-repo
           git add HIP/
           git commit -m "Assigning HIP $PR_NUMBER and renaming file to hip-$PR_NUMBER.md"
           git push origin HEAD:${{ github.head_ref }}
