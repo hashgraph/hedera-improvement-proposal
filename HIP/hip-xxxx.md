@@ -9,10 +9,10 @@ needs-council-approval: Yes
 status: Draft
 last-call-date-time:
 created: 2024-07-11
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/pull/1010
+discussions-to:
 updated: 2024-07-15
 requires: 18, 206, 514
-requested-by:
+requested-by: IOBuilders
 ---
 
 ## Abstract
