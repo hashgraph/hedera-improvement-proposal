@@ -66,7 +66,7 @@ Backwards compatibility is ensured as no existing features are modified. Similar
 
 ## Security Implications
 
-The newly added flows will adopt the HAPI authorization logic. In this way the transaction would be successful only if the given contract making the call is set as a `feeScheduleKey` to the token.
+The newly added flows will adopt the HAPI authorization logic. In this way the transaction would be successful only if the given contract making the call is set as a `feeScheduleKey` to the token or a threshold key including the calling contract ID is set for the same.
 We will apply the `TokenFeeScheduleUpdate` throttle mechanism.
 
 ## How to Teach This
