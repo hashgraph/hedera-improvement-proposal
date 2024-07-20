@@ -27,7 +27,7 @@ jobs:
           egress-policy: audit
 
       - name: Send mail
-        uses: dawidd6/action-send-mail@2cea9617b09d79a095af21254fbcb7ae95903dde # v3.12.0
+        uses: step-security/action-send-mail@a995831af980a0a14953f75efec85509f5315e25 # v3.12.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
