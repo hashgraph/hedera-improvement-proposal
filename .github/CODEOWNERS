@@ -9,7 +9,7 @@
 
 # Protection Rules for Github Configuration Files and Actions Workflows
 /.github/                                       @hashgraph/devops-ci @hashgraph/release-engineering-managers
-/.github/workflows/                             @hashgraph/devops-ci
+/.github/workflows/                             @hashgraph/devops-ci @devops-ci-committers
 
 # Self-protection for root CODEOWNERS files (this file should not exist and should definitely require approval)
 /CODEOWNERS                                      @hashgraph/release-engineering-managers
