@@ -58,7 +58,7 @@ An automatically-created account will be created with only one public key (the o
 At most one account can ever have a given alias. If a transaction auto-creates the account, any further transfers to that alias will simply be deposited in that account, without creating anything, and with no creation fee being charged.
 
 An account created normally has no alias. ~~It can be given an alias with an account update, but only if that alias is not currently used by any other account, and only if the update transaction is signed by the private key corresponding to the public key in the alias.~~
-* **UPDATE:** This ability has been removed by [HIP-583](https://hips.hedera.com/hip/hip-583#update-account-with-alias),
+* **UPDATE:** This intent has been revisited and retracted by [HIP-583](https://hips.hedera.com/hip/hip-583#update-account-with-alias),
 which provides other ways to set the alias.
 
 Once an account has an alias, the alias can never be changed, and can never be associated with any other account until the first account is deleted and removed from the ledger. Only then could another account be created or updated to be associated with that alias.
