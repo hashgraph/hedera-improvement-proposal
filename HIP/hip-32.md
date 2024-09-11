@@ -10,7 +10,7 @@ discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discuss
 last-call-date-time: 2021-12-03T07:00:00Z
 release: v0.21.0
 created: 2021-11-01
-updated: 2022-04-26
+updated: 2024-07-24
 requires: 15
 ---
 
@@ -57,7 +57,9 @@ An automatically-created account will be created with only one public key (the o
 
 At most one account can ever have a given alias. If a transaction auto-creates the account, any further transfers to that alias will simply be deposited in that account, without creating anything, and with no creation fee being charged.
 
-An account created normally has no alias. It can be given an alias with an account update, but only if that alias is not currently used by any other account, and only if the update transaction is signed by the private key corresponding to the public key in the alias.
+An account created normally has no alias. ~~It can be given an alias with an account update, but only if that alias is not currently used by any other account, and only if the update transaction is signed by the private key corresponding to the public key in the alias.~~
+* **UPDATE:** This intent has been revisited and retracted by [HIP-583](https://hips.hedera.com/hip/hip-583#update-account-with-alias),
+which provides other ways to set the alias.
 
 Once an account has an alias, the alias can never be changed, and can never be associated with any other account until the first account is deleted and removed from the ledger. Only then could another account be created or updated to be associated with that alias.
 
@@ -98,6 +100,8 @@ From the user's point of view, these virtual "accounts" should be indistinguisha
 ## Open Issues
 
 ## References
+
+* [HIP-583](https://hips.hedera.com/hip/hip-583) - "Expand alias support in CryptoCreate & CryptoTransfer Transactions"
 
 ## Copyright/license
 This document is licensed under the Apache License, Version 2.0 -- see LICENSE or (https://www.apache.org/licenses/LICENSE-2.0)
