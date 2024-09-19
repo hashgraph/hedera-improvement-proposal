@@ -1,0 +1,83 @@
+---
+hip: <HIP number (assigned by the HIP editor), usually the PR number>
+title: Deleted flag in ConsensusGetTopic
+author: Michael Heinrichs <michael@hashgraph.com>
+working-group: 
+requested-by: 
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Draft
+created: 2024-09-19
+discussions-to: 
+updated: 
+requires: 
+replaces: 
+superseded-by: 
+---
+
+## Abstract
+
+This HIP proposes to add a `deleted` flag to the response of a `ConsensusGetTopicInfo`-query.
+
+## Motivation
+
+Knowing if a topic has been deleted is essential for many use cases. Query results for all other entity types contain this information but are missing for topics.
+
+## Rationale
+
+Deleted entities are not immediately removed but marked as being deleted. Queries return these entities. The response for other entity types (e.g., `Account`, `Token`) contains a `deleted` flag that is `true` if the entity has been removed.
+
+The results of `ConsensusGetTopicInfo`-queries do not contain such a flag. This information is crucial for many use cases. For instance, a deleted topic should not be used anymore.
+
+## User stories
+
+As a user, I want to know if a `Topic` has been deleted.
+
+## Specification
+
+The message `ConsensusTopicInfo` is returned as a response to a `ConsensusGetTopicInfo`-query. It contains a deleted flag, which is true if the entity has been removed and false otherwise.
+
+```protobuf
+message ConsensusTopicInfo {
+
+    [...]
+    
+    /**
+     * Specifies whether the topic was deleted or not
+     */
+    bool deleted = 10;
+}
+```
+
+## Backwards Compatibility
+
+The attribute is additional and can safely be ignored by existing code.
+
+## Security Implications
+
+The new flag imposes no new security risk.
+
+## How to Teach This
+
+Documentation for the `ConsensusGetTopicInfo`-query has to be updated.
+
+## Reference Implementation
+
+_The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation._
+
+## Rejected Ideas
+
+An enum `state` with the states `ACTIVE` and `DELETED` would have been extensible. However, we use a `deleted` flag already in similar situations and decided to be consistent.
+
+## Open Issues
+
+None.
+
+## References
+
+N/A
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
