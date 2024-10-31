@@ -1,5 +1,5 @@
 ---
-hip: <HIP number (assigned by the HIP editor), usually the PR number>
+hip: 1068
 title: Sponsored Fees
 author: Nana Essilfie-Conduah <@Nana-EC>, Brendon Vade <@brendonv>, Matt Woodward <@app-matt>, Tim Johnson <tim.johnson@auspayplus.com.au>
 working-group: Greg Scullard <@gregscullard>, Ty Smith <ty-swirldslabs>, Keith Kowal <Reccetech>, Atul Mahamuni <@atul-hedera>
@@ -10,20 +10,23 @@ needs-council-approval: Yes
 status: Draft
 created: 2024-10-25
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/912
-updated: 2024-10-25
+updated: 2024-10-31
 Requested-By: HbarGasStation, AP+
 ---
 
 ## Abstract
 
-This HIP proposes an expansion to the approval and allowance network logic (e.g.CryptoApproveAllowance ) by allowing
-any account on the network to sponsor the payment of the fees for another account’s submitted transactions.
+This HIP proposes an expansion to the approval and allowance network logic (i.e. CryptoApproveAllowance, NftAllowance
+and TokenAllowance) by allowing any account on the network to provide allowances that will sponsor the payment of the
+fees for another account’s submitted transactions.
 In this way account Alice may assign an HBAR / token transaction fee allowance for EOA account Bob or Contract account
 Carol and pay the fees due to nodes, the network and accounts for any transactions they submit, thus allowing Bob or
 Carol to have zero balance and still transact on chain.
 
-This proposal extends the existing Approval and Allowance API by adding 2 new allowance types (TransactionFeeAllowance
-and CustomFeeAllowance) that inform the delegation of fee payments to another account without requiring one-off
+This proposal extends the existing Approval and Allowance API by adding the concept of a scope that designates the type
+of value transafer an allowance applies to.
+The scopes will include CryptoTranafer, HAPI transsaction fee and token custom fees.
+This enables value transfer and fee payments to another account without requiring one-off
 approval for each transaction. This feature enhances flexibility and efficiency in managing transaction costs,
 particularly for high volume applications.
 
@@ -144,87 +147,101 @@ User Journey:
 
 ### Protobuf
 
-Allowance creation and update
+A new new allowance scope will be added to help definte which type of fee an allowance can be used for
+```protobuf
+    enum AllowanceScope {
+        /**
+        * Identifies the allowance value may be used to satisfy crypto transfer transactions.
+        */
+        CRYPTO_TRANSFER = 0;
 
-A new `TransactionFeeAllowance` protobuf message
+        /**
+        * Identifies the allowance value may be used to satisfy HAPI transactions fees due by the node, network and service.
+        */
+        TRANSACTION_FEE = 1;
+
+        /**
+        * Identifies the allowance value may be used to satisfy token custom fee due to the fee collector.
+        */
+        TOKEN_CUSTOM_FEE = 2;
+    }
+```
+
+Exsiting allowance types will need to be updated to specify the scopes
 ```protobuf
     /**
     * An approved allowance of hbar transfers for a spender.
     */
-    message TransactionFeeAllowance {
-        /**
-        * The account ID of the hbar owner (ie. the grantor of the allowance).
-        */
-        AccountID owner = 1;
-
-        /**
-        * The account ID of the spender of the hbar allowance.
-        */
-        AccountID spender = 2;
-
-        /**
-        * The amount of the spender's allowance in tinybars. 
-        * A value of -1 will signify an unlimited amount.
-        */
-        int64 amount = 3;
-    }
-```
-
-A new CustomFeeAllowance
-```protobuf
-    /**
-	 * An approved allowance of hbar transfers for a spender.
-	 */
-	message CustomFeeAllowance {
-	  /**
-	   * The account ID of the hbar owner (ie. the grantor of the allowance).
-	   */
-	  AccountID owner = 1;
-	
-	  /**
-	   * The account ID of the spender of the hbar allowance.
-	   */
-	  AccountID spender = 2;
-	
-	  /**
-	   * The number of units to assess as a fee (hbar of fungible token)
-	   * A value of -1 for the FixedFee.amount will signify an unlimited amount.
-	   */
-	  FixedFee fungible_amount = 3;
-	}
-```
-
-The updated CryptoApproveAllowanceTransactionBody
-```protobuf
-    message CryptoApproveAllowanceTransactionBody {
+    message CryptoAllowance {
         ...
 
         /**
-        * List of hbar transaction fee allowances approved by the account owner.
-        */  
-        repeated TransactionFeeAllowance transactionFeeAllowance = 4;
-        
+        * The applicable scope for this CryptoAllowance. 
+        */
+        repeated AllowanceScope scope = 3;
+    }
+```
+By default existing crypto allowances will map to a `CryptoAllowance` with scope `CRYPTO_TRANSFER`.
+
+```protobuf
+    /**
+    * An approved allowance of non-fungible token transfers for a spender.
+    */
+    message NftAllowance {
+        ...
+
         /**
-        * List of custom fee allowances approved by the account owner.
-        */  
-        repeated CustomFeeAllowance customFeeAllowance = 5;
+        * The applicable scope for this NftAllowance. 
+        */
+        repeated AllowanceScope scope = 7;
+    }
+```
+By default existing nft allowances will map to an `NftAllowance` with scope `CRYPTO_TRANSFER`
+
+```protobuf
+    /**
+    * An approved allowance of fungible token transfers for a spender.
+    */
+    message TokenAllowance {
+        ...
+
+        /**
+        * The applicable scope for this TokenAllowance. 
+        */
+        repeated AllowanceScope scope = 5;
     }
 ```
 
-The updated TransactionBody will contain the sponsored transaction identifier
+By default existing nft allowances will map to an `NftAllowance` with scope `CRYPTO_TRANSFER`
+
+<aside>
+Note: After this HIP allowances will require explicit specification of the intended scope by the owner.
+</aside>
+
+The updated TransactionBody will contain the sponsoring account identifier
 ```protobuf
+    /**
+    * A value transfer sponsor claim.
+    */
+    message TransactionSponsorClaim {
+        /**
+        * The account a spender is noting has provided prior willingness through an transaction fee allowance to sponsor transaction fees
+        */
+        AccountID sponsor_account_id = 1;
+
+        /**
+        * The intended allowance scope a spender is noting an owenr will cover. 
+        */
+        AllowanceScope scope = 2;
+    }
+
     message TransactionBody {
         ...
 
         /**
-        * The account a spender is noting has provided prior willingness through an transaction fee allowance to sponsor transaction fees
+        * A set of transaction sponsor claims a user is intenting to utilize to cover value transfers in this transaction
         */
-        AccountID fee_sponsor_account_id = 53;
-        
-        /**
-        * The account a spender is noting has provided prior willingness through a custom fee allowance to sponsor custom fee transaction fees
-        */
-        AccountID custom_fee_sponsor_account_id = 54;
+        repeated TransactionSponsorClaim tranaction_sponsor_claim = 53;
     }
 ```
 
@@ -234,21 +251,23 @@ The updated QueryHeader transaction would also contain the sponsored transaction
         ...
 
         /**
-        * The account a spender is noting has provided prior willingness through an HBAR allowance to sponsor transaction fees
+        * The account a spender is noting has provided prior willingness through an HBAR allowance to sponsor the query transaction fees
         */
-        AccountID fee_sponsor_account_id = 3;
+        AccountID sponsor_account_id = 3;
     }
 ```
 
 <aside>
-Note: A user must specify the fee_sponsor_account_id for the network to consider the validity of the sponsored transaction. If not specified the network will treat this as a normal transaction for which the submitter is due the transaction fees.
+Note: A user must specify the sponsor_account_id for the network to consider the validity of the sponsored transaction. 
+If not specified the network will treat this as a normal transaction in which the submitter is due the transaction fees.
 </aside>
 
 ### Error Cases
 
-As with normal transaction it’s possible for a sponsored transaction to fail. Existing transaction network rules will be applicable. 
+As with normal transaction it’s possible for a sponsored transaction to fail.
+Existing transaction network rules will be applicable. 
 
-A noted sponsoring account must be valid. A node that encounters an invalid sponsoring account value will respond with a new response code
+A node that encounters an invalid sponsoring account value will respond with a new response code
 
 ```protobuf
     enum ResponseCodeEnum {
@@ -258,7 +277,8 @@ A noted sponsoring account must be valid. A node that encounters an invalid spon
     }
 ```
 
-Transaction sponsorship will be complete in nature, a sponsor must be able to cover the full fee. In the case a sponsor lacks insufficient balance to cover an account that transaction will fail with a new response code.
+Transaction sponsorship will be complete in nature, a sponsor must be able to cover the full fee.
+In the case a sponsor lacks insufficient balance to cover an account that transaction will fail with a new response code.
 
 ```protobuf
     enum ResponseCodeEnum {
@@ -270,72 +290,64 @@ Transaction sponsorship will be complete in nature, a sponsor must be able to co
 
 ### Transaction Id
 
-Currently the transaction id of any submitted transaction takes the form of `<accountId>@<validStartTime>` format. Usually the `accountId` signifies the user who both submitted and paid for the transaction. With the changes from this HIP the `accountId` value in the transaction id of a sponsored transaction will refer only to the submitter and no longer the payer. The accountId of the payer will be located in the transaction body. 
+Currently the transaction id of any submitted transaction takes the form of `<accountId>@<validStartTime>` format.
+Usually the `accountId` signifies the user who both submitted and paid for the transaction. With the changes from this
+HIP the `accountId` value in the transaction id of a sponsored transaction will refer only to the submitter and no
+longer the payer. The accountId of the payer will be located in the transaction body. 
 
 ### System Contract Functions
 
-Similar to [HIP 906](https://hips.hedera.com/hip/hip-906), the system contract interface would need to be updated to support the similar management of allowances by a smart contract.
+Similar to [HIP 906](https://hips.hedera.com/hip/hip-906), the system contract interface would need to be updated to support the management of allowances with scope by a smart contract.
 
 An EOA will be afforded the following functions
 ```solidity
-    interface IHRCxyz {
-        function transactionFeeHbarAllowance(address spender) external returns (responseCode, int256);
-        function transactionFeeTokenAllowance(address spender, address token) external returns (responseCode, int256);
-        function transactionFeeApprove(TransactionFeeAllowance transactionFeeAllowance, CustomFeeAllowance customFeeAllowance) external returns (responseCode);
-    }
-```
+    interface IHRC1068 {
+        /// extensions of HIP 514
+        function approve(address token, address spender, uint256 amount, AllowanceScope allowanceScope) external returns (int64 responseCode);
+        function approveNFT(address token, address approved, uint256 serialNumber, AllowanceScope allowanceScope) external returns (int64 responseCode);
+        function setApprovalForAll(address token, address operator, bool approved, AllowanceScope allowanceScope) external returns (int64 responseCode);
 
-An update to the IHAS will allow contracts to
-```solidity
-    interface IHederaAccountService {
-        ...
-        function transactionFeeHbarAllowance(address owner, address spender) external returns (responseCode, int256);
-        function transactionFeeTokenAllowance(address owner, address spender, address token) external returns (responseCode, int256);
-        function transactionFeeApprove(address owner, TransactionFeeAllowance transactionFeeAllowance, CustomFeeAllowance customFeeAllowance) external returns (responseCode);
-        ...
+        /// extensions of HIP 906
+        function hbarAllowance(address spender, AllowanceScope allowanceScope) external returns (responseCode, int256);
+        function hbarApprove(address spender, int256 amount, AllowanceScope allowanceScope) external returns (responseCode);
     }
 ```
+A DApp can create the above calsl for an EOA using the EOA address as the contract address `<eoaEvmAddress>.selector()` - this is a form of account abstraction.
+
+<aside>
+Note: IHRC1068 method be available via the th `IHederaTokenService` also via `<IHederaTokenServiceAddress>.selector()`
+</aside>
 
 ### SDK API
 
 With the introduction of new allowance pathways, the SDK will need to expose the functionality to developers.
+The following transactions will need to be expanded with the scope concept
 
-AccountAllowanceApproveTransaction
-
-- addTransactionFeeAllowance()
-- approveTransactionFeeAllowance()
-- addCustomFeeAllowance()
-- approveCustomFeeAllowance()
-
-AccountAllowanceAdjustTransaction
-
-- addTransactionFeeAllowance()
-- grantTransactionFeeAllowance()
-- revokeTransactionFeeAllowance()
-- addCustomFeeAllowance()
-- grantCustomFeeAllowance()
-- revokeCustomFeeAllowance()
+- AccountAllowanceApproveTransaction
+- AccountAllowanceAdjustTransaction
+- AccountAllowanceDeletionTransaction
 
 ### Mirror Node API
 
-The Mirror Node, similar to hbar allowance, would need to be update to support the querying of `TransactionFeeAllowance` and `CustomFeeAllowance` values.
+The Mirror Node allowance REST APIs would need to be updated to support the scope concept.
 
-Namely, new `/api/v1/accounts/{idOrAliasOrEvmAddress}/allowances/transactionfees` and `/api/v1/accounts/{idOrAliasOrEvmAddress}/allowances/customfees` endpoints.
-
-`/api/v1/accounts/{idOrAliasOrEvmAddress}/allowances/transactionfees` response may resemble
+Namely, `/api/v1/accounts/{idOrAliasOrEvmAddress}/allowances/crypto`, `/api/v1/accounts/{idOrAliasOrEvmAddress}/allowances/nfts`
+and `/api/v1/accounts/{idOrAliasOrEvmAddress}/allowances/tokens` responses would be updated with a `scope` field
 
 ```json
     {
         "allowances": [
             {
-                "amount": 75,
-                "amount_granted": 100,
-                "owner": "0.0.2",
-                "spender": "0.0.2",
-                "timestamp": {
-                    "from": "1586567700.453054000",
-                    "to": "1586567700.453054000"
-                }
+                ...,
+                "scope": "CRYPTO_TRANSFER"
+            },
+            {
+                ...,
+                "scope": "TRANSACTION_FEE"
+            },
+            {
+                ...,
+                "scope": "TOKEN_CUSTOM_FEE"
             }
         ],
         "links": {
@@ -343,44 +355,17 @@ Namely, new `/api/v1/accounts/{idOrAliasOrEvmAddress}/allowances/transactionfees
         }
     }
 ```
+Additionally, a new query param `?scope=(CRYPTO_TRANSFER|TRANSACTION_FEE|TOKEN_CUSTOM_FEE)` would be added to allow users
+to filter on the specific scope type.
 
-`/api/v1/accounts/{idOrAliasOrEvmAddress}/allowances/customfees` response would resemble
-```json
-{
-    "allowances": [
-        {
-            "amount": 75,
-            "amount_granted": 100,
-            "owner": "0.0.2",
-            "spender": "0.0.2",
-            "timestamp": {
-                "from": "1586567700.453054000",
-                "to": "1586567700.453054000"
-            }
-        },
-        {
-            "amount": 75,
-            "amount_granted": 100,
-            "owner": "0.0.2",
-            "spender": "0.0.2",
-            "timestamp": {
-                "from": "1586567700.453054000",
-                "to": "1586567700.453054000"
-            },
-            "token_id": "0.0.2"
-        }
-    ],
-    "links": {
-        "next": null
-    }
-}
 ```
 
 ## Backwards Compatibility
 
 Currently the ledger allows for sponsored transaction fees by charging the transaction submitter/payer. This HIP does not conflict with this flow, but rather adds an additional flow.
 
-The are also no changes to existing allowance concepts so there should be no regression in feature support.
+There are minor changes to existing allowance concepts in teh form of an addition so there should be no regression in feature support.
+To ensure this the current allowances prior to the HIP are defaulted for clarity to cover the `CRYPTO_TRANSFER` scope.
 
 ## Security Implications
 
@@ -398,6 +383,12 @@ SDK examples, blogs and tutorials on docs.hedera.com
 ### Partial Payments
 
 The idea of partial payments was initially considered in which an account could sponsor a sub amount of fees (finite or percentage) in a transaction and a user would cover the rest. However, this flow becomes unnecessarily complex and the need isn’t clear initially. As such sponsorship of fees will be complete and not partial - if an account sponsors a transaction fee it much have provided enough in the allowance to cover the whole transaction fee. If this is not the case the transaction will fail.
+
+### Additonal Allowance Types
+Initially 2 new Allowance types were proposed (`TransactionFeeAllowance` and `CustomFeeAllowance`) to capture the ability to sponsor transaction and token custom fees.
+Though functional this would result in a larger API surface to specify the multiple sceanrios.
+Instead teh simple concept of a scope of applicability of each allowance was discussed and agreed upon.
+The simple scope concept is cleaner and can be added to the existing allowance types
 
 ## Open Issues
 
