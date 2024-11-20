@@ -1,0 +1,91 @@
+---
+hip: <HIP number (assigned by the HIP editor), usually the PR number>
+title: Zero Cost EthereumTransaction on Success
+author: Nana Essilfie-Conduah <@Nana-EC>, Richard Bair <@rbair>
+working-group: Richard Bair <@rbair>, Atul Mahamuni <@atul-hedera>, Stanimir Stoyanov <stanimir.stoyanov@limechain.tech>
+requested-by: Relay Operators
+type: Standards Track
+category: Service
+needs-council-approval: Yes
+status: Draft
+created: 2024-11-20
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/1083
+updated: 2024-11-20
+requires: [410](https://hips.hedera.com/hip/hip-410)
+---
+
+## Abstract
+
+On many EVM chains execution costs are fully captured in gas. Thus submitting transactions to execution nodes bears no
+cost to the relay node. On Hedera it is necessary to charge a fee for `EthereumTransaction` HAPI submissions (just like
+all other HAPI transactions).
+
+This HIP suggests the network logic not charge successful `EthereumTransaction` submissions, but instead only charge the
+regular HAPI fee for badly formed transactions.
+
+## Motivation
+
+Relay operators must pay the `EthereumTransaction` HAPI fee for every transaction they submit on behalf of an EOA.
+Currently for every `EthereumTransaction` this is the hbar equivalent of $0.0001 based on the exchange rate.
+Though very cheap, this additional HAPI fee charge effectively forces relay operators on Hedera to adopt a business
+model that is more expensive for them than operating on other EVM chains. These costs often get passed onto users
+which inhibits EOA access to low gas fees on Hedera.
+
+This serves as a friction point to EOAs in accessing cheap relay operators on the network.
+
+## Rationale
+
+`EthereumTransaction` HAPI logic charges inner transaction EOAs gas for the transaction execution work.
+As such on every transaction `tx.from` is debited an hbar fee to cover the `gas * gasPrice`.
+This ensures the network does effectively charges for work.
+Thus there is a clear pathway fpr the network to charge a user based on usage making it unnecessary to charge the
+relay operator. However, to encourage relayers to perform prechecks transactions that fail will follow the regular
+HAPI logic and still incur a submission fee.
+
+## User stories
+
+1. As a relay operator I want to submit an `EthereumTransaction` on behalf of an EOA and pay 0 in cryptocurrency costs
+like I do on other EVM chains.
+2. As a relay operator I will pay the HAPI transaction fee for `EthereumTransaction` submissions that fail.
+  
+## Specification
+
+The consensus node HAPI charging logic for `EthereumTransaction` submissions should be updated to the following
+- If the `EthereumTransaction` succeeds do not charge the AccountId submitter
+- If the `EthereumTransaction` fails do charge the AccountId submitter
+
+In both cases the `tx.from` EOA address should be charged the appropriate gas.
+
+## Backwards Compatibility
+
+No changes to transaction execution or record stream externalization is made in this HIP.
+`EthereumTransaction` will continue to work and will only see a reduction in cost on success cases.
+
+## Security Implications
+
+The network maintains a 21k minimum gas expense to the EOA and the equivalent HBAR will be deducted to cover costs.
+Beyond this the EVM and Hedera security model remain in effect.
+
+## How to Teach This
+
+Details on docs.hedera.com
+
+## Reference Implementation
+
+## Rejected Ideas
+
+
+## Open Issues
+
+- [ ] Q: What all avoidable errors could occur to result in a HAPI `EthereumTransaction` e.g. WRONG_NONCE, what else
+
+## References
+
+- [EthereumTransaction protobuf specification](https://github.com/hashgraph/hedera-protobufs/blob/main/services/ethereum_transaction.proto)
+- [Hedera JSON RPC Relay](https://docs.hedera.com/hedera/core-concepts/smart-contracts/json-rpc-relay)
+- [HIP 410](https://hips.hedera.com/hip/hip-410)
+
+## Copyright/license
+
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or 
+(https://www.apache.org/licenses/LICENSE-2.0)
