@@ -15,7 +15,7 @@
         <select id="status-filter" class="status-filter" multiple>
             <option value="review">Review</option>
             <option value="last call">Last Call</option>
-            <option value="council review">Council Review</option>
+            <option value="tsc review">TSC Review</option>
             <option value="accepted">Accepted</option>
             <option value="rejected">Rejected</option>
             <option value="final">Final</option>
@@ -27,9 +27,9 @@
         </select>
     </div>
     <div class="filter-group">
-        <h4>Council Approval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
-        <label><input type="radio" name="council-approval-filter" class="council-filter" value="true"> Yes</label>
-        <label><input type="radio" name="council-approval-filter" class="council-filter" value="false"> No</label>
+        <h4>TSC Approval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        <label><input type="radio" name="tsc-approval-filter" class="tsc-filter" value="true"> Yes</label>
+        <label><input type="radio" name="tsc-approval-filter" class="tsc-filter" value="false"> No</label>
     </div>
 </div>
 <div class="no-hips-message" style="display: none;">No HIPs exist for this filter.</div>
@@ -44,7 +44,7 @@
             <th class="numeric">Number</th>
             <th>Title</th>
             <th>Author</th>
-            <th>Needs Council Approval</th>
+            <th>Needs TSC Approval</th>
             {% if status == "Last Call" %}
             <th>Review Period Ends</th>
             {% else %}
@@ -54,12 +54,12 @@
     </thead>
     <tbody>
         {% for page in hips %}
-        <tr data-type="{{ page.type | downcase }}" data-category="{{ page.category | downcase }}" data-status="{{ page.status | downcase }}" data-council-approval="{{ page.needs-council-approval | downcase }}">
+        <tr data-type="{{ page.type | downcase }}" data-category="{{ page.category | downcase }}" data-status="{{ page.status | downcase }}" data-tsc-approval="{{ page.needs-council-approval or page.needs-tsc-approval | downcase }}">
             <td class="hip-number"><a href="{{ page.url | relative_url }}">{{ page.hip | xml_escape }}</a></td>
             <td class="title"><a href="{{ page.url | relative_url }}">{{ page.title | xml_escape }}</a></td>
             <td class="author">{% include authorslist.html authors=page.author %}</td>
-            <td class="council-approval">
-                {% if page.needs-council-approval %}
+            <td class="tsc-approval">
+                {% if page.needs-council-approval or page.needs-tsc-approval %}
                     Yes
                 {% else %}
                     No
