@@ -4,12 +4,12 @@ const regexs = require('../assets/regex');
 const errs = [];
 
 /**
- * Validates a hip's headers by looking for enclosing '---' substrings and calls functions that validate the contents.
- *
- * @async
- * @function captureHeaderValidation
- * @param {string} hipPath - Path to the hip.
- */
+* Validates a hip's headers by looking for enclosing '---' substrings and calls functions that validate the contents.
+*
+* @async
+* @function captureHeaderValidation
+* @param {string} hipPath - Path to the hip.
+*/
 async function captureHeaderValidation(hipPath) {
   const hip = hipPath || process.argv[2];
   if (hip.includes('hipstable')) {
@@ -46,8 +46,8 @@ async function captureHeaderValidation(hipPath) {
         errs.push(Error('updated date doesnt match current date in header, add current day'));
       }
     }
-    
-    if (lineCount ===  17) {
+
+    if (lineCount === 17) {
       throw new Error('header must be enclosed by "---"');
     }
     lineCount++;
@@ -55,13 +55,13 @@ async function captureHeaderValidation(hipPath) {
 }
 
 /**
- * Takes a hip's header and runs regexs against the contained properties to validate them.
- *
- * @async
- * @function validateHeaders
- * @param {string} headers
- */
- function validateHeaders(headers) {
+* Takes a hip's header and runs regexs against the contained properties to validate them.
+*
+* @async
+* @function validateHeaders
+* @param {string} headers
+*/
+function validateHeaders(headers) {
   try {
     if (!regexs.hipNum.test(headers)) {
       errs.push(Error('hip num must be a number use 000 if not yet assigned'));
@@ -71,37 +71,37 @@ async function captureHeaderValidation(hipPath) {
       errs.push(Error('header must include a title'));
     }
 
-    if (!regexs.councilApproval.test(headers)) {
-      errs.push(Error('header must specify "needs-council-approval: Yes/No'));
+    if (!regexs.councilApproval.test(headers) && !regexs.tscApproval.test(headers)) {
+      errs.push(Error('header must specify either "needs-council-approval: Yes/No" or "needs-tsc-approval: Yes/No"'));
     }
 
     if (!regexs.status.test(headers)) {
-      errs.push(Error('header must include "status: Idea | Draft | Review | Deferred | Withdrawn | Rejected ' + 
-      '| Last Call | Council Review | Accepted | Final | Active | Replaced'));
+      errs.push(Error('header must include "status: Idea | Draft | Review | Deferred | Withdrawn | Rejected ' +
+        '| Last Call | TSC Review | Accepted | Final | Active | Replaced'));
     }
 
     if (!regexs.type.test(headers)) {
       errs.push(Error('header must match one of the following types exactly ' +
-      '"type: Standards Track | Informational | Process"'));
+        '"type: Standards Track | Informational | Process"'));
     }
 
     if (!regexs.discussions.test(headers)) {
       errs.push(Error('header must include discussions page ' +
-      '"discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/xxx"'));
+        '"discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/xxx"'));
     }
 
     if (!/requested-by:/.test(headers)) {
       errs.push(Error('header must include "requested-by" with the requester\'s name and contact information'));
     }
 
-    if (/needs-council-approval: Yes/.test(headers) && 
+    if ((/needs-council-approval: Yes/.test(headers) || /needs-tsc-approval: Yes/.test(headers)) &&
       (/category: Application/.test(headers) || /type: Informational/.test(headers) || /type: Process/.test(headers))) {
-      errs.push(Error('Application Standards Track/Informational/Process HIPs do not need council approval'));
+      errs.push(Error('Application Standards Track/Informational/Process HIPs do not need TSC/Council approval'));
     }
 
-    if (/needs-council-approval: No/.test(headers)
+    if ((/needs-council-approval: No/.test(headers) || /needs-tsc-approval: No/.test(headers))
       && (/category: Service/.test(headers) || /category: Core/.test(headers) || /category: Mirror/.test(headers))) {
-        errs.push(Error('Service/Core/Mirror categories require council approval'));
+      errs.push(Error('Service/Core/Mirror categories require TSC/Council approval'));
     }
 
     if (!regexs.createdDate.test(headers)) {
@@ -110,14 +110,14 @@ async function captureHeaderValidation(hipPath) {
 
     if (/category:/.test(headers) && !regexs.category.test(headers)) {
       errs.push(Error('header must match one of the following categories ' +
-      'exactly "category: Core | Service | API | Mirror | Application"'));
+        'exactly "category: Core | Service | API | Mirror | Application"'));
     }
 
     if (/updated:/.test(headers) && !regexs.updatedDate.test(headers)) {
       errs.push(Error('updated date must be in the form "updated: YYYY-MM-DD, YYYY-MM-DD, etc'));
     }
 
-    if(/last-call-date-time:/.test(headers) && ! regexs.lastCallDateTime.test(headers)) {
+    if (/last-call-date-time:/.test(headers) && !regexs.lastCallDateTime.test(headers)) {
       errs.push(Error('last-call-date-time should be in the form "last-call-date-time: YYYY-MM-DDTHH:MM:SSZ"'));
     }
 
@@ -132,7 +132,7 @@ async function captureHeaderValidation(hipPath) {
     if (/superseded-by/.test(headers) && !regexs.supersededBy.test(headers)) {
       errs.push(Error('superseded-by field must specify the hip number(s) its referring "superseded-by: hipnum, hipnum(s)"'));
     }
-    if (errs.length > 0 ) {
+    if (errs.length > 0) {
       throw errs
     }
   } catch (error) {
@@ -142,23 +142,23 @@ async function captureHeaderValidation(hipPath) {
 }
 
 /**
- * Takes an author: or a working-group: list and validates it.
- *
- * @async
- * @function validateHeaders
- * @param {string} line - line in header containing author or working-group
- */
+* Takes an author: or a working-group: list and validates it.
+*
+* @async
+* @function validateHeaders
+* @param {string} line - line in header containing author or working-group
+*/
 function validateNames(line) {
   try {
-      line.split(',')
-              .forEach(
-                element => {
-                  const words = element.split(': ');
-                  if (!regexs.name.test(words[words.length - 1])) {
-                    errs.push(Error('name is improperly formatted, resubmit PR in the form ex: (author|working-group): Firstname Lastname <@gitName or email>'));
-                  }
-                }
-              )
+    line.split(',')
+      .forEach(
+        element => {
+          const words = element.split(': ');
+          if (!regexs.name.test(words[words.length - 1])) {
+            errs.push(Error('name is improperly formatted, resubmit PR in the form ex: (author|working-group): Firstname Lastname <@gitName or email>'));
+          }
+        }
+      )
   } catch (error) {
     errs.push(Error(error));
   }
