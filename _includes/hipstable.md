@@ -53,7 +53,6 @@
             <th>Title</th>
             <th>Author</th>
             <th>Needs Council Approval</th>
-            <th class="numeric version">Release</th>
         </tr>
     </thead>
     <tbody class="draft-tbody">
