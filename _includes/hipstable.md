@@ -46,7 +46,7 @@
 
 <!-- First render the draft section -->
 <h2 id="draft">Draft <span class="status-tooltip" data-tooltip="Draft">ⓘ</span></h2>
-<table class="hipstable">
+<table class="hipstable draft-table">
     <thead>
         <tr>
             <th class="numeric">Number</th>
@@ -55,9 +55,7 @@
             <th>Needs Council Approval</th>
         </tr>
     </thead>
-    <tbody class="draft-tbody">
-        <!-- JavaScript will populate this section -->
-    </tbody>
+    <tbody class="draft-tbody"></tbody>
 </table>
 
 <!-- Then render the rest of the statuses -->
