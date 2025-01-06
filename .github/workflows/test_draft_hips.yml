@@ -1,0 +1,155 @@
+name: Test Draft HIPs Data Collection
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: "Test mode (dry-run or full)"
+        required: true
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - full
+
+jobs:
+  test-draft-hips:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Create Test Directories
+        run: |
+          mkdir -p _data
+          mkdir -p .github/scripts
+          mkdir -p test/expected
+
+      - name: Create Test Script
+        run: |
+          cat << 'EOF' > .github/scripts/test-draft-hips.js
+          const fs = require('fs');
+          const https = require('https');
+
+          // Same query as production but with lower limits for testing
+          const query = `
+            query { 
+              repository(name: "hedera-improvement-proposal", owner: "hashgraph") {
+                pullRequests(first: 10, orderBy: {field: CREATED_AT, direction: DESC}, states: [OPEN]) {
+                  nodes {
+                    title
+                    number
+                    url
+                    headRefOid
+                    files(last: 10) {
+                      edges {
+                        node {
+                          path
+                          additions
+                          deletions
+                        }
+                      }
+                    }
+                    author {
+                      login
+                    }
+                  }
+                }
+              }
+            }
+          `;
+
+          const options = {
+            hostname: 'api.github.com',
+            path: '/graphql',
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+              'Content-Type': 'application/json',
+              'User-Agent': 'Node.js'
+            }
+          };
+
+          // Create a test results directory
+          if (!fs.existsSync('test/results')) {
+            fs.mkdirSync('test/results', { recursive: true });
+          }
+
+          const req = https.request(options, (res) => {
+            let data = '';
+            
+            res.on('data', (chunk) => {
+              data += chunk;
+            });
+            
+            res.on('end', () => {
+              const result = JSON.parse(data);
+              if (result.errors) {
+                console.error('GraphQL errors:', result.errors);
+                process.exit(1);
+              }
+              
+              // Save test results
+              const testResults = {
+                timestamp: new Date().toISOString(),
+                data: result.data.repository.pullRequests.nodes,
+                responseCode: res.statusCode,
+                headers: res.headers
+              };
+              
+              fs.writeFileSync('test/results/api_response.json', JSON.stringify(testResults, null, 2));
+              
+              // If in full test mode, also save to _data
+              if (process.env.TEST_MODE === 'full') {
+                fs.writeFileSync('_data/draft_hips.json', JSON.stringify(result.data.repository.pullRequests.nodes, null, 2));
+              }
+              
+              // Validate the response
+              const prs = result.data.repository.pullRequests.nodes;
+              console.log('\nValidation Results:');
+              console.log('==================');
+              console.log(`Total PRs fetched: ${prs.length}`);
+              console.log(`PRs with files: ${prs.filter(pr => pr.files.edges.length > 0).length}`);
+              console.log(`PRs with markdown files: ${prs.filter(pr => 
+                pr.files.edges.some(edge => edge.node.path.endsWith('.md'))
+              ).length}`);
+              
+              console.log('\nTest completed successfully');
+            });
+          });
+
+          req.on('error', (error) => {
+            console.error('Error:', error);
+            process.exit(1);
+          });
+
+          req.write(JSON.stringify({ query }));
+          req.end();
+          EOF
+
+      - name: Run Test
+        run: |
+          node .github/scripts/test-draft-hips.js
+        env:
+          GITHUB_TOKEN: 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
+          TEST_MODE: ${{ inputs.test_mode }}
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test/results/
+
+      - name: Check Results
+        run: |
+          if [ -f "test/results/api_response.json" ]; then
+            echo "Test results generated successfully"
+            cat test/results/api_response.json | jq -r '.timestamp, "Total PRs:", (.data | length)'
+          else
+            echo "Error: Test results not generated"
+            exit 1
+          fi
