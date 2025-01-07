@@ -69,51 +69,14 @@ class HIPPRIntegration {
 
     async fetchPRData() {
         try {
-            const token = document.querySelector('meta[name="github-token"]').content;
+            // Try with site.baseurl if it's set in _config.yml
+            const baseUrl = document.querySelector('meta[name="site-baseurl"]')?.content || '';
+            const response = await fetch(`${baseUrl}/_data/draft_hips.json`);
 
-            const query = {
-                query: `query { 
-                    repository(name: "hedera-improvement-proposal", owner: "hashgraph") {
-                        pullRequests(first: 100, orderBy: {field: CREATED_AT, direction: DESC}, states: [OPEN]) {
-                            nodes {
-                                title
-                                number
-                                url
-                                headRefOid
-                                files(last: 100) {
-                                    edges {
-                                        node {
-                                            path
-                                            additions
-                                            deletions
-                                        }
-                                    }
-                                }
-                                author {
-                                    login
-                                }
-                            }
-                        }
-                    }
-                }`
-            };
-
-            const response = await fetch('https://api.github.com/graphql', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(query)
-            });
-
-            const data = await response.json();
-
-            if (!response.ok || data.errors) {
-                console.error('GraphQL errors:', data.errors);
-                return null;
+            if (!response.ok) {
+                throw new Error('Failed to fetch draft HIPs data');
             }
-            return data.data.repository.pullRequests.nodes;
+            return await response.json();
         } catch (error) {
             console.error('Error in fetchPRData:', error);
             throw error;
@@ -123,14 +86,14 @@ class HIPPRIntegration {
     async filterHIPPRs(prs) {
         const validHips = [];
         const seenPRs = new Set();
-    
+
         for (const pr of prs) {
             if (seenPRs.has(pr.number)) continue;
-    
+
             const mdFiles = pr.files.edges.filter(file => file.node.path.endsWith('.md'));
             let bestMetadata = null;
             let bestFile = null;
-    
+
             // Try all MD files and pick the one with the most complete metadata
             for (const file of mdFiles) {
                 try {
@@ -138,16 +101,16 @@ class HIPPRIntegration {
                     const response = await fetch(contentUrl);
                     const content = await response.text();
                     const metadata = this.parseHIPMetadata(content);
-    
+
                     // Skip template files and empty metadata
                     if (file.node.path.includes('template') || !metadata.title) {
                         continue;
                     }
-    
+
                     // If we don't have metadata yet, or this file has a better title
-                    if (!bestMetadata || 
-                        (metadata.title && metadata.title.length > 3 && 
-                         (!bestMetadata.title || metadata.title.length > bestMetadata.title.length))) {
+                    if (!bestMetadata ||
+                        (metadata.title && metadata.title.length > 3 &&
+                            (!bestMetadata.title || metadata.title.length > bestMetadata.title.length))) {
                         bestMetadata = metadata;
                         bestFile = file;
                     }
@@ -155,7 +118,7 @@ class HIPPRIntegration {
                     console.error(`Error checking file ${file.node.path}:`, error);
                 }
             }
-    
+
             // If we found valid metadata, add it to the results
             if (bestMetadata && bestFile) {
                 validHips.push({
@@ -166,7 +129,7 @@ class HIPPRIntegration {
                 seenPRs.add(pr.number);
             }
         }
-    
+
         return validHips;
     }
 
