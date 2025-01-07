@@ -1,0 +1,118 @@
+name: Update Draft HIPs Data
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # Runs every 6 hours
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  update-draft-hips:
+    if: github.ref == 'refs/heads/main' # Only run on main branch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Create Script
+        run: |
+          mkdir -p _data
+          cat << 'EOF' > fetch-draft-hips.js
+          const https = require('https');
+
+          async function makeGraphQLRequest(query, token) {
+            return new Promise((resolve, reject) => {
+              const options = {
+                hostname: 'api.github.com',
+                path: '/graphql',
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+                  'User-Agent': 'Node.js'
+                }
+              };
+
+              const req = https.request(options, (res) => {
+                let data = '';
+                res.on('data', chunk => { data += chunk; });
+                res.on('end', () => resolve(JSON.parse(data)));
+              });
+
+              req.on('error', reject);
+              req.write(JSON.stringify({ query }));
+              req.end();
+            });
+          }
+
+          async function getAllPRs() {
+            const query = `
+              query { 
+                repository(name: "hedera-improvement-proposal", owner: "hashgraph") {
+                  pullRequests(first: 100, states: [OPEN], orderBy: {field: CREATED_AT, direction: DESC}) {
+                    nodes {
+                      title
+                      number
+                      url
+                      headRefOid
+                      files(first: 100) {
+                        edges {
+                          node {
+                            path
+                            additions
+                            deletions
+                          }
+                        }
+                      }
+                      author {
+                        login
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+
+            try {
+              const result = await makeGraphQLRequest(query, process.env.GITHUB_TOKEN);
+              
+              if (result.errors) {
+                console.error('GraphQL errors:', result.errors);
+                process.exit(1);
+              }
+
+              return result.data.repository.pullRequests.nodes;
+            } catch (error) {
+              console.error('Error fetching PRs:', error);
+              throw error;
+            }
+          }
+
+          // Run the main function
+          getAllPRs().then(prs => {
+            const fs = require('fs');
+            fs.writeFileSync('_data/draft_hips.json', JSON.stringify(prs, null, 2));
+          }).catch(error => {
+            console.error('Failed to fetch PRs:', error);
+            process.exit(1);
+          });
+          EOF
+
+      - name: Run Script
+        run: node fetch-draft-hips.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add _data/draft_hips.json
+          git commit -m "Update draft HIPs data [skip ci]" || echo "No changes to commit"
+          git push origin main || echo "No changes to push"
