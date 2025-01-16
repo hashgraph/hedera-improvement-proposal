@@ -7,8 +7,8 @@ on:
 
 jobs:
   update-draft-hips:
-    #if: github.ref == 'refs/heads/main' # Only run on main branch
-    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' # Only run on main branch
+    runs-on: improvement-proposals-linux-medium
     permissions:
       contents: write
       pull-requests: read
