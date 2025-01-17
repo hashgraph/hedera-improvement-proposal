@@ -1,5 +1,25 @@
 [
   {
+    "title": "Update hip-1037.md to Accepted",
+    "number": 1102,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1102",
+    "headRefOid": "42cc1e46d6b16eb32ec6e2109a1757f987d79f74",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1037.md",
+            "additions": 2,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
     "title": "Update hip-1037.md to Last Call",
     "number": 1100,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1100",
@@ -20,7 +40,7 @@
     }
   },
   {
-    "title": "chore: add post implementation updates for accuracy",
+    "title": "chore: HIP-755 - add post implementation updates for accuracy",
     "number": 1098,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1098",
     "headRefOid": "51906a5b1787253c20c0cfbc604475c40a30910a",
