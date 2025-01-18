@@ -1,5 +1,25 @@
 [
   {
+    "title": "Support for Post-Quantum Cryptographic Algorithm",
+    "number": 1103,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1103",
+    "headRefOid": "a440591f358a21f33647e0b76c649e9a9d34ab1c",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-support-for-post-quantum-cryptographic-algorithm.md",
+            "additions": 100,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "JeremyPansier"
+    }
+  },
+  {
     "title": "Update hip-1037.md to Accepted",
     "number": 1102,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1102",
