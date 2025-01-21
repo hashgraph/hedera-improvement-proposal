@@ -163,13 +163,13 @@
     "title": "Allow Setting of EVM Address by EOA",
     "number": 1082,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1082",
-    "headRefOid": "6ab73e0d50d56feb919832cbb63876508b3f41f4",
+    "headRefOid": "32b20dcc799330f27dc8dd3d26ce94d332cfea11",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1082.md",
-            "additions": 225,
+            "additions": 248,
             "deletions": 0
           }
         }
