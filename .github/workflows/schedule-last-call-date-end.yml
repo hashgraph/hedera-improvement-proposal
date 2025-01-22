@@ -18,7 +18,7 @@ on:
 jobs:
   check-merged-file:
     if: github.event.pull_request.merged == true
-    runs-on: [self-hosted, Linux, medium, ephemeral]
+    runs-on: improvement-proposals-linux-medium
 
     steps:
       - name: Check out the code
