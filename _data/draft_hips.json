@@ -80,36 +80,16 @@
     }
   },
   {
-    "title": "chore: HIP-755 - add post implementation updates for accuracy",
-    "number": 1098,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1098",
-    "headRefOid": "51906a5b1787253c20c0cfbc604475c40a30910a",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-755.md",
-            "additions": 17,
-            "deletions": 12
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "lukelee-sl"
-    }
-  },
-  {
     "title": "HIP-991: Introduce generic custom fee limits",
     "number": 1095,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1095",
-    "headRefOid": "057dc4af10df971bb6c48eefb2beb941003bbbbe",
+    "headRefOid": "3e5cef78c7366683593227158a6f75ec61950afc",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-991.md",
-            "additions": 289,
+            "additions": 265,
             "deletions": 22
           }
         }
