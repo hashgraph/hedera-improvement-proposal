@@ -1,15 +1,151 @@
 [
   {
+    "title": "Bump step-security/action-discord from 0.1.0 to 0.1.1",
+    "number": 1108,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1108",
+    "headRefOid": "2736fe31b64c2eb402d069ff9af7a11c5adada1f",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/workflows/send-discord-message.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "dependabot"
+    }
+  },
+  {
+    "title": "Bump actions/checkout from 3.6.0 to 4.2.2",
+    "number": 1107,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1107",
+    "headRefOid": "285bd79ad9a882d7be78a9408750b65d6819e231",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/workflows/add-hip-number.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/notifications.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/schedule-last-call-date-end.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/validateHeaders.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "dependabot"
+    }
+  },
+  {
+    "title": "Bump actions/setup-node from 3.6.0 to 4.1.0",
+    "number": 1106,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1106",
+    "headRefOid": "269ea2a7ca436f80b10679941ca798e816ec8384",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/workflows/update-draft-hips.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/validateHeaders.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "dependabot"
+    }
+  },
+  {
+    "title": "Bump step-security/harden-runner from 2.7.1 to 2.10.4",
+    "number": 1105,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1105",
+    "headRefOid": "fbf03fc49c9857bc4365a0e442cb1c4345aff478",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/workflows/add-hip-number.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/notifications.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/send-discord-message.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/send-email.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/validateHeaders.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "dependabot"
+    }
+  },
+  {
     "title": "Update HIP-756",
     "number": 1104,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1104",
-    "headRefOid": "c386c0dff4365b6f6f1db17a8aff0ccdde9cf4d8",
+    "headRefOid": "a9d726bdedffba52af81bc4837974c7a3f177198",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-756.md",
-            "additions": 24,
+            "additions": 23,
             "deletions": 25
           }
         }
