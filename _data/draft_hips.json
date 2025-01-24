@@ -1,5 +1,25 @@
 [
   {
+    "title": "chore: add product managers to CODEOWNERS",
+    "number": 1109,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1109",
+    "headRefOid": "9d06f2291bfc84ea8bd347c4313d8a2c52a4a6cf",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/CODEOWNERS",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "andrewb1269hg"
+    }
+  },
+  {
     "title": "Bump step-security/action-discord from 0.1.0 to 0.1.1",
     "number": 1108,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1108",
@@ -139,7 +159,7 @@
     "title": "Update HIP-756",
     "number": 1104,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1104",
-    "headRefOid": "5e51621e5a9148439a121c74659d9a543c7c093c",
+    "headRefOid": "eedc6fa128daef7a72eef134cc7719d7b0c525c1",
     "files": {
       "edges": [
         {
