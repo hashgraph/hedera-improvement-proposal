@@ -326,7 +326,7 @@
     "title": "Enable KeyList Support in HTS  Precompile",
     "number": 1069,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1069",
-    "headRefOid": "3b7917b03a862535caf3ed3fdee95d3c3f24c7ba",
+    "headRefOid": "cdef1c5caf54cf1f654c6fcae074a115c3efe360",
     "files": {
       "edges": [
         {
