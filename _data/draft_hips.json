@@ -1,5 +1,25 @@
 [
   {
+    "title": "chore: add product managers to CODEOWNERS",
+    "number": 1109,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1109",
+    "headRefOid": "9d06f2291bfc84ea8bd347c4313d8a2c52a4a6cf",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/CODEOWNERS",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "andrewb1269hg"
+    }
+  },
+  {
     "title": "Bump step-security/action-discord from 0.1.0 to 0.1.1",
     "number": 1108,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1108",
@@ -139,7 +159,7 @@
     "title": "Update HIP-756",
     "number": 1104,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1104",
-    "headRefOid": "5e51621e5a9148439a121c74659d9a543c7c093c",
+    "headRefOid": "eedc6fa128daef7a72eef134cc7719d7b0c525c1",
     "files": {
       "edges": [
         {
@@ -219,13 +239,13 @@
     "title": "Update hip-551.md",
     "number": 1090,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1090",
-    "headRefOid": "a417c2acf05ec44832e7bb62483c8244cd569856",
+    "headRefOid": "79e0cbbef633d72b10449f86bd98bc6337b0a5e9",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-551.md",
-            "additions": 104,
+            "additions": 107,
             "deletions": 60
           }
         }
@@ -239,7 +259,7 @@
     "title": "Updates to HIP-869",
     "number": 1089,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1089",
-    "headRefOid": "24d2b84e5426af69df08629606bfc175b8f53f37",
+    "headRefOid": "7c1ebc139abcf39eba14646f6c91881da6a17890",
     "files": {
       "edges": [
         {
