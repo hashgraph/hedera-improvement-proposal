@@ -239,13 +239,13 @@
     "title": "Update hip-551.md",
     "number": 1090,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1090",
-    "headRefOid": "a417c2acf05ec44832e7bb62483c8244cd569856",
+    "headRefOid": "79e0cbbef633d72b10449f86bd98bc6337b0a5e9",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-551.md",
-            "additions": 104,
+            "additions": 107,
             "deletions": 60
           }
         }
@@ -259,7 +259,7 @@
     "title": "Updates to HIP-869",
     "number": 1089,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1089",
-    "headRefOid": "24d2b84e5426af69df08629606bfc175b8f53f37",
+    "headRefOid": "7c1ebc139abcf39eba14646f6c91881da6a17890",
     "files": {
       "edges": [
         {
