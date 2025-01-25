@@ -3,7 +3,7 @@
     "title": "chore: add product managers to CODEOWNERS",
     "number": 1109,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1109",
-    "headRefOid": "9d06f2291bfc84ea8bd347c4313d8a2c52a4a6cf",
+    "headRefOid": "5f75fcf33ff6f45cabd87d6db4ba78202c35c38f",
     "files": {
       "edges": [
         {
@@ -153,26 +153,6 @@
     },
     "author": {
       "login": "dependabot"
-    }
-  },
-  {
-    "title": "Update HIP-756",
-    "number": 1104,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1104",
-    "headRefOid": "eedc6fa128daef7a72eef134cc7719d7b0c525c1",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-756.md",
-            "additions": 23,
-            "deletions": 25
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "stoyanov-st"
     }
   },
   {
