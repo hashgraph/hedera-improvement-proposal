@@ -164,14 +164,34 @@ The possible paths of the status of HIPs are as follows:
 - **Review** - A HIP Author marks a HIP as ready for and requesting Editorial Review.
 - **Deferred** - A HIP under consideration for future implementation, but not set for immediate action.
 - **Withdrawn** - The HIP Author(s) have withdrawn the proposed HIP. This state has finality and can no longer be resurrected using this HIP number. If the idea is pursued at a later date—it is considered a new proposal.
-- **Stagnant** - Any HIP in `Draft` or `Review,` if inactive for a period of 6 months or greater, is moved to Stagnant. A HIP may be resurrected from this state by Authors or HIP Editors by moving it back to Draft.
-- **Rejected** - Throughout the discussion of a HIP, various ideas will be proposed that are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This helps record the thought process behind the final version of the HIP and prevents people from bringing up the same rejected idea again in subsequent discussions.
-- **Last Call** - This is the final review window for a HIP before moving to "Accepted." A HIP editor will assign the `Last Call` status and set a review end date (`last-call-date-time`), typically 14 days later. If this period results in necessary normative changes, it will revert the HIP to Review.
-- **TSC Review** - Some HIPs will have to be accepted by the Hiero Technical Steering Committee before getting an `Accepted` status. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service`, and `Mirror` categories, but can expand to other HIPs as well, including `Process` HIPs.
-- **Accepted** - An accepted HIP is a HIP that went through the "Last Call" status period without changes to the content and is considered ready for implementation in the codebase.
-- **Final** - This HIP represents the final standard implemented in code. A `Final` HIP exists in a state of finality and should only be updated to correct errata and add non-normative clarifications.
+- **Stagnant** - Any HIP in `Draft` or `Review`, if inactive for a period of 6 months or greater, is moved to Stagnant. A HIP may be resurrected from this state by Authors or HIP Editors by moving it back to Draft.
+- **Rejected** - Throughout the discussion of a HIP, various ideas will be proposed that are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected.
+- **Last Call** - This is the final review window for a HIP before moving to further approval stages. A HIP editor will assign the `Last Call` status and set a review end date (`last-call-date-time`), typically 14 days later.
+- **Council Review** - [Historical] Legacy status for HIP under review by the Hedera Council. This status applied to HIPs submitted before the Hiero transition.
+- **TSC Review** - The HIP is under review by the Hiero Technical Steering Committee. This is required for HIPs that affect Core, Service, or Mirror components.
+- **TSC Approved** - The HIP has been approved by the Hiero Technical Steering Committee and is ready for implementation or Hedera review.
+- **Hedera Review** - The HIP is under review by the Hedera Governing Council for deployment on the Hedera network. This is required for HIPs that affect Core, Service, or Mirror components.
+- **Hedera Accepted** - The HIP has been accepted by the Hedera Governing Council for deployment on the Hedera network.
+- **Accepted** - [Historical] Legacy status for HIPs that were accepted before the Hiero transition. For new HIPs, either TSC Approved or Hedera Accepted should be used.
+- **Final** - This HIP represents the final standard implemented in code. A Final HIP exists in a state of finality and should only be updated to correct errata.
 - **Active** - Some Informational or Process HIPs may also have a status of `Active` if they are never meant to be completed. An `Active` HIP may be `Withdrawn` or `Replaced` by another HIP. If the idea is pursued at a later date—it is considered a new proposal.
-- **Replaced** - `Replaced` HIPs are overwritten by a newer standard or implementation.
+- **Replaced** - Replaced HIPs are overwritten by a newer standard or implementation.
+
+### Workflow Changes
+
+For HIPs that affect the Core, Service, or Mirror components, the workflow is now:
+
+Draft → Review → Last Call → TSC Review → TSC Approved → [Hedera Review → Hedera Accepted] → Final
+
+The [Hedera Review → Hedera Accepted] stages are required only for HIPs that will be deployed on the Hedera network. For Hiero-only implementations, the TSC Approved status is sufficient to proceed to Final.
+
+#### Historical Workflow (Pre-Hiero)
+
+For historical reference, the previous workflow before the Hiero transition was:
+
+Draft → Review → Last Call → Council Review → Accepted → Final
+
+HIPs that followed this historical workflow maintain their original status designations for archival purposes.
 
 ### HIP Maintenance
 
