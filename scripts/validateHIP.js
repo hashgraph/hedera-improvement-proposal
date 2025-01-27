@@ -96,12 +96,12 @@ function validateHeaders(headers) {
 
     if ((/needs-council-approval: Yes/.test(headers) || /needs-tsc-approval: Yes/.test(headers)) &&
       (/category: Application/.test(headers) || /type: Informational/.test(headers) || /type: Process/.test(headers))) {
-      errs.push(Error('Application Standards Track/Informational/Process HIPs do not need TSC/Council approval'));
+      errs.push(Error('Application Standards Track/Informational/Process HIPs do not need Hiero TSC and Hedera approval'));
     }
 
     if ((/needs-council-approval: No/.test(headers) || /needs-tsc-approval: No/.test(headers))
       && (/category: Service/.test(headers) || /category: Core/.test(headers) || /category: Mirror/.test(headers))) {
-      errs.push(Error('Service/Core/Mirror categories require TSC/Council approval'));
+      errs.push(Error('Service/Core/Mirror categories require Hiero TSC and Hedera approval'));
     }
 
     if (!regexs.createdDate.test(headers)) {
