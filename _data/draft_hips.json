@@ -393,7 +393,7 @@
     "title": "Update hip-1.md in preparation to Hiero migration",
     "number": 1062,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1062",
-    "headRefOid": "6da97780cbddb27fcf1ec5d5ceb369c506541663",
+    "headRefOid": "e2ef13aebd3075d2fb0ba9860c30f3bf63063560",
     "files": {
       "edges": [
         {
@@ -413,7 +413,7 @@
         {
           "node": {
             "path": "HIP/hip-1.md",
-            "additions": 128,
+            "additions": 148,
             "deletions": 123
           }
         },
@@ -443,6 +443,13 @@
             "path": "assets/hip-1/hip-states.png",
             "additions": 0,
             "deletions": 0
+          }
+        },
+        {
+          "node": {
+            "path": "assets/regex.js",
+            "additions": 1,
+            "deletions": 1
           }
         },
         {
