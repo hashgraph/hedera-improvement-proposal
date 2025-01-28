@@ -379,7 +379,7 @@ For each new HIP that comes in, an editor does the following:
 
 - Read the HIP to check if it is ready: sound and complete. The ideas must make technical sense, even if they don't seem likely to get to Final status.
 - The title should accurately describe the content.
-- Check the HIP for language (spelling, grammar, sentence structure, etc.), markup (GitHub-flavored Markdown), and code style.
+- Check the HIP for language (spelling, grammar, sentence structure, etc.), markup ([GitHub-flavored Markdown](https://github.github.com/gfm/)), and code style.
 
     If the HIP isn't ready, the editor will send it back to the author for revision with specific instructions.
 
