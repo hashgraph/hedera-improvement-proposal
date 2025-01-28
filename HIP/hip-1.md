@@ -147,7 +147,7 @@ When a HIP is `Accepted,` `Rejected,` or `Withdrawn,` it should be updated accor
 
 HIPs can also be superseded by a different HIP, rendering the original obsolete. This is intended for Informational HIPs, where version 2 of an API can replace version 1.
 
-Some HIPs will have to be reviewed by the Hiero Technical Steering Committee (TSC) before getting an `Accepted` status. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service`, and `Mirror` categories, but can expand to other HIPs as well, including `Process` HIPs. The HIP editors will double-check if the `Yes` flag on the `needs-tsc-approval` header field needs to be set. If a HIP needs TSC approval, it will have to go through a `TSC Review` status and be reviewed by the Hiero TSC.
+Some HIPs will have to be reviewed by the Hiero TSC before getting an `Accepted` status. This is usually the case for HIPs in the `Standards Track` type and `Core`, `Service`, and `Mirror` categories, but can expand to other HIPs as well, including `Process` HIPs. The HIP editors will double-check if the `Yes` flag on the `needs-tsc-approval` header field needs to be set. If a HIP needs TSC approval, it will have to go through a `TSC Review` status and be reviewed by the Hiero TSC.
 
 The Hiero TSC reviews and accepts HIPs for inclusion into the codebase. The TSC ensures that the HIP aligns with the project's technical goals and standards.
 
