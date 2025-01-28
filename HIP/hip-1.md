@@ -40,7 +40,7 @@ There are three kinds of HIP:
 
 The Hiero Technical Steering Committee (the “Hiero TSC”) is responsible for all technical oversight of the Hiero codebase. It has the final say on whether a HIP is accepted into the codebase. You can read more about Hiero and the Hiero TSC here: [Hiero Technical Charter](https://github.com/hiero-ledger/governance/blob/main/Hiero%20Technical%20Charter%20Final%209-16-2024.md).
 
-### Hiero Governing Council
+### Hedera Governing Council
 
 The Hedera Governing Council runs the Hedera mainnet and has the final say on whether any Hiero accepted HIP gets approved to be deployed on mainnet.
 
