@@ -1,5 +1,25 @@
 [
   {
+    "title": "Updates to the HIP-1064 user stories",
+    "number": 1110,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1110",
+    "headRefOid": "f18c19bbdc820a6ea352a0ea750f659b76fd8831",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1064.md",
+            "additions": 4,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "Neeharika-Sompalli"
+    }
+  },
+  {
     "title": "chore: add product managers to CODEOWNERS",
     "number": 1109,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1109",
