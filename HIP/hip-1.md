@@ -50,7 +50,7 @@ Hedera Core Developers or "core developers" include those who are tasked with th
 
 ### HIP Editors
 
-The HIP editors or "editors" are individuals responsible for managing the administrative and editorial aspects of the HIP workflow. HIP editorship is by invitation of the current editors or by assignment by the Hiero TSC.
+The HIP editors or "editors" are individuals responsible for managing the administrative and editorial aspects of the HIP workflow. HIP editorship is by invitation of the current committers and maintainers of the HIP project.
 
 ### Start with an idea for Hiero
 
