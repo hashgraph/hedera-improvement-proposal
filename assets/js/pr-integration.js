@@ -182,16 +182,17 @@ class HIPPRIntegration {
         const draftContainer = document.createElement('div');
         draftContainer.innerHTML = `
             <h2 id="draft">Draft <span class="status-tooltip" data-tooltip="Draft">ⓘ</span></h2>
-            <table class="hipstable">
+            <table class="hipstable draft-table">
                 <thead>
                     <tr>
                         <th class="numeric">Number</th>
                         <th>Title</th>
                         <th>Author</th>
-                        <th>Needs Council Approval</th>
+                        <th>Needs TSC Review</th>
+                        <th>Needs Hedera Review</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody class="draft-tbody"></tbody>
             </table>
         `;
 
@@ -202,15 +203,28 @@ class HIPPRIntegration {
         hips.forEach(({ pr, metadata }) => {
             if (!metadata.title || metadata.title.trim() === '') return;
 
-            const needsApproval = String(metadata['needs-council-approval']).toLowerCase() === 'true' ||
-                String(metadata['needs-tsc-approval']).toLowerCase() === 'true' ||
-                String(metadata.needs_council_approval).toLowerCase() === 'true' ||
-                metadata.type?.toLowerCase() === 'standards track';
+            // TSC Review is independent
+            const needsTSCReview = String(metadata['needs-tsc-review']).toLowerCase() === 'true';
+            
+            // Hedera Review should be Yes for either new hedera review flag OR old council approval
+            const needsHederaReview = String(metadata['needs-council-approval']).toLowerCase() === 'true' || 
+                                    String(metadata['needs-council-approval']).toLowerCase() === 'yes' ||
+                                    String(metadata['needs-hedera-review']).toLowerCase() === 'true' ||
+                                    metadata.status?.toLowerCase() === 'needs council review';
+
+            console.log('Review Status:', {
+                title: metadata.title,
+                needsTSCReview,
+                needsHederaReview
+            });
 
             const row = document.createElement('tr');
             row.dataset.type = (metadata.type || 'core').toLowerCase();
             row.dataset.status = 'draft';
-            row.dataset.councilApproval = needsApproval.toString();
+            row.dataset.councilApproval = String(metadata['needs-council-approval']).toLowerCase() === 'true' || 
+                                        String(metadata['needs-council-approval']).toLowerCase() === 'yes';
+            row.dataset.tscReview = needsTSCReview;
+            row.dataset.hederaReview = needsHederaReview;
             row.dataset.category = metadata.category || '';
 
             const authors = metadata.author.split(',').map(author => {
@@ -235,7 +249,8 @@ class HIPPRIntegration {
                 <td class="hip-number"><a href="${pr.url}" target="_blank">PR-${pr.number}</a></td>
                 <td class="title"><a href="${pr.url}" target="_blank">${metadata.title}</a></td>
                 <td class="author">${authors.join(', ')}</td>
-                <td class="council-approval">${needsApproval ? 'Yes' : 'No'}</td>
+                <td class="tsc-review">${needsTSCReview ? 'Yes' : 'No'}</td>
+                <td class="hedera-review">${needsHederaReview ? 'Yes' : 'No'}</td>
             `;
 
             tbody.appendChild(row);

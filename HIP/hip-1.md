@@ -73,7 +73,7 @@ Once the champion has discovered with the Hiero community the idea's acceptabili
 
 ### ⚠️ Setting up DCO
 
-The Hedera Improvement Proposals repository inherits security practices of the wider `hashgraph` GitHub org and requires the Developer Certificate of Origin (DCO) on Pull Requests.
+The Hiero Improvement Proposals repository inherits security practices of the wider `hashgraph` GitHub org and requires the Developer Certificate of Origin (DCO) on Pull Requests.
 
 Make sure you set up your DCO before working on a new HIP or contributing to existing HIPs. You can read about DCO in more detail here: [https://www.secondstate.io/articles/dco/](https://www.secondstate.io/articles/dco/) and here: [https://github.com/apps/dco](https://github.com/apps/dco). If you don't set your DCO correctly, editors will not be able to merge your PR until the DCO dependency is resolved.
 
