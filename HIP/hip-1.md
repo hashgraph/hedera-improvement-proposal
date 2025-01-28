@@ -397,7 +397,7 @@ When referring to a HIP by number, it should be written in the hyphenated form H
 
 ## History
 
-This document was derived from Bitcoin's BIP-0001 written by Amir Taaki, Ethereum's EIP-1 written by Martin Becze and Hudson Jameson, and Python's PEP-0001 written by Barry Warsaw, Jeremy Hylton, David Goodger, and Nick Coghlan. In many places text was simply copied and modified. The authors of the text from which this document was derived are not responsible for this document's use in the Hiero Improvement Proposal process, and should not be bothered with technical questions specific to Hedera or the HIP.
+This document was derived from Bitcoin's BIP-0001 written by Amir Taaki, Ethereum's EIP-1 written by Martin Becze and Hudson Jameson, and Python's PEP-0001 written by Barry Warsaw, Jeremy Hylton, David Goodger, and Nick Coghlan. In many places text was simply copied and modified. The authors of the text from which this document was derived are not responsible for this document's use in the Hiero Improvement Proposal process, and should not be bothered with technical questions specific to Hiero, Hedera or the HIP.
 
 ## Copyright
 This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
