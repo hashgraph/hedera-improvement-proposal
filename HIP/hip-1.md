@@ -54,7 +54,7 @@ The HIP editors or "editors" are individuals responsible for managing the admini
 
 ### Start with an idea for Hiero
 
-The HIP process begins with a new idea for Hiero. It is highly recommended that a single HIP contain a single key proposal or new idea. The more focused the HIP, the more successful it tends to be. Hiero collaborators and maintainers reserve the right to reject a HIP if it appears too unfocused or too broad. If in doubt, split your HIP into several well-focused ones.
+The HIP process begins with a new idea for Hiero. It is highly recommended that a single HIP contain a single key proposal or new idea. The more focused the HIP, the more successful it tends to be. Hiero committers and maintainers reserve the right to reject a HIP if it appears too unfocused or too broad. If in doubt, split your HIP into several well-focused ones.
 
 Each HIP must have a champion -- someone who writes the HIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The HIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is HIP-able. Circulating the idea in Hiero's Discord server (https://hedera.com/discord) or in an issue in the Hiero HIP GitHub Repository (https://github.com/hashgraph/hedera-improvement-proposal) is the best way to do so.
 
