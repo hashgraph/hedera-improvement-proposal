@@ -309,7 +309,7 @@ At least one member must use a GitHub username in order to be notified on change
 
 #### `discussions-to` header
 
-While a HIP is a draft, a discussions-to header will indicate the URL where the HIP is being discussed. Examples of places to discuss your HIP include an issue in this repo or in a fork of this repo, the Hiero Developer Discord, or Reddit r/hashgraph.
+While a HIP is a draft, a discussions-to header will indicate the URL where the HIP is being discussed. Examples of places to discuss your HIP include an issue in this repo or in a fork of this repo, the Hedera Developer Discord, or Reddit r/hashgraph.
 
 No discussions-to header is necessary if the HIP is being discussed privately with the author.
 
