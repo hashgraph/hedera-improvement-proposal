@@ -346,7 +346,7 @@
     "title": "Enable KeyList Support in HTS  Precompile",
     "number": 1069,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1069",
-    "headRefOid": "cdef1c5caf54cf1f654c6fcae074a115c3efe360",
+    "headRefOid": "8ac8951e8c38a1b1b2cf164420c686e9eb51abcc",
     "files": {
       "edges": [
         {
@@ -725,33 +725,6 @@
     },
     "author": {
       "login": "mattsmithies"
-    }
-  },
-  {
-    "title": "Update diagram and state definitions.",
-    "number": 824,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/824",
-    "headRefOid": "e4762f4f0c9ae952111b4990698fa13b2990a621",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1.md",
-            "additions": 4,
-            "deletions": 4
-          }
-        },
-        {
-          "node": {
-            "path": "assets/hip-1/hip-states.png",
-            "additions": 0,
-            "deletions": 0
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "kenthejr"
     }
   },
   {
