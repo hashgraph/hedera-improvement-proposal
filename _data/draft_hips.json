@@ -1,5 +1,86 @@
 [
   {
+    "title": "Update HIP-1084 status to Hedera Accepted",
+    "number": 1116,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1116",
+    "headRefOid": "8085fa3361e1a40e76b00f777128dc02e30bb913",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1021.md",
+            "additions": 2,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1037.md",
+            "additions": 2,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1084.md",
+            "additions": 2,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
+    "title": "Update HIP-1021 status to Hedera Accepted",
+    "number": 1115,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1115",
+    "headRefOid": "a1f7035267c95e7a9400fb7e473d1c275fba244a",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1021.md",
+            "additions": 2,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1037.md",
+            "additions": 2,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
+    "title": "Update HIP-1037 status to Hedera Accepted",
+    "number": 1114,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1114",
+    "headRefOid": "f4781b2281c3bed13a14be21ff34fcad5c08a103",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1037.md",
+            "additions": 2,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
     "title": "Updates to the HIP-1064 user stories",
     "number": 1110,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1110",
