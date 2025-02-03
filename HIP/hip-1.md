@@ -167,15 +167,16 @@ The possible paths of the status of HIPs are as follows:
 - **Stagnant** - Any HIP in `Draft` or `Review`, if inactive for a period of 6 months or greater, is moved to Stagnant. A HIP may be resurrected from this state by Authors or HIP Editors by moving it back to Draft.
 - **Rejected** - Throughout the discussion of a HIP, various ideas will be proposed that are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected.
 - **Last Call** - This is the final review window for a HIP before moving to further approval stages. A HIP editor will assign the `Last Call` status and set a review end date (`last-call-date-time`), typically 14 days later.
-- **Council Review** - [Historical] Legacy status for HIP under review by the Hedera Council. This status applied to HIPs submitted before the Hiero transition.
 - **TSC Review** - The HIP is under review by the Hiero Technical Steering Committee. This is required for HIPs that affect Core, Service, or Mirror components.
 - **TSC Approved** - The HIP has been approved by the Hiero Technical Steering Committee and is ready for implementation or Hedera review.
-- **Hedera Review** - The HIP is under review by the Hedera Governing Council for deployment on the Hedera network. This is required for HIPs that affect Core, Service, or Mirror components.
-- **Hedera Accepted** - The HIP has been accepted by the Hedera Governing Council for deployment on the Hedera network.
 - **Accepted** - [Historical] Legacy status for HIPs that were accepted before the Hiero transition. For new HIPs, either TSC Approved or Hedera Accepted should be used.
 - **Final** - This HIP represents the final standard implemented in code. A Final HIP exists in a state of finality and should only be updated to correct errata.
 - **Active** - Some Informational or Process HIPs may also have a status of `Active` if they are never meant to be completed. An `Active` HIP may be `Withdrawn` or `Replaced` by another HIP. If the idea is pursued at a later date—it is considered a new proposal.
 - **Replaced** - Replaced HIPs are overwritten by a newer standard or implementation.
+
+Legacy statuses (deprecated):
+- **Council Review** - [Historical] Legacy status for HIP under review by the Hedera Council. This status applied to HIPs submitted before the Hiero transition.
+
 
 ### Workflow Changes
 
@@ -254,7 +255,9 @@ Each HIP must begin with a header preamble in a table format. The headers must a
 | requested-by | Names/usernames or names/emails of requesters |
 | type | Standards Track, Informational, or Process |
 | category* | Core, Service, API, Mirror, or Application |
-| needs-tsc-approval | Yes or No |
+| tsc-review-required | Yes or No |
+| hedera-review-date | Date |
+| hedera-review-resolution | Status (Accepted/Rejected/Rejected with comments) |
 | status | Current status |
 | created | Creation date |
 | last-call-date-time | Expected Last Call status date/time |
