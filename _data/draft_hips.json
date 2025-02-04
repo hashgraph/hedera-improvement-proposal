@@ -1,5 +1,45 @@
 [
   {
+    "title": "Update HIP-755 status to Final",
+    "number": 1120,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1120",
+    "headRefOid": "8f191aaa9fa35873faefd9446137ada7cc0def6b",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-755.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
+    "title": "Update HIP-423 status to Final",
+    "number": 1119,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1119",
+    "headRefOid": "65ff8e64829daa3b1395c2cd90a5d9804783a037",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-423.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
     "title": "Update HIP-1084 status to Hedera Accepted",
     "number": 1116,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1116",
