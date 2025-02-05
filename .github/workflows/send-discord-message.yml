@@ -31,6 +31,6 @@ jobs:
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD }}
-        uses: step-security/action-discord@a67f622d551a2f5fcc316c78e0076fe665ff6637 # v0.1.0
+        uses: step-security/action-discord@5e8cd69d2f322a15430c4d13a97659b58031d207 # v0.1.1
         with:
           args:  "${{ github.event.inputs.filename }} moved into ${{ github.event.inputs.status }} status https://hips.hedera.com/hip/${{ github.event.inputs.filename }}"
