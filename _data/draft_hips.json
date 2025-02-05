@@ -1,5 +1,45 @@
 [
   {
+    "title": "Update HIP-755 status to Final",
+    "number": 1120,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1120",
+    "headRefOid": "8f191aaa9fa35873faefd9446137ada7cc0def6b",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-755.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
+    "title": "Update HIP-423 status to Final",
+    "number": 1119,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1119",
+    "headRefOid": "65ff8e64829daa3b1395c2cd90a5d9804783a037",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-423.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
     "title": "Update HIP-1084 status to Hedera Accepted",
     "number": 1116,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1116",
@@ -124,7 +164,7 @@
     "title": "Bump step-security/action-discord from 0.1.0 to 0.1.1",
     "number": 1108,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1108",
-    "headRefOid": "d8a99c19c55955af1759858f779da0c6cede096d",
+    "headRefOid": "da78840b4a97f7362d30dc58b39e81a654f5b78d",
     "files": {
       "edges": [
         {
@@ -494,7 +534,7 @@
     "title": "Update hip-1.md in preparation to Hiero migration",
     "number": 1062,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1062",
-    "headRefOid": "6700a39bc8467dac75a1c99f1a362fcff01d8939",
+    "headRefOid": "89a520ab697b3a12981497e21972d96828a36884",
     "files": {
       "edges": [
         {
@@ -514,7 +554,7 @@
         {
           "node": {
             "path": "HIP/hip-1.md",
-            "additions": 148,
+            "additions": 151,
             "deletions": 123
           }
         },
