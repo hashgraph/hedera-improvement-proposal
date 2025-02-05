@@ -144,7 +144,7 @@
     "title": "chore: add product managers to CODEOWNERS",
     "number": 1109,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1109",
-    "headRefOid": "5f75fcf33ff6f45cabd87d6db4ba78202c35c38f",
+    "headRefOid": "c8a65677a8e45d66249a050ad5ab38088afc64e7",
     "files": {
       "edges": [
         {
@@ -158,142 +158,6 @@
     },
     "author": {
       "login": "andrewb1269hg"
-    }
-  },
-  {
-    "title": "Bump step-security/action-discord from 0.1.0 to 0.1.1",
-    "number": 1108,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1108",
-    "headRefOid": "da78840b4a97f7362d30dc58b39e81a654f5b78d",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": ".github/workflows/send-discord-message.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "dependabot"
-    }
-  },
-  {
-    "title": "Bump actions/checkout from 3.6.0 to 4.2.2",
-    "number": 1107,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1107",
-    "headRefOid": "640a1b81bbe1ad46429feff11109ca4185e7aaa6",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": ".github/workflows/add-hip-number.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/notifications.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/schedule-last-call-date-end.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/validateHeaders.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "dependabot"
-    }
-  },
-  {
-    "title": "Bump actions/setup-node from 3.6.0 to 4.1.0",
-    "number": 1106,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1106",
-    "headRefOid": "a73eee7744979114171b09f8bb0eee1ca9ca90e9",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": ".github/workflows/update-draft-hips.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/validateHeaders.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "dependabot"
-    }
-  },
-  {
-    "title": "Bump step-security/harden-runner from 2.7.1 to 2.10.4",
-    "number": 1105,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1105",
-    "headRefOid": "aacfa1b2c5a5ab30f649d4294bcc337957bd61e8",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": ".github/workflows/add-hip-number.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/notifications.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/send-discord-message.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/send-email.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/validateHeaders.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "dependabot"
     }
   },
   {
@@ -360,14 +224,14 @@
     "title": "Update hip-551.md",
     "number": 1090,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1090",
-    "headRefOid": "79e0cbbef633d72b10449f86bd98bc6337b0a5e9",
+    "headRefOid": "3fc80fd7a2be8998872ddeaaf04f65caf97489a7",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-551.md",
-            "additions": 107,
-            "deletions": 60
+            "additions": 145,
+            "deletions": 62
           }
         }
       ]
@@ -467,7 +331,7 @@
     "title": "Enable KeyList Support in HTS  Precompile",
     "number": 1069,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1069",
-    "headRefOid": "8ac8951e8c38a1b1b2cf164420c686e9eb51abcc",
+    "headRefOid": "556c8861f3d319596becb57615cc127ace346380",
     "files": {
       "edges": [
         {
