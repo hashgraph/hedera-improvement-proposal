@@ -1,32 +1,5 @@
 [
   {
-    "title": "Bump actions/setup-node from 4.1.0 to 4.2.0",
-    "number": 1122,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1122",
-    "headRefOid": "6459f5034d0d968d80a50e4ea0f59a0b778836e2",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": ".github/workflows/update-draft-hips.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/validateHeaders.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "dependabot"
-    }
-  },
-  {
     "title": "Update HIP-755 status to Final",
     "number": 1120,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1120",
@@ -145,26 +118,6 @@
     },
     "author": {
       "login": "mgarbs"
-    }
-  },
-  {
-    "title": "Updates to the HIP-1064 user stories",
-    "number": 1110,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1110",
-    "headRefOid": "f18c19bbdc820a6ea352a0ea750f659b76fd8831",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1064.md",
-            "additions": 4,
-            "deletions": 2
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "Neeharika-Sompalli"
     }
   },
   {
