@@ -1,5 +1,32 @@
 [
   {
+    "title": "Bump actions/setup-node from 4.1.0 to 4.2.0",
+    "number": 1122,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1122",
+    "headRefOid": "6459f5034d0d968d80a50e4ea0f59a0b778836e2",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/workflows/update-draft-hips.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/validateHeaders.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "dependabot"
+    }
+  },
+  {
     "title": "Update HIP-755 status to Final",
     "number": 1120,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1120",
@@ -224,13 +251,13 @@
     "title": "Update hip-551.md",
     "number": 1090,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1090",
-    "headRefOid": "3fc80fd7a2be8998872ddeaaf04f65caf97489a7",
+    "headRefOid": "bf64a9f3ed1ad81bddac242d6505db4595439e22",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-551.md",
-            "additions": 145,
+            "additions": 146,
             "deletions": 62
           }
         }
@@ -328,10 +355,10 @@
     }
   },
   {
-    "title": "Enable KeyList Support in HTS  Precompile",
+    "title": "Enable Threshold (1-of-N) Support in HTS  Precompile",
     "number": 1069,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1069",
-    "headRefOid": "556c8861f3d319596becb57615cc127ace346380",
+    "headRefOid": "2e4a81d2b3aca4d0dcceb955f5a3f28305264b89",
     "files": {
       "edges": [
         {
