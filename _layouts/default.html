@@ -4,21 +4,26 @@
 {%- include head.html -%}
 
 <body>
-{%- include header.html -%}
+    {%- include header.html -%}
 
-<main class="page-content" aria-label="Content">
-    <div class="wrapper">
-        {{ content }}
-    </div>
-</main>
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            {{ content }}
+        </div>
+    </main>
 
-{%- include footer.html -%}
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="{{ '/assets/js/tooltip.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/hipstable.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/filter.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/pr-integration.js' | relative_url }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    {%- include footer.html -%}
+    
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ '/assets/js/tooltip.js' | relative_url }}"></script>
+    
+    <!-- Only include hipstable-related scripts on the main HIPs page -->
+    {% if page.layout == 'page' and page.title == 'HIPs' %}
+        <script src="{{ '/assets/js/hipstable.js' | relative_url }}"></script>
+        <script src="{{ '/assets/js/filter.js' | relative_url }}"></script>
+        <script src="{{ '/assets/js/pr-integration.js' | relative_url }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    {% endif %}
 </body>
-
 </html>
