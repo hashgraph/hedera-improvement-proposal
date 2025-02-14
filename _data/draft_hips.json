@@ -1,5 +1,32 @@
 [
   {
+    "title": "Hide draft list on idividual hip pages",
+    "number": 1123,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1123",
+    "headRefOid": "8a4a4c16a8ae79ec3674e95a5cfae5aa22356d7a",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "_layouts/default.html",
+            "additions": 19,
+            "deletions": 14
+          }
+        },
+        {
+          "node": {
+            "path": "assets/js/pr-integration.js",
+            "additions": 72,
+            "deletions": 81
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
     "title": "Update HIP-755 status to Final",
     "number": 1120,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1120",
