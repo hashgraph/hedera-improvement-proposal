@@ -1,5 +1,25 @@
 [
   {
+    "title": "chore:update HIP 1028 reflecting versioning",
+    "number": 1124,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1124",
+    "headRefOid": "6f00e9360739ea94d00b3f65c421a4339757d03d",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1028.md",
+            "additions": 29,
+            "deletions": 28
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "lukelee-sl"
+    }
+  },
+  {
     "title": "Hide draft list on idividual hip pages",
     "number": 1123,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1123",
