@@ -1,0 +1,52 @@
+---
+hip: <HIP number (assigned by the HIP editor), usually the PR number>
+title: "Delete Allowance without Token Association"
+author: Michael Heinrichs <@netopyr>
+working-group:
+requested-by: GitHub issue https://github.com/hiero-ledger/hiero-consensus-node/issues/17441
+type: "Standards Track"
+category: "Service"
+needs-council-approval: "Yes"
+status: "Draft"
+created: 2025-02-17
+discussions-to: https://github.com/hiero-ledger/hiero-consensus-node/issues/17441
+updated: 2025-02-17
+requires: 
+replaces: 
+superseded-by: 
+---
+
+## Abstract
+To remove an allowance for a token, the token must be associated with the account.
+This is an unnecessary burden with no advantages.
+This HIP proposes to allow the removal of allowances without requiring the token to be associated.
+
+## Motivation
+If a user wants to remove an allowance for a token without an association, one has to associate the token, remove the allowance, and dissociate the token again.
+This is a cumbersome and expensive process with no benefits.
+A user may decide to keep the allowances instead, which wastes resources and risks hitting the limit of allowed allowances.
+
+While it makes sense to associate the token before giving a non-zero allowance, it does not make sense that the token must be associated in order for the allowance to be removed.
+
+## Rationale
+The execution of `CryptoDeleteAllowance` does not require the owner to have an association with the token.
+If `CryptoApproveAllowance` contains an entry for a fungible token and an amount of `0`, the owner does not require an association with the token.
+
+## User stories
+1. As a user, I want to remove an allowance without having to associate the token with my account first.
+
+## Specification
+This change requires no changes to the HAPI or the record stream/block stream.
+
+## Backwards Compatibility
+This HIP is fully backward compatible. It does not change the behavior of any existing functionality except for allowing the deletion of allowances in previously forbidden cases.
+
+## Security Implications
+There are no security implications. Removing an allowance imposes no security risk.
+
+## How to Teach This
+The `CryptoDeleteAllowance` and `CryptoApproveAllowance` documentation should be updated to reflect the new behavior.
+
+## Copyright/license
+This document is licensed under the Apache License, Version 2.0 --
+see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
