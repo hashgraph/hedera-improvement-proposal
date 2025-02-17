@@ -1,5 +1,53 @@
 [
   {
+    "title": "Bump step-security/harden-runner from 2.10.4 to 2.11.0",
+    "number": 1125,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1125",
+    "headRefOid": "5c4f4ee479920578fcff01ae89114ea6bf20e55b",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/workflows/add-hip-number.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/notifications.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/send-discord-message.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/send-email.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/validateHeaders.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "dependabot"
+    }
+  },
+  {
     "title": "chore:update HIP 1028 reflecting versioning",
     "number": 1124,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1124",
