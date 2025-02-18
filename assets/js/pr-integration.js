@@ -1,42 +1,42 @@
 class HIPPRIntegration {
     constructor() {
-        console.log('Current pathname:', window.location.pathname);
-        console.log('Has hip-filters:', document.querySelector('.hip-filters') !== null);
-        console.log('Page layout:', document.querySelector('body').dataset.layout);
-        
-        // Check if we're on an individual HIP page
-        const isHipPage = document.querySelector('.page-heading')?.textContent.includes('HIP-');
-        console.log('Is individual HIP page:', isHipPage);
-
-        if (this.isHipTablePage()) {
-            console.log('Initializing HIP PR Integration');
-            this.initialize();
-            this.setupStyles();
+        // Wait for full page load to ensure all elements are available
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.init());
         } else {
-            console.log('Skipping HIP PR Integration - not on main page');
+            this.init();
         }
     }
 
-    isHipTablePage() {
-        // Enhanced page detection
-        const isMainPage = 
-            window.location.pathname === '/' || 
-            window.location.pathname === '/index.html' ||
-            window.location.pathname.endsWith('/HIPs/') ||
-            window.location.pathname === '/hips/' ||
-            document.querySelector('.hip-filters') !== null;
+    init() {
+        console.log('Initializing HIP PR Integration');
+        if (this.isMainPage()) {
+            this.setupStyles();
+            this.initialize();
+        } else {
+            console.log('Not on main page, skipping initialization');
+        }
+    }
 
-        const isIndividualHipPage = 
-            document.querySelector('.page-heading')?.textContent.includes('HIP-') ||
-            document.querySelector('body').dataset.layout === 'hip';
-
-        console.log('Page detection:', {
-            isMainPage,
-            isIndividualHipPage,
-            pathname: window.location.pathname
+    isMainPage() {
+        const isMainPath = window.location.pathname === '/' || 
+                          window.location.pathname === '/index.html' ||
+                          window.location.pathname.endsWith('/HIPs/') ||
+                          window.location.pathname === '/hips/';
+                          
+        const hasMainPageElements = document.querySelector('.hip-filters') !== null;
+        const layout = document.querySelector('body')?.dataset?.layout;
+        const title = document.querySelector('body')?.dataset?.title;
+        
+        console.log('Page Check:', {
+            path: window.location.pathname,
+            isMainPath,
+            hasMainPageElements,
+            layout,
+            title
         });
-
-        return isMainPage && !isIndividualHipPage;
+        
+        return isMainPath || (layout === 'page' && title === 'HIPs');
     }
 
     setupStyles() {
@@ -101,6 +101,8 @@ class HIPPRIntegration {
                 if (validHips.length > 0) {
                     console.log(`Found ${validHips.length} valid HIPs`);
                     this.addHIPsToTable(validHips);
+                } else {
+                    console.log('No valid HIPs found');
                 }
             }
         } catch (error) {
@@ -110,14 +112,18 @@ class HIPPRIntegration {
 
     async fetchPRData() {
         try {
+            console.log('Fetching PR data...');
             const baseUrl = document.querySelector('meta[name="site-baseurl"]')?.content || '';
-            console.log('Fetching PR data from baseUrl:', baseUrl);
-            const response = await fetch(`${baseUrl}/_data/draft_hips.json`);
-
+            const url = `${baseUrl}/_data/draft_hips.json`;
+            console.log('Fetching from URL:', url);
+            
+            const response = await fetch(url);
             if (!response.ok) {
-                throw new Error('Failed to fetch draft HIPs data');
+                throw new Error(`Failed to fetch draft HIPs data: ${response.status} ${response.statusText}`);
             }
-            return await response.json();
+            const data = await response.json();
+            console.log('Successfully fetched PR data');
+            return data;
         } catch (error) {
             console.error('Error in fetchPRData:', error);
             throw error;
@@ -125,30 +131,44 @@ class HIPPRIntegration {
     }
 
     async filterHIPPRs(prs) {
+        console.log('Filtering HIPs from PRs...');
         const validHips = [];
         const seenPRs = new Set();
 
         for (const pr of prs) {
-            if (seenPRs.has(pr.number)) continue;
+            if (seenPRs.has(pr.number)) {
+                console.log(`Skipping duplicate PR: ${pr.number}`);
+                continue;
+            }
 
             const mdFiles = pr.files.edges.filter(file => file.node.path.endsWith('.md'));
+            console.log(`Found ${mdFiles.length} markdown files in PR ${pr.number}`);
+            
             let bestMetadata = null;
             let bestFile = null;
 
             for (const file of mdFiles) {
                 try {
                     const contentUrl = `https://raw.githubusercontent.com/hashgraph/hedera-improvement-proposal/${pr.headRefOid}/${file.node.path}`;
+                    console.log(`Fetching content from: ${contentUrl}`);
+                    
                     const response = await fetch(contentUrl);
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch file content: ${response.status}`);
+                    }
+                    
                     const content = await response.text();
                     const metadata = this.parseHIPMetadata(content);
 
                     if (file.node.path.includes('template') || !metadata.title) {
+                        console.log(`Skipping template or invalid file: ${file.node.path}`);
                         continue;
                     }
 
                     if (!bestMetadata ||
                         (metadata.title && metadata.title.length > 3 &&
                             (!bestMetadata.title || metadata.title.length > bestMetadata.title.length))) {
+                        console.log(`Found better metadata in file: ${file.node.path}`);
                         bestMetadata = metadata;
                         bestFile = file;
                     }
@@ -158,6 +178,7 @@ class HIPPRIntegration {
             }
 
             if (bestMetadata && bestFile) {
+                console.log(`Adding valid HIP from PR ${pr.number}`);
                 validHips.push({
                     pr,
                     metadata: bestMetadata,
@@ -167,27 +188,16 @@ class HIPPRIntegration {
             }
         }
 
+        console.log(`Filtering complete. Found ${validHips.length} valid HIPs`);
         return validHips;
-    }
-
-    checkForNewHipFormat(content) {
-        const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
-        if (!frontmatterMatch) return false;
-
-        const frontmatter = frontmatterMatch[1].toLowerCase();
-        const requiredPatterns = [
-            /\btitle\s*:/,
-            /\bauthor\s*:/,
-            /\bcategory\s*:/,
-            /\bcreated\s*:/
-        ];
-
-        return requiredPatterns.every(pattern => pattern.test(frontmatter));
     }
 
     parseHIPMetadata(content) {
         const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
-        if (!frontmatterMatch) return {};
+        if (!frontmatterMatch) {
+            console.log('No frontmatter found in content');
+            return {};
+        }
 
         const metadata = {};
         const lines = frontmatterMatch[1].split('\n');
@@ -233,7 +243,10 @@ class HIPPRIntegration {
         const table = draftContainer.querySelector('.hipstable');
 
         hips.forEach(({ pr, metadata }) => {
-            if (!metadata.title || metadata.title.trim() === '') return;
+            if (!metadata.title || metadata.title.trim() === '') {
+                console.log(`Skipping HIP with empty title from PR ${pr.number}`);
+                return;
+            }
 
             const needsApproval = String(metadata['needs-council-approval']).toLowerCase() === 'true' ||
                 String(metadata['needs-tsc-approval']).toLowerCase() === 'true' ||
@@ -321,9 +334,6 @@ class HIPPRIntegration {
     }
 }
 
-// Add debugging information about script loading
+// Initialize when the script loads
 console.log('PR Integration script loaded at:', new Date().toISOString());
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM Content Loaded - initializing HIPPRIntegration');
-    new HIPPRIntegration();
-});
+new HIPPRIntegration();
