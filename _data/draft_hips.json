@@ -1,9 +1,29 @@
 [
   {
+    "title": "update for clarity.",
+    "number": 1130,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1130",
+    "headRefOid": "b7d8125e6861a11c2d0e81fddf0005f332de444d",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1086.md",
+            "additions": 55,
+            "deletions": 35
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "edward-swirldslabs"
+    }
+  },
+  {
     "title": "Update hip 1064",
     "number": 1128,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1128",
-    "headRefOid": "8ee13ff1a5a4d36c1d65e348328dba19000490bf",
+    "headRefOid": "03f0a176423b95ef15be7577efceff9616eb12e9",
     "files": {
       "edges": [
         {
@@ -111,13 +131,13 @@
     "title": "chore:update HIP 1028 reflecting versioning",
     "number": 1124,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1124",
-    "headRefOid": "6f00e9360739ea94d00b3f65c421a4339757d03d",
+    "headRefOid": "cd019d4e860a404d2a7782d60230501936a5d2bc",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1028.md",
-            "additions": 29,
+            "additions": 31,
             "deletions": 28
           }
         }
@@ -125,33 +145,6 @@
     },
     "author": {
       "login": "lukelee-sl"
-    }
-  },
-  {
-    "title": "Hide draft list on idividual hip pages",
-    "number": 1123,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1123",
-    "headRefOid": "8a4a4c16a8ae79ec3674e95a5cfae5aa22356d7a",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "_layouts/default.html",
-            "additions": 19,
-            "deletions": 14
-          }
-        },
-        {
-          "node": {
-            "path": "assets/js/pr-integration.js",
-            "additions": 72,
-            "deletions": 81
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "mgarbs"
     }
   },
   {
