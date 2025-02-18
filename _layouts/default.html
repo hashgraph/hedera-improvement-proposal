@@ -3,7 +3,7 @@
 
 {%- include head.html -%}
 
-<body>
+<body data-layout="{{ page.layout }}" data-title="{{ page.title }}">
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
@@ -18,12 +18,41 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="{{ '/assets/js/tooltip.js' | relative_url }}"></script>
     
-    <!-- Only include hipstable-related scripts on the main HIPs page -->
-    {% if page.layout == 'page' and page.title == 'HIPs' %}
+    <!-- Deployment verification logging -->
+    <script>
+        console.log('=== DEPLOYMENT VERIFICATION ===');
+        console.log('Page Layout:', '{{ page.layout }}');
+        console.log('Page Title:', '{{ page.title }}');
+        console.log('Page URL:', window.location.href);
+        console.log('Page Path:', '{{ page.path }}');
+        console.log('Site Baseurl:', '{{ site.baseurl }}');
+        console.log('Page URL var:', '{{ page.url }}');
+        console.log('=== END VERIFICATION ===');
+    </script>
+
+    <!-- Load HIP-specific scripts ONLY on the main HIPs index page -->
+    {% if page.layout == 'page' and page.title == 'HIPs' and page.url contains 'index.html' %}
+        <script>console.log('Loading HIP-specific scripts - Condition met:', {
+            layout: '{{ page.layout }}',
+            title: '{{ page.title }}',
+            url: '{{ page.url }}'
+        });</script>
         <script src="{{ '/assets/js/hipstable.js' | relative_url }}"></script>
         <script src="{{ '/assets/js/filter.js' | relative_url }}"></script>
         <script src="{{ '/assets/js/pr-integration.js' | relative_url }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    {% elsif page.layout == 'hip' %}
+        <script>console.log('On individual HIP page - Skipping scripts:', {
+            layout: '{{ page.layout }}',
+            title: '{{ page.title }}',
+            url: '{{ page.url }}'
+        });</script>
+    {% else %}
+        <script>console.log('On other page - Skipping scripts:', {
+            layout: '{{ page.layout }}',
+            title: '{{ page.title }}',
+            url: '{{ page.url }}'
+        });</script>
     {% endif %}
 </body>
 </html>
