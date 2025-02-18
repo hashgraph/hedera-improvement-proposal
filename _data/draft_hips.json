@@ -1,5 +1,25 @@
 [
   {
+    "title": "Update hip 1064",
+    "number": 1128,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1128",
+    "headRefOid": "8ee13ff1a5a4d36c1d65e348328dba19000490bf",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1064.md",
+            "additions": 6,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "Neeharika-Sompalli"
+    }
+  },
+  {
     "title": "Transaction Cleanup",
     "number": 1127,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1127",
