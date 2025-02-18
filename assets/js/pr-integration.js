@@ -1,64 +1,105 @@
 class HIPPRIntegration {
     constructor() {
-        this.initialize();
-        this.setupStyles();
+        console.log('Current pathname:', window.location.pathname);
+        console.log('Has hip-filters:', document.querySelector('.hip-filters') !== null);
+        console.log('Page layout:', document.querySelector('body').dataset.layout);
+        
+        // Check if we're on an individual HIP page
+        const isHipPage = document.querySelector('.page-heading')?.textContent.includes('HIP-');
+        console.log('Is individual HIP page:', isHipPage);
+
+        if (this.isHipTablePage()) {
+            console.log('Initializing HIP PR Integration');
+            this.initialize();
+            this.setupStyles();
+        } else {
+            console.log('Skipping HIP PR Integration - not on main page');
+        }
+    }
+
+    isHipTablePage() {
+        // Enhanced page detection
+        const isMainPage = 
+            window.location.pathname === '/' || 
+            window.location.pathname === '/index.html' ||
+            window.location.pathname.endsWith('/HIPs/') ||
+            window.location.pathname === '/hips/' ||
+            document.querySelector('.hip-filters') !== null;
+
+        const isIndividualHipPage = 
+            document.querySelector('.page-heading')?.textContent.includes('HIP-') ||
+            document.querySelector('body').dataset.layout === 'hip';
+
+        console.log('Page detection:', {
+            isMainPage,
+            isIndividualHipPage,
+            pathname: window.location.pathname
+        });
+
+        return isMainPage && !isIndividualHipPage;
     }
 
     setupStyles() {
-        const styles = `
-            .hip-modal {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            }
-            .hip-modal-content {
-                background: white;
-                padding: 20px;
-                border-radius: 8px;
-                max-width: 80%;
-                max-height: 80vh;
-                overflow-y: auto;
-                position: relative;
-            }
-            .hip-modal-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 20px;
-                border-bottom: 1px solid #eee;
-                padding-bottom: 10px;
-            }
-            .close-button {
-                background: none;
-                border: none;
-                font-size: 24px;
-                cursor: pointer;
-            }
-            .hip-modal-body {
-                line-height: 1.6;
-            }
-            .hip-modal-body img {
-                max-width: 100%;
-            }
-        `;
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = styles;
-        document.head.appendChild(styleSheet);
+        if (!document.querySelector('#hip-modal-styles')) {
+            const styles = `
+                .hip-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                }
+                .hip-modal-content {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    max-width: 80%;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    position: relative;
+                }
+                .hip-modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                    border-bottom: 1px solid #eee;
+                    padding-bottom: 10px;
+                }
+                .close-button {
+                    background: none;
+                    border: none;
+                    font-size: 24px;
+                    cursor: pointer;
+                }
+                .hip-modal-body {
+                    line-height: 1.6;
+                }
+                .hip-modal-body img {
+                    max-width: 100%;
+                }
+            `;
+            const styleSheet = document.createElement('style');
+            styleSheet.id = 'hip-modal-styles';
+            styleSheet.textContent = styles;
+            document.head.appendChild(styleSheet);
+        }
     }
 
     async initialize() {
         try {
+            console.log('Starting initialization');
             const prData = await this.fetchPRData();
             if (prData) {
+                console.log('Fetched PR data successfully');
                 const validHips = await this.filterHIPPRs(prData);
                 if (validHips.length > 0) {
+                    console.log(`Found ${validHips.length} valid HIPs`);
                     this.addHIPsToTable(validHips);
                 }
             }
@@ -69,8 +110,8 @@ class HIPPRIntegration {
 
     async fetchPRData() {
         try {
-            // Try with site.baseurl if it's set in _config.yml
             const baseUrl = document.querySelector('meta[name="site-baseurl"]')?.content || '';
+            console.log('Fetching PR data from baseUrl:', baseUrl);
             const response = await fetch(`${baseUrl}/_data/draft_hips.json`);
 
             if (!response.ok) {
@@ -94,7 +135,6 @@ class HIPPRIntegration {
             let bestMetadata = null;
             let bestFile = null;
 
-            // Try all MD files and pick the one with the most complete metadata
             for (const file of mdFiles) {
                 try {
                     const contentUrl = `https://raw.githubusercontent.com/hashgraph/hedera-improvement-proposal/${pr.headRefOid}/${file.node.path}`;
@@ -102,12 +142,10 @@ class HIPPRIntegration {
                     const content = await response.text();
                     const metadata = this.parseHIPMetadata(content);
 
-                    // Skip template files and empty metadata
                     if (file.node.path.includes('template') || !metadata.title) {
                         continue;
                     }
 
-                    // If we don't have metadata yet, or this file has a better title
                     if (!bestMetadata ||
                         (metadata.title && metadata.title.length > 3 &&
                             (!bestMetadata.title || metadata.title.length > bestMetadata.title.length))) {
@@ -119,7 +157,6 @@ class HIPPRIntegration {
                 }
             }
 
-            // If we found valid metadata, add it to the results
             if (bestMetadata && bestFile) {
                 validHips.push({
                     pr,
@@ -148,14 +185,6 @@ class HIPPRIntegration {
         return requiredPatterns.every(pattern => pattern.test(frontmatter));
     }
 
-    isValidHIPContent(metadata) {
-        const essentialFields = ['title', 'type'];
-        const hasEssentialFields = essentialFields.every(field => metadata[field]);
-        const desiredFields = ['hip', 'author', 'status', 'created'];
-        const desiredFieldCount = desiredFields.filter(field => metadata[field]).length;
-        return hasEssentialFields && desiredFieldCount >= 2;
-    }
-
     parseHIPMetadata(content) {
         const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
         if (!frontmatterMatch) return {};
@@ -175,8 +204,12 @@ class HIPPRIntegration {
     }
 
     addHIPsToTable(hips) {
+        console.log('Adding HIPs to table');
         const wrapper = document.querySelector('main .wrapper');
-        if (!wrapper) return;
+        if (!wrapper) {
+            console.error('Could not find wrapper element');
+            return;
+        }
 
         const lastStatusSection = wrapper.lastElementChild;
         const draftContainer = document.createElement('div');
@@ -241,8 +274,13 @@ class HIPPRIntegration {
             tbody.appendChild(row);
         });
 
+        this.setupTableSorting(table);
+        console.log('Finished adding HIPs to table');
+    }
+
+    setupTableSorting(table) {
         table.querySelectorAll('th').forEach(header => {
-            header.addEventListener('click', function () {
+            header.addEventListener('click', function() {
                 const tbody = table.querySelector('tbody');
                 const index = Array.from(header.parentNode.children).indexOf(header);
                 const isAscending = header.classList.contains('asc');
@@ -255,21 +293,20 @@ class HIPPRIntegration {
                         let cellB = rowB.querySelectorAll('td')[index].textContent;
 
                         if (isNumeric && cellA.startsWith('PR-') && cellB.startsWith('PR-')) {
-                            // Extract numbers from PR-XXX format
                             const numA = parseInt(cellA.replace('PR-', ''));
                             const numB = parseInt(cellB.replace('PR-', ''));
                             return (numA - numB) * (isAscending ? 1 : -1);
                         }
 
-                        // Version sorting logic
                         if (isVersion) {
                             cellA = cellA.replace('v', '').split('.').map(Number);
                             cellB = cellB.replace('v', '').split('.').map(Number);
                             return cellA > cellB ? (isAscending ? 1 : -1) : cellA < cellB ? (isAscending ? -1 : 1) : 0;
                         }
 
-                        // Default sorting logic
-                        return isNumeric ? (parseFloat(cellA) - parseFloat(cellB)) * (isAscending ? 1 : -1) : cellA.localeCompare(cellB) * (isAscending ? 1 : -1);
+                        return isNumeric ? 
+                            (parseFloat(cellA) - parseFloat(cellB)) * (isAscending ? 1 : -1) : 
+                            cellA.localeCompare(cellB) * (isAscending ? 1 : -1);
                     })
                     .forEach(tr => tbody.appendChild(tr));
 
@@ -284,6 +321,9 @@ class HIPPRIntegration {
     }
 }
 
+// Add debugging information about script loading
+console.log('PR Integration script loaded at:', new Date().toISOString());
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded - initializing HIPPRIntegration');
     new HIPPRIntegration();
 });
