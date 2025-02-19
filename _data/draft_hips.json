@@ -108,26 +108,6 @@
     }
   },
   {
-    "title": "chore:update HIP 1028 reflecting versioning",
-    "number": 1124,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1124",
-    "headRefOid": "cd019d4e860a404d2a7782d60230501936a5d2bc",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1028.md",
-            "additions": 31,
-            "deletions": 28
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "lukelee-sl"
-    }
-  },
-  {
     "title": "Update HIP-755 status to Final",
     "number": 1120,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1120",
@@ -332,13 +312,13 @@
     "title": "Update hip-551.md",
     "number": 1090,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1090",
-    "headRefOid": "aabb922f1a6f768cfc4e537766d509f2517b5927",
+    "headRefOid": "ebfdcb41aa9f335be1040d2c61c3535fa6cd6405",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-551.md",
-            "additions": 163,
+            "additions": 180,
             "deletions": 65
           }
         },
