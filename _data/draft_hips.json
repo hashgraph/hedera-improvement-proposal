@@ -1,25 +1,5 @@
 [
   {
-    "title": "update for clarity.",
-    "number": 1130,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1130",
-    "headRefOid": "b7d8125e6861a11c2d0e81fddf0005f332de444d",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1086.md",
-            "additions": 55,
-            "deletions": 35
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "edward-swirldslabs"
-    }
-  },
-  {
     "title": "Update hip 1064",
     "number": 1128,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1128",
@@ -399,13 +379,13 @@
     "title": "Jumbo EthereumTransactions",
     "number": 1086,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1086",
-    "headRefOid": "f71392a38e2d96bc36de01fffdd576c9577d7211",
+    "headRefOid": "b0302da3d445f82664d61417d7def2c17578c0b1",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1086.md",
-            "additions": 144,
+            "additions": 164,
             "deletions": 0
           }
         }
