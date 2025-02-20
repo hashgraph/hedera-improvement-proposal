@@ -312,7 +312,7 @@
     "title": "Update hip-551.md",
     "number": 1090,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1090",
-    "headRefOid": "8e667a026692b1a9a0523d43ee09470089034b5c",
+    "headRefOid": "1c391958a753a90cccb985a8119fccb9d46f1751",
     "files": {
       "edges": [
         {
@@ -493,7 +493,7 @@
     "title": "Update hip-1.md in preparation to Hiero migration",
     "number": 1062,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1062",
-    "headRefOid": "89a520ab697b3a12981497e21972d96828a36884",
+    "headRefOid": "e01b161eff6de6251f77c101b6b7fde09a55d54c",
     "files": {
       "edges": [
         {
@@ -501,13 +501,6 @@
             "path": ".github/workflows/add-hip-number.yml",
             "additions": 0,
             "deletions": 112
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/schedule-last-call-date-end.yml",
-            "additions": 0,
-            "deletions": 167
           }
         },
         {
