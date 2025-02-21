@@ -17,8 +17,10 @@
             <option value="draft">Draft</option>
             <option value="review">Review</option>
             <option value="last call">Last Call</option>
-            <option value="council review">Council Review</option>
-            <option value="accepted">Accepted</option>
+            <option value="tsc review">TSC Review</option>
+            <option value="tsc approved">TSC Approved</option>
+            <option value="hiero approved">Hiero Approved</option>
+            <option value="hedera accepted">Hedera Accepted</option>
             <option value="rejected">Rejected</option>
             <option value="final">Final</option>
             <option value="active">Active</option>
@@ -52,7 +54,8 @@
             <th class="numeric">Number</th>
             <th>Title</th>
             <th>Author</th>
-            <th>Needs Council Approval</th>
+            <th>Needs TSC Review</th>
+            <th>Needs Hedera Review</th>
         </tr>
     </thead>
     <tbody class="draft-tbody"></tbody>
@@ -60,11 +63,16 @@
 
 <!-- Then render the rest of the statuses -->
 {% for status in site.data.statuses %}
-    {% assign hips = include.hips | where: "status", status | where: "category", category | where: "type", type | sort: "hip" | reverse %}
+    {% assign combined_hips = include.hips %}
+    {% if status == "hedera accepted" %}
+        {% assign hips = combined_hips | where_exp: "hip", "hip.status == 'accepted' or hip.status == 'hedera accepted'" | where: "category", category | where: "type", type | sort: "hip" | reverse %}
+    {% else %}
+        {% assign hips = combined_hips | where: "status", status | where: "category", category | where: "type", type | sort: "hip" | reverse %}
+    {% endif %}
     {% assign count = hips.size %}
     {% if count > 0 %}
         <h2 id="{{ status | slugify }}">
-            {{ status | capitalize }} 
+            {{ status | capitalize }}
             <span class="status-tooltip" data-tooltip="{{ status }}">ⓘ</span>
         </h2>
         
@@ -74,7 +82,8 @@
                     <th class="numeric">Number</th>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Needs Council Approval</th>
+                    <th>Needs TSC Review</th>
+                    <th>Needs Hedera Review</th>
                     {% if status == "Last Call" %}
                         <th>Review Period Ends</th>
                     {% else %}
@@ -87,7 +96,9 @@
                     <tr data-type="{{ page.type | downcase }}"
                         data-category="{{ page.category | downcase }}"
                         data-status="{{ page.status | downcase }}"
-                        data-council-approval="{{ page.needs-council-approval | downcase }}">
+                        data-council-approval="{{ page.needs-council-approval | downcase }}"
+                        data-tsc-review="{{ page.needs-tsc-review | default: page.needs-council-approval | downcase }}"
+                        data-hedera-review="{{ page.needs-hedera-review | default: page.needs-council-approval | downcase }}">
                         
                         <td class="hip-number">
                             <a href="{{ page.url | relative_url }}">{{ page.hip | xml_escape }}</a>
@@ -100,9 +111,19 @@
                         <td class="author">
                             {% include authorslist.html authors=page.author %}
                         </td>
-                        
-                        <td class="council-approval">
-                            {% if page.needs-council-approval %}
+
+                        <td class="tsc-review">
+                            {% if page.needs-tsc-review %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </td>
+
+                        <td class="hedera-review">
+                            {% if page.needs-hedera-review %}
+                                Yes
+                            {% elsif page.needs-council-approval %}
                                 Yes
                             {% else %}
                                 No
