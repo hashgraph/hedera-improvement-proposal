@@ -399,20 +399,20 @@
     "title": "Block Node",
     "number": 1081,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1081",
-    "headRefOid": "584e30302a4a2c08c55d4a528b65817e8ef1c311",
+    "headRefOid": "966037af3ead52f4ae8a91e22f58d9499dae2b1a",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1081.md",
-            "additions": 635,
+            "additions": 641,
             "deletions": 0
           }
         },
         {
           "node": {
             "path": "assets/hip-1081/protobuf/block_service.proto",
-            "additions": 943,
+            "additions": 1007,
             "deletions": 0
           }
         }
