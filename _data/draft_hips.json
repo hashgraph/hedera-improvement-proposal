@@ -3,14 +3,14 @@
     "title": "Updating `ContractCreate` limits",
     "number": 1131,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1131",
-    "headRefOid": "9dccfc21d217e785a1855b03cba522cee69d276a",
+    "headRefOid": "9b953e997d7df25eee7eb77253bd6f642fb7fb94",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1086.md",
-            "additions": 36,
-            "deletions": 23
+            "additions": 39,
+            "deletions": 26
           }
         }
       ]
