@@ -43,7 +43,7 @@
     "title": "Add HIP to allow the deletion of allowances without being associated",
     "number": 1126,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1126",
-    "headRefOid": "033d8fdd024251a3419a926fdada3c0e0b6ae0e4",
+    "headRefOid": "488eb33ece104c091d6f54ad8d553d9abc7ca9e3",
     "files": {
       "edges": [
         {
