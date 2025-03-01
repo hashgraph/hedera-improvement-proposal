@@ -379,7 +379,7 @@
     "title": "Block Node",
     "number": 1081,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1081",
-    "headRefOid": "966037af3ead52f4ae8a91e22f58d9499dae2b1a",
+    "headRefOid": "04e11af8f50781da882347839e7111afca23307c",
     "files": {
       "edges": [
         {
@@ -392,7 +392,7 @@
         {
           "node": {
             "path": "assets/hip-1081/protobuf/block_service.proto",
-            "additions": 1007,
+            "additions": 988,
             "deletions": 0
           }
         }
