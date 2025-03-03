@@ -108,5 +108,5 @@ jobs:
 
           PR_NUMBER=${{ github.event.pull_request.number }}
           git add HIP/
-          git commit -m "Assigning HIP $PR_NUMBER and renaming file to hip-$PR_NUMBER.md"
+          git commit -sSm "Assigning HIP $PR_NUMBER and renaming file to hip-$PR_NUMBER.md"
           git push origin HEAD:${{ github.head_ref }}
