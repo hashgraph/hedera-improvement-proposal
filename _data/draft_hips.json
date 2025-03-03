@@ -20,30 +20,10 @@
     }
   },
   {
-    "title": "Add HIP to allow the deletion of allowances without being associated",
-    "number": 1126,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1126",
-    "headRefOid": "488eb33ece104c091d6f54ad8d553d9abc7ca9e3",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1126.md",
-            "additions": 53,
-            "deletions": 0
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "netopyr"
-    }
-  },
-  {
     "title": "Bump step-security/harden-runner from 2.10.4 to 2.11.0",
     "number": 1125,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1125",
-    "headRefOid": "5c4f4ee479920578fcff01ae89114ea6bf20e55b",
+    "headRefOid": "2c01fc05ea686e04e71cb2fd61df2e1015c10f7c",
     "files": {
       "edges": [
         {
