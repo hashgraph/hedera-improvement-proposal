@@ -4,7 +4,7 @@ layout: default
 
 <div class="home">
   <h1 class="page-heading">
-    <a href="https://github.com/hashgraph/hedera-improvement-proposal/blob/master/{{page.path}}" target="_blank"><img
+    <a href="https://github.com/hiero-ledger/hiero-improvement-proposal/blob/main/{{page.path}}" target="_blank"><img
         src="/assets/images/gitHub-mark.png" alt="GitHub Logo" width="30" height="30"> HIP-{{ page.hip | xml_escape
       }}:</a> {{ page.title | xml_escape }}
   </h1>
@@ -51,6 +51,18 @@ layout: default
         {% else %}
         No <span class="tooltip" data-tooltip="{{ page.needs-council-approval | jsonify }}"
           style="text-decoration:none">ⓘ</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endif %}
+    {% if page.hedera-approval != undefined %}
+    <tr>
+      <th>Hedera Approval <span class="tooltip" data-tooltip="hederaApproval" style="text-decoration:none">ⓘ</span></th>
+      <td>
+        {% if page.hedera-approval == "N/A" %}
+          Not Approved
+        {% else %}
+          {{ page.hedera-approval | date_to_rfc822 }}
         {% endif %}
       </td>
     </tr>
@@ -200,6 +212,7 @@ https://schema.org/TechArticle
         false: "✅ This HIP does not require council approval for implementation.",
       },
       "reviewPeriodEnds": "⏳ The last call review period ends on this date, after which the HIP's status may change.",
+      "hederaApproval": "📅 The date when this HIP received official approval from Hedera. 'Not Approved' means it has not yet received official approval.",
     };
 
     const tooltipElements = document.querySelectorAll(".tooltip");
