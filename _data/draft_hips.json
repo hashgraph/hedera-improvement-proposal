@@ -3,13 +3,13 @@
     "title": "HIP-1137: Block Node Discoverability",
     "number": 1137,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1137",
-    "headRefOid": "c03c8b3047766a9ec018c4c0b2bcfb8e01559cbf",
+    "headRefOid": "91c3ab048541a95dda3243b2203082cdbb1e2288",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1137.md",
-            "additions": 361,
+            "additions": 368,
             "deletions": 0
           }
         }
