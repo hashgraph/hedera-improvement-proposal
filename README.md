@@ -1,6 +1,6 @@
 ![](./assets/hedera_logo.png)
 
-[![](https://img.shields.io/discord/373889138199494658)](https://discord.com/channels/373889138199494658/813488589773471774)
+[![](https://img.shields.io/discord/373889138199494658)](https://discord.com/invite/uJ5k8DkmKV)
 [![](https://img.shields.io/badge/view-published-blue)](https://hips.hedera.com)
 
 ## Submit a HIP
