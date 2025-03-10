@@ -54,7 +54,7 @@ import "services/timestamp.proto";
  */
 message EventHeader {
     /**
-     * The creator node identifier.<br/>
+     * A node identifier.
      * <p>
      * This SHALL be the unique identifier for the node that created the event.<br/>
      * This SHALL match the ID of the node as it appears in the address book.
