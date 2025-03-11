@@ -20,9 +20,9 @@ option java_package = "com.hedera.hapi.block.stream.input.protoc";
 option java_multiple_files = true;
 
 
-import "services/basic_types.proto";
+import "event/event_core.proto";
 import "platform/event/event_descriptor.proto";
-import "services/timestamp.proto";
+
 
 /**
  * A header for a single event.<br/>
@@ -30,66 +30,47 @@ import "services/timestamp.proto";
  * block.
  * 
  * An `EventHeader` message that contains only `EventDescriptors` for parents
- * can translate into an `EventCore` message directly.<br/>
- * A translated `EventCore` message along with `EventHeader`'s following
- * `EventTransaction` messages in the block can be serialized and hashed to
- * create the `EventDescriptor` for that event.<br/>
+ * can be combined with its following `EventTransaction` messages to create
+ * a `GossipEvent` message.<br/>
+ * The created `GossipEvent` message can be hashed to create the
+ * `EventDescriptor` for that event.<br/>
  * An `EventHeader` that contains indices to parent events within the containing
  * block will need to have each parent index replaced by the `EventDescriptor`
- * that parent before it can be translated into an EventCore message.
+ * of that parent before it can be translated into a `GossipEvent` message.
  */
 message EventHeader {
     /**
-     * A node identifier.
-     * <p>
-     * This SHALL be the unique identifier for the node that created the event.<br/>
-     * This SHALL match the ID of the node as it appears in the address book.
+     * An event core value.<br/>
+     * This provides information about the event, including its creator.
      */
-    int64 creator_node_id = 1;
+    com.hedera.hapi.platform.event.EventCore event_core = 1;
 
     /**
-     * The birth round of the event.<br/>
-     * <p>
-     * The birth round SHALL be the pending consensus round at the time the
-     * event is created.<br/>
-     * The pending consensus round SHALL be **one greater** than the latest
-     * round to reach consensus.
-     */
-    int64 birth_round = 2;
-
-    /**
-     * An event creation time.<br/>
-     * This is the wall clock time at which the event was created,
-     * according to the node creating the event.
-     * <p>
-     * If the event has a self parent, this timestamp MUST be strictly greater
-     * than the `time_created` of the self parent.
-     */
-    proto.Timestamp time_created = 3;
-
-    /**
-     * A list of references to parent events. <br/>
+     * A list of references to parent events.<br/>
      * Each entry can be an `EventDescriptor` or an index to an event
      * within the block. These items represent the parents of this event.
      * <p>
-     * This list SHALL include zero or one self parents<br/>
+     * This list SHALL include zero or one self parents.<br/>
      * This list SHALL include zero or more other parents.<br/>
      * The first element of the list SHALL be the self parent,
      * if one exists.<br/>
      * The list of parents SHALL NOT include more than one parent from the same
      * creator.
      */
-    repeated ParentEventReference parents = 4;
+    repeated ParentEventReference parents = 2;
 
     /**
-     * The event specification version.<br/>
+     * A single node event signature.<br/>
+     * This value is empty unless a coin round occurs in consensus.<br/>
      * <p>
-     * The specification described by this version SHALL encompass the format of
-     * the `GossipEvent` message and the format of all contained messages. <br/>
-     * This SHALL exactly match the specification version passed into the
-     * platform at construction.
+     * When this event has participated in a coin round, this field SHALL contain
+     * either the full signature from the creator node or a single byte derived
+     * from the signature. <br/>
+     * If the signature is an odd number of bytes, the middle byte is used.<br/>
+     * If the signature is an even number of bytes, the XOR of the middle
+     * two bytes is used.
      */
-    proto.SemanticVersion version = 17; // This field is temporary until birth_round migration is complete. Field number 17 chosen to avoid polluting cheaper 1 byte field numbers 1-16
+    bytes signature = 3;
 }
 
 /*
@@ -103,7 +84,7 @@ message ParentEventReference {
          * <p>
          * The event referenced SHALL NOT be within the containing block.
          */
-        proto.EventDescriptor descriptor = 2;
+        proto.EventDescriptor descriptor = 1;
 
         /**
          * The index of the parent event.
@@ -112,6 +93,6 @@ message ParentEventReference {
          * containing block starting from.<br/>
          * The index SHALL be zero-based.
          */
-        uint32 index = 1;
+        uint32 index = 2;
     }
 }
