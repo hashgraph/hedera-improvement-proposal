@@ -60,17 +60,12 @@ message EventHeader {
     repeated ParentEventReference parents = 2;
 
     /**
-     * A single node event signature.<br/>
-     * This value is empty unless a coin round occurs in consensus.<br/>
+     * The middle bit of the node's signature on the event.<br/>
      * <p>
-     * When this event has participated in a coin round, this field SHALL contain
-     * either the full signature from the creator node or a single byte derived
-     * from the signature. <br/>
-     * If the signature is an odd number of bytes, the middle byte is used.<br/>
-     * If the signature is an even number of bytes, the XOR of the middle
-     * two bytes is used.
+     * This bit SHALL be the middle bit of the node's signature on the hash
+     * of the event.<br/>
      */
-    bytes signature = 3;
+    bool signature_middle_bit = 3;
 }
 
 /*
