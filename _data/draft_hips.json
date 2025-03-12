@@ -1,5 +1,59 @@
 [
   {
+    "title": "feat: add Hiero approval filter and UI components",
+    "number": 1140,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1140",
+    "headRefOid": "2f52288c5874fb3616c5aa502e627510f348f067",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "_includes/hipstable.md",
+            "additions": 22,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "assets/js/filter.js",
+            "additions": 22,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "hip-0000-template.md",
+            "additions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "EMerchant90"
+    }
+  },
+  {
+    "title": "feat: Rollable and Fully Immutable Topic Ids",
+    "number": 1139,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1139",
+    "headRefOid": "18eaa55f2c3c1278eb04248913cae22bcdafe2e0",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1139.md",
+            "additions": 191,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "kantorcodes"
+    }
+  },
+  {
     "title": "chore: Address additional comments to HIP",
     "number": 1138,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1138",
