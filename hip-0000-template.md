@@ -7,6 +7,7 @@ requested-by: <Name(s) and/or username(s), or name(s) and email(s) of the indivi
 type: <"Standards Track" | "Informational" | "Process">
 category: <"Core" | "Service" | "Mirror" | "Application">
 needs-council-approval: <"Yes" | "No">
+needs-hiero-approval: <"Yes" | "No">
 status: <"Draft" | "Review" | "Last Call" | "Active" | "Inactive" | "Deferred" | "Rejected" | "Withdrawn" | "Accepted" | "Final" | "Replaced">
 created: <Date the HIP was created on, in YYYY-MM-DD format>
 discussions-to: <A URL pointing to the official discussion thread. Ex: https://github.com/hiero-ledger/hiero-improvement-proposal/discussions/000>

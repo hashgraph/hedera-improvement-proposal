@@ -38,6 +38,16 @@
             <input type="radio" name="council-approval-filter" class="council-filter" value="false"> No
         </label>
     </div>
+
+    <div class="filter-group">
+        <h4>Hiero Review&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        <label>
+            <input type="radio" name="hiero-review-filter" class="hiero-filter" value="true"> Yes
+        </label>
+        <label>
+            <input type="radio" name="hiero-review-filter" class="hiero-filter" value="false"> No
+        </label>
+    </div>
 </div>
 
 <div class="no-hips-message" style="display: none;">
@@ -53,6 +63,7 @@
             <th>Title</th>
             <th>Author</th>
             <th>Needs Council Approval</th>
+            <th>Needs Hiero Review</th>
         </tr>
     </thead>
     <tbody class="draft-tbody"></tbody>
@@ -75,6 +86,7 @@
                     <th>Title</th>
                     <th>Author</th>
                     <th>Needs Council Approval</th>
+                    <th>Needs Hiero Review</th>
                     {% if status == "Last Call" %}
                         <th>Review Period Ends</th>
                     {% else %}
@@ -87,7 +99,8 @@
                     <tr data-type="{{ page.type | downcase }}"
                         data-category="{{ page.category | downcase }}"
                         data-status="{{ page.status | downcase }}"
-                        data-council-approval="{{ page.needs-council-approval | downcase }}">
+                        data-council-approval="{{ page.needs-council-approval | downcase }}"
+                        data-hiero-review="{{ page.needs-hiero-review | downcase }}">
                         
                         <td class="hip-number">
                             <a href="{{ page.url | relative_url }}">{{ page.hip | xml_escape }}</a>
@@ -103,6 +116,14 @@
                         
                         <td class="council-approval">
                             {% if page.needs-council-approval %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </td>
+                        
+                        <td class="hiero-review">
+                            {% if page.needs-hiero-review %}
                                 Yes
                             {% else %}
                                 No
