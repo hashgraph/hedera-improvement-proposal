@@ -141,9 +141,19 @@ message BlockHeader {
     /**
      * A timestamp for this block.
      * <p>
-     * This SHALL be a timestamp for the block such that the previous block's
-     * timestamp is before this timestamp and the next block's timestamp is after
-     * this timestamp.
+     * This SHALL be a timestamp for the block, determined as follows:<br/>
+     * Given the first round within a block
+     * <ul>
+     *   <li>If the round contains events and transactions, the
+     *       timestamp SHALL be the timestamp of the last transaction in
+     *       the round.</li>
+     *  <li>If the round contains no events or transactions, the
+     *      timestamp SHALL be the timestamp of the previous round plus
+     *      1000 nanoseconds.</li>
+     *  <li>If the round contains no events or transactions and there
+     *      is no previous round, the timestamp SHALL be the median of
+     *      the judge created timestamps for this round.</li>
+     * </ul>
      */
     proto.Timestamp block_timestamp = 5;
 
