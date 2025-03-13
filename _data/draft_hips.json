@@ -1,5 +1,25 @@
 [
   {
+    "title": "Draft hip-0000-improve-hedera-sharding",
+    "number": 1141,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1141",
+    "headRefOid": "bbd6a1dd50bc9909a74c32af46de196092f4b70d",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "hip-0000-improve-hedera-sharding.md",
+            "additions": 160,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "jxcwu"
+    }
+  },
+  {
     "title": "feat: add Hiero approval filter and UI components",
     "number": 1140,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1140",
