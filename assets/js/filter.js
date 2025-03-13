@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const statusSelect = $('#status-filter');
     const councilApprovalFilters = document.querySelectorAll('input[name="council-approval-filter"]');
-    const hieroApprovalFilters = document.querySelectorAll('input[name="hiero-approval-filter"]');
+    const hieroApprovalFilters = document.querySelectorAll('input[name="hiero-review-filter"]');
     const noHipsMessage = document.querySelector('.no-hips-message');
     const councilApprovalRadios = document.querySelectorAll('input[name="council-approval-filter"]');
-    const hieroApprovalRadios = document.querySelectorAll('input[name="hiero-approval-filter"]');
+    const hieroApprovalRadios = document.querySelectorAll('input[name="hiero-review-filter"]');
 
     councilApprovalRadios.forEach(radio => {
         radio.addEventListener('click', (e) => {
@@ -56,13 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const selectedStatuses = statusSelect.val().length > 0 ? statusSelect.val() : ['all'];
         const selectedCouncilApproval = document.querySelector('input[name="council-approval-filter"]:checked')?.value || 'all';
-        const selectedHieroApproval = document.querySelector('input[name="hiero-approval-filter"]:checked')?.value || 'all';
+        const selectedHieroApproval = document.querySelector('input[name="hiero-review-filter"]:checked')?.value || 'all';
         let anyRowVisible = false;
         document.querySelectorAll('.hipstable tbody tr').forEach(row => {
             const rowTypes = [row.getAttribute('data-type').trim().toLowerCase(), row.getAttribute('data-category').trim().toLowerCase()];
             const rowStatus = row.getAttribute('data-status').trim().toLowerCase();
             const rowCouncilApproval = row.getAttribute('data-council-approval');
-            const rowHieroApproval = row.getAttribute('data-hiero-approval');
+            const rowHieroApproval = row.getAttribute('data-hiero-review');
 
             const typeCategoryMatch = selectedTypes.some(type => rowTypes.includes(type));
             const statusMatch = selectedStatuses.includes('all') || selectedStatuses.includes(rowStatus);
