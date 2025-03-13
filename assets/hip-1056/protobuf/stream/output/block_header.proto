@@ -139,12 +139,13 @@ message BlockHeader {
     bytes previous_block_hash = 4;
 
     /**
-     * A consensus timestamp for the start of this block.
+     * A timestamp for this block.
      * <p>
-     * This SHALL be the timestamp assigned by the hashgraph consensus
-     * algorithm to the first transaction of this block.
+     * This SHALL be a timestamp for the block such that the previous block's
+     * timestamp is before this timestamp and the next block's timestamp is after
+     * this timestamp.
      */
-    proto.Timestamp first_transaction_consensus_time = 5;
+    proto.Timestamp block_timestamp = 5;
 
     /**
      * A hash algorithm used for this block, including the block proof.
