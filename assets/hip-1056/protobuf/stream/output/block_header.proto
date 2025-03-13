@@ -139,7 +139,9 @@ message BlockHeader {
     bytes previous_block_hash = 4;
 
     /**
-     * A timestamp for this block.
+     * The timestamp for this block.<br/>
+     * The block timestamp is the consensus time stamp of the first round
+     * in the block.
      * <p>
      * This SHALL be a timestamp for the block, determined as follows:<br/>
      * Given the first round within a block
