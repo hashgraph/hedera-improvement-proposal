@@ -1,5 +1,139 @@
 [
   {
+    "title": "Draft hip-0000-improve-hedera-sharding",
+    "number": 1141,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1141",
+    "headRefOid": "bbd6a1dd50bc9909a74c32af46de196092f4b70d",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "hip-0000-improve-hedera-sharding.md",
+            "additions": 160,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "jxcwu"
+    }
+  },
+  {
+    "title": "feat: add Hiero approval filter and UI components",
+    "number": 1140,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1140",
+    "headRefOid": "2f52288c5874fb3616c5aa502e627510f348f067",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "_includes/hipstable.md",
+            "additions": 22,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "assets/js/filter.js",
+            "additions": 22,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "hip-0000-template.md",
+            "additions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "EMerchant90"
+    }
+  },
+  {
+    "title": "feat: Rollable and Fully Immutable Topic Ids",
+    "number": 1139,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1139",
+    "headRefOid": "6f6b8314c9890627214ee114a34a2525a173e41c",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1139.md",
+            "additions": 191,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "kantorcodes"
+    }
+  },
+  {
+    "title": "chore: Address additional comments to HIP",
+    "number": 1138,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1138",
+    "headRefOid": "ff679cfcee8f40ab7ed2b44b995ac80d174e6a25",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1028.md",
+            "additions": 18,
+            "deletions": 5
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "lukelee-sl"
+    }
+  },
+  {
+    "title": "HIP-1137: Block Node Discoverability",
+    "number": 1137,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1137",
+    "headRefOid": "91c3ab048541a95dda3243b2203082cdbb1e2288",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1137.md",
+            "additions": 368,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "jsync-swirlds"
+    }
+  },
+  {
+    "title": "docs: replaced the discord link",
+    "number": 1135,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1135",
+    "headRefOid": "432bf23889c59b3693587c0872a1596006700d8d",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "README.md",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "Olexandr88"
+    }
+  },
+  {
     "title": "Transaction Cleanup",
     "number": 1127,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1127",
@@ -299,7 +433,7 @@
     "title": "Updates to HIP-869",
     "number": 1089,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1089",
-    "headRefOid": "6b965083efa945e1b96a0f2da0c0611f6bf273b0",
+    "headRefOid": "908fc16a173bba566b405bc6247c9979c26fefb3",
     "files": {
       "edges": [
         {
@@ -453,16 +587,9 @@
     "title": "Update hip-1.md in preparation to Hiero migration",
     "number": 1062,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1062",
-    "headRefOid": "e01b161eff6de6251f77c101b6b7fde09a55d54c",
+    "headRefOid": "dd88208fa536f87857cd45d7bbaa24abff68fef5",
     "files": {
       "edges": [
-        {
-          "node": {
-            "path": ".github/workflows/add-hip-number.yml",
-            "additions": 0,
-            "deletions": 112
-          }
-        },
         {
           "node": {
             "path": "HIP/hip-1.md",
