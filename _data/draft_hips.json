@@ -23,14 +23,70 @@
     "title": "feat: add Hiero approval filter and UI components",
     "number": 1140,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1140",
-    "headRefOid": "2f52288c5874fb3616c5aa502e627510f348f067",
+    "headRefOid": "76f5dc420e991a50ee75a1689836d723a7aea086",
     "files": {
       "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1021.md",
+            "additions": 1,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1037.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1046.md",
+            "additions": 2,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1064.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1084.md",
+            "additions": 2,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1126.md",
+            "additions": 2,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "_config.yml",
+            "additions": 3,
+            "deletions": 3
+          }
+        },
         {
           "node": {
             "path": "_includes/hipstable.md",
             "additions": 22,
             "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "_layouts/hip.html",
+            "additions": 16,
+            "deletions": 0
           }
         },
         {
@@ -222,87 +278,6 @@
     }
   },
   {
-    "title": "Update HIP-1084 status to Hedera Accepted",
-    "number": 1116,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1116",
-    "headRefOid": "8085fa3361e1a40e76b00f777128dc02e30bb913",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1021.md",
-            "additions": 2,
-            "deletions": 2
-          }
-        },
-        {
-          "node": {
-            "path": "HIP/hip-1037.md",
-            "additions": 2,
-            "deletions": 2
-          }
-        },
-        {
-          "node": {
-            "path": "HIP/hip-1084.md",
-            "additions": 2,
-            "deletions": 2
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "mgarbs"
-    }
-  },
-  {
-    "title": "Update HIP-1021 status to Hedera Accepted",
-    "number": 1115,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1115",
-    "headRefOid": "a1f7035267c95e7a9400fb7e473d1c275fba244a",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1021.md",
-            "additions": 2,
-            "deletions": 2
-          }
-        },
-        {
-          "node": {
-            "path": "HIP/hip-1037.md",
-            "additions": 2,
-            "deletions": 2
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "mgarbs"
-    }
-  },
-  {
-    "title": "Update HIP-1037 status to Hedera Accepted",
-    "number": 1114,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1114",
-    "headRefOid": "f4781b2281c3bed13a14be21ff34fcad5c08a103",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1037.md",
-            "additions": 2,
-            "deletions": 2
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "mgarbs"
-    }
-  },
-  {
     "title": "chore: add product managers to CODEOWNERS",
     "number": 1109,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1109",
@@ -473,7 +448,7 @@
     "title": "Block Node",
     "number": 1081,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1081",
-    "headRefOid": "04e11af8f50781da882347839e7111afca23307c",
+    "headRefOid": "b8f00624f76bc199e5273ad73744377d634838f6",
     "files": {
       "edges": [
         {
@@ -486,7 +461,7 @@
         {
           "node": {
             "path": "assets/hip-1081/protobuf/block_service.proto",
-            "additions": 988,
+            "additions": 998,
             "deletions": 0
           }
         }
