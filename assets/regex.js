@@ -6,7 +6,7 @@ const regex = {
     type: /type: (Standards Track|Informational|Process)/,
     category: /category: (Core|Service|API|Mirror|Application)/,
     councilApproval: /needs-council-approval: (\Yes|No)/,
-    status: /status: (Idea|Draft|Review|Deferred|Withdrawn|Rejected|Last Call|Council Review|Accepted|Final|Active|Replaced)/,
+    status: /status: (Idea|Draft|Review|Deferred|Withdrawn|Rejected|Last Call|TSC Review|TSC Approved|Hedera Review|Hedera Accepted|Accepted|Final|Active|Replaced)/,
     createdDate: /created:\s[0-9]{4}-[0-9]{2}-[0-9]{2}/,
     updatedDate: /updated:(\s[0-9]{4}-[0-9]{2}-[0-9]{2},*)+/,
     discussions: /discussions-to: (https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
