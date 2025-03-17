@@ -1,5 +1,32 @@
 [
   {
+    "title": "Bump actions/setup-node from 4.2.0 to 4.3.0",
+    "number": 1143,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1143",
+    "headRefOid": "14cf7a3b385969e2cf5352d46d0aaef656488621",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/workflows/update-draft-hips.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/validateHeaders.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "dependabot"
+    }
+  },
+  {
     "title": "Draft hip-0000-improve-hedera-sharding",
     "number": 1141,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1141",
