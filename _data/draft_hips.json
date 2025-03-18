@@ -1,70 +1,9 @@
 [
   {
-    "title": "Bump step-security/action-discord from 0.1.0 to 0.1.1",
-    "number": 1108,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1108",
-    "headRefOid": "2736fe31b64c2eb402d069ff9af7a11c5adada1f",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": ".github/workflows/send-discord-message.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "dependabot"
-    }
-  },
-  {
-    "title": "Bump actions/checkout from 3.6.0 to 4.2.2",
-    "number": 1107,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1107",
-    "headRefOid": "285bd79ad9a882d7be78a9408750b65d6819e231",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": ".github/workflows/add-hip-number.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/notifications.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/schedule-last-call-date-end.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/validateHeaders.yml",
-            "additions": 1,
-            "deletions": 1
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "dependabot"
-    }
-  },
-  {
-    "title": "Bump actions/setup-node from 3.6.0 to 4.1.0",
-    "number": 1106,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1106",
-    "headRefOid": "269ea2a7ca436f80b10679941ca798e816ec8384",
+    "title": "Bump actions/setup-node from 4.2.0 to 4.3.0",
+    "number": 1143,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1143",
+    "headRefOid": "14cf7a3b385969e2cf5352d46d0aaef656488621",
     "files": {
       "edges": [
         {
@@ -88,10 +27,207 @@
     }
   },
   {
-    "title": "Bump step-security/harden-runner from 2.7.1 to 2.10.4",
-    "number": 1105,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1105",
-    "headRefOid": "fbf03fc49c9857bc4365a0e442cb1c4345aff478",
+    "title": "Draft hip-0000-improve-hedera-sharding",
+    "number": 1141,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1141",
+    "headRefOid": "bbd6a1dd50bc9909a74c32af46de196092f4b70d",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "hip-0000-improve-hedera-sharding.md",
+            "additions": 160,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "jxcwu"
+    }
+  },
+  {
+    "title": "feat: add Hiero approval filter and UI components",
+    "number": 1140,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1140",
+    "headRefOid": "847553d8e4c4a7f4fedce7c5d201f5fefb32e818",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1021.md",
+            "additions": 1,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1028.md",
+            "additions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1037.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1046.md",
+            "additions": 2,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1064.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1084.md",
+            "additions": 2,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1126.md",
+            "additions": 2,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "_config.yml",
+            "additions": 3,
+            "deletions": 3
+          }
+        },
+        {
+          "node": {
+            "path": "_includes/hipstable.md",
+            "additions": 22,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "_layouts/hip.html",
+            "additions": 16,
+            "deletions": 0
+          }
+        },
+        {
+          "node": {
+            "path": "assets/js/filter.js",
+            "additions": 22,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": "hip-0000-template.md",
+            "additions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "EMerchant90"
+    }
+  },
+  {
+    "title": "feat: Rollable and Fully Immutable Topic Ids",
+    "number": 1139,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1139",
+    "headRefOid": "6f6b8314c9890627214ee114a34a2525a173e41c",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1139.md",
+            "additions": 191,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "kantorcodes"
+    }
+  },
+  {
+    "title": "chore: Address additional comments to HIP",
+    "number": 1138,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1138",
+    "headRefOid": "ff679cfcee8f40ab7ed2b44b995ac80d174e6a25",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1028.md",
+            "additions": 18,
+            "deletions": 5
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "lukelee-sl"
+    }
+  },
+  {
+    "title": "HIP-1137: Block Node Discoverability",
+    "number": 1137,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1137",
+    "headRefOid": "126f9d7373aea20195267ca0910871d40174e02a",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1137.md",
+            "additions": 462,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "jsync-swirlds"
+    }
+  },
+  {
+    "title": "Transaction Cleanup",
+    "number": 1127,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1127",
+    "headRefOid": "322c730e1fb77d59191f9821cc82f5944e54b574",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1127.md",
+            "additions": 93,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "netopyr"
+    }
+  },
+  {
+    "title": "Bump step-security/harden-runner from 2.10.4 to 2.11.0",
+    "number": 1125,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1125",
+    "headRefOid": "2c01fc05ea686e04e71cb2fd61df2e1015c10f7c",
     "files": {
       "edges": [
         {
@@ -136,23 +272,63 @@
     }
   },
   {
-    "title": "Update HIP-756",
-    "number": 1104,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1104",
-    "headRefOid": "a9d726bdedffba52af81bc4837974c7a3f177198",
+    "title": "Update HIP-755 status to Final",
+    "number": 1120,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1120",
+    "headRefOid": "8f191aaa9fa35873faefd9446137ada7cc0def6b",
     "files": {
       "edges": [
         {
           "node": {
-            "path": "HIP/hip-756.md",
-            "additions": 23,
-            "deletions": 25
+            "path": "HIP/hip-755.md",
+            "additions": 3,
+            "deletions": 2
           }
         }
       ]
     },
     "author": {
-      "login": "stoyanov-st"
+      "login": "mgarbs"
+    }
+  },
+  {
+    "title": "Update HIP-423 status to Final",
+    "number": 1119,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1119",
+    "headRefOid": "65ff8e64829daa3b1395c2cd90a5d9804783a037",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-423.md",
+            "additions": 3,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "mgarbs"
+    }
+  },
+  {
+    "title": "chore: add product managers to CODEOWNERS",
+    "number": 1109,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1109",
+    "headRefOid": "c8a65677a8e45d66249a050ad5ab38088afc64e7",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/CODEOWNERS",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "andrewb1269hg"
     }
   },
   {
@@ -199,7 +375,7 @@
     "title": "Update hip-1037.md to Last Call",
     "number": 1100,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1100",
-    "headRefOid": "85eb28ea0cdb54a59cbe4cd7e405a53a8b84b357",
+    "headRefOid": "a13c0521cfeeb498e4d56beedc5b8e52c8742fbb",
     "files": {
       "edges": [
         {
@@ -219,14 +395,21 @@
     "title": "Update hip-551.md",
     "number": 1090,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1090",
-    "headRefOid": "e1e55e44540b6ddf8b6eff77473be24b1702ac4e",
+    "headRefOid": "7025950c1f919972ebad3e02566b59618bedc1b1",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-551.md",
-            "additions": 104,
-            "deletions": 60
+            "additions": 228,
+            "deletions": 62
+          }
+        },
+        {
+          "node": {
+            "path": "assets/hip-551/record-stream.png",
+            "additions": 0,
+            "deletions": 0
           }
         }
       ]
@@ -239,7 +422,7 @@
     "title": "Updates to HIP-869",
     "number": 1089,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1089",
-    "headRefOid": "973433ada73f0832ebbce3696f2dd0ab7c30341f",
+    "headRefOid": "908fc16a173bba566b405bc6247c9979c26fefb3",
     "files": {
       "edges": [
         {
@@ -259,13 +442,13 @@
     "title": "Jumbo EthereumTransactions",
     "number": 1086,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1086",
-    "headRefOid": "a5b3f2ca6b255ff56697cf935bb00d3d442bd1a5",
+    "headRefOid": "cf4d50213607eabf1b4c562a42e3ed9e57f5cee0",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1086.md",
-            "additions": 144,
+            "additions": 177,
             "deletions": 0
           }
         }
@@ -299,20 +482,20 @@
     "title": "Block Node",
     "number": 1081,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1081",
-    "headRefOid": "584e30302a4a2c08c55d4a528b65817e8ef1c311",
+    "headRefOid": "b8f00624f76bc199e5273ad73744377d634838f6",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1081.md",
-            "additions": 635,
+            "additions": 641,
             "deletions": 0
           }
         },
         {
           "node": {
             "path": "assets/hip-1081/protobuf/block_service.proto",
-            "additions": 943,
+            "additions": 998,
             "deletions": 0
           }
         }
@@ -323,10 +506,10 @@
     }
   },
   {
-    "title": "Enable KeyList Support in HTS  Precompile",
+    "title": "Enable Threshold (1-of-N) Support in HTS  Precompile",
     "number": 1069,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1069",
-    "headRefOid": "3b7917b03a862535caf3ed3fdee95d3c3f24c7ba",
+    "headRefOid": "2e4a81d2b3aca4d0dcceb955f5a3f28305264b89",
     "files": {
       "edges": [
         {
@@ -346,7 +529,7 @@
     "title": "Sponsored Fees",
     "number": 1068,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1068",
-    "headRefOid": "265855a49972c93cbd0a5ddda58a58ec5cf1853d",
+    "headRefOid": "54c87fc6af5c99444f6ddf85f37714f86ccdd7a9",
     "files": {
       "edges": [
         {
@@ -393,42 +576,35 @@
     "title": "Update hip-1.md in preparation to Hiero migration",
     "number": 1062,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1062",
-    "headRefOid": "6da97780cbddb27fcf1ec5d5ceb369c506541663",
+    "headRefOid": "dd88208fa536f87857cd45d7bbaa24abff68fef5",
     "files": {
       "edges": [
         {
           "node": {
-            "path": ".github/workflows/add-hip-number.yml",
-            "additions": 0,
-            "deletions": 112
-          }
-        },
-        {
-          "node": {
-            "path": ".github/workflows/schedule-last-call-date-end.yml",
-            "additions": 0,
-            "deletions": 167
-          }
-        },
-        {
-          "node": {
             "path": "HIP/hip-1.md",
-            "additions": 128,
+            "additions": 151,
             "deletions": 123
           }
         },
         {
           "node": {
-            "path": "_includes/hipstable.md",
+            "path": "_config.yml",
             "additions": 1,
             "deletions": 1
           }
         },
         {
           "node": {
+            "path": "_includes/hipstable.md",
+            "additions": 31,
+            "deletions": 10
+          }
+        },
+        {
+          "node": {
             "path": "_layouts/hip.html",
-            "additions": 13,
-            "deletions": 20
+            "additions": 26,
+            "deletions": 25
           }
         },
         {
@@ -443,6 +619,20 @@
             "path": "assets/hip-1/hip-states.png",
             "additions": 0,
             "deletions": 0
+          }
+        },
+        {
+          "node": {
+            "path": "assets/js/pr-integration.js",
+            "additions": 24,
+            "deletions": 9
+          }
+        },
+        {
+          "node": {
+            "path": "assets/regex.js",
+            "additions": 1,
+            "deletions": 1
           }
         },
         {
@@ -684,33 +874,6 @@
     },
     "author": {
       "login": "mattsmithies"
-    }
-  },
-  {
-    "title": "Update diagram and state definitions.",
-    "number": 824,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/824",
-    "headRefOid": "e4762f4f0c9ae952111b4990698fa13b2990a621",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1.md",
-            "additions": 4,
-            "deletions": 4
-          }
-        },
-        {
-          "node": {
-            "path": "assets/hip-1/hip-states.png",
-            "additions": 0,
-            "deletions": 0
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "kenthejr"
     }
   },
   {
