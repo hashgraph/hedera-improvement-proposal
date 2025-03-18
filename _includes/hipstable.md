@@ -17,7 +17,6 @@
             <option value="draft">Draft</option>
             <option value="review">Review</option>
             <option value="last call">Last Call</option>
-            <option value="council review">Council Review</option>
             <option value="accepted">Accepted</option>
             <option value="rejected">Rejected</option>
             <option value="final">Final</option>
@@ -30,12 +29,12 @@
     </div>
     
     <div class="filter-group">
-        <h4>Council Approval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        <h4>Hedera Review&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
         <label>
-            <input type="radio" name="council-approval-filter" class="council-filter" value="true"> Yes
+            <input type="radio" name="hedera-review-filter" class="hedera-filter" value="true"> Yes
         </label>
         <label>
-            <input type="radio" name="council-approval-filter" class="council-filter" value="false"> No
+            <input type="radio" name="hedera-review-filter" class="hedera-filter" value="false"> No
         </label>
     </div>
 
@@ -62,7 +61,9 @@
             <th class="numeric">Number</th>
             <th>Title</th>
             <th>Author</th>
-            <th>Needs Council Approval</th>
+            <th>Needs Hedera Review</th>
+            <th>Hedera Review Date</th>
+            <th>Hedera Approval Status</th>
             <th>Needs Hiero Review</th>
         </tr>
     </thead>
@@ -85,7 +86,9 @@
                     <th class="numeric">Number</th>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Needs Council Approval</th>
+                    <th>Needs Hedera Review</th>
+                    <th>Hedera Review Date</th>
+                    <th>Hedera Approval Status</th>
                     <th>Needs Hiero Review</th>
                     {% if status == "Last Call" %}
                         <th>Review Period Ends</th>
@@ -99,7 +102,9 @@
                     <tr data-type="{{ page.type | downcase }}"
                         data-category="{{ page.category | downcase }}"
                         data-status="{{ page.status | downcase }}"
-                        data-council-approval="{{ page.needs-council-approval | downcase }}"
+                        data-hedera-review="{{ page.needs-hedera-review | downcase }}"
+                        data-hedera-review-date="{{ page.hedera-review-date }}"
+                        data-hedera-approval-status="{{ page.hedera-approval-status | downcase }}"
                         data-hiero-review="{{ page.needs-hiero-review | downcase }}">
                         
                         <td class="hip-number">
@@ -114,12 +119,20 @@
                             {% include authorslist.html authors=page.author %}
                         </td>
                         
-                        <td class="council-approval">
-                            {% if page.needs-council-approval %}
+                        <td class="hedera-review">
+                            {% if page.needs-hedera-review %}
                                 Yes
                             {% else %}
                                 No
                             {% endif %}
+                        </td>
+                        
+                        <td class="hedera-review-date">
+                            {{ page.hedera-review-date }}
+                        </td>
+                        
+                        <td class="hedera-approval-status">
+                            {{ page.hedera-approval-status }}
                         </td>
                         
                         <td class="hiero-review">
