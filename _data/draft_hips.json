@@ -50,7 +50,7 @@
     "title": "feat: add Hiero approval filter and UI components",
     "number": 1140,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1140",
-    "headRefOid": "847553d8e4c4a7f4fedce7c5d201f5fefb32e818",
+    "headRefOid": "4e6fb0775bf509e3422bc1242f140eca17fcd9bd",
     "files": {
       "edges": [
         {
@@ -112,8 +112,8 @@
         {
           "node": {
             "path": "_includes/hipstable.md",
-            "additions": 22,
-            "deletions": 1
+            "additions": 43,
+            "deletions": 9
           }
         },
         {
@@ -126,15 +126,15 @@
         {
           "node": {
             "path": "assets/js/filter.js",
-            "additions": 22,
-            "deletions": 1
+            "additions": 32,
+            "deletions": 10
           }
         },
         {
           "node": {
             "path": "hip-0000-template.md",
-            "additions": 1,
-            "deletions": 0
+            "additions": 4,
+            "deletions": 4
           }
         }
       ]
@@ -187,7 +187,7 @@
     "title": "HIP-1137: Block Node Discoverability",
     "number": 1137,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1137",
-    "headRefOid": "126f9d7373aea20195267ca0910871d40174e02a",
+    "headRefOid": "854713d65eff08b5f424e168017c495000f207e5",
     "files": {
       "edges": [
         {
@@ -442,7 +442,7 @@
     "title": "Jumbo EthereumTransactions",
     "number": 1086,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1086",
-    "headRefOid": "cf4d50213607eabf1b4c562a42e3ed9e57f5cee0",
+    "headRefOid": "041961d7d72c7f0631bf96ea08c8552ee05bac21",
     "files": {
       "edges": [
         {
@@ -462,7 +462,7 @@
     "title": "Allow Setting of EVM Address by EOA",
     "number": 1082,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1082",
-    "headRefOid": "0074a385a89f2efdc6a2048f081ddb22a4d74dbd",
+    "headRefOid": "486b234f79348769390537845ada0e8f659f2866",
     "files": {
       "edges": [
         {
@@ -482,7 +482,7 @@
     "title": "Block Node",
     "number": 1081,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1081",
-    "headRefOid": "b8f00624f76bc199e5273ad73744377d634838f6",
+    "headRefOid": "cc626085b66d30a20d7d26b4b6aca36a5b5b79b4",
     "files": {
       "edges": [
         {
@@ -833,7 +833,7 @@
     "title": "HIP 1009 - Native Schema Registry Service",
     "number": 1009,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1009",
-    "headRefOid": "75a819b9098ad854d2392335b9164934ff4368d5",
+    "headRefOid": "2f36c960e1746748bb7968dcfb11434aba2b6f66",
     "files": {
       "edges": [
         {
