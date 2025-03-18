@@ -50,7 +50,7 @@
     "title": "feat: add Hiero approval filter and UI components",
     "number": 1140,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1140",
-    "headRefOid": "14aef493aaeb1ee9bc46700f68b802f01f69e6fb",
+    "headRefOid": "847553d8e4c4a7f4fedce7c5d201f5fefb32e818",
     "files": {
       "edges": [
         {
@@ -58,6 +58,13 @@
             "path": "HIP/hip-1021.md",
             "additions": 1,
             "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": "HIP/hip-1028.md",
+            "additions": 1,
+            "deletions": 0
           }
         },
         {
