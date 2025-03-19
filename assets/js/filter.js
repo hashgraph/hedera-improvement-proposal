@@ -62,12 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.hipstable tbody tr').forEach(row => {
             const rowTypes = [row.getAttribute('data-type').trim().toLowerCase(), row.getAttribute('data-category').trim().toLowerCase()];
             const rowStatus = row.getAttribute('data-status').trim().toLowerCase();
-            const rowHederaReview = row.getAttribute('data-hedera-review') || 'false';
+            const rowHederaReview = row.getAttribute('data-hedera-review') || row.getAttribute('data-council-review') || 'false';
             const rowHieroReview = row.getAttribute('data-hiero-review') || 'false'; 
 
             const typeCategoryMatch = selectedTypes.some(type => rowTypes.includes(type));
             const statusMatch = selectedStatuses.includes('all') || selectedStatuses.includes(rowStatus);
-            const hederaReviewMatch = selectedHederaReview === 'all' || selectedHederaReview === rowHederaReview;
+            const hederaReviewMatch = selectedHederaReview === 'all' || 
+                                     selectedHederaReview === rowHederaReview || 
+                                     (selectedHederaReview === 'false' && !rowHederaReview);
             const hieroReviewMatch = selectedHieroReview === 'all' || selectedHieroReview === rowHieroReview;
 
             if (typeCategoryMatch && statusMatch && hederaReviewMatch && hieroReviewMatch) {

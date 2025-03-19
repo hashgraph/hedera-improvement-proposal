@@ -27,6 +27,15 @@
             <option value="withdrawn">Withdrawn</option>
         </select>
     </div>
+    <div class="filter-group">
+        <h4>Hiero Review&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+        <label>
+            <input type="radio" name="hiero-review-filter" class="hiero-filter" value="true"> Yes
+        </label>
+        <label>
+            <input type="radio" name="hiero-review-filter" class="hiero-filter" value="false"> No
+        </label>
+    </div>
     
     <div class="filter-group">
         <h4>Hedera Review&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
@@ -37,16 +46,7 @@
             <input type="radio" name="hedera-review-filter" class="hedera-filter" value="false"> No
         </label>
     </div>
-
-    <div class="filter-group">
-        <h4>Hiero Review&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
-        <label>
-            <input type="radio" name="hiero-review-filter" class="hiero-filter" value="true"> Yes
-        </label>
-        <label>
-            <input type="radio" name="hiero-review-filter" class="hiero-filter" value="false"> No
-        </label>
-    </div>
+    
 </div>
 
 <div class="no-hips-message" style="display: none;">
@@ -61,10 +61,8 @@
             <th class="numeric">Number</th>
             <th>Title</th>
             <th>Author</th>
-            <th>Needs Hedera Review</th>
-            <th>Hedera Review Date</th>
-            <th>Hedera Approval Status</th>
             <th>Needs Hiero Review</th>
+            <th>Needs Hedera Review</th>
         </tr>
     </thead>
     <tbody class="draft-tbody"></tbody>
@@ -86,10 +84,8 @@
                     <th class="numeric">Number</th>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Needs Hedera Review</th>
-                    <th>Hedera Review Date</th>
-                    <th>Hedera Approval Status</th>
                     <th>Needs Hiero Review</th>
+                    <th>Needs Hedera Review</th>
                     {% if status == "Last Call" %}
                         <th>Review Period Ends</th>
                     {% else %}
@@ -104,7 +100,6 @@
                         data-status="{{ page.status | downcase }}"
                         data-hedera-review="{{ page.needs-hedera-review | downcase }}"
                         data-hedera-review-date="{{ page.hedera-review-date }}"
-                        data-hedera-approval-status="{{ page.hedera-approval-status | downcase }}"
                         data-hiero-review="{{ page.needs-hiero-review | downcase }}">
                         
                         <td class="hip-number">
@@ -119,24 +114,16 @@
                             {% include authorslist.html authors=page.author %}
                         </td>
                         
-                        <td class="hedera-review">
-                            {% if page.needs-hedera-review %}
+                        <td class="hiero-review">
+                            {% if page.needs-hiero-review %}
                                 Yes
                             {% else %}
                                 No
                             {% endif %}
                         </td>
                         
-                        <td class="hedera-review-date">
-                            {{ page.hedera-review-date }}
-                        </td>
-                        
-                        <td class="hedera-approval-status">
-                            {{ page.hedera-approval-status }}
-                        </td>
-                        
-                        <td class="hiero-review">
-                            {% if page.needs-hiero-review %}
+                        <td class="hedera-review">
+                            {% if page.needs-hedera-review %}
                                 Yes
                             {% else %}
                                 No
