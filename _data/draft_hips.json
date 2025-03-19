@@ -1,5 +1,25 @@
 [
   {
+    "title": "Remove pricing and HAPI api changes from Jumbo EthTx",
+    "number": 1144,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1144",
+    "headRefOid": "06b5f309fb1973775a9ff8872346dcfc0dee6ca1",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "HIP/hip-1086.md",
+            "additions": 15,
+            "deletions": 25
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "edward-swirldslabs"
+    }
+  },
+  {
     "title": "Bump actions/setup-node from 4.2.0 to 4.3.0",
     "number": 1143,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1143",
@@ -187,13 +207,13 @@
     "title": "HIP-1137: Block Node Discoverability",
     "number": 1137,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1137",
-    "headRefOid": "854713d65eff08b5f424e168017c495000f207e5",
+    "headRefOid": "af3c1669b98019933459334446cf15c8b04da67c",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1137.md",
-            "additions": 462,
+            "additions": 468,
             "deletions": 0
           }
         }
