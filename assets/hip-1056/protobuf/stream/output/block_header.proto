@@ -149,6 +149,8 @@ message BlockHeader {
      *   <li>If the round contains events and transactions, the
      *       timestamp SHALL be the timestamp of the last transaction in
      *       the round.</li>
+     <li>If the round has events but no transactions the timestamp
+     *      SHALL be the timestamp of the last event in the round.</li>
      *  <li>If the round contains no events or transactions, the
      *      timestamp SHALL be the timestamp of the previous round plus
      *      1000 nanoseconds.</li>
