@@ -55,6 +55,22 @@ layout: default
       </td>
     </tr>
     {% endif %}
+    {% if page.needs-hiero-review != undefined %}
+    <tr>
+      <th>
+        Needs Hiero Review
+      </th>
+      <td>
+        {% if page.needs-hiero-review %}
+        Yes <span class="tooltip" data-tooltip="{{ page.needs-hiero-review | jsonify }}"
+          style="text-decoration:none">ⓘ</span>
+        {% else %}
+        No <span class="tooltip" data-tooltip="{{ page.needs-hiero-review | jsonify }}"
+          style="text-decoration:none">ⓘ</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endif %}
     {% if page.hedera-approval != undefined %}
     <tr>
       <th>Hedera Approval <span class="tooltip" data-tooltip="hederaApproval" style="text-decoration:none">ⓘ</span></th>
