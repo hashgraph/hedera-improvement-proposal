@@ -237,7 +237,9 @@ message FilteredItemHash {
     /**
      * A binary tree path to a merkle subtree.
      * This path begins at the root of the block proof merkle tree and ends
-     * at the merkle subtree whose leaf nodes have all been filtered.
+     * at the merkle subtree whose leaf nodes have all been filtered.<br/>
+     * To walk a path `01001` from the root, go left, right, left, left,
+     * then right.
      * <p>
      * This REQUIRED field SHALL describe the full path in the virtual
      * merkle tree constructed for the block proof that contained the
