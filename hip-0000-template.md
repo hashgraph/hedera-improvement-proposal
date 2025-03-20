@@ -9,7 +9,7 @@ category: <"Core" | "Service" | "Mirror" | "Application">
 needs-council-approval: <"Yes" | "No">
 status: <"Draft" | "Review" | "Last Call" | "Active" | "Inactive" | "Deferred" | "Rejected" | "Withdrawn" | "Accepted" | "Final" | "Replaced">
 created: <Date the HIP was created on, in YYYY-MM-DD format>
-discussions-to: <A URL pointing to the official discussion thread. Ex: https://github.com/hashgraph/hedera-improvement-proposal/discussions/xxx.>
+discussions-to: <A URL pointing to the official discussion thread. Ex: https://github.com/hashgraph/hedera-improvement-proposal/discussions/000>
 updated: <Latest date HIP was updated, in YYYY-MM-DD format.>
 requires: <HIP number(s) this HIP depends on, if applicable. Ex: 101, 102>
 replaces: <HIP number(s) this HIP replaces, if applicable. Ex: 99>
@@ -17,57 +17,108 @@ superseded-by: <HIP number(s) that supersede this HIP, if applicable. Ex: 104>
 ---
 
 ## Abstract
-
 Please provide a short (~200 word) description of the issue being addressed.
 
-## Motivation
+This abstract should be copied to the description for your pull request.
 
-The motivation is critical for HIPs that want to change the Hedera codebase or ecosystem. It should clearly explain why the existing specification is inadequate to address the problem that the HIP solves. HIP submissions without sufficient motivation may be rejected outright.
+## Motivation
+The motivation is critical for HIPs that want to change the Hedera codebase or
+ecosystem. It should clearly explain why the existing specification is
+inadequate to address the problem that the HIP solves. HIP submissions without
+sufficient motivation may be rejected outright.
 
 ## Rationale
+The rationale fleshes out the specification by describing why particular design
+decisions were made. It should describe alternate designs that were considered
+and related work, e.g. how the feature is supported in other languages.
 
-The rationale fleshes out the specification by describing why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
-
-The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during the discussion.
+The rationale should provide evidence of consensus within the community and
+discuss important objections or concerns raised during the discussion.
 
 ## User stories
+Provide a list of "user stories" to express how this feature, functionality,
+improvement, or tool will be used by the end user. Template for user story:
+“As (user persona), I want (to perform this action) so that (I can accomplish
+this goal).”
 
-Provide a list of "user stories" to express how this feature, functionality, improvement, or tool will be used by the end user. Template for user story: “As (user persona), I want (to perform this action) so that (I can accomplish this goal).”
-  
 ## Specification
+The technical specification should describe the syntax and semantics of any new
+features. The specification should be detailed enough to allow competing,
+interoperable implementations for at least the current Hedera ecosystem.
 
-The technical specification should describe the syntax and semantics of any new features. The specification should be detailed enough to allow competing, interoperable implementations for at least the current Hedera ecosystem.
+Some specifications are of exceptional (thousands of lines) size. If your HIP
+requires detail of this level, add the large segments of specification as
+files of appropriate type (e.g. Solidity code, Protocol Buffer definition,
+Java code, etc...) in the `assets` folder, and add descriptive links
+to each such file here.
+### Example Specification
+<blockquote>
+
+Add a new `TokenAirdrop` transaction to `HederaFunctionality`. 
+```protobuf
+enum HederaFunctionality {
+//  ...
+    /**
+     * Airdrops one or more tokens to one or more accounts.
+     */
+    TokenAirdrop = 94;
+}
+```
+
+Define a new `TokenAirdrop` transaction body.  This transaction distributes
+tokens from the balance of one or more sending account(s) to the balance of
+one or more recipient accounts. Accounts MAY receive the tokens in one of
+four ways. The full definition, for clarity, is detailed
+in [an attached file](assets/hip-0000-template/sample.proto).
+
+</blockquote>
+
+Some HIP specifications are not well served by this mechanism.  In these cases
+the HIP MAY initially specify a public github commit or PR, and the HIP
+administrator may work with the authors to define an alternative method to
+include an appropriate snapshot of the specification content on
+a case-by-case basis.
 
 ## Backwards Compatibility
-
-All HIPs that introduce backward incompatibilities must include a section describing these incompatibilities and their severity. The HIP must explain how the author proposes to deal with these incompatibilities. HIP submissions without a sufficient backward compatibility treatise may be rejected outright.
+All HIPs that introduce backward incompatibilities must include a section
+describing these incompatibilities and their severity. The HIP must explain how
+the author proposes to deal with these incompatibilities. HIP submissions
+without a sufficient backward compatibility treatise may be rejected outright.
 
 ## Security Implications
-
-If there are security concerns in relation to the HIP, those concerns should be explicitly addressed to make sure reviewers of the HIP are aware of them.
+If there are security concerns in relation to the HIP, those concerns should be
+explicitly addressed to make sure reviewers of the HIP are aware of them.
 
 ## How to Teach This
-
-For a HIP that adds new functionality or changes interface behaviors, it is helpful to include a section on how to teach users, new and experienced, how to apply the HIP to their work.
+For a HIP that adds new functionality or changes interface behaviors, it is
+helpful to include a section on how to teach users, new and experienced, how to
+apply the HIP to their work.
 
 ## Reference Implementation
-
-The reference implementation must be complete before any HIP is given the status of “Final”. The final implementation must include test code and documentation.
+The reference implementation must be complete before any HIP is given the status
+of “Final”. The final implementation must include test code and documentation.
 
 ## Rejected Ideas
+Throughout the discussion of a HIP, various ideas will be proposed which are not
+accepted. Those rejected ideas should be recorded along with the reasoning as to
+why they were rejected. This both helps record the thought process behind the
+final version of the HIP as well as preventing people from bringing up the same
+rejected idea again in subsequent discussions.
 
-Throughout the discussion of a HIP, various ideas will be proposed which are not accepted. Those rejected ideas should be recorded along with the reasoning as to why they were rejected. This both helps record the thought process behind the final version of the HIP as well as preventing people from bringing up the same rejected idea again in subsequent discussions.
-
-In a way, this section can be thought of as a breakout section of the Rationale section that focuses specifically on why certain ideas were not ultimately pursued.
+In a way, this section can be thought of as a breakout section of the Rationale
+section that focuses specifically on why certain ideas were not ultimately
+pursued.
 
 ## Open Issues
-
-While a HIP is in draft, ideas can come up which warrant further discussion. Those ideas should be recorded so people know that they are being thought about but do not have a concrete resolution. This helps make sure all issues required for the HIP to be ready for consideration are complete and reduces people duplicating prior discussions.
+While a HIP is in draft, ideas can come up which warrant further discussion.
+Those ideas should be recorded so people know that they are being thought about
+but do not have a concrete resolution. This helps make sure all issues required
+for the HIP to be ready for consideration are complete and reduces people
+duplicating prior discussions.
 
 ## References
-
 A collections of URLs used as references through the HIP.
 
 ## Copyright/license
-
-This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
+This document is licensed under the Apache License, Version 2.0 --
+see [LICENSE](../LICENSE) or (https://www.apache.org/licenses/LICENSE-2.0)
