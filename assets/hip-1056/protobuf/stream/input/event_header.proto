@@ -84,8 +84,9 @@ message ParentEventReference {
         /**
          * The index of the parent event.
          * <p>
-         * The index SHALL be the position of the parent event within the
-         * containing block starting from.<br/>
+         * An `EventHeader`'s index SHALL be the count of preceding `EventHeader`
+         * and `RoundHeader` block items starting from the beginning of
+         * the block.<br/>
          * The index SHALL be zero-based.
          */
         uint32 index = 2;
