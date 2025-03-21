@@ -108,26 +108,6 @@
     }
   },
   {
-    "title": "Remove pricing and HAPI api changes from Jumbo EthTx",
-    "number": 1144,
-    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1144",
-    "headRefOid": "8568416d891850a0f7bb7f1392c255e1edee2bd2",
-    "files": {
-      "edges": [
-        {
-          "node": {
-            "path": "HIP/hip-1086.md",
-            "additions": 15,
-            "deletions": 28
-          }
-        }
-      ]
-    },
-    "author": {
-      "login": "edward-swirldslabs"
-    }
-  },
-  {
     "title": "Bump actions/setup-node from 4.2.0 to 4.3.0",
     "number": 1143,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1143",
@@ -530,13 +510,13 @@
     "title": "Jumbo EthereumTransactions",
     "number": 1086,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1086",
-    "headRefOid": "041961d7d72c7f0631bf96ea08c8552ee05bac21",
+    "headRefOid": "5b85754d7ae45ea21fe4c7d61a9b898b5a132c7c",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1086.md",
-            "additions": 177,
+            "additions": 164,
             "deletions": 0
           }
         }
