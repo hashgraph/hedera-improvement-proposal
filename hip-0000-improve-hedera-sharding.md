@@ -1,7 +1,7 @@
 ---
 hip: <HIP number (assigned by the HIP editor), usually the PR number>
 title: "Improve Hedera Sharding via Dynamic Committee Reconfiguration"
-author: Cong Wu, <cnacwu@gmail.com>
+author: Ziwei Wang <t4stek1ng@whu.edu.cn>, Cong Wu <cnacwu@gmail.com>, Paolo Tasca <p.tasca@exp.science>
 working-group: <List of the technical and business stakeholders' names and/or usernames, or names and emails. Ex: John Doe <@johnDoeGithub1778>, Jane Smith <jane@email.com>>
 requested-by: <Name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP. Ex: Acme Corp <request@acmecorp.com>>
 type: Standards Track
@@ -9,7 +9,7 @@ category: <"Core" | "Service" | "Mirror" | "Application">
 needs-council-approval: <"Yes" | "No">
 status: Draft
 created: 2025-03-13
-discussions-to: <A URL pointing to the official discussion thread. Ex: https://github.com/hashgraph/hedera-improvement-proposal/discussions/000>
+discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/1150
 updated: <Latest date HIP was updated, in YYYY-MM-DD format.>
 requires: <HIP number(s) this HIP depends on, if applicable. Ex: 101, 102>
 replaces: <HIP number(s) this HIP replaces, if applicable. Ex: 99>
@@ -137,13 +137,13 @@ Altogether, these security measures enhance the overall integrity and resilience
 
 ## References
 
-1. Luu, L., et al. “Elastico: A Secure Sharding Protocol For Open Blockchains.”
+1. Wang, Z,. et al.[Investigating Sharding Advancements, Methodologies, and Adoption Potential in Hedera](https://cdn.prod.website-files.com/669a53c60f11ddb32e07366a/67dda22b3182a5f07ac28d2b_Discussion%20Paper%2008-2025%20(1).pdf)
 2. Kokoris-Kogias, E., et al. “OmniLedger: A Secure, Scale-Out, Decentralized Ledger via Sharding.”
 3. Zamani, M., et al. “RapidChain: Scaling Blockchain via Full Sharding.”
 4. Solat, et al. "Sharding Distributed Databases: A Critical Review."
 5. Baird, L. “The Swirlds Hashgraph Consensus Algorithm: Fair, Fast, and Secure.”
 6. Hedera Mirror Node Documentation – [Hedera Core Concepts](https://docs.hedera.com/hedera/core-concepts/mirror-nodes).
-
+7. Luu, L., et al. “Elastico: A Secure Sharding Protocol For Open Blockchains.”
 ------
 
 ## Open Issues
