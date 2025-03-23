@@ -1,5 +1,25 @@
 [
   {
+    "title": "NEW HIP: Improve Hedera Sharding",
+    "number": 1151,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1151",
+    "headRefOid": "aa6194c5e01d03c1c4fcef29c02127d927facf9a",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": "hip-0000-improve-hedera-sharding.md",
+            "additions": 160,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "jxcwu"
+    }
+  },
+  {
     "title": "Update hip-551.md",
     "number": 1148,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1148",
