@@ -3,6 +3,7 @@ hip: 1
 title: Hiero Improvement Proposal Process
 author: Ken Anderson (@kenthejr), Serg Metelin (@sergmetelin), Simi Hunjan (@SimiHunjan), Michael Garber (@mgarbs)
 type: Process
+needs-hiero-review: No
 needs-hedera-approval: No
 status: Active
 created: 2021-02-11
@@ -96,6 +97,12 @@ Alternatively, a HIP can be:
 > **Hiero Review vs. Hedera Review**
 > - **Hiero Review**: Standards Track HIPs typically require a final vote by the Hiero Council.
 > Note: If the HIP is Accepted by Hiero, Hedera may choose whether to adopt it onto the Hedera mainnet. The `hedera-reviewed-date` header can be updated to mark the date of the review, and `hedera-approval-status` can be set to `Approved` or `Rejected`.
+
+The possible paths of the status of HIPs are as follows:
+
+⚠️ **NOTE**: The diagram below illustrates all valid status transitions:
+
+![HIP States](../assets/hip-1/hip-states.png)
 
 ### HIP Status Titles
 
