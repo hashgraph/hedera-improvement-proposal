@@ -530,13 +530,13 @@
     "title": "Jumbo EthereumTransactions",
     "number": 1086,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1086",
-    "headRefOid": "5b85754d7ae45ea21fe4c7d61a9b898b5a132c7c",
+    "headRefOid": "358d150ae0d46730194af2aac0541e6f0fe4e38e",
     "files": {
       "edges": [
         {
           "node": {
             "path": "HIP/hip-1086.md",
-            "additions": 164,
+            "additions": 166,
             "deletions": 0
           }
         }
