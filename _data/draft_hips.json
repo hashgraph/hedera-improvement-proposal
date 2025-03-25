@@ -1,5 +1,81 @@
 [
   {
+    "title": "chore: Prepare repo for transfer to hiero-ledger",
+    "number": 1152,
+    "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1152",
+    "headRefOid": "d120bdc72b0912f9be00e5463bfebd6a6b5bfca5",
+    "files": {
+      "edges": [
+        {
+          "node": {
+            "path": ".github/CODEOWNERS",
+            "additions": 8,
+            "deletions": 8
+          }
+        },
+        {
+          "node": {
+            "path": ".github/dependabot.yml",
+            "additions": 7,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/add-hip-number.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/notifications.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/schedule-last-call-date-end.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/send-discord-message.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/send-email.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/update-draft-hips.yml",
+            "additions": 2,
+            "deletions": 2
+          }
+        },
+        {
+          "node": {
+            "path": ".github/workflows/validateHeaders.yml",
+            "additions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    "author": {
+      "login": "rbarker-dev"
+    }
+  },
+  {
     "title": "NEW HIP: Improve Hedera Sharding",
     "number": 1151,
     "url": "https://github.com/hashgraph/hedera-improvement-proposal/pull/1151",
