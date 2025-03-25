@@ -12,7 +12,7 @@ defaults:
 
 jobs:
   DispatchNotifications:
-    runs-on: improvement-proposals-linux-medium
+    runs-on: hiero-improvement-proposals-linux-medium
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@cb605e52c26070c328afc4562f0b4ada7618a84e # v2.10.4
