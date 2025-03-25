@@ -6,7 +6,10 @@ working-group: <List of the technical and business stakeholders' names and/or us
 requested-by: <Name(s) and/or username(s), or name(s) and email(s) of the individual(s) or project(s) requesting the HIP. Ex: Acme Corp <request@acmecorp.com>>
 type: <"Standards Track" | "Informational" | "Process">
 category: <"Core" | "Service" | "Mirror" | "Application">
-needs-council-approval: <"Yes" | "No">
+needs-hedera-review: <"Yes" | "No">
+hedera-review-date: <Date of Hedera's review in YYYY-MM-DD format>
+hedera-approval-status: <"Approved" | "Rejected">
+needs-hiero-approval: <"Yes" | "No">
 status: <"Draft" | "Review" | "Last Call" | "Active" | "Inactive" | "Deferred" | "Rejected" | "Withdrawn" | "Accepted" | "Final" | "Replaced">
 created: <Date the HIP was created on, in YYYY-MM-DD format>
 discussions-to: <A URL pointing to the official discussion thread. Ex: https://github.com/hiero-ledger/hiero-improvement-proposal/discussions/000>
@@ -14,9 +17,6 @@ updated: <Latest date HIP was updated, in YYYY-MM-DD format.>
 requires: <HIP number(s) this HIP depends on, if applicable. Ex: 101, 102>
 replaces: <HIP number(s) this HIP replaces, if applicable. Ex: 99>
 superseded-by: <HIP number(s) that supersede this HIP, if applicable. Ex: 104>
-
-# Optional header for Hedera adoption:
-hedera-approval: <If Hedera chooses to adopt, record date or status (e.g. "2025-06-01", "Rejected", "N/A")>
 ---
 
 ## Abstract

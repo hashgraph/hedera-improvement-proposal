@@ -1,17 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
     const statusSelect = $('#status-filter');
-    const councilApprovalFilters = document.querySelectorAll('input[name="council-approval-filter"]');
+    const hederaReviewFilters = document.querySelectorAll('input[name="hedera-review-filter"]');
+    const hieroApprovalFilters = document.querySelectorAll('input[name="hiero-review-filter"]');
     const noHipsMessage = document.querySelector('.no-hips-message');
-    const councilApprovalRadios = document.querySelectorAll('input[name="council-approval-filter"]');
+    const hederaReviewRadios = document.querySelectorAll('input[name="hedera-review-filter"]');
+    const hieroApprovalRadios = document.querySelectorAll('input[name="hiero-review-filter"]');
 
-    councilApprovalRadios.forEach(radio => {
+    hederaReviewRadios.forEach(radio => {
         radio.addEventListener('click', (e) => {
             if (e.currentTarget.checked && e.currentTarget.getAttribute('data-checked') === 'true') {
                 e.currentTarget.checked = false;
                 e.currentTarget.setAttribute('data-checked', 'false');
                 filterRows();
             } else {
-                councilApprovalRadios.forEach(r => r.setAttribute('data-checked', 'false'));
+                hederaReviewRadios.forEach(r => r.setAttribute('data-checked', 'false'));
+                e.currentTarget.setAttribute('data-checked', 'true');
+            }
+        });
+    });
+
+    hieroApprovalRadios.forEach(radio => {
+        radio.addEventListener('click', (e) => {
+            if (e.currentTarget.checked && e.currentTarget.getAttribute('data-checked') === 'true') {
+                e.currentTarget.checked = false;
+                e.currentTarget.setAttribute('data-checked', 'false');
+                filterRows();
+            } else {
+                hieroApprovalRadios.forEach(r => r.setAttribute('data-checked', 'false'));
                 e.currentTarget.setAttribute('data-checked', 'true');
             }
         });
@@ -40,18 +55,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const selectedStatuses = statusSelect.val().length > 0 ? statusSelect.val() : ['all'];
-        const selectedCouncilApproval = document.querySelector('input[name="council-approval-filter"]:checked')?.value || 'all';
+        const selectedHederaReview = document.querySelector('input[name="hedera-review-filter"]:checked')?.value || 'all';
+        const selectedHieroReview = document.querySelector('input[name="hiero-review-filter"]:checked')?.value || 'all';
+        
         let anyRowVisible = false;
         document.querySelectorAll('.hipstable tbody tr').forEach(row => {
             const rowTypes = [row.getAttribute('data-type').trim().toLowerCase(), row.getAttribute('data-category').trim().toLowerCase()];
             const rowStatus = row.getAttribute('data-status').trim().toLowerCase();
-            const rowCouncilApproval = row.getAttribute('data-council-approval');
+            const rowHederaReview = row.getAttribute('data-hedera-review') || row.getAttribute('data-council-review') || 'false';
+            const rowHieroReview = row.getAttribute('data-hiero-review') || 'false'; 
 
             const typeCategoryMatch = selectedTypes.some(type => rowTypes.includes(type));
             const statusMatch = selectedStatuses.includes('all') || selectedStatuses.includes(rowStatus);
-            const councilApprovalMatch = selectedCouncilApproval === 'all' || selectedCouncilApproval === rowCouncilApproval;
+            const hederaReviewMatch = selectedHederaReview === 'all' || 
+                                     selectedHederaReview === rowHederaReview || 
+                                     (selectedHederaReview === 'false' && !rowHederaReview);
+            const hieroReviewMatch = selectedHieroReview === 'all' || selectedHieroReview === rowHieroReview;
 
-            if (typeCategoryMatch && statusMatch && councilApprovalMatch) {
+            if (typeCategoryMatch && statusMatch && hederaReviewMatch && hieroReviewMatch) {
                 row.style.display = '';
                 anyRowVisible = true;
             } else {
@@ -76,8 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function bindEventListeners() {
-        if (councilApprovalFilters.length > 0) {
-            councilApprovalFilters.forEach(filter => filter.addEventListener('change', filterRows));
+        if (hederaReviewFilters.length > 0) {
+            hederaReviewFilters.forEach(filter => filter.addEventListener('change', filterRows));
+        }
+        if (hieroApprovalFilters.length > 0) {
+            hieroApprovalFilters.forEach(filter => filter.addEventListener('change', filterRows));
         }
     }
     
