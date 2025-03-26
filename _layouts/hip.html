@@ -39,18 +39,27 @@ layout: default
         <span class="tooltip" data-tooltip="{{ page.status }}" style="text-decoration:none">ⓘ</span>
       </td>
     </tr>
-    {% if page.needs-council-approval != undefined %}
+    {% if page.needs-council-approval != undefined or page.needs-tsc-review != undefined or page.needs-hedera-review != undefined %}
+    <!-- TSC Review Row -->
     <tr>
-      <th>
-        Needs Council Approval
-      </th>
+      <th>Needs TSC Review</th>
       <td>
-        {% if page.needs-council-approval %}
-        Yes <span class="tooltip" data-tooltip="{{ page.needs-council-approval | jsonify }}"
-          style="text-decoration:none">ⓘ</span>
+        {% if page.needs-tsc-review %}
+          Yes <span class="tooltip" data-tooltip="tsc" style="text-decoration:none">ⓘ</span>
         {% else %}
-        No <span class="tooltip" data-tooltip="{{ page.needs-council-approval | jsonify }}"
-          style="text-decoration:none">ⓘ</span>
+          No <span class="tooltip" data-tooltip="tsc" style="text-decoration:none">ⓘ</span>
+        {% endif %}
+      </td>
+    </tr>
+
+    <!-- Hedera Review Row (includes legacy council approval logic) -->
+    <tr>
+      <th>Needs Hedera Review</th>
+      <td>
+        {% if page.needs-hedera-review or page.needs-council-approval %}
+          Yes <span class="tooltip" data-tooltip="hedera" style="text-decoration:none">ⓘ</span>
+        {% else %}
+          No <span class="tooltip" data-tooltip="hedera" style="text-decoration:none">ⓘ</span>
         {% endif %}
       </td>
     </tr>
@@ -137,18 +146,10 @@ layout: default
 
   {% include anchor_headings.html html=content anchorClass="anchor-link" beforeHeading=true %}
 
-
   <h2>Citation</h2>
   <p>Please cite this document as:</p>
-  {% comment %}
-  IEEE specification for reference formatting:
-  https://ieee-dataport.org/sites/default/files/analysis/27/IEEE%20Citation%20Guidelines.pdf
-  {% endcomment %}
 </div>
-{% comment %}
-Article schema specification:
-https://schema.org/TechArticle
-{% endcomment %}
+
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
@@ -178,8 +179,10 @@ https://schema.org/TechArticle
         Stagnant: "🚧 No activity for 6+ months. Can return to Draft by Authors or Editors.",
         Rejected: "❌ Not accepted. Rejected ideas are recorded with reasoning.",
         "Last Call": "📢 Final review window before 'Accepted'. Subject to change if issues found.",
-        "Council Review": "⚖️ Under Council review. Awaiting approval, subject to feedback.",
-        Accepted: "👍 Went through 'Last Call' without content changes. Ready for implementation.",
+        "TSC Review": "⚖️ Under TSC review. Awaiting approval, subject to feedback.",
+        "Hedera Accepted": "👍 Went through 'Last Call' without content changes. Ready for implementation.",
+        "TSC Approved": "👍 Approved by the Technical Steering Committee.",
+        "Hiero Approved": "👍 Approved by Hiero.",
         Final: "✅ Implemented in code and released. Represents a standard in a state of finality.",
         Active: "🌟 Informational/Process HIPs that made it through Last Call. Can be 'Withdrawn' or 'Replaced'.",
         Replaced: "🔄 Overwritten by a newer standard or implementation."
@@ -195,10 +198,9 @@ https://schema.org/TechArticle
         Mirror: "🔍 Mirror HIPs relate to the Hedera Mirror Node",
         Application: "📱 Application HIPs are specific to applications built on top of the Hedera platform.",
       },
-      "needs-council-approval": {
-        true: "👥 This HIP requires council approval for implementation because it makes changes at the protocol level.",
-        false: "✅ This HIP does not require council approval for implementation.",
-      },
+      council: "👥 This HIP required Hedera Council Approval (historical) because it made changes at the protocol level.",
+      tsc: "👥 This HIP requires TSC approval for implementation because it makes changes at the protocol level.",
+      hedera: "👥 This HIP requires Hedera review for implementation because it makes changes at the protocol level.",
       "reviewPeriodEnds": "⏳ The last call review period ends on this date, after which the HIP's status may change.",
     };
 
@@ -222,7 +224,6 @@ https://schema.org/TechArticle
     }
   });
 </script>
-
 
 <script>
   const tooltipElements = document.querySelectorAll('.tooltip');
