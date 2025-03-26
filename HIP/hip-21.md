@@ -150,4 +150,4 @@ rpc getNetworkInfo () returns (NodeAddressBook); //Retrieves network information
 
 - https://github.com/hashgraph/hedera-protobufs/blob/main/services/basic_types.proto#L1171
 - https://github.com/hashgraph/hedera-protobufs/blob/main/services/basic_types.proto#L1194
-- https://github.com/hashgraph/hedera-mirror-node/issues/946
+- https://github.com/hiero-ledger/hiero-mirror-node/issues/946

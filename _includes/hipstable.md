@@ -138,7 +138,7 @@
                         {% else %}
                             {% if page.category == "Mirror" %}
                                 <td class="release">
-                                    <a href="https://github.com/hashgraph/hedera-mirror-node/releases/tag/{{page.release}}">
+                                    <a href="https://github.com/hiero-ledger/hiero-mirror-node/releases/tag/{{page.release}}">
                                         {{page.release|xml_escape}}
                                     </a>
                                 </td>
