@@ -87,7 +87,7 @@ async function captureHeaderValidation(hipPath) {
 
     if (!regexs.discussions.test(headers)) {
       errs.push(Error('header must include discussions page ' +
-      '"discussions-to: https://github.com/hiero-ledger/hiero-improvement-proposal/discussions/xxx"'));
+      '"discussions-to: https://github.com/hiero-ledger/hiero-improvement-proposals/discussions/xxx"'));
     }
 
     if (!/requested-by:/.test(headers)) {

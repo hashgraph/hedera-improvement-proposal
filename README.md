@@ -44,9 +44,9 @@ The goal of HIPs is to have a place to propose new features, to collect
 community thoughts and input on a particular issue, and further to document
 all these subject matters in one place. It’s a great way to document these
 discussions and proposals
-[here on GitHub](https://github.com/hiero-ledger/hiero-improvement-proposal),
+[here on GitHub](https://github.com/hiero-ledger/hiero-improvement-proposals),
 because any
-[revisions made on these text files will be recorded](https://github.com/hiero-ledger/hiero-improvement-proposal/commits/main).
+[revisions made on these text files will be recorded](https://github.com/hiero-ledger/hiero-improvement-proposals/commits/main).
 
 ## Qualifications
 Each HIP should only be one single key proposal and/or idea. The idea should be
