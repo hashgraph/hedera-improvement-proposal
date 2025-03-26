@@ -111,4 +111,4 @@ N/A
 
 ## **Copyright/license**
 
-This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](https://github.com/hashgraph/hedera-improvement-proposal/LICENSE) or ([https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0))
+This document is licensed under the Apache License, Version 2.0 -- see [LICENSE](https://github.com/hiero-ledger/hiero-improvement-proposals/LICENSE) or ([https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0))

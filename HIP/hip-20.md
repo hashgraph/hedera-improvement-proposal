@@ -67,7 +67,7 @@ No known security concerns.
 ## References
 
 [0] https://dcentwallet.com/features/erc721-wallet
-[1] https://github.com/hashgraph/hedera-improvement-proposal/blob/main/HIP/hip-10.md
+[1] https://github.com/hiero-ledger/hiero-improvement-proposals/blob/main/HIP/hip-10.md
 
 ## Copyright/license
 

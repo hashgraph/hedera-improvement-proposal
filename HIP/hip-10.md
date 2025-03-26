@@ -188,7 +188,7 @@ N/A
 [3] https://github.com/hashgraph/hedera-hts-demo/pull/4
 [4] https://explorer.kabuto.sh/testnet/id/0.0.411677
 [5] https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#specification
-[6] https://github.com/hashgraph/hedera-improvement-proposal/issues/40
+[6] https://github.com/hiero-ledger/hiero-improvement-proposals/issues/40
 
 ## Copyright/license
 
