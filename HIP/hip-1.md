@@ -95,7 +95,7 @@ Alternatively, a HIP can be:
 - **Replaced** (superseded by a newer HIP).
 
 > **Hiero Review vs. Hedera Review**
-> - **Hiero Review**: Standards Track HIPs typically require a final vote by the Hiero Council.
+> - **Hiero Review**: Standards Track HIPs typically require a final vote by the Hiero TSC.
 > Note: If the HIP is Accepted by Hiero, Hedera may choose whether to adopt it onto the Hedera mainnet. The `hedera-reviewed-date` header can be updated to mark the date of the review, and `hedera-approval-status` can be set to `Approved` or `Rejected`.
 
 The possible paths of the status of HIPs are as follows:
