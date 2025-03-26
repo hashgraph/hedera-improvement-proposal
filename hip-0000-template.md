@@ -12,7 +12,7 @@ hedera-approval-status: <"Approved" | "Rejected">
 needs-hiero-approval: <"Yes" | "No">
 status: <"Draft" | "Review" | "Last Call" | "Active" | "Inactive" | "Deferred" | "Rejected" | "Withdrawn" | "Accepted" | "Final" | "Replaced">
 created: <Date the HIP was created on, in YYYY-MM-DD format>
-discussions-to: <A URL pointing to the official discussion thread. Ex: https://github.com/hiero-ledger/hiero-improvement-proposal/discussions/000>
+discussions-to: <A URL pointing to the official discussion thread. Ex: https://github.com/hiero-ledger/hiero-improvement-proposals/discussions/000>
 updated: <Latest date HIP was updated, in YYYY-MM-DD format.>
 requires: <HIP number(s) this HIP depends on, if applicable. Ex: 101, 102>
 replaces: <HIP number(s) this HIP replaces, if applicable. Ex: 99>
