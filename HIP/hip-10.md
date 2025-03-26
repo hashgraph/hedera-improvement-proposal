@@ -182,12 +182,12 @@ N/A
 
 ## References
 
-[0] https://github.com/ethereum/EIPs/blob/main/EIPS/eip-721.md#specification
+[0] https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md#specification
 [1] https://opensea.io/
 [2] https://dcentwallet.com/
 [3] https://github.com/hashgraph/hedera-hts-demo/pull/4
 [4] https://explorer.kabuto.sh/testnet/id/0.0.411677
-[5] https://github.com/ethereum/EIPs/blob/main/EIPS/eip-1155.md#specification
+[5] https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#specification
 [6] https://github.com/hashgraph/hedera-improvement-proposal/issues/40
 
 ## Copyright/license
