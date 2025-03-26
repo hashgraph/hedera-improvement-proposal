@@ -8,7 +8,7 @@ needs-council-approval: No
 status: Accepted
 last-call-date-time: 2022-01-19T07:00:00Z
 created: 2021-06-06
-discussions-to: https://github.com/hiero-ledger/hedera-improvement-proposals/discussions/103
+discussions-to: https://github.com/hiero-ledger/hiero-improvement-proposals/discussions/103
 updated: 2022-01-05
 ---
 
