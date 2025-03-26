@@ -50,7 +50,7 @@ The Hiero Council (Hiero TSC) is the body that makes final decisions on whether 
 
 ### Core Developers
 
-Hiero’s “core developers” include those contributing to the open-source project under the Hiero Foundation—employees, contractors, or community members recognized by Hiero.
+Hiero’s “core developers” include those contributing to the open-source project under the Hiero Organizatioon—employees, contractors, or community members recognized by Hiero.
 
 ### HIP Editors
 
