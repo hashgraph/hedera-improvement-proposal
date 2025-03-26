@@ -26,7 +26,7 @@ Since you can request account infos from multiple different networks you can't t
 
 ## **Rationale**
 
-To solve this issue, we think it would make sense for all enitity info responses to include a `ledger_id` field. Please reference [HIP-198](https://github.com/hashgraph/hedera-improvement-proposal/blob/master/HIP/hip-198.md) for the latest information regarding ledger IDs.
+To solve this issue, we think it would make sense for all enitity info responses to include a `ledger_id` field. Please reference [HIP-198](https://github.com/hashgraph/hedera-improvement-proposal/blob/main/HIP/hip-198.md) for the latest information regarding ledger IDs.
 
 ## **User Stories**
 As a developer I want to know which network the entity info response came from when the response information is written to a file that is then shared with other users of the application.

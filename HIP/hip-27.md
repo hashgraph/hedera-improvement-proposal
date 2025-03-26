@@ -48,7 +48,7 @@ The specification consists of 3 main parts:
 
 ### Hedera DID Method Specification
 
-We have updated the existing DID Method specification based upon our own experiences and validating with the lastest published W3C DID Core specification Version 1.0. The new draft is found on the [Meeco github repository] (https://github.com/Meeco/did-method/blob/master/did-method-specificationV1.md) and is part of this HIP process under review for community feedback.
+We have updated the existing DID Method specification based upon our own experiences and validating with the lastest published W3C DID Core specification Version 1.0. The new draft is found on the [Meeco github repository] (https://github.com/Meeco/did-method/blob/main/did-method-specificationV1.md) and is part of this HIP process under review for community feedback.
 The specification targets specific issues in the DID method:
 * Misuse of certain reserved characters in the DID method URN: The current specification contains a semicolon to identify the network and file storage ID (did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123). The semicolon character is reserved character for URLs.
 * Misalginment with the current DID Speficiation standard
@@ -80,7 +80,7 @@ The Appnet application will serve as reference implementation on how an applicat
 
 The contribution for a new DID method driver to the universal resolver consists of a Docker image which exposes an HTTP interface for resolving DIDs. New contributions are submitted as Pull Requests to the Universal Resolver repository.
 
-The driver offers an HTTP GET call under the following structure: http://<your-image>:8080/1.0/identifiers/<your-did>. The driver receives an Accept header with a value in application/ld+json format. The response is a valid DID Document or a DID Resolution Result in the HTTP body. Specification on the API definition is available through the following link: https://github.com/decentralized-identity/universal-resolver/blob/master/swagger/api-driver.yml
+The driver offers an HTTP GET call under the following structure: http://<your-image>:8080/1.0/identifiers/<your-did>. The driver receives an Accept header with a value in application/ld+json format. The response is a valid DID Document or a DID Resolution Result in the HTTP body. Specification on the API definition is available through the following link: https://github.com/decentralized-identity/universal-resolver/blob/main/swagger/api-driver.yml
 
 
 
