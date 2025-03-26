@@ -46,7 +46,7 @@ There are three kinds of HIP:
 
 ### Hiero Technical Steering Committee
 
-The Hiero Council (Hiero TSC) is the body that makes final decisions on whether or not to Accept or Reject Standards Track HIPs pertaining to Hiero’s core or service layers. The Council is also responsible for decisions regarding the technical governance of the open-source codebase donated by Hedera.
+The Hiero Technical Steering Committee (Hiero TSC) is the body that makes final decisions on whether or not to Accept or Reject Standards Track HIPs pertaining to Hiero’s core or service layers. The Council is also responsible for decisions regarding the technical governance of the open-source codebase donated by Hedera.
 
 ### Core Developers
 
