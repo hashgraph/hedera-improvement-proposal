@@ -9,7 +9,7 @@ status: Final
 release: v0.16.0
 superseded-by: 573
 created: 2021-04-30
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/92
+discussions-to: https://github.com/hiero-ledger/hedera-improvement-proposals/discussions/92
 updated: 2021-10-27
 ---
 ## Abstract

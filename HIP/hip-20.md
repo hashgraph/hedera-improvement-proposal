@@ -8,7 +8,7 @@ needs-council-approval: Yes
 status: Replaced
 superseded-by: 30
 created: 2021-06-29
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/110
+discussions-to: https://github.com/hiero-ledger/hedera-improvement-proposals/discussions/110
 ---
 
 ## Abstract
