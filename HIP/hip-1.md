@@ -22,7 +22,7 @@ HIPs are intended to be the primary mechanism for proposing new features, for co
 Because the HIPs are maintained as text files in a versioned repository, their revision history is the historical record of the proposal. HIPs are **not** meant to address *bugs* in implemented code. Bugs should be addressed using issues on the implementation's repository.
 
 > **Note on Hedera Adoption**  
-> While the Hiero Council decides on Accepting or Rejecting HIPs, there is an optional set of headers (`hedera-reviewed-date`, `hedera-approval-status`) to note if/when Hedera decides to adopt the HIP for its own mainnet. If Hedera chooses not to adopt, the `hedera-approval-status` can be set to `Rejected`.
+> While the Hiero Technical Steering Committee (TSC) decides on Accepting or Rejecting HIPs, there is an optional set of headers (`hedera-reviewed-date`, `hedera-approval-status`) to note if/when Hedera decides to adopt the HIP for its own mainnet. If Hedera chooses not to adopt, the `hedera-approval-status` can be set to `Rejected`.
 
 ## HIP Types
 
