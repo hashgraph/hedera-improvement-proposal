@@ -8,7 +8,7 @@ on:
 jobs:
   update-draft-hips:
     if: github.ref == 'refs/heads/main' # Only run on main branch
-    runs-on: improvement-proposals-linux-medium
+    runs-on: hiero-improvement-proposals-linux-medium
     permissions:
       contents: write
       pull-requests: read
@@ -29,7 +29,7 @@ jobs:
           passphrase: ${{ secrets.GPG_KEY_PASSPHRASE }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
           node-version: "20"
 
@@ -67,7 +67,7 @@ jobs:
           async function getAllPRs() {
             const query = `
               query { 
-                repository(name: "hedera-improvement-proposal", owner: "hashgraph") {
+                repository(name: "hiero-improvement-proposals", owner: "hiero-ledger") {
                   pullRequests(first: 100, states: [OPEN], orderBy: {field: CREATED_AT, direction: DESC}) {
                     nodes {
                       title
