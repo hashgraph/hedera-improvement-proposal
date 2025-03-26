@@ -7,7 +7,7 @@ needs-hiero-review: No
 needs-hedera-approval: No
 status: Active
 created: 2021-02-11
-discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
+discussions-to: https://github.com/hiero-ledger/hiero-improvement-proposals/discussions/54
 updated: 2025-03-25
 hedera-reviewed-date: N/A
 hedera-approval-status: N/A
